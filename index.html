@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>五年日記</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --white: #ffffff;
+    --text-dark: #2d2d2d;
+    --text-mid: #6b6b6b;
+    --text-light: #aaaaaa;
+    --accent: #e8a4b8;
+    --accent2: #a4b8e8;
+    --accent3: #b8e8a4;
+
+    /* Year color themes */
+    --y1-a: #fde8c8; --y1-b: #f8bcd0;
+    --y2-a: #d0e8fb; --y2-b: #b8cef8;
+    --y3-a: #d8f8e0; --y3-b: #b8e8d0;
+    --y4-a: #f0d8f8; --y4-b: #d8b8f0;
+    --y5-a: #f8f0d0; --y5-b: #f0d8a8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  .app-header {
+    background: var(--white);
+    padding: 20px 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .app-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-dark);
+    letter-spacing: 0.05em;
+  }
+
+  .today-badge {
+    font-size: 12px;
+    color: var(--text-mid);
+    background: var(--bg);
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Date Nav ── */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0;
+    -ms-overflow-style: none;
+  }
+  .date-nav::-webkit-scrollbar { display: none; }
+
+  .date-nav-btn {
+    background: none;
+    border: none;
+    padding: 8px 10px;
+    color: var(--text-light);
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .date-display {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-mid);
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  /* ── Month Picker Strip ── */
+  .month-strip {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 0 14px;
+    gap: 6px;
+  }
+  .month-strip::-webkit-scrollbar { display: none; }
+
+  .month-chip {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1.5px solid transparent;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-mid);
+    background: var(--bg);
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .month-chip.active {
+    background: var(--text-dark);
+    color: white;
+    border-color: var(--text-dark);
+  }
+
+  /* ── Main Content ── */
+  .main {
+    padding: 16px 16px 100px;
+  }
+
+  /* ── Today's Prompt ── */
+  .prompt-card {
+    background: linear-gradient(135deg, #fde8c8, #f8bcd0 60%, #d0c8f8);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .prompt-card::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+  }
+  .prompt-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(80,60,50,0.5);
+    margin-bottom: 6px;
+  }
+  .prompt-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: #5a3d3d;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  /* ── Section Title ── */
+  .section-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-light);
+    margin: 8px 0 12px;
+  }
+
+  /* ── Year Entry Cards ── */
+  .entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .entry-card {
+    background: var(--white);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .entry-card:active { transform: scale(0.99); }
+
+  .entry-gradient-bar {
+    height: 4px;
+    width: 100%;
+  }
+
+  .entry-inner {
+    padding: 14px 16px 16px;
+  }
+
+  .entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .entry-year-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .year-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #5a4a4a;
+    flex-shrink: 0;
+  }
+
+  .year-text {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    letter-spacing: 0.03em;
+  }
+
+  .entry-age {
+    font-size: 10px;
+    color: var(--text-light);
+    background: var(--bg);
+    padding: 3px 9px;
+    border-radius: 20px;
+  }
+
+  /* ── Textarea / Entry content ── */
+  .entry-textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--text-dark);
+    background: transparent;
+    min-height: 70px;
+    padding: 0;
+    caret-color: var(--accent);
+  }
+  .entry-textarea::placeholder {
+    color: var(--text-light);
+    font-style: italic;
+  }
+
+  .entry-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+  }
+
+  .mood-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mood-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg);
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mood-btn.selected {
+    background: #f5ecd0;
+    transform: scale(1.15);
+  }
+  .mood-btn:active { transform: scale(0.9); }
+
+  .char-count {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Write new entry fab-like ── */
+  .save-btn {
+    background: var(--text-dark);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 8px 18px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .save-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Bottom Nav ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid #f0eeec;
+    display: flex;
+    padding: 8px 0 20px;
+    z-index: 100;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px 0;
+    border: none;
+    background: none;
+    color: var(--text-light);
+    font-size: 10px;
+    font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .nav-item.active { color: var(--text-dark); }
+  .nav-item svg { width: 22px; height: 22px; }
+
+  /* ── Stats mini card ── */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 14px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .stat-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Year color configs ── */
+  .y1 .entry-gradient-bar { background: linear-gradient(90deg, var(--y1-a), var(--y1-b)); }
+  .y1 .year-dot { background: linear-gradient(135deg, var(--y1-a), var(--y1-b)); }
+
+  .y2 .entry-gradient-bar { background: linear-gradient(90deg, var(--y2-a), var(--y2-b)); }
+  .y2 .year-dot { background: linear-gradient(135deg, var(--y2-a), var(--y2-b)); }
+
+  .y3 .entry-gradient-bar { background: linear-gradient(90deg, var(--y3-a), var(--y3-b)); }
+  .y3 .year-dot { background: linear-gradient(135deg, var(--y3-a), var(--y3-b)); }
+
+  .y4 .entry-gradient-bar { background: linear-gradient(90deg, var(--y4-a), var(--y4-b)); }
+  .y4 .year-dot { background: linear-gradient(135deg, var(--y4-a), var(--y4-b)); }
+
+  .y5 .entry-gradient-bar { background: linear-gradient(90deg, var(--y5-a), var(--y5-b)); }
+  .y5 .year-dot { background: linear-gradient(135deg, var(--y5-a), var(--y5-b)); }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text-dark);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 200;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── Stats & Calendar page ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  .cal-header {
+    font-size: 10px;
+    text-align: center;
+    color: var(--text-light);
+    padding: 4px 0;
+    letter-spacing: 0.05em;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--text-mid);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s;
+  }
+  .cal-day.has-entry::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .cal-day.today {
+    background: var(--text-dark);
+    color: white;
+    font-weight: 500;
+  }
+  .cal-day.selected {
+    background: #f0eeec;
+    font-weight: 500;
+  }
+  .cal-day.empty { pointer-events: none; }
+
+  /* ── Mood Stats ── */
+  .mood-stats-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    margin-bottom: 12px;
+  }
+  .mood-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .mood-bar-label { font-size: 18px; }
+  .mood-bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .mood-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #fde8c8, #f8bcd0);
+    transition: width 0.6s ease;
+  }
+  .mood-bar-count {
+    font-size: 11px;
+    color: var(--text-light);
+    min-width: 20px;
+    text-align: right;
+  }
+
+  /* ── Year Picker Modal ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 300;
+    display: flex;
+    align-items: flex-end;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .year-picker-sheet {
+    background: var(--white);
+    width: 100%;
+    border-radius: 24px 24px 0 0;
+    padding: 20px 20px 40px;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  .modal-overlay.show .year-picker-sheet {
+    transform: translateY(0);
+  }
+  .picker-handle {
+    width: 36px; height: 4px;
+    background: #e0dedd;
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+  .picker-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .year-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .year-btn {
+    padding: 10px 4px;
+    border-radius: 12px;
+    border: 1.5px solid transparent;
+    background: var(--bg);
+    font-size: 14px;
+    color: var(--text-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .year-btn.active {
+    background: var(--text-dark);
+    color: white;
+    border-color: var(--text-dark);
+  }
+  .year-btn:active { transform: scale(0.95); }
+  .cal-month-title {
+    cursor: pointer;
+    user-select: none;
+    padding: 4px 10px;
+    border-radius: 10px;
+    transition: background 0.15s;
+    text-align: center;
+  }
+  .cal-month-title:active { background: var(--bg); }
+  .cal-month-title-hint {
+    font-size: 9px;
+    color: var(--text-light);
+    display: block;
+    text-align: center;
+    margin-top: 1px;
+    letter-spacing: 0.05em;
+  }
+
+  /* Subtle page transitions */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page.active { animation: fadeIn 0.25s ease forwards; }
+
+  .cal-month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .cal-month-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    color: var(--text-dark);
+    font-weight: 400;
+  }
+  .cal-nav-btn {
+    background: var(--bg);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-mid);
+    font-size: 16px;
+    transition: background 0.15s;
+  }
+  .cal-nav-btn:active { background: #e8e6e3; }
+
+  /* ── Streak banner ── */
+  .streak-banner {
+    background: linear-gradient(135deg, #fde8c8 0%, #f8bcd0 50%, #d0c8f8 100%);
+    border-radius: 20px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .streak-icon {
+    font-size: 30px;
+    line-height: 1;
+  }
+  .streak-info { flex: 1; }
+  .streak-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: #5a3d3d;
+    line-height: 1;
+  }
+  .streak-label {
+    font-size: 11px;
+    color: rgba(90,61,61,0.6);
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="app-header" id="mainHeader">
+  <div class="header-top">
+    <span class="app-title">五年日記</span>
+    <span class="today-badge" id="todayBadge">今天</span>
+  </div>
+  <div class="date-nav">
+    <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
+    <div class="date-display" id="dateDisplay"></div>
+    <button class="date-nav-btn" onclick="changeDay(1)">›</button>
+  </div>
+  <div class="month-strip" id="monthStrip"></div>
+</div>
+
+<!-- ── Pages ── -->
+<div class="main">
+
+  <!-- Page: Diary -->
+  <div class="page active" id="pageDiary">
+    <div class="prompt-card" id="promptCard">
+      <div class="prompt-label">今日提示</div>
+      <div class="prompt-text" id="promptText"></div>
+    </div>
+
+    <div class="section-title">五年的今天</div>
+    <div class="entries-list" id="entriesList"></div>
+  </div>
+
+  <!-- Page: Calendar -->
+  <div class="page" id="pageCalendar">
+    <div class="section-title">日曆總覽</div>
+    <div style="background:var(--white);border-radius:20px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+      <div class="cal-month-nav">
+        <button class="cal-nav-btn" onclick="changeCalMonth(-1)">‹</button>
+        <div class="cal-month-title" id="calMonthTitle" onclick="openYearPicker()">
+          <span id="calMonthTitleText"></span>
+          <span class="cal-month-title-hint">點擊跳年份</span>
+        </div>
+        <button class="cal-nav-btn" onclick="changeCalMonth(1)">›</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+    <div class="section-title">本月記錄</div>
+    <div id="calEntryPreview"></div>
+  </div>
+
+  <!-- Page: Settings -->
+  <div class="page" id="pageSettings">
+    <div class="section-title">☁️ 雲端同步</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">連結 Google Sheets</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:16px;line-height:1.7;">
+        連結後資料會同步到你的 Google 試算表，<br>換手機換電腦都不怕。
+      </div>
+
+      <!-- 連線狀態 -->
+      <div id="syncStatusBar" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:var(--bg);margin-bottom:14px;">
+        <div id="syncDot" style="width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;"></div>
+        <div id="syncStatusText" style="font-size:12px;color:var(--text-mid);">尚未連線</div>
+      </div>
+
+      <input id="scriptUrlInput" type="url"
+        placeholder="貼上你的 Apps Script 網址"
+        style="width:100%;border:none;outline:none;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;">
+
+      <div style="display:flex;gap:8px;">
+        <button onclick="testAndSaveScriptUrl()" style="flex:1;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">測試並連線</button>
+        <button onclick="syncFromCloud()" id="syncPullBtn" style="flex:1;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;" disabled>從雲端載入</button>
+      </div>
+
+      <div style="margin-top:12px;padding:12px;background:#f0f8ff;border-radius:12px;">
+        <div style="font-size:11px;color:#5080a0;line-height:1.8;">
+          📋 <b>第一次設定步驟：</b><br>
+          1. 開啟 Google 試算表（新建一個）<br>
+          2. 點選選單「擴充功能」→「Apps Script」<br>
+          3. 貼上附件裡的 .gs 程式碼，存檔<br>
+          4. 點「部署」→「新增部署」→ 類型選「網路應用程式」<br>
+          5. 執行身分：我、存取權：任何人 → 部署<br>
+          6. 複製網址貼到上方欄位
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">五年設定</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇你的五個年份</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">可以自由選擇，不需要連續。<br>例如：2020、2022、2023、2024、2025</div>
+      <div id="yearSlotList"></div>
+      <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--text-dark);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">儲存設定</button>
+    </div>
+
+    <div class="section-title">日記名稱</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+      <input id="diaryNameInput" type="text" maxlength="12"
+        style="width:100%;border:none;outline:none;border-bottom:1.5px solid #e8e6e3;padding:8px 0;font-size:16px;font-family:'Noto Serif TC',serif;color:var(--text-dark);background:transparent;"
+        placeholder="五年日記">
+      <div style="font-size:11px;color:var(--text-light);margin-top:8px;">最多 12 個字</div>
+      <button onclick="saveDiaryName()" style="width:100%;margin-top:16px;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">更新名稱</button>
+    </div>
+
+    <div class="section-title">資料管理</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+      <div style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.6;">所有資料儲存在瀏覽器本地，清除瀏覽器快取會遺失資料。</div>
+      <button onclick="exportData()" style="width:100%;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:10px;">匯出日記（純文字 .txt）</button>
+      <button onclick="confirmClear()" style="width:100%;padding:12px;background:#fff0f0;color:#d06060;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">清除所有資料</button>
+    </div>
+  </div>
+
+  <!-- Page: Stats -->
+  <div class="page" id="pageStats">
+    <div class="streak-banner">
+      <div class="streak-icon">🔥</div>
+      <div class="streak-info">
+        <div class="streak-num" id="streakNum">0</div>
+        <div class="streak-label">天連續記錄</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="totalEntries">0</div>
+        <div class="stat-label">總記錄數</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="totalDays">0</div>
+        <div class="stat-label">記錄天數</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="totalWords">0</div>
+        <div class="stat-label">總字數</div>
+      </div>
+    </div>
+
+    <div class="section-title">心情分布</div>
+    <div class="mood-stats-card" id="moodStatsCard"></div>
+
+    <div class="section-title">今年記錄熱力</div>
+    <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+      <div id="heatmapGrid" style="display:grid;grid-template-columns:repeat(26,1fr);gap:3px;"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Year Picker Modal ── -->
+<div class="modal-overlay" id="yearPickerOverlay" onclick="closeYearPicker(event)">
+  <div class="year-picker-sheet">
+    <div class="picker-handle"></div>
+    <div class="picker-title">選擇年份</div>
+    <div class="year-grid" id="yearGrid"></div>
+  </div>
+</div>
+
+<!-- ── Bottom Nav ── -->
+<div class="bottom-nav">
+  <button class="nav-item active" id="navDiary" onclick="switchPage('diary')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+      <path d="M17.5 3.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 8.5-8.5z"/>
+    </svg>
+    日記
+  </button>
+  <button class="nav-item" id="navCalendar" onclick="switchPage('calendar')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    日曆
+  </button>
+  <button class="nav-item" id="navStats" onclick="switchPage('stats')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="18" y1="20" x2="18" y2="10"/>
+      <line x1="12" y1="20" x2="12" y2="4"/>
+      <line x1="6" y1="20" x2="6" y2="14"/>
+    </svg>
+    統計
+  </button>
+  <button class="nav-item" id="navSettings" onclick="switchPage('settings')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+    </svg>
+    設定
+  </button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Data ──
+const MOODS = ['😊','😌','😔','😤','🥹'];
+const PROMPTS = [
+  '今天讓你印象最深的一件事是什麼？',
+  '今天你感謝的三件小事',
+  '此刻你的心情是什麼顏色？',
+  '今天學到什麼新的東西了嗎？',
+  '如果今天重來一次，你會改變什麼？',
+  '今天遇到了什麼讓你微笑的事？',
+  '這個月你最想完成的一件事是什麼？',
+  '今天的你，想對一年後的自己說什麼？',
+  '今天最享受的時刻是什麼？',
+  '你現在最需要的是什麼？',
+  '今天有什麼讓你感到驕傲的事？',
+  '此刻什麼事讓你感到平靜？',
+];
+
+const MONTHS_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const DAYS_ZH = ['日','一','二','三','四','五','六'];
+
+let currentDate = new Date();
+let calViewDate = new Date();
+let data = {};
+let activeTab = 'diary';
+
+function loadData() {
+  try { data = JSON.parse(localStorage.getItem('5yr_diary') || '{}'); } catch { data = {}; }
+}
+function saveData() {
+  localStorage.setItem('5yr_diary', JSON.stringify(data));
+}
+function getKey(year, month, day) {
+  return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+function getEntry(year, month, day) {
+  return data[getKey(year, month, day)] || { text: '', mood: null };
+}
+
+// ── Init ──
+// ── Settings ──
+function defaultYears() {
+  const cur = new Date().getFullYear();
+  return [cur-4, cur-3, cur-2, cur-1, cur];
+}
+function loadSettings() {
+  try {
+    const s = JSON.parse(localStorage.getItem('5yr_settings') || '{}');
+    return {
+      years: Array.isArray(s.years) && s.years.length === 5 ? s.years : defaultYears(),
+      name: s.name || '五年日記'
+    };
+  } catch { return { years: defaultYears(), name: '五年日記' }; }
+}
+function saveSettings(settings) {
+  localStorage.setItem('5yr_settings', JSON.stringify(settings));
+}
+
+let settings = loadSettings();
+let ACTIVE_YEARS = settings.years.slice().sort((a,b)=>a-b);
+
+loadData();
+renderHeader();
+renderPrompt();
+renderEntries();
+renderCalendar();
+renderStats();
+
+function renderHeader() {
+  const d = currentDate;
+  const dayStr = ['日','一','二','三','四','五','六'][d.getDay()];
+  document.getElementById('dateDisplay').textContent =
+    `${d.getFullYear()}年 ${d.getMonth()+1}月 ${d.getDate()}日（${dayStr}）`;
+
+  const today = new Date();
+  const isToday = d.toDateString() === today.toDateString();
+  document.getElementById('todayBadge').textContent = isToday ? '今天' : `${Math.round(Math.abs(d-today)/86400000)}天前`;
+
+  // Month strip
+  const strip = document.getElementById('monthStrip');
+  strip.innerHTML = '';
+  const curM = d.getMonth();
+  for (let m = 0; m < 12; m++) {
+    const chip = document.createElement('button');
+    chip.className = 'month-chip' + (m === curM ? ' active' : '');
+    chip.textContent = MONTHS_ZH[m];
+    chip.onclick = () => {
+      currentDate = new Date(d.getFullYear(), m, Math.min(d.getDate(), new Date(d.getFullYear(), m+1, 0).getDate()));
+      renderAll();
+    };
+    strip.appendChild(chip);
+  }
+  // Scroll active chip into view
+  setTimeout(() => {
+    const active = strip.querySelector('.active');
+    if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, 50);
+}
+
+function renderPrompt() {
+  const d = currentDate;
+  const idx = (d.getMonth() * 30 + d.getDate()) % PROMPTS.length;
+  document.getElementById('promptText').textContent = PROMPTS[idx];
+}
+
+function renderEntries() {
+  const d = currentDate;
+  const list = document.getElementById('entriesList');
+  list.innerHTML = '';
+
+  ACTIVE_YEARS.forEach((yr, i) => {
+    const yClass = `y${(i % 5) + 1}`;
+    const entry = getEntry(yr, d.getMonth(), d.getDate());
+    const isFuture = yr > new Date().getFullYear() || (yr === new Date().getFullYear() && d > new Date());
+
+    const card = document.createElement('div');
+    card.className = `entry-card ${yClass}`;
+    card.innerHTML = `
+      <div class="entry-gradient-bar"></div>
+      <div class="entry-inner">
+        <div class="entry-header">
+          <div class="entry-year-label">
+            <div class="year-dot">${yr}</div>
+            <span class="year-text">${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="save-btn" id="saveBtn${yr}" onclick="saveEntry(${yr}, ${d.getMonth()}, ${d.getDate()})">儲存</button>
+          </div>
+        </div>
+        <textarea
+          class="entry-textarea"
+          id="ta${yr}"
+          placeholder="${isFuture ? '還沒到這一天…' : `${yr}年的今天，我寫下…`}"
+          ${isFuture ? 'disabled' : ''}
+          maxlength="500"
+          oninput="onTextInput(this, ${yr}, ${d.getMonth()}, ${d.getDate()})"
+        >${entry.text}</textarea>
+        <div class="entry-footer">
+          <div class="mood-row" id="moodRow${yr}"></div>
+          <span class="char-count" id="cc${yr}">${entry.text.length}/500</span>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+
+    if (!isFuture) renderMoodRow(yr, d.getMonth(), d.getDate(), entry.mood);
+  });
+}
+
+function renderMoodRow(yr, month, day, selectedMood) {
+  const row = document.getElementById(`moodRow${yr}`);
+  if (!row) return;
+  row.innerHTML = '';
+  MOODS.forEach(mood => {
+    const btn = document.createElement('button');
+    btn.className = 'mood-btn' + (mood === selectedMood ? ' selected' : '');
+    btn.textContent = mood;
+    btn.onclick = () => {
+      const entry = getEntry(yr, month, day);
+      setEntry(yr, month, day, entry.text, mood === entry.mood ? null : mood);
+      renderMoodRow(yr, month, day, mood === entry.mood ? null : mood);
+      showToast('心情已記錄 ' + (mood === entry.mood ? '' : mood));
+    };
+    row.appendChild(btn);
+  });
+}
+
+function onTextInput(ta, yr, month, day) {
+  const len = ta.value.length;
+  document.getElementById(`cc${yr}`).textContent = `${len}/500`;
+  const saveBtn = document.getElementById(`saveBtn${yr}`);
+  if (saveBtn) {
+    saveBtn.classList.toggle('visible', len > 0 || getEntry(yr, month, day).text !== ta.value);
+  }
+}
+
+function saveEntry(yr, month, day) {
+  const ta = document.getElementById(`ta${yr}`);
+  const entry = getEntry(yr, month, day);
+  setEntry(yr, month, day, ta.value, entry.mood);
+  const saveBtn = document.getElementById(`saveBtn${yr}`);
+  if (saveBtn) saveBtn.classList.remove('visible');
+  showToast('已儲存 ✓');
+  if (activeTab === 'stats') renderStats();
+}
+
+function changeDay(delta) {
+  currentDate = new Date(currentDate.getTime() + delta * 86400000);
+  renderAll();
+}
+
+function renderAll() {
+  renderHeader();
+  renderPrompt();
+  renderEntries();
+  if (activeTab === 'calendar') renderCalendar();
+  if (activeTab === 'stats') renderStats();
+}
+
+// ── Calendar ──
+function renderCalendar() {
+  const d = calViewDate;
+  const yr = d.getFullYear();
+  const mo = d.getMonth();
+  document.getElementById('calMonthTitleText').textContent = `${yr}年 ${MONTHS_ZH[mo]}`;
+
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+
+  // Day headers
+  DAYS_ZH.forEach(dh => {
+    const el = document.createElement('div');
+    el.className = 'cal-header';
+    el.textContent = dh;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(yr, mo, 1).getDay();
+  const daysInMonth = new Date(yr, mo+1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d2 = 1; d2 <= daysInMonth; d2++) {
+    const el = document.createElement('div');
+    const isToday = yr === today.getFullYear() && mo === today.getMonth() && d2 === today.getDate();
+    const isSelected = yr === currentDate.getFullYear() && mo === currentDate.getMonth() && d2 === currentDate.getDate();
+
+    let hasEntry = false;
+    for (const y of ACTIVE_YEARS) {
+      const e = getEntry(y, mo, d2);
+      if (e.text && e.text.trim()) { hasEntry = true; break; }
+    }
+
+    el.className = 'cal-day' + (isToday ? ' today' : '') + (isSelected && !isToday ? ' selected' : '') + (hasEntry ? ' has-entry' : '');
+    el.textContent = d2;
+    const _yr = yr, _mo = mo, _d2 = d2;
+    el.onclick = () => {
+      currentDate = new Date(_yr, _mo, _d2);
+      calViewDate = new Date(_yr, _mo, _d2);
+      renderAll();
+      switchPage('diary');
+    };
+    grid.appendChild(el);
+  }
+
+  // Preview
+  const preview = document.getElementById('calEntryPreview');
+  preview.innerHTML = '';
+  let found = 0;
+  for (let d2 = 1; d2 <= daysInMonth; d2++) {
+    for (const y of ACTIVE_YEARS) {
+      const e = getEntry(y, mo, d2);
+      if (e.text && e.text.trim()) {
+        found++;
+        const card = document.createElement('div');
+        card.style.cssText = 'background:var(--white);border-radius:14px;padding:12px 14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04);';
+        card.innerHTML = `<div style="font-size:11px;color:var(--text-light);margin-bottom:6px;letter-spacing:0.05em;">${mo+1}月${d2}日・${y}年 ${e.mood||''}</div><div style="font-size:13px;color:var(--text-dark);line-height:1.6;font-family:'Noto Serif TC',serif;">${e.text.slice(0,60)}${e.text.length>60?'…':''}</div>`;
+        card.onclick = () => {
+          currentDate = new Date(y, mo, d2);
+          switchPage('diary');
+        };
+        preview.appendChild(card);
+        if (found >= 10) break;
+      }
+    }
+    if (found >= 10) break;
+  }
+  if (!found) {
+    preview.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px;">本月尚無記錄</div>';
+  }
+}
+
+function changeCalMonth(delta) {
+  calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth() + delta, 1);
+  renderCalendar();
+}
+
+function openYearPicker() {
+  const overlay = document.getElementById('yearPickerOverlay');
+  const grid = document.getElementById('yearGrid');
+  const curYr = calViewDate.getFullYear();
+  grid.innerHTML = '';
+  // Show years from 2000 to current year + 1
+  const endYr = new Date().getFullYear() + 1;
+  for (let y = 2000; y <= endYr; y++) {
+    const btn = document.createElement('button');
+    btn.className = 'year-btn' + (y === curYr ? ' active' : '');
+    btn.textContent = y;
+    btn.onclick = () => {
+      calViewDate = new Date(y, calViewDate.getMonth(), 1);
+      closeYearPicker();
+      renderCalendar();
+    };
+    grid.appendChild(btn);
+  }
+  overlay.classList.add('show');
+  // Scroll active year into view
+  setTimeout(() => {
+    const active = grid.querySelector('.active');
+    if (active) active.scrollIntoView({ block: 'center' });
+  }, 50);
+}
+
+function closeYearPicker(e) {
+  if (!e || e.target === document.getElementById('yearPickerOverlay')) {
+    document.getElementById('yearPickerOverlay').classList.remove('show');
+  }
+}
+
+// ── Stats ──
+function renderStats() {
+  let total = 0, days = new Set(), words = 0;
+  const moodCount = {};
+  MOODS.forEach(m => moodCount[m] = 0);
+
+  Object.entries(data).forEach(([k, v]) => {
+    if (v.text && v.text.trim()) {
+      total++;
+      days.add(k);
+      words += v.text.trim().length;
+    }
+    if (v.mood) moodCount[v.mood] = (moodCount[v.mood] || 0) + 1;
+  });
+
+  document.getElementById('totalEntries').textContent = total;
+  document.getElementById('totalDays').textContent = days.size;
+  document.getElementById('totalWords').textContent = words > 999 ? (words/1000).toFixed(1)+'k' : words;
+
+  // Streak
+  let streak = 0, check = new Date();
+  check.setHours(0,0,0,0);
+  while (true) {
+    const k = getKey(check.getFullYear(), check.getMonth(), check.getDate());
+    let hasAny = false;
+    for (const y of ACTIVE_YEARS) {
+      const kk = `${y}-${k.slice(5)}`;
+      if (data[kk] && data[kk].text && data[kk].text.trim()) { hasAny = true; break; }
+    }
+    if (!hasAny) break;
+    streak++;
+    check = new Date(check.getTime() - 86400000);
+  }
+  document.getElementById('streakNum').textContent = streak;
+
+  // Mood stats
+  const maxM = Math.max(...Object.values(moodCount), 1);
+  const moodCard = document.getElementById('moodStatsCard');
+  moodCard.innerHTML = MOODS.map(m => `
+    <div class="mood-bar-row">
+      <div class="mood-bar-label">${m}</div>
+      <div class="mood-bar-track">
+        <div class="mood-bar-fill" style="width:${(moodCount[m]/maxM*100).toFixed(0)}%"></div>
+      </div>
+      <div class="mood-bar-count">${moodCount[m]}</div>
+    </div>
+  `).join('');
+
+  // Heatmap (this year, 52 weeks)
+  const hg = document.getElementById('heatmapGrid');
+  hg.innerHTML = '';
+  const now = new Date();
+  const yr = now.getFullYear();
+  for (let week = 0; week < 26; week++) {
+    for (let dow = 0; dow < 7; dow++) {
+      const offset = (week * 7 + dow) - now.getDayOfYear() % 7;
+      const d2 = new Date(yr, 0, 1 + week*7 + dow);
+      if (d2 > now) {
+        const el = document.createElement('div');
+        el.style.cssText = 'aspect-ratio:1;border-radius:2px;background:#f0eeec;';
+        hg.appendChild(el);
+        continue;
+      }
+      let hasEntry = false;
+      for (const y of ACTIVE_YEARS) {
+        const k = getKey(y, d2.getMonth(), d2.getDate());
+        if (data[k] && data[k].text && data[k].text.trim()) { hasEntry = true; break; }
+      }
+      const el = document.createElement('div');
+      el.style.cssText = `aspect-ratio:1;border-radius:2px;background:${hasEntry ? 'linear-gradient(135deg,#fde8c8,#f8bcd0)' : '#f0eeec'};`;
+      hg.appendChild(el);
+    }
+  }
+}
+
+// Helper for day of year
+Date.prototype.getDayOfYear = function() {
+  const start = new Date(this.getFullYear(), 0, 0);
+  const diff = this - start + ((start.getTimezoneOffset() - this.getTimezoneOffset()) * 60 * 1000);
+  return Math.floor(diff / 86400000);
+};
+
+// ── Page switching ──
+function switchPage(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  if (tab === 'diary') {
+    document.getElementById('pageDiary').classList.add('active');
+    document.getElementById('navDiary').classList.add('active');
+    document.getElementById('mainHeader').style.display = '';
+    document.querySelector('.main').style.paddingTop = '';
+  } else if (tab === 'calendar') {
+    document.getElementById('pageCalendar').classList.add('active');
+    document.getElementById('navCalendar').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    calViewDate = new Date(currentDate);
+    renderCalendar();
+    document.querySelector('.main').style.paddingTop = '24px';
+  } else if (tab === 'stats') {
+    document.getElementById('pageStats').classList.add('active');
+    document.getElementById('navStats').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    renderStats();
+    document.querySelector('.main').style.paddingTop = '24px';
+  } else if (tab === 'settings') {
+    document.getElementById('pageSettings').classList.add('active');
+    document.getElementById('navSettings').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    document.querySelector('.main').style.paddingTop = '24px';
+    renderSettingsPage();
+  }
+}
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Auto-save on blur
+document.addEventListener('blur', e => {
+  if (e.target.classList.contains('entry-textarea')) {
+    const d = currentDate;
+    const yr = parseInt(e.target.id.replace('ta',''));
+    if (!isNaN(yr)) {
+      const entry = getEntry(yr, d.getMonth(), d.getDate());
+      if (e.target.value !== entry.text) {
+        setEntry(yr, d.getMonth(), d.getDate(), e.target.value, entry.mood);
+        document.getElementById(`saveBtn${yr}`)?.classList.remove('visible');
+      }
+    }
+  }
+}, true);
+// ── Settings Page ──
+let tempYears = [];
+
+function renderSettingsPage() {
+  tempYears = ACTIVE_YEARS.slice();
+  // Diary name
+  document.getElementById('diaryNameInput').value = settings.name;
+  // Sync status
+  renderSyncStatus();
+
+  const container = document.getElementById('yearSlotList');
+  container.innerHTML = '';
+
+  const curYr = new Date().getFullYear();
+  const allYears = [];
+  for (let y = 2000; y <= curYr + 2; y++) allYears.push(y);
+
+  tempYears.forEach((yr, idx) => {
+    const slot = document.createElement('div');
+    slot.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:14px;';
+
+    const label = document.createElement('div');
+    label.style.cssText = `width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;`;
+    // Use gradient matching the y-class colors
+    const gradients = [
+      'linear-gradient(135deg,#fde8c8,#f8bcd0)',
+      'linear-gradient(135deg,#d0e8fb,#b8cef8)',
+      'linear-gradient(135deg,#d8f8e0,#b8e8d0)',
+      'linear-gradient(135deg,#f0d8f8,#d8b8f0)',
+      'linear-gradient(135deg,#f8f0d0,#f0d8a8)',
+    ];
+    label.style.background = gradients[idx % 5];
+    label.textContent = idx + 1;
+
+    const select = document.createElement('select');
+    select.style.cssText = 'flex:1;padding:10px 14px;border:1.5px solid #e8e6e3;border-radius:12px;font-size:14px;font-family:"Noto Sans TC",sans-serif;color:var(--text-dark);background:var(--white);outline:none;appearance:none;-webkit-appearance:none;';
+    select.innerHTML = allYears.map(y =>
+      `<option value="${y}" ${y === yr ? 'selected' : ''}>${y} 年</option>`
+    ).join('');
+    select.onchange = () => {
+      tempYears[idx] = parseInt(select.value);
+    };
+
+    const icon = document.createElement('div');
+    icon.textContent = '▾';
+    icon.style.cssText = 'font-size:12px;color:var(--text-light);pointer-events:none;margin-left:-30px;';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'flex:1;display:flex;align-items:center;position:relative;';
+    wrapper.appendChild(select);
+    wrapper.appendChild(icon);
+
+    slot.appendChild(label);
+    slot.appendChild(wrapper);
+    container.appendChild(slot);
+  });
+}
+
+function saveYearSettings() {
+  // Check no duplicates
+  const unique = new Set(tempYears);
+  if (unique.size < tempYears.length) {
+    showToast('年份不能重複！'); return;
+  }
+  ACTIVE_YEARS = tempYears.slice().sort((a,b) => a-b);
+  settings.years = ACTIVE_YEARS;
+  saveSettings(settings);
+  renderEntries();
+  showToast('年份已更新 ✓');
+}
+
+function saveDiaryName() {
+  const name = document.getElementById('diaryNameInput').value.trim();
+  if (!name) { showToast('名稱不能為空'); return; }
+  settings.name = name;
+  saveSettings(settings);
+  document.querySelector('.app-title').textContent = name;
+  showToast('名稱已更新 ✓');
+}
+
+function exportData() {
+  let txt = `${settings.name}\n匯出時間：${new Date().toLocaleString('zh-TW')}\n`;
+  txt += '═'.repeat(30) + '\n\n';
+
+  // Collect all entries, group by date
+  const allKeys = new Set();
+  Object.keys(data).forEach(k => {
+    if (data[k].text && data[k].text.trim()) allKeys.add(k.slice(5)); // MM-DD
+  });
+
+  // Sort by month-day
+  const sorted = [...allKeys].sort();
+
+  sorted.forEach(mmdd => {
+    let hasContent = false;
+    let block = '';
+    ACTIVE_YEARS.forEach(yr => {
+      const k = `${yr}-${mmdd}`;
+      const e = data[k];
+      if (e && e.text && e.text.trim()) {
+        if (!hasContent) {
+          block += `📅 ${mmdd.replace('-','月')}日\n`;
+          hasContent = true;
+        }
+        block += `【${yr}年】${e.mood || ''}\n`;
+        block += e.text.trim() + '\n\n';
+      }
+    });
+    if (hasContent) {
+      txt += block + '─'.repeat(20) + '\n\n';
+    }
+  });
+
+  if (allKeys.size === 0) {
+    txt += '（尚無任何日記記錄）\n';
+  }
+
+  const encoded = encodeURIComponent(txt);
+  const a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,' + encoded;
+  a.download = `五年日記_${new Date().toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('已匯出 .txt ✓');
+}
+
+function confirmClear() {
+  if (confirm('確定要清除所有日記資料嗎？此動作無法復原。')) {
+    localStorage.removeItem('5yr_diary');
+    data = {};
+    showToast('資料已清除');
+    renderEntries();
+  }
+}
+
+// ── Google Sheets 雲端同步（使用 GET 避免 CORS）──
+let scriptUrl = localStorage.getItem('5yr_script_url') || '';
+
+function renderSyncStatus() {
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncStatusText');
+  const pullBtn = document.getElementById('syncPullBtn');
+  const input = document.getElementById('scriptUrlInput');
+  if (!dot) return;
+  if (scriptUrl) {
+    dot.style.background = '#4caf82';
+    txt.textContent = '已連線 · ' + scriptUrl.slice(8, 52) + '…';
+    if (pullBtn) pullBtn.disabled = false;
+    if (input) input.value = scriptUrl;
+  } else {
+    dot.style.background = '#ccc';
+    txt.textContent = '尚未連線';
+    if (pullBtn) pullBtn.disabled = true;
+  }
+}
+
+// ── JSONP 呼叫 ──
+let _jsonpCounter = 0;
+const _jsonpPending = {};
+
+function callScript(params, timeoutMs = 10000) {
+  return new Promise((resolve, reject) => {
+    const id = 'cb' + (++_jsonpCounter) + '_' + Date.now();
+    const cbName = '_gs_' + id;
+
+    // 逾時處理
+    const timer = setTimeout(() => {
+      if (_jsonpPending[id]) {
+        delete _jsonpPending[id];
+        delete window[cbName];
+        const el = document.getElementById(id);
+        if (el) el.remove();
+        reject(new Error('timeout'));
+      }
+    }, timeoutMs);
+
+    _jsonpPending[id] = true;
+
+    window[cbName] = (result) => {
+      if (!_jsonpPending[id]) return;
+      clearTimeout(timer);
+      delete _jsonpPending[id];
+      delete window[cbName];
+      const el = document.getElementById(id);
+      if (el) el.remove();
+      resolve(result);
+    };
+
+    const url = new URL(scriptUrl);
+    url.searchParams.set('callback', cbName);
+    Object.entries(params).forEach(([k, v]) =>
+      url.searchParams.set(k, String(v))
+    );
+
+    const script = document.createElement('script');
+    script.id = id;
+    script.src = url.toString();
+    document.head.appendChild(script);
+  });
+}
+
+async function testAndSaveScriptUrl() {
+  const url = document.getElementById('scriptUrlInput').value.trim();
+  if (!url) { showToast('請先貼上網址'); return; }
+  if (!url.startsWith('https://script.google.com')) {
+    showToast('網址格式不對，請確認是 Google Apps Script 網址'); return;
+  }
+
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncStatusText');
+  if (dot) dot.style.background = '#f0c040';
+  if (txt) txt.textContent = '測試連線中…';
+  scriptUrl = url;
+
+  try {
+    const json = await callScript({ action: 'ping' }, 10000);
+    if (!json || !json.ok) throw new Error('回傳格式錯誤');
+
+    localStorage.setItem('5yr_script_url', url);
+    renderSyncStatus();
+
+    const allJson = await callScript({ action: 'loadAll' }, 15000);
+    if (allJson.ok && allJson.entries && Object.keys(allJson.entries).length > 0) {
+      Object.assign(data, allJson.entries);
+      saveData();
+      renderEntries();
+      showToast(`連線成功，已載入 ${Object.keys(allJson.entries).length} 筆 ✓`);
+    } else {
+      await syncToCloud();
+      showToast('連線成功 ✓');
+    }
+  } catch (err) {
+    scriptUrl = localStorage.getItem('5yr_script_url') || '';
+    if (dot) dot.style.background = '#e06060';
+    if (txt) txt.textContent = '無法連線';
+    if (err.message === 'timeout') {
+      showToast('連線逾時，請確認已「重新部署為新版本」');
+    } else {
+      showToast('連線失敗：' + err.message);
+    }
+  }
+}
+
+async function syncToCloud() {
+  if (!scriptUrl) return;
+  let count = 0;
+  for (const [key, val] of Object.entries(data)) {
+    if (!val.text && !val.mood) continue;
+    try {
+      await callScript({ action: 'save', key, text: val.text || '', mood: val.mood || '' });
+      count++;
+    } catch {}
+  }
+  if (count > 0) showToast(`已同步 ${count} 筆到雲端 ✓`);
+}
+
+async function syncFromCloud() {
+  if (!scriptUrl) { showToast('尚未連線'); return; }
+  const txt = document.getElementById('syncStatusText');
+  if (txt) txt.textContent = '載入中…';
+  try {
+    const json = await callScript({ action: 'loadAll' }, 15000);
+    if (json.ok && json.entries) {
+      Object.assign(data, json.entries);
+      saveData();
+      renderEntries();
+      renderSyncStatus();
+      showToast(`載入完成，共 ${Object.keys(json.entries).length} 筆 ✓`);
+    } else {
+      showToast('載入失敗，請重試');
+    }
+  } catch {
+    showToast('載入逾時，請重試');
+    renderSyncStatus();
+  }
+}
+
+// setEntry：儲存本地 + 背景靜默同步到雲端
+function setEntry(year, month, day, text, mood) {
+  const k = getKey(year, month, day);
+  data[k] = { text, mood };
+  saveData();
+  if (scriptUrl) {
+    callScript({ action: 'save', key: k, text: text || '', mood: mood || '' }).catch(() => {});
+  }
+}
+
+</script>
+</body>
+</html>
