@@ -15,6 +15,7 @@
     --accent: #e8a4b8;
     --accent2: #a4b8e8;
     --accent3: #b8e8a4;
+    --theme-a: #fde8c8; --theme-b: #f8bcd0; /* prompt gradient */
 
     /* Year color themes */
     --y1-a: #fde8c8; --y1-b: #f8bcd0;
@@ -23,6 +24,44 @@
     --y4-a: #f0d8f8; --y4-b: #d8b8f0;
     --y5-a: #f8f0d0; --y5-b: #f0d8a8;
   }
+
+  /* ── Theme: Ocean ── */
+  body.theme-ocean {
+    --bg: #f0f4f8;
+    --white: #ffffff;
+    --text-dark: #1a2a3a;
+    --text-mid: #4a6070;
+    --text-light: #90a8b8;
+    --theme-a: #c8e0f8; --theme-b: #a8c8f0;
+  }
+  /* ── Theme: Forest ── */
+  body.theme-forest {
+    --bg: #f0f5f0;
+    --white: #ffffff;
+    --text-dark: #1a2a1a;
+    --text-mid: #4a6050;
+    --text-light: #90a898;
+    --theme-a: #c8f0d8; --theme-b: #a8e0c0;
+  }
+  /* ── Theme: Lavender ── */
+  body.theme-lavender {
+    --bg: #f4f0f8;
+    --white: #ffffff;
+    --text-dark: #2a1a3a;
+    --text-mid: #5a4a6a;
+    --text-light: #a090b8;
+    --theme-a: #e0c8f8; --theme-b: #c8a8f0;
+  }
+  /* ── Theme: Dark ── */
+  body.theme-dark {
+    --bg: #1a1a1a;
+    --white: #252525;
+    --text-dark: #e8e8e8;
+    --text-mid: #a0a0a0;
+    --text-light: #606060;
+    --theme-a: #3a3030; --theme-b: #302838;
+  }
+  body { transition: background 0.3s; }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -624,6 +663,54 @@
     line-height: 1.7;
   }
 
+  /* ── Review tabs ── */
+  .review-tab {
+    flex: 1;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1.5px solid #e8e6e3;
+    background: var(--white);
+    font-size: 13px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .review-tab.active {
+    background: var(--text-dark);
+    color: white;
+    border-color: var(--text-dark);
+  }
+  .review-entry-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    cursor: pointer;
+  }
+  .review-entry-date {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .review-entry-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.7;
+  }
+  .review-summary {
+    background: linear-gradient(135deg, var(--theme-a, #fde8c8), var(--theme-b, #f8bcd0));
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
   /* Subtle page transitions */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
@@ -696,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.6</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.8</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -781,10 +868,15 @@
       </div>
     </div>
 
+    <div class="section-title">🎨 主題顏色</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;" id="themeGrid"></div>
+    </div>
+
     <div class="section-title">五年設定</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇你的五個年份</div>
-      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">可以自由選擇，不需要連續。<br>例如：2020、2022、2023、2024、2025</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇你的年份（最多10年）</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">可以選 1～10 個年份，不需要連續。<br>例如：2016、2020、2023、2024、2025</div>
       <div id="yearSlotList"></div>
       <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--text-dark);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">儲存設定</button>
     </div>
@@ -846,6 +938,50 @@
     </div>
   </div>
 
+  <!-- Page: Review -->
+  <div class="page" id="pageReview">
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="review-tab active" onclick="switchReview('week')" id="rtWeek">本週</button>
+      <button class="review-tab" onclick="switchReview('month')" id="rtMonth">本月</button>
+      <button class="review-tab" onclick="switchReview('year')" id="rtYear">本年</button>
+    </div>
+    <div id="reviewContent"></div>
+  </div>
+
+  <!-- Page: Search -->
+  <div class="page" id="pageSearch">
+    <div style="position:sticky;top:0;background:var(--bg);padding:16px 0 8px;z-index:10;">
+      <div style="background:var(--white);border-radius:16px;padding:4px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="搜尋日記內容…"
+          style="flex:1;border:none;outline:none;font-size:15px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:transparent;padding:12px 0;"
+          oninput="doSearch(this.value)">
+        <button onclick="document.getElementById('searchInput').value='';doSearch('');" style="border:none;background:none;color:var(--text-light);font-size:18px;cursor:pointer;padding:4px;">✕</button>
+      </div>
+    </div>
+    <div id="searchResults" style="margin-top:8px;">
+      <div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">輸入關鍵字搜尋你的日記</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Share Modal ── -->
+<div class="modal-overlay" id="shareOverlay" onclick="closeShare(event)">
+  <div class="year-picker-sheet" style="padding:24px 20px 40px;">
+    <div class="picker-handle"></div>
+    <div class="picker-title">分享這篇日記</div>
+    <div id="shareCard" style="background:linear-gradient(135deg,var(--y1-a),var(--y1-b));border-radius:20px;padding:24px;margin:16px 0;position:relative;overflow:hidden;">
+      <div id="shareCardDate" style="font-size:11px;letter-spacing:0.1em;color:rgba(80,50,50,0.5);margin-bottom:10px;"></div>
+      <div id="shareCardText" style="font-family:'Noto Serif TC',serif;font-size:14px;line-height:1.8;color:#3a2a2a;white-space:pre-wrap;word-break:break-all;"></div>
+      <div id="shareCardMood" style="font-size:24px;position:absolute;bottom:16px;right:20px;opacity:0.6;"></div>
+      <div style="position:absolute;bottom:12px;left:20px;font-size:10px;color:rgba(80,50,50,0.3);letter-spacing:0.05em;">五年日記</div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button onclick="copyShareText()" style="flex:1;padding:13px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製文字</button>
+      <button onclick="downloadShareImage()" style="flex:1;padding:13px;background:var(--text-dark);color:white;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">儲存圖片</button>
+    </div>
+  </div>
 </div>
 
 <!-- ── Year Picker Modal ── -->
@@ -866,6 +1002,16 @@
     </svg>
     日記
   </button>
+  <button class="nav-item" id="navReview" onclick="switchPage('review')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <polyline points="14,2 14,8 20,8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+      <polyline points="10,9 9,9 8,9"/>
+    </svg>
+    回顧
+  </button>
   <button class="nav-item" id="navCalendar" onclick="switchPage('calendar')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -874,6 +1020,13 @@
       <line x1="3" y1="10" x2="21" y2="10"/>
     </svg>
     日曆
+  </button>
+  <button class="nav-item" id="navSearch" onclick="switchPage('search')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    搜尋
   </button>
   <button class="nav-item" id="navStats" onclick="switchPage('stats')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1025,6 +1178,7 @@ function renderEntries() {
             <span class="year-text">${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
+            <button onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:16px;cursor:pointer;padding:4px;" title="分享">↗</button>
             <button class="save-btn" id="saveBtn${yr}" onclick="saveEntry(${yr}, ${d.getMonth()}, ${d.getDate()})">儲存</button>
           </div>
         </div>
@@ -1263,7 +1417,244 @@ function closeYearPicker(e) {
   }
 }
 
-// ── 心情日記篩選 ──
+// ── 搜尋 ──
+function doSearch(query) {
+  const results = document.getElementById('searchResults');
+  if (!results) return;
+  const q = query.trim();
+  if (!q) {
+    results.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">輸入關鍵字搜尋你的日記</div>';
+    return;
+  }
+  const hits = [];
+  Object.entries(data).forEach(([key, val]) => {
+    if (!val.text) return;
+    const idx = val.text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return;
+    hits.push({ key, text: val.text, mood: val.mood, idx });
+  });
+  hits.sort((a,b) => b.key.localeCompare(a.key));
+  if (hits.length === 0) {
+    results.innerHTML = `<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">找不到「${q}」</div>`;
+    return;
+  }
+  results.innerHTML = hits.map(({ key, text, mood, idx }) => {
+    const parts = key.split('-');
+    const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
+    // 高亮關鍵字前後各30字
+    const start = Math.max(0, idx - 30);
+    const end = Math.min(text.length, idx + q.length + 30);
+    const snippet = (start > 0 ? '…' : '') +
+      text.slice(start, idx) +
+      `<mark style="background:#fde8a0;border-radius:3px;padding:0 2px;">${text.slice(idx, idx + q.length)}</mark>` +
+      text.slice(idx + q.length, end) +
+      (end < text.length ? '…' : '');
+    return `<div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${key}')">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;display:flex;gap:6px;align-items:center;">
+        <span>${dateStr}</span><span>${mood||''}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text-dark);line-height:1.7;font-family:'Noto Serif TC',serif;">${snippet}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── 主題 ──
+const THEMES = [
+  { id: '', label: '暖米', bg: '#f7f5f2', dot: 'linear-gradient(135deg,#fde8c8,#f8bcd0)' },
+  { id: 'ocean', label: '海洋', bg: '#f0f4f8', dot: 'linear-gradient(135deg,#c8e0f8,#a8c8f0)' },
+  { id: 'forest', label: '森林', bg: '#f0f5f0', dot: 'linear-gradient(135deg,#c8f0d8,#a8e0c0)' },
+  { id: 'lavender', label: '薰衣草', bg: '#f4f0f8', dot: 'linear-gradient(135deg,#e0c8f8,#c8a8f0)' },
+  { id: 'dark', label: '深夜', bg: '#1a1a1a', dot: 'linear-gradient(135deg,#3a3030,#302838)' },
+];
+
+function applyTheme(id) {
+  document.body.className = id ? 'theme-' + id : '';
+  localStorage.setItem('5yr_theme', id);
+  renderThemeGrid();
+}
+
+function renderThemeGrid() {
+  const grid = document.getElementById('themeGrid');
+  if (!grid) return;
+  const current = localStorage.getItem('5yr_theme') || '';
+  grid.innerHTML = THEMES.map(t => `
+    <div onclick="applyTheme('${t.id}')" style="cursor:pointer;text-align:center;">
+      <div style="width:100%;aspect-ratio:1;border-radius:50%;background:${t.dot};margin:0 auto 6px;border:3px solid ${t.id===current?'var(--text-dark)':'transparent'};box-sizing:border-box;transition:border 0.2s;"></div>
+      <div style="font-size:10px;color:var(--text-mid);letter-spacing:0.03em;">${t.label}</div>
+    </div>
+  `).join('');
+}
+
+// 載入時套用儲存的主題
+(function() {
+  const saved = localStorage.getItem('5yr_theme') || '';
+  document.body.className = saved ? 'theme-' + saved : '';
+})();
+
+  const saved = localStorage.getItem('5yr_theme') || '';
+  document.body.className = saved ? 'theme-' + saved : '';
+})();
+
+// ── 回顧 ──
+var currentReviewTab = 'week';
+
+function switchReview(tab) {
+  currentReviewTab = tab;
+  ['Week','Month','Year'].forEach(t => {
+    const btn = document.getElementById('rt' + t);
+    if (btn) btn.className = 'review-tab' + (t.toLowerCase() === tab ? ' active' : '');
+  });
+  renderReview();
+}
+
+function renderReview() {
+  const content = document.getElementById('reviewContent');
+  if (!content) return;
+  const now = new Date();
+  var entries = [], title = '', start, end;
+
+  if (currentReviewTab === 'week') {
+    const day = now.getDay();
+    start = new Date(now); start.setDate(now.getDate() - day); start.setHours(0,0,0,0);
+    end = new Date(now);
+    title = '本週日記';
+  } else if (currentReviewTab === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+    end = new Date(now);
+    title = now.getFullYear() + '年' + (now.getMonth()+1) + '月日記';
+  } else {
+    start = new Date(now.getFullYear(), 0, 1);
+    end = new Date(now);
+    title = now.getFullYear() + '年度回顧';
+  }
+
+  Object.entries(data).forEach(function([key, val]) {
+    if (!val.text || !val.text.trim()) return;
+    const parts = key.split('-');
+    const d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+    if (d >= start && d <= end) entries.push({ key, text: val.text, mood: val.mood, date: d });
+  });
+  entries.sort((a,b) => b.date - a.date);
+
+  const moodMap = {};
+  entries.forEach(e => { if (e.mood) moodMap[e.mood] = (moodMap[e.mood]||0)+1; });
+  const topMood = Object.entries(moodMap).sort((a,b)=>b[1]-a[1])[0];
+  const totalWords = entries.reduce((s,e) => s + e.text.trim().length, 0);
+
+  var html = `<div class="review-summary">
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
+    <div style="display:flex;gap:20px;">
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${entries.length}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">篇日記</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${totalWords}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">個字</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
+      </div>
+    </div>
+  </div>`;
+
+  if (entries.length === 0) {
+    html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有日記</div>';
+  } else {
+    html += entries.map(function({ key, text, mood }) {
+      const parts = key.split('-');
+      const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
+      return `<div class="review-entry-card" onclick="jumpToEntry('${key}')">
+        <div class="review-entry-date"><span>${dateStr}</span><span>${mood||''}</span></div>
+        <div class="review-entry-text">${text.slice(0,100)}${text.length>100?'…':''}</div>
+      </div>`;
+    }).join('');
+  }
+  content.innerHTML = html;
+}
+
+// ── 分享單篇 ──
+var shareData = {};
+
+function shareEntry(yr, month, day) {
+  const entry = getEntry(yr, month, day);
+  if (!entry.text || !entry.text.trim()) { showToast('這天還沒有日記'); return; }
+  const dateStr = yr + '年 ' + (month+1) + '月 ' + day + '日';
+  shareData = { yr, month, day, text: entry.text, mood: entry.mood, dateStr };
+  document.getElementById('shareCardDate').textContent = dateStr;
+  document.getElementById('shareCardText').textContent = entry.text;
+  document.getElementById('shareCardMood').textContent = entry.mood || '';
+  document.getElementById('shareOverlay').classList.add('show');
+}
+
+function closeShare(e) {
+  if (!e || e.target === document.getElementById('shareOverlay')) {
+    document.getElementById('shareOverlay').classList.remove('show');
+  }
+}
+
+function copyShareText() {
+  const text = shareData.dateStr + '\n\n' + shareData.text + '\n\n' + (shareData.mood||'') + '\n— 五年日記';
+  navigator.clipboard.writeText(text).then(() => showToast('已複製 ✓')).catch(() => showToast('複製失敗'));
+}
+
+function downloadShareImage() {
+  const card = document.getElementById('shareCard');
+  const w = card.offsetWidth, h = Math.max(card.offsetHeight, 200);
+  const canvas = document.createElement('canvas');
+  const scale = 3;
+  canvas.width = w * scale; canvas.height = h * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+
+  // 漸層背景
+  const grad = ctx.createLinearGradient(0, 0, w, h);
+  grad.addColorStop(0, '#fde8c8'); grad.addColorStop(1, '#f8bcd0');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, w, h, 20);
+  ctx.fill();
+
+  // 日期
+  ctx.fillStyle = 'rgba(80,50,50,0.45)';
+  ctx.font = '11px sans-serif';
+  ctx.fillText(shareData.dateStr, 24, 34);
+
+  // 正文換行
+  ctx.fillStyle = '#3a2a2a';
+  ctx.font = '14px serif';
+  const chars = shareData.text.split('');
+  var line = '', lines = [], y = 60;
+  chars.forEach(ch => {
+    if (ch === '\n') { lines.push(line); line = ''; return; }
+    const test = line + ch;
+    if (ctx.measureText(test).width > w - 48 && line) { lines.push(line); line = ch; }
+    else line = test;
+  });
+  if (line) lines.push(line);
+  lines.forEach((l, i) => ctx.fillText(l, 24, y + i * 26));
+
+  // 心情
+  if (shareData.mood) {
+    ctx.font = '28px sans-serif';
+    ctx.globalAlpha = 0.5;
+    ctx.fillText(shareData.mood, w - 50, h - 20);
+    ctx.globalAlpha = 1;
+  }
+
+  // 浮水印
+  ctx.fillStyle = 'rgba(80,50,50,0.25)';
+  ctx.font = '10px sans-serif';
+  ctx.fillText('五年日記', 24, h - 14);
+
+  const a = document.createElement('a');
+  a.download = '五年日記_' + shareData.dateStr + '.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+  showToast('圖片已儲存 ✓');
+}
+
 var currentMoodFilter = null;
 
 function filterMoodDiary(mood) {
@@ -1454,6 +1845,18 @@ function switchPage(tab) {
     document.getElementById('mainHeader').style.display = 'none';
     renderStats();
     document.querySelector('.main').style.paddingTop = '24px';
+  } else if (tab === 'review') {
+    document.getElementById('pageReview').classList.add('active');
+    document.getElementById('navReview').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    document.querySelector('.main').style.paddingTop = '24px';
+    renderReview();
+  } else if (tab === 'search') {
+    document.getElementById('pageSearch').classList.add('active');
+    document.getElementById('navSearch').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    document.querySelector('.main').style.paddingTop = '16px';
+    setTimeout(() => document.getElementById('searchInput')?.focus(), 100);
   } else if (tab === 'settings') {
     document.getElementById('pageSettings').classList.add('active');
     document.getElementById('navSettings').classList.add('active');
@@ -1601,6 +2004,7 @@ function renderSettingsPage() {
   tempYears = ACTIVE_YEARS.slice();
   document.getElementById('diaryNameInput').value = settings.name;
   renderSyncStatus();
+  renderThemeGrid();
   // 填入 GS 程式碼
   const box = document.getElementById('gsCodeBox');
   if (box) box.value = GS_CODE;
