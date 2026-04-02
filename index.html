@@ -696,7 +696,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.4</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.5</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -1223,7 +1223,7 @@ function closeYearPicker(e) {
 }
 
 // ── 心情日記篩選 ──
-let currentMoodFilter = null;
+var currentMoodFilter = null;
 
 function filterMoodDiary(mood) {
   currentMoodFilter = mood;
@@ -1232,6 +1232,25 @@ function filterMoodDiary(mood) {
   });
   const list = document.getElementById('moodDiaryList');
   if (!list) return;
+
+  // 如果有連線，先從雲端同步再顯示
+  if (scriptUrl) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">載入中…</div>';
+    callScript({ action: 'loadAll' }, 10000)
+      .then(json => {
+        if (json.ok && json.entries) {
+          Object.assign(data, json.entries);
+          saveData();
+        }
+        renderMoodList(mood, list);
+      })
+      .catch(() => renderMoodList(mood, list));
+  } else {
+    renderMoodList(mood, list);
+  }
+}
+
+function renderMoodList(mood, list) {
   const results = [];
   Object.entries(data).forEach(([key, val]) => {
     if (!val.text || !val.text.trim()) return;
@@ -1646,7 +1665,7 @@ function confirmClear() {
 }
 
 // ── Google Sheets 雲端同步（使用 GET 避免 CORS）──
-let scriptUrl = localStorage.getItem('5yr_script_url') || '';
+var scriptUrl = localStorage.getItem('5yr_script_url') || '';
 
 function renderSyncStatus() {
   const dot = document.getElementById('syncDot');
