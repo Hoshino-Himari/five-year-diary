@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.1</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.2</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1042,6 +1042,28 @@
     <div class="calendar-grid" id="dpGrid"></div>
     <button onclick="goToToday()" style="width:100%;margin-top:14px;padding:11px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">回到今天</button>
   </div>
+</div>
+
+<!-- ── 裁切 Modal ── -->
+<div class="modal-overlay" id="cropOverlay">
+  <div style="background:var(--white);width:100%;border-radius:24px 24px 0 0;padding:20px;padding-bottom:32px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;">
+    <div class="picker-handle"></div>
+    <div style="font-size:14px;font-weight:500;color:var(--text-dark);text-align:center;margin-bottom:14px;">裁切照片</div>
+    <div style="position:relative;overflow:hidden;border-radius:12px;background:#111;flex:1;max-height:55vh;">
+      <img id="cropImg" style="display:block;max-width:100%;max-height:55vh;margin:auto;user-select:none;">
+      <div id="cropBox" style="position:absolute;border:2px solid white;box-shadow:0 0 0 9999px rgba(0,0,0,0.5);cursor:move;touch-action:none;"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:14px;">
+      <button onclick="cancelCrop()" style="flex:1;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">取消</button>
+      <button onclick="confirmCrop()" style="flex:1;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">✂️ 確認裁切</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 放大圖片 Modal ── -->
+<div id="zoomOverlay" onclick="closeZoom()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;align-items:center;justify-content:center;">
+  <img id="zoomImg" style="max-width:95vw;max-height:90vh;border-radius:8px;object-fit:contain;">
+  <div style="position:absolute;top:20px;right:20px;color:white;font-size:24px;cursor:pointer;opacity:0.7;">✕</div>
 </div>
 
 <!-- ── Year Picker Modal ── -->
@@ -1531,8 +1553,9 @@ function renderEntries() {
         if (dataUrl) {
           area.innerHTML = `
             <div style="position:relative;display:inline-block;width:100%;">
-              <img src="${dataUrl}" style="width:100%;border-radius:12px;max-height:200px;object-fit:cover;display:block;">
+              <img src="${dataUrl}" onclick="zoomImage('${dataUrl}')" style="width:100%;border-radius:12px;max-height:200px;object-fit:cover;display:block;cursor:zoom-in;">
               <button onclick="removeImage(${_yr},${_mo},${_dy})" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+              <button onclick="recropImage(${_yr},${_mo},${_dy},'${dataUrl}')" style="position:absolute;top:8px;right:42px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:26px;height:26px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✂</button>
             </div>`;
         } else {
           // IndexedDB 沒有，顯示上傳按鈕
@@ -2251,62 +2274,196 @@ function downloadShareImage() {
 }
 
 // ── 圖片上傳 ──
+// ── 放大圖片 ──
+function zoomImage(dataUrl) {
+  const overlay = document.getElementById('zoomOverlay');
+  document.getElementById('zoomImg').src = dataUrl;
+  overlay.style.display = 'flex';
+}
+function closeZoom() {
+  document.getElementById('zoomOverlay').style.display = 'none';
+}
+
+// ── 裁切 ──
+var cropState = { yr: 0, mo: 0, dy: 0, originalDataUrl: '', x: 0, y: 0, w: 0, h: 0, imgW: 0, imgH: 0, naturalW: 0, naturalH: 0 };
+
 function uploadImage(input, yr, month, day) {
   const file = input.files[0];
   if (!file) return;
   if (file.size > 20 * 1024 * 1024) { showToast('圖片太大，請選擇 20MB 以下'); return; }
 
-  const imgArea = document.getElementById('imgArea' + yr);
-  if (imgArea) imgArea.innerHTML = '<div style="color:var(--text-light);font-size:12px;padding:8px 0;">處理中…⏳</div>';
-
   const reader = new FileReader();
   reader.onload = function(ev) {
-    const img = new Image();
-    img.onload = function() {
-      // 壓縮到最寬 1000px
-      const canvas = document.createElement('canvas');
-      const maxW = 1000, maxH = 1000;
-      var w = img.width, h = img.height;
-      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
-      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
-      canvas.width = w; canvas.height = h;
-      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-
-      const k = getKey(yr, month, day);
-
-      // 存到 IndexedDB
-      saveImgToDB(k, dataUrl).then(function() {
-        const entry = getEntry(yr, month, day);
-        data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]' };
-        saveData();
-        // 重新渲染並直接顯示圖片
-        renderEntries();
-        showToast('照片已新增 ✓');
-      }).catch(function(err) {
-        if (imgArea) imgArea.innerHTML = '<div style="color:#d06060;font-size:12px;padding:8px 0;">儲存失敗</div>';
-        showToast('圖片儲存失敗：' + err);
-      });
-
-      // 靜默備份到 Drive
-      if (scriptUrl) {
-        const base64 = dataUrl.split(',')[1];
-        const params = new URLSearchParams({
-          action: 'uploadImage',
-          fileName: 'diary_' + yr + '_' + (month+1) + '_' + day + '.jpg',
-          mimeType: 'image/jpeg'
-        });
-        fetch(scriptUrl + '?' + params.toString(), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: 'imageData=' + encodeURIComponent(base64)
-        }).catch(function() {});
-        callScript({ action: 'save', key: k, text: getEntry(yr, month, day).text || '', mood: getEntry(yr, month, day).mood || '', imgUrl: '[圖片已存於本地]' }).catch(function(){});
-      }
-    };
-    img.src = ev.target.result;
+    cropState.yr = yr; cropState.mo = month; cropState.dy = day;
+    openCropModal(ev.target.result);
   };
   reader.readAsDataURL(file);
+}
+
+function recropImage(yr, mo, dy, dataUrl) {
+  cropState.yr = yr; cropState.mo = mo; cropState.dy = dy;
+  openCropModal(dataUrl);
+}
+
+function openCropModal(dataUrl) {
+  cropState.originalDataUrl = dataUrl;
+  const overlay = document.getElementById('cropOverlay');
+  const img = document.getElementById('cropImg');
+  overlay.classList.add('show');
+
+  img.onload = function() {
+    cropState.naturalW = img.naturalWidth;
+    cropState.naturalH = img.naturalHeight;
+    cropState.imgW = img.offsetWidth;
+    cropState.imgH = img.offsetHeight;
+
+    // 初始裁切框：正方形，置中
+    const size = Math.min(cropState.imgW, cropState.imgH) * 0.8;
+    cropState.x = (cropState.imgW - size) / 2;
+    cropState.y = (cropState.imgH - size) / 2;
+    cropState.w = size;
+    cropState.h = size;
+    updateCropBox();
+    initCropDrag();
+  };
+  img.src = dataUrl;
+}
+
+function updateCropBox() {
+  const box = document.getElementById('cropBox');
+  box.style.left   = cropState.x + 'px';
+  box.style.top    = cropState.y + 'px';
+  box.style.width  = cropState.w + 'px';
+  box.style.height = cropState.h + 'px';
+}
+
+function initCropDrag() {
+  const box = document.getElementById('cropBox');
+  const img = document.getElementById('cropImg');
+  var startX, startY, startCropX, startCropY;
+  var resizing = false, resizeEdge = '';
+
+  function getPos(e) {
+    const t = e.touches ? e.touches[0] : e;
+    const rect = img.getBoundingClientRect();
+    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+  }
+
+  function onStart(e) {
+    e.preventDefault();
+    const pos = getPos(e);
+    const bx = cropState.x, by = cropState.y, bw = cropState.w, bh = cropState.h;
+    const edge = 20;
+
+    // 判斷是拖角還是拖整體
+    const nearRight  = Math.abs(pos.x - (bx+bw)) < edge;
+    const nearBottom = Math.abs(pos.y - (by+bh)) < edge;
+    const nearLeft   = Math.abs(pos.x - bx) < edge;
+    const nearTop    = Math.abs(pos.y - by) < edge;
+
+    if (nearRight && nearBottom) { resizing = true; resizeEdge = 'br'; }
+    else if (nearLeft && nearTop) { resizing = true; resizeEdge = 'tl'; }
+    else if (nearRight && nearTop) { resizing = true; resizeEdge = 'tr'; }
+    else if (nearLeft && nearBottom) { resizing = true; resizeEdge = 'bl'; }
+    else { resizing = false; }
+
+    startX = pos.x; startY = pos.y;
+    startCropX = cropState.x; startCropY = cropState.y;
+  }
+
+  function onMove(e) {
+    e.preventDefault();
+    const pos = getPos(e);
+    const dx = pos.x - startX, dy = pos.y - startY;
+    const minSize = 40;
+    const maxW = cropState.imgW, maxH = cropState.imgH;
+
+    if (resizing) {
+      var nx = cropState.x, ny = cropState.y, nw = cropState.w, nh = cropState.h;
+      if (resizeEdge === 'br') { nw = Math.max(minSize, cropState.w + dx); nh = Math.max(minSize, cropState.h + dy); }
+      else if (resizeEdge === 'tl') { nx = startCropX + dx; ny = startCropY + dy; nw = cropState.w - dx; nh = cropState.h - dy; }
+      else if (resizeEdge === 'tr') { ny = startCropY + dy; nw = cropState.w + dx; nh = cropState.h - dy; }
+      else if (resizeEdge === 'bl') { nx = startCropX + dx; nw = cropState.w - dx; nh = cropState.h + dy; }
+      // 邊界限制
+      if (nw < minSize) { nw = minSize; if (resizeEdge.includes('l')) nx = cropState.x + cropState.w - minSize; }
+      if (nh < minSize) { nh = minSize; if (resizeEdge.includes('t')) ny = cropState.y + cropState.h - minSize; }
+      nx = Math.max(0, Math.min(nx, maxW - nw));
+      ny = Math.max(0, Math.min(ny, maxH - nh));
+      nw = Math.min(nw, maxW - nx);
+      nh = Math.min(nh, maxH - ny);
+      cropState.x = nx; cropState.y = ny; cropState.w = nw; cropState.h = nh;
+    } else {
+      cropState.x = Math.max(0, Math.min(startCropX + dx, maxW - cropState.w));
+      cropState.y = Math.max(0, Math.min(startCropY + dy, maxH - cropState.h));
+    }
+    updateCropBox();
+  }
+
+  box.removeEventListener('mousedown', box._md);
+  box.removeEventListener('touchstart', box._ts);
+  document.removeEventListener('mousemove', box._mm);
+  document.removeEventListener('touchmove', box._tm);
+  document.removeEventListener('mouseup', box._mu);
+  document.removeEventListener('touchend', box._te);
+
+  box._md = onStart; box._ts = onStart;
+  box._mm = onMove;  box._tm = onMove;
+  box._mu = function() { resizing = false; };
+  box._te = function() { resizing = false; };
+
+  box.addEventListener('mousedown', box._md);
+  box.addEventListener('touchstart', box._ts, { passive: false });
+  document.addEventListener('mousemove', box._mm);
+  document.addEventListener('touchmove', box._tm, { passive: false });
+  document.addEventListener('mouseup', box._mu);
+  document.addEventListener('touchend', box._te);
+}
+
+function cancelCrop() {
+  document.getElementById('cropOverlay').classList.remove('show');
+}
+
+function confirmCrop() {
+  const img = document.getElementById('cropImg');
+  const scaleX = cropState.naturalW / cropState.imgW;
+  const scaleY = cropState.naturalH / cropState.imgH;
+
+  const canvas = document.createElement('canvas');
+  const outW = Math.round(cropState.w * scaleX);
+  const outH = Math.round(cropState.h * scaleY);
+  canvas.width  = Math.min(outW, 1200);
+  canvas.height = Math.min(outH, 1200);
+  const ratio = canvas.width / outW;
+
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img,
+    cropState.x * scaleX, cropState.y * scaleY,
+    outW, outH,
+    0, 0, canvas.width, canvas.height
+  );
+
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+  const yr = cropState.yr, mo = cropState.mo, dy = cropState.dy;
+  const k = getKey(yr, mo, dy);
+
+  document.getElementById('cropOverlay').classList.remove('show');
+
+  saveImgToDB(k, dataUrl).then(function() {
+    const entry = getEntry(yr, mo, dy);
+    data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]' };
+    saveData();
+    renderEntries();
+    showToast('照片已裁切儲存 ✓');
+  }).catch(function(err) {
+    showToast('儲存失敗：' + err);
+  });
+
+  // 靜默備份
+  if (scriptUrl) {
+    const base64 = dataUrl.split(',')[1];
+    const params = new URLSearchParams({ action: 'uploadImage', fileName: 'diary_' + yr + '_' + (mo+1) + '_' + dy + '.jpg', mimeType: 'image/jpeg' });
+    fetch(scriptUrl + '?' + params.toString(), { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'imageData=' + encodeURIComponent(base64) }).catch(function(){});
+  }
 }
 
 function removeImage(yr, month, day) {
