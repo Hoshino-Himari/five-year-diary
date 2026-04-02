@@ -696,7 +696,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.5</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.6</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -841,15 +841,8 @@
 
     <div class="section-title">心情日記</div>
     <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-        <button class="mood-filter-btn active" onclick="filterMoodDiary(null)" data-mood="">全部</button>
-        <button class="mood-filter-btn" onclick="filterMoodDiary('😊')" data-mood="😊">😊</button>
-        <button class="mood-filter-btn" onclick="filterMoodDiary('😌')" data-mood="😌">😌</button>
-        <button class="mood-filter-btn" onclick="filterMoodDiary('😔')" data-mood="😔">😔</button>
-        <button class="mood-filter-btn" onclick="filterMoodDiary('😤')" data-mood="😤">😤</button>
-        <button class="mood-filter-btn" onclick="filterMoodDiary('🥹')" data-mood="🥹">🥹</button>
-      </div>
-      <div id="moodDiaryList"></div>
+      <div id="moodFilterRow" style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;"></div>
+      <div id="moodDiaryList"><div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">選擇一個心情來查看日記</div></div>
     </div>
   </div>
 
@@ -902,7 +895,13 @@
 
 <script>
 // ── Data ──
-const MOODS = ['😊','😌','😔','😤','🥹'];
+const MOODS = [
+  '😊','😄','🥰','😍','🤩','😎','😌','🥳',
+  '😐','🤔','😶','😴','🙃','😅','🤭','😬',
+  '😔','😢','😭','😞','😟','🥺','😣','😩',
+  '😤','😠','😡','🤬','😫','😖','🤯','😰',
+  '🥹','🥲','😂','🤣','😇','🫠','🥴','🫡'
+];
 const PROMPTS = [
   '今天讓你印象最深的一件事是什麼？',
   '今天你感謝的三件小事',
@@ -1053,25 +1052,67 @@ function renderMoodRow(yr, month, day, selectedMood) {
   const row = document.getElementById(`moodRow${yr}`);
   if (!row) return;
   row.innerHTML = '';
-  MOODS.forEach(mood => {
-    const btn = document.createElement('button');
-    btn.className = 'mood-btn' + (mood === selectedMood ? ' selected' : '');
-    btn.textContent = mood;
-    btn.onclick = () => {
+
+  // 顯示已選心情 + 展開按鈕
+  const preview = document.createElement('div');
+  preview.style.cssText = 'display:flex;align-items:center;gap:6px;flex:1;';
+
+  const selectedBtn = document.createElement('button');
+  selectedBtn.className = 'mood-btn' + (selectedMood ? ' selected' : '');
+  selectedBtn.textContent = selectedMood || '＋';
+  selectedBtn.title = '點擊選擇心情';
+  selectedBtn.style.fontSize = selectedMood ? '18px' : '14px';
+
+  const togglePanel = () => {
+    const existing = document.getElementById(`moodPanel${yr}`);
+    if (existing) { existing.remove(); return; }
+
+    const panel = document.createElement('div');
+    panel.id = `moodPanel${yr}`;
+    panel.style.cssText = 'display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:10px;background:var(--bg);border-radius:14px;margin-top:8px;';
+
+    MOODS.forEach(mood => {
+      const btn = document.createElement('button');
+      btn.style.cssText = `padding:4px;border-radius:8px;border:2px solid ${mood===selectedMood?'#888':'transparent'};background:${mood===selectedMood?'#f5ecd0':'transparent'};font-size:20px;cursor:pointer;`;
+      btn.textContent = mood;
+      btn.onclick = () => {
+        const entry = getEntry(yr, month, day);
+        const newMood = mood === entry.mood ? null : mood;
+        const k = getKey(yr, month, day);
+        data[k] = { text: entry.text, mood: newMood };
+        saveData();
+        panel.remove();
+        renderMoodRow(yr, month, day, newMood);
+        showToast('心情已記錄 ' + (newMood || ''));
+        const saveBtn = document.getElementById(`saveBtn${yr}`);
+        if (saveBtn) saveBtn.classList.add('visible');
+      };
+      panel.appendChild(btn);
+    });
+
+    // 插入在 entry-footer 之後
+    const footer = row.closest('.entry-footer');
+    if (footer) footer.insertAdjacentElement('afterend', panel);
+  };
+
+  selectedBtn.onclick = togglePanel;
+  preview.appendChild(selectedBtn);
+  if (selectedMood) {
+    const clearBtn = document.createElement('button');
+    clearBtn.style.cssText = 'border:none;background:none;color:var(--text-light);font-size:12px;cursor:pointer;padding:2px 6px;';
+    clearBtn.textContent = '✕';
+    clearBtn.onclick = () => {
       const entry = getEntry(yr, month, day);
-      const newMood = mood === entry.mood ? null : mood;
-      // 只存本地，不單獨推雲端（等文字儲存時一起推）
       const k = getKey(yr, month, day);
-      data[k] = { text: entry.text, mood: newMood };
+      data[k] = { text: entry.text, mood: null };
       saveData();
-      renderMoodRow(yr, month, day, newMood);
-      showToast('心情已記錄 ' + (newMood || ''));
-      // 顯示儲存按鈕提示使用者同步
+      renderMoodRow(yr, month, day, null);
       const saveBtn = document.getElementById(`saveBtn${yr}`);
       if (saveBtn) saveBtn.classList.add('visible');
     };
-    row.appendChild(btn);
-  });
+    preview.appendChild(clearBtn);
+  }
+  row.appendChild(preview);
 }
 
 function onTextInput(ta, yr, month, day) {
@@ -1228,25 +1269,29 @@ var currentMoodFilter = null;
 function filterMoodDiary(mood) {
   currentMoodFilter = mood;
   document.querySelectorAll('.mood-filter-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.mood === (mood || ''));
+    btn.classList.toggle('active', mood !== null && btn.dataset.mood === mood);
   });
   const list = document.getElementById('moodDiaryList');
   if (!list) return;
 
-  // 如果有連線，先從雲端同步再顯示
+  if (!mood) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">選擇一個心情來查看日記</div>';
+    return;
+  }
+
+  list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">載入中…</div>';
+
+  const doRender = () => renderMoodList(mood, list);
+
   if (scriptUrl) {
-    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">載入中…</div>';
     callScript({ action: 'loadAll' }, 10000)
       .then(json => {
-        if (json.ok && json.entries) {
-          Object.assign(data, json.entries);
-          saveData();
-        }
-        renderMoodList(mood, list);
+        if (json.ok && json.entries) { Object.assign(data, json.entries); saveData(); }
+        doRender();
       })
-      .catch(() => renderMoodList(mood, list));
+      .catch(doRender);
   } else {
-    renderMoodList(mood, list);
+    doRender();
   }
 }
 
@@ -1283,7 +1328,6 @@ function jumpToEntry(key) {
 function renderStats() {
   let total = 0, days = new Set(), words = 0;
   const moodCount = {};
-  MOODS.forEach(m => moodCount[m] = 0);
 
   Object.entries(data).forEach(([k, v]) => {
     if (v.text && v.text.trim()) {
@@ -1314,18 +1358,41 @@ function renderStats() {
   }
   document.getElementById('streakNum').textContent = streak;
 
-  // Mood stats
-  const maxM = Math.max(...Object.values(moodCount), 1);
+  // Mood stats — 只顯示有用過的
+  const usedMoods = Object.entries(moodCount).filter(([m, c]) => c > 0).sort((a,b) => b[1]-a[1]);
+  const maxM = Math.max(...usedMoods.map(([,c])=>c), 1);
   const moodCard = document.getElementById('moodStatsCard');
-  moodCard.innerHTML = MOODS.map(m => `
-    <div class="mood-bar-row">
-      <div class="mood-bar-label">${m}</div>
-      <div class="mood-bar-track">
-        <div class="mood-bar-fill" style="width:${(moodCount[m]/maxM*100).toFixed(0)}%"></div>
+  if (usedMoods.length === 0) {
+    moodCard.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px 0;">還沒有心情記錄</div>';
+  } else {
+    moodCard.innerHTML = usedMoods.map(([m, c]) => `
+      <div class="mood-bar-row">
+        <div class="mood-bar-label">${m}</div>
+        <div class="mood-bar-track">
+          <div class="mood-bar-fill" style="width:${(c/maxM*100).toFixed(0)}%"></div>
+        </div>
+        <div class="mood-bar-count">${c}</div>
       </div>
-      <div class="mood-bar-count">${moodCount[m]}</div>
-    </div>
-  `).join('');
+    `).join('');
+  }
+
+  // 心情篩選按鈕 — 只顯示用過的
+  const filterRow = document.getElementById('moodFilterRow');
+  if (filterRow) {
+    filterRow.innerHTML = '';
+    if (usedMoods.length === 0) {
+      filterRow.innerHTML = '<div style="color:var(--text-light);font-size:12px;">還沒有心情記錄</div>';
+    } else {
+      usedMoods.forEach(([m]) => {
+        const btn = document.createElement('button');
+        btn.className = 'mood-filter-btn' + (currentMoodFilter === m ? ' active' : '');
+        btn.dataset.mood = m;
+        btn.textContent = m;
+        btn.onclick = () => filterMoodDiary(currentMoodFilter === m ? null : m);
+        filterRow.appendChild(btn);
+      });
+    }
+  }
 
   // Heatmap (this year, 52 weeks)
   const hg = document.getElementById('heatmapGrid');
