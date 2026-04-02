@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.9</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.0</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -820,7 +820,7 @@
       </div>
       <div class="calendar-grid" id="calendarGrid"></div>
     </div>
-    <div class="section-title">本月記錄</div>
+    <div class="section-title">最近記錄</div>
     <div id="calEntryPreview"></div>
   </div>
 
@@ -875,8 +875,8 @@
 
     <div class="section-title">五年設定</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇你的年份（最多10年）</div>
-      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">可以選 1～10 個年份，不需要連續。<br>例如：2016、2020、2023、2024、2025</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇要顯示的年份</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">選你想在日記頁看到的年份。<br>六年前、八年前的今天，會自動在上方顯示提醒。</div>
       <div id="yearSlotList"></div>
       <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--text-dark);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">儲存設定</button>
     </div>
@@ -1101,7 +1101,7 @@ function loadSettings() {
   try {
     const s = JSON.parse(localStorage.getItem('5yr_settings') || '{}');
     return {
-      years: Array.isArray(s.years) && s.years.length === 5 ? s.years : defaultYears(),
+      years: Array.isArray(s.years) && s.years.length >= 1 ? s.years : defaultYears(),
       name: s.name || '五年日記'
     };
   } catch { return { years: defaultYears(), name: '五年日記' }; }
@@ -1178,7 +1178,6 @@ function renderEntries() {
             <span class="year-text">${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <button onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:16px;cursor:pointer;padding:4px;" title="分享">↗</button>
             <button class="save-btn" id="saveBtn${yr}" onclick="saveEntry(${yr}, ${d.getMonth()}, ${d.getDate()})">儲存</button>
           </div>
         </div>
@@ -1192,7 +1191,10 @@ function renderEntries() {
         >${entry.text}</textarea>
         <div class="entry-footer">
           <div class="mood-row" id="moodRow${yr}"></div>
-          <span class="char-count" id="cc${yr}">${entry.text.length}/500</span>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="char-count" id="cc${yr}">${entry.text.length}/500</span>
+            ${!isFuture && entry.text ? `<button onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;">↗ 分享</button>` : ''}
+          </div>
         </div>
       </div>
     `;
@@ -1200,6 +1202,58 @@ function renderEntries() {
 
     if (!isFuture) renderMoodRow(yr, d.getMonth(), d.getDate(), entry.mood);
   });
+
+  // 「X年前的今天」提醒
+  renderYearsAgoToday(d);
+}
+
+function renderYearsAgoToday(d) {
+  // 移除舊的提醒
+  const old = document.getElementById('yearsAgoToday');
+  if (old) old.remove();
+
+  const today = new Date();
+  const isToday = d.toDateString() === today.toDateString();
+  if (!isToday) return;
+
+  const curYr = today.getFullYear();
+  const milestones = [1,2,3,4,5,6,7,8,9,10];
+  const found = [];
+
+  milestones.forEach(n => {
+    const yr = curYr - n;
+    if (ACTIVE_YEARS.includes(yr)) return; // 已在日記卡片裡顯示
+    const entry = getEntry(yr, d.getMonth(), d.getDate());
+    if (entry.text && entry.text.trim()) {
+      found.push({ yr, n, text: entry.text, mood: entry.mood });
+    }
+  });
+
+  if (found.length === 0) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'yearsAgoToday';
+  banner.style.cssText = 'margin-bottom:16px;';
+
+  const label = document.createElement('div');
+  label.className = 'section-title';
+  label.textContent = '⏳ 記憶回放';
+  label.style.marginBottom = '10px';
+  banner.appendChild(label);
+
+  found.forEach(({ yr, n, text, mood }) => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:linear-gradient(135deg,#f8f0e8,#f0e8f8);border-radius:16px;padding:14px 16px;margin-bottom:10px;cursor:pointer;';
+    card.innerHTML = `
+      <div style="font-size:11px;color:#7a6a7a;letter-spacing:0.05em;margin-bottom:6px;">${n} 年前的今天 · ${yr}年 ${mood||''}</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:#3a2a3a;line-height:1.7;">${text.slice(0,80)}${text.length>80?'…':''}</div>
+    `;
+    card.onclick = () => jumpToEntry(`${yr}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
+    banner.appendChild(card);
+  });
+
+  const list = document.getElementById('entriesList');
+  list.parentNode.insertBefore(banner, list);
 }
 
 function renderMoodRow(yr, month, day, selectedMood) {
@@ -1512,8 +1566,7 @@ function renderReview() {
   if (currentReviewTab === 'week') {
     const day = now.getDay();
     start = new Date(now); start.setDate(now.getDate() - day); start.setHours(0,0,0,0);
-    end = new Date(now);
-    title = '本週日記';
+    end = new Date(now); title = '本週日記';
   } else if (currentReviewTab === 'month') {
     start = new Date(now.getFullYear(), now.getMonth(), 1);
     end = new Date(now);
@@ -1532,14 +1585,41 @@ function renderReview() {
   });
   entries.sort((a,b) => b.date - a.date);
 
+  // 基本統計
   const moodMap = {};
   entries.forEach(e => { if (e.mood) moodMap[e.mood] = (moodMap[e.mood]||0)+1; });
   const topMood = Object.entries(moodMap).sort((a,b)=>b[1]-a[1])[0];
   const totalWords = entries.reduce((s,e) => s + e.text.trim().length, 0);
+  const longest = entries.reduce((a,b) => b.text.length > (a?a.text.length:0) ? b : a, null);
+
+  // 最忙的月份
+  const monthMap = {};
+  entries.forEach(e => {
+    const m = e.date.getMonth()+1;
+    monthMap[m] = (monthMap[m]||0)+1;
+  });
+  const topMonth = Object.entries(monthMap).sort((a,b)=>b[1]-a[1])[0];
+
+  // 最常出現的詞（2字以上，排除標點）
+  const wordMap = {};
+  const stopWords = new Set(['的','了','是','在','我','你','他','她','它','這','那','都','也','就','不','有','和','人','很','說','要','去','可以','什麼','因為','所以','但是','覺得','今天','一個','一天','自己']);
+  entries.forEach(e => {
+    // 取2-4字詞組
+    const text = e.text.replace(/[，。！？、：；「」『』\s]/g, '');
+    for (let len = 2; len <= 4; len++) {
+      for (let i = 0; i <= text.length - len; i++) {
+        const w = text.slice(i, i+len);
+        if (!/[\d\w]/.test(w) && !stopWords.has(w)) {
+          wordMap[w] = (wordMap[w]||0)+1;
+        }
+      }
+    }
+  });
+  const topWords = Object.entries(wordMap).filter(([,c])=>c>=2).sort((a,b)=>b[1]-a[1]).slice(0,5);
 
   var html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
-    <div style="display:flex;gap:20px;">
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
       <div style="text-align:center;">
         <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${entries.length}</div>
         <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">篇日記</div>
@@ -1552,12 +1632,37 @@ function renderReview() {
         <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
         <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
       </div>
+      ${topMonth ? `<div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topMonth[0]}月</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最多記錄</div>
+      </div>` : ''}
     </div>
   </div>`;
+
+  // 最常出現的詞
+  if (topWords.length > 0) {
+    html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">最常出現的詞</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        ${topWords.map(([w,c],i) => `<span style="padding:5px 12px;background:var(--bg);border-radius:20px;font-size:13px;color:var(--text-dark);">${w} <span style="color:var(--text-light);font-size:11px;">×${c}</span></span>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  // 最長的一篇
+  if (longest) {
+    const lparts = longest.key.split('-');
+    const ldateStr = lparts[0] + '年 ' + parseInt(lparts[1]) + '月 ' + parseInt(lparts[2]) + '日';
+    html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${longest.key}')">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:6px;">最長的一篇 · ${ldateStr} · ${longest.text.length}字</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.7;">${longest.text.slice(0,80)}${longest.text.length>80?'…':''}</div>
+    </div>`;
+  }
 
   if (entries.length === 0) {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有日記</div>';
   } else {
+    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">所有記錄</div>`;
     html += entries.map(function({ key, text, mood }) {
       const parts = key.split('-');
       const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
