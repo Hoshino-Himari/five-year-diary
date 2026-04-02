@@ -290,7 +290,9 @@
     line-height: 1.75;
     color: var(--text-dark);
     background: transparent;
-    min-height: 70px;
+    min-height: 80px;
+    height: auto;
+    overflow: hidden;
     padding: 0;
     caret-color: var(--accent);
   }
@@ -783,7 +785,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.4</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.5</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1527,6 +1529,12 @@ function renderEntries() {
 
     if (!isFuture) renderMoodRow(yr, d.getMonth(), d.getDate(), entry.mood);
 
+    // 自動展開高度
+    setTimeout(function() {
+      const ta = document.getElementById('ta' + yr);
+      if (ta) { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
+    }, 0);
+
     // 非同步從 IndexedDB 載入圖片
     if (!isFuture && entry.imgUrl) {
       const _yr = yr, _mo = d.getMonth(), _dy = d.getDate();
@@ -1596,7 +1604,7 @@ function renderYearsAgoToday(d) {
     card.style.cssText = 'background:linear-gradient(135deg,#f8f0e8,#f0e8f8);border-radius:16px;padding:14px 16px;margin-bottom:10px;cursor:pointer;';
     card.innerHTML = `
       <div style="font-size:11px;color:#7a6a7a;letter-spacing:0.05em;margin-bottom:6px;">${n} 年前的今天 · ${yr}年 ${mood||''}</div>
-      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:#3a2a3a;line-height:1.7;">${text.slice(0,80)}${text.length>80?'…':''}</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:#3a2a3a;line-height:1.7;">${text}</div>
     `;
     card.onclick = () => jumpToEntry(`${yr}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
     banner.appendChild(card);
@@ -1674,6 +1682,8 @@ function renderMoodRow(yr, month, day, selectedMood) {
 }
 
 function onTextInput(ta, yr, month, day) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
   const len = ta.value.length;
   document.getElementById(`cc${yr}`).textContent = `${len}/500`;
   const saveBtn = document.getElementById(`saveBtn${yr}`);
@@ -1797,7 +1807,7 @@ function showCalDayPreview(yr, mo, day) {
       <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;"
         onclick="jumpToEntry('${y}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}')">
         <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;">${y}年 ${mood||''}</div>
-        <div style="font-size:13px;color:var(--text-dark);line-height:1.6;font-family:'Noto Serif TC',serif;">${text.slice(0,80)}${text.length>80?'…':''}</div>
+        <div style="font-size:13px;color:var(--text-dark);line-height:1.6;font-family:'Noto Serif TC',serif;">${text}</div>
       </div>
     `).join('')}
   `;
@@ -2094,7 +2104,7 @@ function renderReview() {
     const ldateStr = lparts[0] + '年 ' + parseInt(lparts[1]) + '月 ' + parseInt(lparts[2]) + '日';
     html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${longest.key}')">
       <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:6px;">最長的一篇 · ${ldateStr} · ${longest.text.length}字</div>
-      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.7;">${longest.text.slice(0,80)}${longest.text.length>80?'…':''}</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.7;">${longest.text}</div>
     </div>`;
   }
 
@@ -2108,7 +2118,7 @@ function renderReview() {
       const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
       return `<div class="review-entry-card" onclick="jumpToEntry('${e.key}')">
         <div class="review-entry-date"><span>${dateStr}</span><span>${e.mood||''}</span></div>
-        <div class="review-entry-text">${e.text.slice(0,100)}${e.text.length>100?'…':''}</div>
+        <div class="review-entry-text">${e.text}</div>
       </div>`;
     }).join('');
   }
@@ -2315,8 +2325,6 @@ function closeZoom() {
   document.getElementById('zoomOverlay').style.display = 'none';
 }
 
-}
-
 function removeImage(yr, month, day) {
   if (!confirm('確定要刪除這張照片嗎？')) return;
   const k = getKey(yr, month, day);
@@ -2379,7 +2387,7 @@ function renderMoodList(mood, list) {
     const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
     return `<div class="mood-diary-item" onclick="jumpToEntry('${key}')" style="cursor:pointer;">
       <div class="mood-diary-date"><span>${dateStr}</span><span>${m||''}</span></div>
-      <div class="mood-diary-text">${text.slice(0,80)}${text.length>80?'…':''}</div>
+      <div class="mood-diary-text">${text}</div>
     </div>`;
   }).join('');
 }
