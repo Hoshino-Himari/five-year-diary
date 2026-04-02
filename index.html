@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.2</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.3</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -2312,19 +2312,22 @@ function openCropModal(dataUrl) {
   overlay.classList.add('show');
 
   img.onload = function() {
-    cropState.naturalW = img.naturalWidth;
-    cropState.naturalH = img.naturalHeight;
-    cropState.imgW = img.offsetWidth;
-    cropState.imgH = img.offsetHeight;
+    // 等 DOM 更新完才取 offsetWidth/Height
+    setTimeout(function() {
+      cropState.naturalW = img.naturalWidth;
+      cropState.naturalH = img.naturalHeight;
+      cropState.imgW = img.offsetWidth;
+      cropState.imgH = img.offsetHeight;
 
-    // 初始裁切框：正方形，置中
-    const size = Math.min(cropState.imgW, cropState.imgH) * 0.8;
-    cropState.x = (cropState.imgW - size) / 2;
-    cropState.y = (cropState.imgH - size) / 2;
-    cropState.w = size;
-    cropState.h = size;
-    updateCropBox();
-    initCropDrag();
+      // 初始裁切框：預設全圖（自由比例）
+      const pad = 16;
+      cropState.x = pad;
+      cropState.y = pad;
+      cropState.w = Math.max(60, cropState.imgW - pad * 2);
+      cropState.h = Math.max(60, cropState.imgH - pad * 2);
+      updateCropBox();
+      initCropDrag();
+    }, 100);
   };
   img.src = dataUrl;
 }
@@ -2340,8 +2343,10 @@ function updateCropBox() {
 function initCropDrag() {
   const box = document.getElementById('cropBox');
   const img = document.getElementById('cropImg');
-  var startX, startY, startCropX, startCropY;
-  var resizing = false, resizeEdge = '';
+  var dragging = false;
+  var resizing = false;
+  var resizeEdge = '';
+  var startX, startY, startCropX, startCropY, startCropW, startCropH;
 
   function getPos(e) {
     const t = e.touches ? e.touches[0] : e;
@@ -2351,27 +2356,31 @@ function initCropDrag() {
 
   function onStart(e) {
     e.preventDefault();
+    e.stopPropagation();
     const pos = getPos(e);
     const bx = cropState.x, by = cropState.y, bw = cropState.w, bh = cropState.h;
-    const edge = 20;
+    const edge = 24;
 
-    // 判斷是拖角還是拖整體
     const nearRight  = Math.abs(pos.x - (bx+bw)) < edge;
     const nearBottom = Math.abs(pos.y - (by+bh)) < edge;
     const nearLeft   = Math.abs(pos.x - bx) < edge;
     const nearTop    = Math.abs(pos.y - by) < edge;
 
-    if (nearRight && nearBottom) { resizing = true; resizeEdge = 'br'; }
-    else if (nearLeft && nearTop) { resizing = true; resizeEdge = 'tl'; }
-    else if (nearRight && nearTop) { resizing = true; resizeEdge = 'tr'; }
-    else if (nearLeft && nearBottom) { resizing = true; resizeEdge = 'bl'; }
-    else { resizing = false; }
+    if ((nearRight || nearLeft) && (nearBottom || nearTop)) {
+      resizing = true;
+      resizeEdge = (nearTop ? 't' : 'b') + (nearLeft ? 'l' : 'r');
+    } else {
+      resizing = false;
+      dragging = true;
+    }
 
     startX = pos.x; startY = pos.y;
     startCropX = cropState.x; startCropY = cropState.y;
+    startCropW = cropState.w; startCropH = cropState.h;
   }
 
   function onMove(e) {
+    if (!dragging && !resizing) return;
     e.preventDefault();
     const pos = getPos(e);
     const dx = pos.x - startX, dy = pos.y - startY;
@@ -2379,18 +2388,21 @@ function initCropDrag() {
     const maxW = cropState.imgW, maxH = cropState.imgH;
 
     if (resizing) {
-      var nx = cropState.x, ny = cropState.y, nw = cropState.w, nh = cropState.h;
-      if (resizeEdge === 'br') { nw = Math.max(minSize, cropState.w + dx); nh = Math.max(minSize, cropState.h + dy); }
-      else if (resizeEdge === 'tl') { nx = startCropX + dx; ny = startCropY + dy; nw = cropState.w - dx; nh = cropState.h - dy; }
-      else if (resizeEdge === 'tr') { ny = startCropY + dy; nw = cropState.w + dx; nh = cropState.h - dy; }
-      else if (resizeEdge === 'bl') { nx = startCropX + dx; nw = cropState.w - dx; nh = cropState.h + dy; }
-      // 邊界限制
-      if (nw < minSize) { nw = minSize; if (resizeEdge.includes('l')) nx = cropState.x + cropState.w - minSize; }
-      if (nh < minSize) { nh = minSize; if (resizeEdge.includes('t')) ny = cropState.y + cropState.h - minSize; }
-      nx = Math.max(0, Math.min(nx, maxW - nw));
-      ny = Math.max(0, Math.min(ny, maxH - nh));
+      var nx = startCropX, ny = startCropY;
+      var nw = startCropW, nh = startCropH;
+
+      if (resizeEdge.includes('r')) nw = startCropW + dx;
+      if (resizeEdge.includes('l')) { nx = startCropX + dx; nw = startCropW - dx; }
+      if (resizeEdge.includes('b')) nh = startCropH + dy;
+      if (resizeEdge.includes('t')) { ny = startCropY + dy; nh = startCropH - dy; }
+
+      if (nw < minSize) { nw = minSize; if (resizeEdge.includes('l')) nx = startCropX + startCropW - minSize; }
+      if (nh < minSize) { nh = minSize; if (resizeEdge.includes('t')) ny = startCropY + startCropH - minSize; }
+      nx = Math.max(0, Math.min(nx, maxW - minSize));
+      ny = Math.max(0, Math.min(ny, maxH - minSize));
       nw = Math.min(nw, maxW - nx);
       nh = Math.min(nh, maxH - ny);
+
       cropState.x = nx; cropState.y = ny; cropState.w = nw; cropState.h = nh;
     } else {
       cropState.x = Math.max(0, Math.min(startCropX + dx, maxW - cropState.w));
@@ -2399,27 +2411,34 @@ function initCropDrag() {
     updateCropBox();
   }
 
-  box.removeEventListener('mousedown', box._md);
-  box.removeEventListener('touchstart', box._ts);
-  document.removeEventListener('mousemove', box._mm);
-  document.removeEventListener('touchmove', box._tm);
-  document.removeEventListener('mouseup', box._mu);
-  document.removeEventListener('touchend', box._te);
+  function onEnd(e) {
+    dragging = false;
+    resizing = false;
+  }
 
-  box._md = onStart; box._ts = onStart;
-  box._mm = onMove;  box._tm = onMove;
-  box._mu = function() { resizing = false; };
-  box._te = function() { resizing = false; };
+  // 清除舊的監聽器
+  if (window._cropCleanup) window._cropCleanup();
 
-  box.addEventListener('mousedown', box._md);
-  box.addEventListener('touchstart', box._ts, { passive: false });
-  document.addEventListener('mousemove', box._mm);
-  document.addEventListener('touchmove', box._tm, { passive: false });
-  document.addEventListener('mouseup', box._mu);
-  document.addEventListener('touchend', box._te);
+  box.addEventListener('mousedown', onStart);
+  box.addEventListener('touchstart', onStart, { passive: false });
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('mouseup', onEnd);
+  document.addEventListener('touchend', onEnd);
+
+  // 儲存清除函數
+  window._cropCleanup = function() {
+    box.removeEventListener('mousedown', onStart);
+    box.removeEventListener('touchstart', onStart);
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('mouseup', onEnd);
+    document.removeEventListener('touchend', onEnd);
+  };
 }
 
 function cancelCrop() {
+  if (window._cropCleanup) { window._cropCleanup(); window._cropCleanup = null; }
   document.getElementById('cropOverlay').classList.remove('show');
 }
 
@@ -2446,6 +2465,7 @@ function confirmCrop() {
   const yr = cropState.yr, mo = cropState.mo, dy = cropState.dy;
   const k = getKey(yr, mo, dy);
 
+  if (window._cropCleanup) { window._cropCleanup(); window._cropCleanup = null; }
   document.getElementById('cropOverlay').classList.remove('show');
 
   saveImgToDB(k, dataUrl).then(function() {
