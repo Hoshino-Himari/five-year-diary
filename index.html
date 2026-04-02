@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.8</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.9</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1319,10 +1319,71 @@ let data = {};
 let activeTab = 'diary';
 
 function loadData() {
-  try { data = JSON.parse(localStorage.getItem('5yr_diary') || '{}'); } catch { data = {}; }
+  try {
+    const raw = JSON.parse(localStorage.getItem('5yr_diary') || '{}');
+    // 把舊版存在 localStorage 的 imgUrl 移到 imgData（只保留標記）
+    Object.keys(raw).forEach(k => {
+      if (raw[k].imgUrl && raw[k].imgUrl.startsWith('data:')) {
+        raw[k].imgUrl = '[local]'; // 標記有圖，實際圖在 IndexedDB
+      }
+    });
+    data = raw;
+  } catch { data = {}; }
 }
 function saveData() {
-  localStorage.setItem('5yr_diary', JSON.stringify(data));
+  // 存文字/心情，imgUrl 只存標記不存 base64
+  const toSave = {};
+  Object.keys(data).forEach(k => {
+    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '' };
+  });
+  localStorage.setItem('5yr_diary', JSON.stringify(toSave));
+}
+
+// ── IndexedDB 圖片儲存 ──
+var imgDB = null;
+
+function openImgDB() {
+  return new Promise(function(resolve, reject) {
+    if (imgDB) { resolve(imgDB); return; }
+    const req = indexedDB.open('5yr_diary_imgs', 1);
+    req.onupgradeneeded = function(e) {
+      e.target.result.createObjectStore('images', { keyPath: 'key' });
+    };
+    req.onsuccess = function(e) { imgDB = e.target.result; resolve(imgDB); };
+    req.onerror = function() { reject(req.error); };
+  });
+}
+
+function saveImgToDB(key, dataUrl) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      const tx  = db.transaction('images', 'readwrite');
+      const req = tx.objectStore('images').put({ key, dataUrl });
+      req.onsuccess = function() { resolve(); };
+      req.onerror   = function() { reject(req.error); };
+    });
+  });
+}
+
+function getImgFromDB(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      const tx  = db.transaction('images', 'readonly');
+      const req = tx.objectStore('images').get(key);
+      req.onsuccess = function() { resolve(req.result ? req.result.dataUrl : null); };
+      req.onerror   = function() { resolve(null); };
+    });
+  });
+}
+
+function deleteImgFromDB(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      const tx = db.transaction('images', 'readwrite');
+      tx.objectStore('images').delete(key);
+      tx.oncomplete = resolve;
+    });
+  });
 }
 function getKey(year, month, day) {
   return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
@@ -1441,10 +1502,7 @@ function renderEntries() {
         ${!isFuture ? `
         <div id="imgArea${yr}" style="margin-top:10px;">
           ${entry.imgUrl ? `
-            <div style="position:relative;display:inline-block;width:100%;">
-              <img src="${entry.imgUrl}" style="width:100%;border-radius:12px;max-height:200px;object-fit:cover;display:block;" onerror="this.parentElement.innerHTML='<div style=color:var(--text-light);font-size:12px;padding:8px>圖片載入失敗</div>'">
-              <button onclick="removeImage(${yr}, ${d.getMonth()}, ${d.getDate()})" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
-            </div>
+            <div style="color:var(--text-light);font-size:12px;padding:4px 0;">圖片載入中…</div>
           ` : `
             <label style="display:flex;align-items:center;gap:6px;color:var(--text-light);font-size:12px;cursor:pointer;padding:4px 0;">
               <input type="file" accept="image/*" style="display:none;" onchange="uploadImage(this, ${yr}, ${d.getMonth()}, ${d.getDate()})">
@@ -1459,6 +1517,31 @@ function renderEntries() {
     list.appendChild(card);
 
     if (!isFuture) renderMoodRow(yr, d.getMonth(), d.getDate(), entry.mood);
+
+    // 非同步從 IndexedDB 載入圖片
+    if (!isFuture && entry.imgUrl) {
+      const _yr = yr, _mo = d.getMonth(), _dy = d.getDate();
+      const _k = getKey(_yr, _mo, _dy);
+      getImgFromDB(_k).then(function(dataUrl) {
+        const area = document.getElementById('imgArea' + _yr);
+        if (!area) return;
+        if (dataUrl) {
+          area.innerHTML = `
+            <div style="position:relative;display:inline-block;width:100%;">
+              <img src="${dataUrl}" style="width:100%;border-radius:12px;max-height:200px;object-fit:cover;display:block;">
+              <button onclick="removeImage(${_yr},${_mo},${_dy})" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:26px;height:26px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+            </div>`;
+        } else {
+          // IndexedDB 沒有，顯示上傳按鈕
+          area.innerHTML = `
+            <label style="display:flex;align-items:center;gap:6px;color:var(--text-light);font-size:12px;cursor:pointer;padding:4px 0;">
+              <input type="file" accept="image/*" style="display:none;" onchange="uploadImage(this,${_yr},${_mo},${_dy})">
+              <span style="font-size:16px;">📷</span><span>新增照片</span>
+            </label>`;
+        }
+      });
+    }
+
   });
 
   // 「X年前的今天」提醒
@@ -2109,7 +2192,7 @@ function downloadShareImage() {
 function uploadImage(input, yr, month, day) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 10 * 1024 * 1024) { showToast('圖片太大，請選擇 10MB 以下'); return; }
+  if (file.size > 20 * 1024 * 1024) { showToast('圖片太大，請選擇 20MB 以下'); return; }
 
   const imgArea = document.getElementById('imgArea' + yr);
   if (imgArea) imgArea.innerHTML = '<div style="color:var(--text-light);font-size:12px;padding:8px 0;">處理中…⏳</div>';
@@ -2118,27 +2201,32 @@ function uploadImage(input, yr, month, day) {
   reader.onload = function(ev) {
     const img = new Image();
     img.onload = function() {
-      // 壓縮到最寬 800px，品質 0.7，讓 base64 不要太大
+      // 壓縮到最寬 1000px
       const canvas = document.createElement('canvas');
-      const maxW = 800, maxH = 800;
+      const maxW = 1000, maxH = 1000;
       var w = img.width, h = img.height;
       if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
       if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
 
-      // 直接用 data URL，完全不依賴外部服務
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-
-      // 存到本地
       const k = getKey(yr, month, day);
-      const entry = getEntry(yr, month, day);
-      data[k] = { text: entry.text, mood: entry.mood, imgUrl: dataUrl };
-      saveData();
-      renderEntries();
-      showToast('照片已新增 ✓');
 
-      // 靜默備份到 Drive（不影響主流程）
+      // 存到 IndexedDB
+      saveImgToDB(k, dataUrl).then(function() {
+        const entry = getEntry(yr, month, day);
+        data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]' };
+        saveData();
+        // 重新渲染並直接顯示圖片
+        renderEntries();
+        showToast('照片已新增 ✓');
+      }).catch(function(err) {
+        if (imgArea) imgArea.innerHTML = '<div style="color:#d06060;font-size:12px;padding:8px 0;">儲存失敗</div>';
+        showToast('圖片儲存失敗：' + err);
+      });
+
+      // 靜默備份到 Drive
       if (scriptUrl) {
         const base64 = dataUrl.split(',')[1];
         const params = new URLSearchParams({
@@ -2151,9 +2239,7 @@ function uploadImage(input, yr, month, day) {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: 'imageData=' + encodeURIComponent(base64)
         }).catch(function() {});
-
-        // 同步文字+心情到 Sheet（imgUrl 存 [img] 標記，不存 base64 避免 Sheet 爆）
-        callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: '[圖片已存於本地]' }).catch(function(){});
+        callScript({ action: 'save', key: k, text: getEntry(yr, month, day).text || '', mood: getEntry(yr, month, day).mood || '', imgUrl: '[圖片已存於本地]' }).catch(function(){});
       }
     };
     img.src = ev.target.result;
@@ -2167,6 +2253,7 @@ function removeImage(yr, month, day) {
   const entry = getEntry(yr, month, day);
   data[k] = { text: entry.text, mood: entry.mood, imgUrl: '' };
   saveData();
+  deleteImgFromDB(k).catch(function(){});
   if (scriptUrl) {
     callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: '' }).catch(function(){});
   }
