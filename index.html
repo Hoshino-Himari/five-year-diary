@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.5</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.6</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -868,7 +868,8 @@
               <b style="color:var(--text-dark);">Step 6</b> 類型選「<b>網路應用程式</b>」<br>
               <b style="color:var(--text-dark);">Step 7</b> 執行身分：<b>我</b>、存取權：<b>任何人</b> → 按「<b>部署</b>」<br>
               <b style="color:var(--text-dark);">Step 8</b> 如果跳出授權視窗 → 點「授權存取」→「允許」<br>
-              <b style="color:var(--text-dark);">Step 9</b> 複製產生的網址，貼到上方欄位
+              <b style="color:var(--text-dark);">Step 9</b> 複製產生的網址，貼到上方欄位<br>
+              <b style="color:var(--text-dark);">Step 10</b> <span style="color:#d06060;">📷 要用圖片功能？</span> 在 Apps Script 編輯器上方函數下拉選單選「<b>initDriveAuth</b>」→ 按▶️執行 → 授權 Google Drive 存取
             </div>
           </div>
 
@@ -890,7 +891,7 @@
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v8）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v9）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -2421,7 +2422,7 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v8
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v9
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const FOLDER_NAME = '五年日記圖片';
@@ -2502,7 +2503,9 @@ function loadAll() {
       entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:rows[i][5]||''};
     }
   }
-  sortSheet(sheet);return{ok:true,entries};
+  sortSheet(sheet);
+  const diaryName=SpreadsheetApp.getActiveSpreadsheet().getName();
+  return{ok:true,entries,diaryName};
 }
 function deleteEntry(p) {
   const sheet=getSheet(),key=normalizeKey(p.key);if(!key)return{ok:false,error:'缺少key'};
@@ -2511,6 +2514,7 @@ function deleteEntry(p) {
   return{ok:false,error:'找不到'};
 }
 function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'五年日記');return{ok:true};}
+function initDriveAuth(){const f=getImageFolder();Logger.log('Drive授權成功！'+f.getName());return'授權完成';}
 function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,6).sort({column:1,ascending:true});}
 function getSheet(){
   const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(SHEET_NAME);
@@ -2806,14 +2810,24 @@ async function testAndSaveScriptUrl() {
     }
 
     const allJson = await callScript({ action: 'loadAll' }, 15000);
-    if (allJson.ok && allJson.entries && Object.keys(allJson.entries).length > 0) {
-      Object.assign(data, allJson.entries);
-      saveData();
-      renderEntries();
-      showToast(`連線成功，已載入 ${Object.keys(allJson.entries).length} 筆 ✓`);
-    } else {
-      await syncToCloud();
-      showToast('連線成功 ✓');
+    if (allJson.ok) {
+      // 套用雲端日記名稱
+      if (allJson.diaryName && allJson.diaryName !== '五年日記') {
+        settings.name = allJson.diaryName;
+        saveSettings(settings);
+        document.querySelector('.app-title').textContent = allJson.diaryName;
+        document.title = allJson.diaryName;
+      }
+      // 載入日記資料
+      if (allJson.entries && Object.keys(allJson.entries).length > 0) {
+        Object.assign(data, allJson.entries);
+        saveData();
+        renderEntries();
+        showToast(`連線成功，已載入 ${Object.keys(allJson.entries).length} 筆 ✓`);
+      } else {
+        await syncToCloud();
+        showToast('連線成功 ✓');
+      }
     }
   } catch (err) {
     scriptUrl = localStorage.getItem('5yr_script_url') || '';
