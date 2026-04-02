@@ -656,7 +656,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.0</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.1</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -714,22 +714,32 @@
 
       <input id="scriptUrlInput" type="url"
         placeholder="貼上你的 Apps Script 網址"
-        style="width:100%;border:none;outline:none;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;">
+        style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
 
-      <div style="display:flex;gap:8px;">
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
         <button onclick="testAndSaveScriptUrl()" style="flex:1;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">測試並連線</button>
-        <button onclick="syncFromCloud()" id="syncPullBtn" style="flex:1;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;" disabled>從雲端載入</button>
+        <button onclick="syncFromCloud()" id="syncPullBtn" style="flex:1;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">從雲端載入</button>
       </div>
 
-      <div style="margin-top:12px;padding:12px;background:#f0f8ff;border-radius:12px;">
-        <div style="font-size:11px;color:#5080a0;line-height:1.8;">
-          📋 <b>第一次設定步驟：</b><br>
-          1. 開啟 Google 試算表（新建一個）<br>
-          2. 點選選單「擴充功能」→「Apps Script」<br>
-          3. 貼上附件裡的 .gs 程式碼，存檔<br>
-          4. 點「部署」→「新增部署」→ 類型選「網路應用程式」<br>
-          5. 執行身分：我、存取權：任何人 → 部署<br>
-          6. 複製網址貼到上方欄位
+      <!-- 可展開的設定說明 -->
+      <div style="border:1.5px solid #e8e6e3;border-radius:12px;overflow:hidden;">
+        <button onclick="toggleGuide()" style="width:100%;padding:12px 14px;background:none;border:none;text-align:left;font-size:12px;color:var(--text-mid);font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+          <span>📋 第一次設定步驟</span>
+          <span id="guideArrow" style="font-size:10px;">▾</span>
+        </button>
+        <div id="guideBody" style="display:none;padding:0 14px 14px;border-top:1px solid #f0eeec;">
+          <div style="font-size:12px;color:var(--text-mid);line-height:2;margin-top:10px;">
+            1. 開啟 Google 試算表（新建一個）<br>
+            2. 點選單「擴充功能」→「Apps Script」<br>
+            3. 把下方程式碼全部複製貼上，存檔<br>
+            4. 點「部署」→「新增部署」→ 類型選「網路應用程式」<br>
+            5. 執行身分：我、存取權：任何人 → 部署<br>
+            6. 複製產生的網址貼到上方欄位
+          </div>
+          <div style="margin-top:12px;position:relative;">
+            <button onclick="copyGsCode()" style="position:absolute;top:8px;right:8px;padding:4px 10px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;z-index:1;">複製</button>
+            <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:160px;padding:10px 12px;padding-top:36px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
+          </div>
         </div>
       </div>
     </div>
@@ -1300,15 +1310,121 @@ document.addEventListener('blur', e => {
     }
   }
 }, true);
-// ── Settings Page ──
+// ── 設定說明展開/收合 ──
+function toggleGuide() {
+  const body  = document.getElementById('guideBody');
+  const arrow = document.getElementById('guideArrow');
+  const open  = body.style.display === 'none';
+  body.style.display  = open ? 'block' : 'none';
+  arrow.textContent   = open ? '▴' : '▾';
+}
+
+const GS_CODE = `// 五年日記 × Google Sheets 同步腳本
+// 部署方式：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
+const SHEET_NAME = '日記資料';
+function doGet(e) {
+  try {
+    const action = e.parameter.action || 'ping';
+    const cb = e.parameter.callback;
+    let r;
+    if (action==='ping') r={ok:true,message:'運作正常'};
+    else if (action==='save') r=saveEntry(e.parameter);
+    else if (action==='loadAll') r=loadAll();
+    else if (action==='deleteEntry') r=deleteEntry(e.parameter);
+    else r={ok:false,error:'未知指令'};
+    const j=JSON.stringify(r);
+    if(cb) return ContentService.createTextOutput(cb+'('+j+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return ContentService.createTextOutput(j).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    const cb=e&&e.parameter&&e.parameter.callback||null;
+    const o=JSON.stringify({ok:false,error:err.message});
+    if(cb) return ContentService.createTextOutput(cb+'('+o+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return ContentService.createTextOutput(o).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+function doPost(e){return doGet({parameter:JSON.parse(e.postData.contents)});}
+function normalizeKey(raw){
+  if(!raw)return'';const s=String(raw).trim();
+  if(/^\\d{4}-\\d{2}-\\d{2}$/.test(s))return s;
+  const d=new Date(s);if(!isNaN(d.getTime())){
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }return s;
+}
+function saveEntry(p){
+  const sheet=getSheet(),key=normalizeKey(p.key),text=p.text||'',mood=p.mood||'',now=new Date().toLocaleString('zh-TW');
+  if(!key)return{ok:false,error:'缺少key'};
+  const pts=key.split('-'),display=pts[0]+'年 '+pts[1]+'/'+pts[2];
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){
+    if(normalizeKey(rows[i][0])===key){
+      sheet.getRange(i+1,1,1,5).setValues([[key,display,text,mood,now]]);
+      return{ok:true,action:'updated',key};
+    }
+  }
+  sheet.appendRow([key,display,text,mood,now]);
+  sortSheet(sheet);
+  sheet.getRange(sheet.getLastRow(),3).setWrap(true);
+  return{ok:true,action:'created',key};
+}
+function loadAll(){
+  const sheet=getSheet(),rows=sheet.getDataRange().getValues(),entries={};
+  for(let i=1;i<rows.length;i++){
+    const key=normalizeKey(rows[i][0]);
+    if(key){
+      if(String(rows[i][0]).trim()!==key){const pts=key.split('-');sheet.getRange(i+1,1,1,2).setValues([[key,pts[0]+'年 '+pts[1]+'/'+pts[2]]]);}
+      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null};
+    }
+  }
+  sortSheet(sheet);return{ok:true,entries};
+}
+function deleteEntry(p){
+  const sheet=getSheet(),key=normalizeKey(p.key);if(!key)return{ok:false,error:'缺少key'};
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){if(normalizeKey(rows[i][0])===key){sheet.deleteRow(i+1);return{ok:true,action:'deleted',key};}}
+  return{ok:false,error:'找不到'};
+}
+function sortSheet(sheet){const lr=sheet.getLastRow();if(lr<=2)return;sheet.getRange(2,1,lr-1,5).sort({column:1,ascending:true});}
+function getSheet(){
+  const ss=SpreadsheetApp.getActiveSpreadsheet();let sheet=ss.getSheetByName(SHEET_NAME);
+  if(!sheet){sheet=ss.insertSheet(SHEET_NAME);setupSheet(sheet);return sheet;}
+  const fc=String(sheet.getRange(1,1).getValue()).trim();
+  if(fc!=='索引鍵'&&fc!=='日期'){sheet.insertRowBefore(1);setupHeader(sheet);}
+  applyFormat(sheet);return sheet;
+}
+function setupSheet(s){setupHeader(s);applyFormat(s);}
+function setupHeader(s){
+  s.getRange(1,1,1,5).setValues([['索引鍵','日期','日記內容','心情','最後更新']]);
+  s.setFrozenRows(1);s.getRange(1,1,1,5).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+}
+function applyFormat(s){
+  s.hideColumns(1);s.setColumnWidth(2,120);s.setColumnWidth(3,450);s.setColumnWidth(4,60);s.setColumnWidth(5,170);
+  s.getRange('C2:C1000').setWrap(true);s.getRange('B2:E1000').setVerticalAlignment('middle');
+}`;
+
+function copyGsCode() {
+  const box = document.getElementById('gsCodeBox');
+  box.select();
+  try {
+    navigator.clipboard.writeText(box.value).then(() => showToast('程式碼已複製 ✓')).catch(() => {
+      document.execCommand('copy');
+      showToast('程式碼已複製 ✓');
+    });
+  } catch {
+    document.execCommand('copy');
+    showToast('程式碼已複製 ✓');
+  }
+}
+
+
 var tempYears = [];
 
 function renderSettingsPage() {
   tempYears = ACTIVE_YEARS.slice();
-  // Diary name
   document.getElementById('diaryNameInput').value = settings.name;
-  // Sync status
   renderSyncStatus();
+  // 填入 GS 程式碼
+  const box = document.getElementById('gsCodeBox');
+  if (box) box.value = GS_CODE;
 
   const container = document.getElementById('yearSlotList');
   container.innerHTML = '';
