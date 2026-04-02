@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.0</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.1</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1330,16 +1330,68 @@ let data = {};
 let activeTab = 'diary';
 
 function loadData() {
-  try { data = JSON.parse(localStorage.getItem('5yr_diary') || '{}'); } catch { data = {}; }
+  try {
+    var raw = JSON.parse(localStorage.getItem('5yr_diary') || '{}');
+    Object.keys(raw).forEach(function(k) {
+      if (raw[k].imgUrl && raw[k].imgUrl.startsWith('data:')) raw[k].imgUrl = '[local]';
+    });
+    data = raw;
+  } catch(e) { data = {}; }
 }
 function saveData() {
-  localStorage.setItem('5yr_diary', JSON.stringify(data));
+  var toSave = {};
+  Object.keys(data).forEach(function(k) {
+    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '' };
+  });
+  localStorage.setItem('5yr_diary', JSON.stringify(toSave));
 }
 function getKey(year, month, day) {
   return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
 }
 function getEntry(year, month, day) {
-  return data[getKey(year, month, day)] || { text: '', mood: null };
+  return data[getKey(year, month, day)] || { text: '', mood: null, imgUrl: '' };
+}
+
+// ── IndexedDB 圖片儲存 ──
+var imgDB = null;
+function openImgDB() {
+  return new Promise(function(resolve, reject) {
+    if (imgDB) { resolve(imgDB); return; }
+    var req = indexedDB.open('5yr_diary_imgs', 1);
+    req.onupgradeneeded = function(e) { e.target.result.createObjectStore('images', { keyPath: 'key' }); };
+    req.onsuccess = function(e) { imgDB = e.target.result; resolve(imgDB); };
+    req.onerror   = function() { reject(req.error); };
+  });
+}
+function saveImgToDB(key, dataUrl) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction('images', 'readwrite');
+      var req = tx.objectStore('images').put({ key: key, dataUrl: dataUrl });
+      req.onsuccess = function() { resolve(); };
+      req.onerror   = function() { reject(req.error); };
+    });
+  });
+}
+function getImgFromDB(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx  = db.transaction('images', 'readonly');
+      var req = tx.objectStore('images').get(key);
+      req.onsuccess = function() { resolve(req.result ? req.result.dataUrl : null); };
+      req.onerror   = function() { resolve(null); };
+    });
+  });
+}
+function deleteImgFromDB(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('images', 'readwrite');
+      tx.objectStore('images').delete(key);
+      tx.oncomplete = resolve;
+      tx.onerror = resolve;
+    });
+  });
 }
 
 // ── Init ──
@@ -1367,6 +1419,7 @@ let ACTIVE_YEARS = settings.years.slice().sort((a,b)=>a-b);
 loadData();
 // 套用儲存的日記名稱
 document.querySelector('.app-title').textContent = settings.name;
+document.title = settings.name;
 renderHeader();
 renderPrompt();
 renderEntries();
@@ -1895,7 +1948,7 @@ function doSearch(query) {
 }
 
 // ── 主題 ──
-const THEMES = [
+var THEMES = [
   { id: '', label: '暖米', bg: '#f7f5f2', dot: 'linear-gradient(135deg,#fde8c8,#f8bcd0)' },
   { id: 'ocean', label: '海洋', bg: '#f0f4f8', dot: 'linear-gradient(135deg,#c8e0f8,#a8c8f0)' },
   { id: 'forest', label: '森林', bg: '#f0f5f0', dot: 'linear-gradient(135deg,#c8f0d8,#a8e0c0)' },
@@ -1982,22 +2035,20 @@ function renderReview() {
   });
   const topMonth = Object.entries(monthMap).sort((a,b)=>b[1]-a[1])[0];
 
-  // 最常出現的詞（2字以上，排除標點）
+  // 最常出現的詞（用空格/標點分詞，2字以上）
   const wordMap = {};
-  const stopWords = new Set(['的','了','是','在','我','你','他','她','它','這','那','都','也','就','不','有','和','人','很','說','要','去','可以','什麼','因為','所以','但是','覺得','今天','一個','一天','自己']);
-  entries.forEach(e => {
-    // 取2-4字詞組
-    const text = e.text.replace(/[，。！？、：；「」『』\s]/g, '');
-    for (let len = 2; len <= 4; len++) {
-      for (let i = 0; i <= text.length - len; i++) {
-        const w = text.slice(i, i+len);
-        if (!/[\d\w]/.test(w) && !stopWords.has(w)) {
-          wordMap[w] = (wordMap[w]||0)+1;
-        }
+  const stopWords = new Set(['的','了','是','在','我','你','他','她','它','這','那','都','也','就','不','有','和','人','很','說','要','去','可以','什麼','因為','所以','但是','覺得','今天','一個','一天','自己','然後','還是','沒有','一直','真的','就是','而且','雖然','不過','其實','大家','已經','還有','如果','這樣']);
+  entries.forEach(function(e) {
+    // 用標點和空格切詞
+    const words = e.text.split(/[\s，。！？、：；「」『』【】（）\(\)…—\-\n]/);
+    words.forEach(function(w) {
+      w = w.trim();
+      if (w.length >= 2 && !/^[\d\w]+$/.test(w) && !stopWords.has(w)) {
+        wordMap[w] = (wordMap[w]||0) + 1;
       }
-    }
+    });
   });
-  const topWords = Object.entries(wordMap).filter(([,c])=>c>=2).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topWords = Object.entries(wordMap).filter(function(x){return x[1]>=2;}).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
 
   var html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
@@ -2044,13 +2095,14 @@ function renderReview() {
   if (entries.length === 0) {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有日記</div>';
   } else {
-    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">所有記錄</div>`;
-    html += entries.map(function({ key, text, mood }) {
-      const parts = key.split('-');
+    const showEntries = entries.slice(0, 30);
+    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">所有記錄（共 ${entries.length} 篇${entries.length > 30 ? '，顯示最近 30 篇' : ''}）</div>`;
+    html += showEntries.map(function(e) {
+      const parts = e.key.split('-');
       const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
-      return `<div class="review-entry-card" onclick="jumpToEntry('${key}')">
-        <div class="review-entry-date"><span>${dateStr}</span><span>${mood||''}</span></div>
-        <div class="review-entry-text">${text.slice(0,100)}${text.length>100?'…':''}</div>
+      return `<div class="review-entry-card" onclick="jumpToEntry('${e.key}')">
+        <div class="review-entry-date"><span>${dateStr}</span><span>${e.mood||''}</span></div>
+        <div class="review-entry-text">${e.text.slice(0,100)}${e.text.length>100?'…':''}</div>
       </div>`;
     }).join('');
   }
