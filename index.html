@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.9</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.0</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -890,7 +890,7 @@
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v10）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v11）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -1002,15 +1002,26 @@
   <div class="year-picker-sheet" style="padding:24px 20px 40px;">
     <div class="picker-handle"></div>
     <div class="picker-title">分享這篇日記</div>
-    <div id="shareCard" style="background:linear-gradient(135deg,var(--y1-a),var(--y1-b));border-radius:20px;padding:24px;margin:16px 0;position:relative;overflow:hidden;">
-      <div id="shareCardDate" style="font-size:11px;letter-spacing:0.1em;color:rgba(80,50,50,0.5);margin-bottom:10px;"></div>
-      <div id="shareCardText" style="font-family:'Noto Serif TC',serif;font-size:14px;line-height:1.8;color:#3a2a2a;white-space:pre-wrap;word-break:break-all;"></div>
-      <div id="shareCardMood" style="font-size:24px;position:absolute;bottom:16px;right:20px;opacity:0.6;"></div>
-      <div style="position:absolute;bottom:12px;left:20px;font-size:10px;color:rgba(80,50,50,0.3);letter-spacing:0.05em;">五年日記</div>
+
+    <!-- 拍立得卡片預覽 -->
+    <div id="shareCard" style="background:#fff;border-radius:4px;padding:16px 16px 40px;margin:16px 0;box-shadow:0 4px 20px rgba(0,0,0,0.15);position:relative;">
+      <!-- 照片區 -->
+      <div id="shareCardImg" style="width:100%;background:#f0eeec;border-radius:2px;margin-bottom:14px;overflow:hidden;display:none;">
+        <img id="shareCardImgEl" style="width:100%;max-height:220px;object-fit:cover;display:block;">
+      </div>
+      <!-- 文字區 -->
+      <div id="shareCardDate" style="font-size:10px;letter-spacing:0.12em;color:#aaa;margin-bottom:8px;font-family:sans-serif;"></div>
+      <div id="shareCardText" style="font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.8;color:#2d2d2d;white-space:pre-wrap;word-break:break-all;margin-bottom:12px;"></div>
+      <!-- 底部：心情 + 浮水印 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div id="shareCardMood" style="font-size:22px;"></div>
+        <div style="font-size:9px;color:#ccc;letter-spacing:0.1em;">五年日記</div>
+      </div>
     </div>
+
     <div style="display:flex;gap:8px;">
       <button onclick="copyShareText()" style="flex:1;padding:13px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製文字</button>
-      <button onclick="downloadShareImage()" style="flex:1;padding:13px;background:var(--text-dark);color:white;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">儲存圖片</button>
+      <button onclick="downloadShareImage()" style="flex:1;padding:13px;background:var(--text-dark);color:white;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">💾 儲存圖片</button>
     </div>
   </div>
 </div>
@@ -1319,77 +1330,16 @@ let data = {};
 let activeTab = 'diary';
 
 function loadData() {
-  try {
-    const raw = JSON.parse(localStorage.getItem('5yr_diary') || '{}');
-    // 把舊版存在 localStorage 的 imgUrl 移到 imgData（只保留標記）
-    Object.keys(raw).forEach(k => {
-      if (raw[k].imgUrl && raw[k].imgUrl.startsWith('data:')) {
-        raw[k].imgUrl = '[local]'; // 標記有圖，實際圖在 IndexedDB
-      }
-    });
-    data = raw;
-  } catch { data = {}; }
+  try { data = JSON.parse(localStorage.getItem('5yr_diary') || '{}'); } catch { data = {}; }
 }
 function saveData() {
-  // 存文字/心情，imgUrl 只存標記不存 base64
-  const toSave = {};
-  Object.keys(data).forEach(k => {
-    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '' };
-  });
-  localStorage.setItem('5yr_diary', JSON.stringify(toSave));
-}
-
-// ── IndexedDB 圖片儲存 ──
-var imgDB = null;
-
-function openImgDB() {
-  return new Promise(function(resolve, reject) {
-    if (imgDB) { resolve(imgDB); return; }
-    const req = indexedDB.open('5yr_diary_imgs', 1);
-    req.onupgradeneeded = function(e) {
-      e.target.result.createObjectStore('images', { keyPath: 'key' });
-    };
-    req.onsuccess = function(e) { imgDB = e.target.result; resolve(imgDB); };
-    req.onerror = function() { reject(req.error); };
-  });
-}
-
-function saveImgToDB(key, dataUrl) {
-  return openImgDB().then(function(db) {
-    return new Promise(function(resolve, reject) {
-      const tx  = db.transaction('images', 'readwrite');
-      const req = tx.objectStore('images').put({ key, dataUrl });
-      req.onsuccess = function() { resolve(); };
-      req.onerror   = function() { reject(req.error); };
-    });
-  });
-}
-
-function getImgFromDB(key) {
-  return openImgDB().then(function(db) {
-    return new Promise(function(resolve) {
-      const tx  = db.transaction('images', 'readonly');
-      const req = tx.objectStore('images').get(key);
-      req.onsuccess = function() { resolve(req.result ? req.result.dataUrl : null); };
-      req.onerror   = function() { resolve(null); };
-    });
-  });
-}
-
-function deleteImgFromDB(key) {
-  return openImgDB().then(function(db) {
-    return new Promise(function(resolve) {
-      const tx = db.transaction('images', 'readwrite');
-      tx.objectStore('images').delete(key);
-      tx.oncomplete = resolve;
-    });
-  });
+  localStorage.setItem('5yr_diary', JSON.stringify(data));
 }
 function getKey(year, month, day) {
   return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
 }
 function getEntry(year, month, day) {
-  return data[getKey(year, month, day)] || { text: '', mood: null, imgUrl: '' };
+  return data[getKey(year, month, day)] || { text: '', mood: null };
 }
 
 // ── Init ──
@@ -2114,10 +2064,28 @@ function shareEntry(yr, month, day) {
   const entry = getEntry(yr, month, day);
   if (!entry.text || !entry.text.trim()) { showToast('這天還沒有日記'); return; }
   const dateStr = yr + '年 ' + (month+1) + '月 ' + day + '日';
-  shareData = { yr, month, day, text: entry.text, mood: entry.mood, dateStr };
+  shareData = { yr, month, day, text: entry.text, mood: entry.mood, dateStr, imgDataUrl: null };
+
   document.getElementById('shareCardDate').textContent = dateStr;
   document.getElementById('shareCardText').textContent = entry.text;
   document.getElementById('shareCardMood').textContent = entry.mood || '';
+
+  // 嘗試從 IndexedDB 載入圖片
+  const imgArea = document.getElementById('shareCardImg');
+  const imgEl   = document.getElementById('shareCardImgEl');
+  imgArea.style.display = 'none';
+
+  if (entry.imgUrl) {
+    const k = getKey(yr, month, day);
+    getImgFromDB(k).then(function(dataUrl) {
+      if (dataUrl) {
+        imgEl.src = dataUrl;
+        imgArea.style.display = 'block';
+        shareData.imgDataUrl = dataUrl;
+      }
+    });
+  }
+
   document.getElementById('shareOverlay').classList.add('show');
 }
 
@@ -2133,59 +2101,101 @@ function copyShareText() {
 }
 
 function downloadShareImage() {
-  const card = document.getElementById('shareCard');
-  const w = card.offsetWidth, h = Math.max(card.offsetHeight, 200);
-  const canvas = document.createElement('canvas');
+  const cardW = 320;
+  const hasImg = !!shareData.imgDataUrl;
+
+  // 預估文字行數
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCtx.font = '14px serif';
+  const textLines = [];
+  shareData.text.split('\n').forEach(function(para) {
+    var line = '';
+    for (var i = 0; i < para.length; i++) {
+      var test = line + para[i];
+      if (tempCtx.measureText(test).width > cardW - 64 && line) {
+        textLines.push(line); line = para[i];
+      } else { line = test; }
+    }
+    textLines.push(line || '');
+  });
+
+  const imgH    = hasImg ? 200 : 0;
+  const textH   = textLines.length * 24 + 20;
+  const cardH   = 40 + imgH + (hasImg ? 14 : 0) + 20 + textH + 50;
+
   const scale = 3;
-  canvas.width = w * scale; canvas.height = h * scale;
+  const canvas = document.createElement('canvas');
+  canvas.width  = cardW * scale;
+  canvas.height = cardH * scale;
   const ctx = canvas.getContext('2d');
   ctx.scale(scale, scale);
 
-  // 漸層背景
-  const grad = ctx.createLinearGradient(0, 0, w, h);
-  grad.addColorStop(0, '#fde8c8'); grad.addColorStop(1, '#f8bcd0');
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.roundRect(0, 0, w, h, 20);
-  ctx.fill();
+  // 拍立得白底 + 陰影效果
+  ctx.shadowColor   = 'rgba(0,0,0,0.12)';
+  ctx.shadowBlur    = 20;
+  ctx.shadowOffsetY = 4;
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, cardW, cardH);
+  ctx.shadowColor = 'transparent';
 
-  // 日期
-  ctx.fillStyle = 'rgba(80,50,50,0.45)';
-  ctx.font = '11px sans-serif';
-  ctx.fillText(shareData.dateStr, 24, 34);
+  var curY = 20;
 
-  // 正文換行
-  ctx.fillStyle = '#3a2a2a';
-  ctx.font = '14px serif';
-  const chars = shareData.text.split('');
-  var line = '', lines = [], y = 60;
-  chars.forEach(ch => {
-    if (ch === '\n') { lines.push(line); line = ''; return; }
-    const test = line + ch;
-    if (ctx.measureText(test).width > w - 48 && line) { lines.push(line); line = ch; }
-    else line = test;
-  });
-  if (line) lines.push(line);
-  lines.forEach((l, i) => ctx.fillText(l, 24, y + i * 26));
-
-  // 心情
-  if (shareData.mood) {
-    ctx.font = '28px sans-serif';
-    ctx.globalAlpha = 0.5;
-    ctx.fillText(shareData.mood, w - 50, h - 20);
-    ctx.globalAlpha = 1;
+  // 圖片區
+  if (hasImg && shareData.imgDataUrl) {
+    const drawImg = function() {
+      const img = new Image();
+      img.onload = function() {
+        // 填滿寬度，最高 200px
+        const iW = cardW - 32, iH = Math.min(200, img.height * (iW / img.width));
+        ctx.drawImage(img, 16, curY, iW, iH);
+        curY += iH + 14;
+        drawText();
+      };
+      img.src = shareData.imgDataUrl;
+    };
+    drawImg();
+  } else {
+    drawText();
   }
 
-  // 浮水印
-  ctx.fillStyle = 'rgba(80,50,50,0.25)';
-  ctx.font = '10px sans-serif';
-  ctx.fillText('五年日記', 24, h - 14);
+  function drawText() {
+    // 日期
+    ctx.fillStyle = '#aaaaaa';
+    ctx.font = '10px sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText(shareData.dateStr, 16, curY + 12);
+    curY += 28;
 
-  const a = document.createElement('a');
-  a.download = '五年日記_' + shareData.dateStr + '.png';
-  a.href = canvas.toDataURL('image/png');
-  a.click();
-  showToast('圖片已儲存 ✓');
+    // 正文
+    ctx.fillStyle = '#2d2d2d';
+    ctx.font = '14px serif';
+    ctx.letterSpacing = '0px';
+    textLines.forEach(function(l) {
+      ctx.fillText(l, 16, curY);
+      curY += 24;
+    });
+    curY += 10;
+
+    // 心情 + 浮水印
+    if (shareData.mood) {
+      ctx.font = '22px sans-serif';
+      ctx.fillText(shareData.mood, 16, curY + 18);
+    }
+    ctx.fillStyle = '#cccccc';
+    ctx.font = '9px sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('五年日記', cardW - 60, curY + 18);
+
+    // 下載
+    const a = document.createElement('a');
+    a.download = '五年日記_' + shareData.dateStr + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    showToast('拍立得已儲存 ✓');
+  }
+
+  if (!hasImg) drawText();
 }
 
 // ── 圖片上傳 ──
@@ -2505,7 +2515,7 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v10
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v11
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const FOLDER_NAME = '五年日記圖片';
