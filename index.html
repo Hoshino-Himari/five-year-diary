@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.8</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.9</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -1487,10 +1487,6 @@ function renderThemeGrid() {
 
 // 載入時套用儲存的主題
 (function() {
-  const saved = localStorage.getItem('5yr_theme') || '';
-  document.body.className = saved ? 'theme-' + saved : '';
-})();
-
   const saved = localStorage.getItem('5yr_theme') || '';
   document.body.className = saved ? 'theme-' + saved : '';
 })();
