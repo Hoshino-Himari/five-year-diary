@@ -1449,45 +1449,34 @@ function renderSyncStatus() {
 
 // ── JSONP 呼叫 ──
 let _jsonpCounter = 0;
-const _jsonpPending = {};
 
 function callScript(params, timeoutMs = 10000) {
   return new Promise((resolve, reject) => {
-    const id = 'cb' + (++_jsonpCounter) + '_' + Date.now();
-    const cbName = '_gs_' + id;
+    const cbName = 'gsCallback' + (++_jsonpCounter);
 
-    // 逾時處理
     const timer = setTimeout(() => {
-      if (_jsonpPending[id]) {
-        delete _jsonpPending[id];
-        delete window[cbName];
-        const el = document.getElementById(id);
-        if (el) el.remove();
-        reject(new Error('timeout'));
-      }
+      window[cbName] = null;
+      reject(new Error('timeout'));
     }, timeoutMs);
 
-    _jsonpPending[id] = true;
-
-    window[cbName] = (result) => {
-      if (!_jsonpPending[id]) return;
+    window[cbName] = function(result) {
       clearTimeout(timer);
-      delete _jsonpPending[id];
-      delete window[cbName];
-      const el = document.getElementById(id);
-      if (el) el.remove();
+      window[cbName] = null;
       resolve(result);
     };
 
-    const url = new URL(scriptUrl);
-    url.searchParams.set('callback', cbName);
-    Object.entries(params).forEach(([k, v]) =>
-      url.searchParams.set(k, String(v))
-    );
+    const qs = Object.entries({ ...params, callback: cbName })
+      .map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v)))
+      .join('&');
 
     const script = document.createElement('script');
-    script.id = id;
-    script.src = url.toString();
+    script.src = scriptUrl + '?' + qs;
+    script.onerror = function() {
+      clearTimeout(timer);
+      window[cbName] = null;
+      this.remove();
+      reject(new Error('script load error'));
+    };
     document.head.appendChild(script);
   });
 }
