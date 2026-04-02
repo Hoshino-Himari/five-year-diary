@@ -656,7 +656,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v0.7</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v0.9</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -999,9 +999,16 @@ function renderMoodRow(yr, month, day, selectedMood) {
     btn.textContent = mood;
     btn.onclick = () => {
       const entry = getEntry(yr, month, day);
-      setEntry(yr, month, day, entry.text, mood === entry.mood ? null : mood);
-      renderMoodRow(yr, month, day, mood === entry.mood ? null : mood);
-      showToast('心情已記錄 ' + (mood === entry.mood ? '' : mood));
+      const newMood = mood === entry.mood ? null : mood;
+      // 只存本地，不單獨推雲端（等文字儲存時一起推）
+      const k = getKey(yr, month, day);
+      data[k] = { text: entry.text, mood: newMood };
+      saveData();
+      renderMoodRow(yr, month, day, newMood);
+      showToast('心情已記錄 ' + (newMood || ''));
+      // 顯示儲存按鈕提示使用者同步
+      const saveBtn = document.getElementById(`saveBtn${yr}`);
+      if (saveBtn) saveBtn.classList.add('visible');
     };
     row.appendChild(btn);
   });
@@ -1019,10 +1026,11 @@ function onTextInput(ta, yr, month, day) {
 function saveEntry(yr, month, day) {
   const ta = document.getElementById(`ta${yr}`);
   const entry = getEntry(yr, month, day);
+  // 同步到雲端（文字＋心情一起）
   setEntry(yr, month, day, ta.value, entry.mood);
   const saveBtn = document.getElementById(`saveBtn${yr}`);
   if (saveBtn) saveBtn.classList.remove('visible');
-  showToast('已儲存 ✓');
+  showToast('已儲存並同步 ✓');
   if (activeTab === 'stats') renderStats();
 }
 
@@ -1284,8 +1292,10 @@ document.addEventListener('blur', e => {
     if (!isNaN(yr)) {
       const entry = getEntry(yr, d.getMonth(), d.getDate());
       if (e.target.value !== entry.text) {
-        setEntry(yr, d.getMonth(), d.getDate(), e.target.value, entry.mood);
-        document.getElementById(`saveBtn${yr}`)?.classList.remove('visible');
+        // 失焦只存本地，不推雲端
+        const k = getKey(yr, d.getMonth(), d.getDate());
+        data[k] = { text: e.target.value, mood: entry.mood };
+        saveData();
       }
     }
   }
@@ -1305,7 +1315,7 @@ function renderSettingsPage() {
 
   const curYr = new Date().getFullYear();
   const allYears = [];
-  for (let y = 2000; y <= curYr + 2; y++) allYears.push(y);
+  for (let y = 2000; y <= curYr + 10; y++) allYears.push(y);
 
   tempYears.forEach((yr, idx) => {
     const slot = document.createElement('div');
