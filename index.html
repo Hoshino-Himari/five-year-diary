@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.7</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.8</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -863,13 +863,12 @@
               <b style="color:var(--text-dark);">Step 1</b> 開啟 <a href="https://sheets.new" target="_blank" style="color:#4a90d9;">Google 試算表</a>（新建一個空白的）<br>
               <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部刪掉</b>，貼上下方新程式碼<br>
-              <b style="color:var(--text-dark);">Step 4</b> 按 <b>Ctrl+S</b>（或左上角💾）存檔<br>
-              <b style="color:var(--text-dark);">Step 5</b> 點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 6</b> 類型選「<b>網路應用程式</b>」<br>
-              <b style="color:var(--text-dark);">Step 7</b> 執行身分：<b>我</b>、存取權：<b>任何人</b> → 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 如果跳出授權視窗 → 點「授權存取」→「允許」<br>
-              <b style="color:var(--text-dark);">Step 9</b> 複製產生的網址，貼到上方欄位<br>
-              <b style="color:var(--text-dark);">Step 10</b> <span style="color:#d06060;">📷 要用圖片功能？</span> 在 Apps Script 編輯器上方函數下拉選單選「<b>initDriveAuth</b>」→ 按▶️執行 → 授權 Google Drive 存取
+              <b style="color:var(--text-dark);">Step 4</b> 點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 5</b> 類型選「<b>網路應用程式</b>」<br>
+              <b style="color:var(--text-dark);">Step 6</b> 執行身分：<b>我</b>、存取權：<b>任何人</b> → 按「<b>部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 7</b> 如果跳出授權視窗 → 點「授權存取」→「允許」<br>
+              <b style="color:var(--text-dark);">Step 8</b> 複製產生的網址，貼到上方欄位<br>
+              <b style="color:var(--text-dark);">Step 9</b> <span style="color:#d06060;">📷 要用圖片功能？</span> 在 Apps Script 編輯器上方函數下拉選單選「<b>initDriveAuth</b>」→ 按▶️執行 → 授權 Google Drive 存取
             </div>
           </div>
 
@@ -880,7 +879,7 @@
               <b style="color:var(--text-dark);">Step 1</b> 開啟你的 Google 試算表<br>
               <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部選取（Ctrl+A）後刪掉</b><br>
-              <b style="color:var(--text-dark);">Step 4</b> 貼上下方最新程式碼，按 <b>Ctrl+S</b> 存檔<br>
+              <b style="color:var(--text-dark);">Step 4</b> 貼上下方最新程式碼<br>
               <b style="color:var(--text-dark);">Step 5</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
               <b style="color:var(--text-dark);">Step 6</b> 點右上角鉛筆✏️編輯圖示<br>
               <b style="color:var(--text-dark);">Step 7</b> 版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
@@ -2110,55 +2109,52 @@ function downloadShareImage() {
 function uploadImage(input, yr, month, day) {
   const file = input.files[0];
   if (!file) return;
-  if (!scriptUrl) { showToast('請先連線 Google Sheets 才能上傳圖片'); return; }
-  if (file.size > 4 * 1024 * 1024) { showToast('圖片太大，請選擇 4MB 以下'); return; }
+  if (file.size > 10 * 1024 * 1024) { showToast('圖片太大，請選擇 10MB 以下'); return; }
 
   const imgArea = document.getElementById('imgArea' + yr);
-  if (imgArea) imgArea.innerHTML = '<div style="color:var(--text-light);font-size:12px;padding:8px 0;">上傳中…⏳</div>';
+  if (imgArea) imgArea.innerHTML = '<div style="color:var(--text-light);font-size:12px;padding:8px 0;">處理中…⏳</div>';
 
   const reader = new FileReader();
   reader.onload = function(ev) {
     const img = new Image();
     img.onload = function() {
+      // 壓縮到最寬 800px，品質 0.7，讓 base64 不要太大
       const canvas = document.createElement('canvas');
-      const maxW = 1200, maxH = 1200;
+      const maxW = 800, maxH = 800;
       var w = img.width, h = img.height;
-      if (w > maxW) { h = h * maxW / w; w = maxW; }
-      if (h > maxH) { w = w * maxH / h; h = maxH; }
+      if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+      if (h > maxH) { w = Math.round(w * maxH / h); h = maxH; }
       canvas.width = w; canvas.height = h;
       canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-      const base64 = canvas.toDataURL('image/jpeg', 0.75).split(',')[1];
 
-      const params = new URLSearchParams({
-        action: 'uploadImage',
-        fileName: 'diary_' + yr + '_' + (month+1) + '_' + day + '_' + Date.now() + '.jpg',
-        mimeType: 'image/jpeg'
-      });
+      // 直接用 data URL，完全不依賴外部服務
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
 
-      fetch(scriptUrl + '?' + params.toString(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'imageData=' + encodeURIComponent(base64)
-      })
-      .then(function(r) { return r.json(); })
-      .then(function(json) {
-        if (json.ok && json.url) {
-          const k = getKey(yr, month, day);
-          const entry = getEntry(yr, month, day);
-          data[k] = { text: entry.text, mood: entry.mood, imgUrl: json.url };
-          saveData();
-          callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: json.url }).catch(function(){});
-          renderEntries();
-          showToast('照片已上傳 ✓');
-        } else {
-          if (imgArea) imgArea.innerHTML = '<div style="color:#d06060;font-size:12px;padding:8px 0;">上傳失敗，請重試</div>';
-          showToast('上傳失敗：' + (json.error || '未知錯誤'));
-        }
-      })
-      .catch(function() {
-        if (imgArea) imgArea.innerHTML = '<label style="color:var(--text-light);font-size:12px;cursor:pointer;padding:4px 0;"><input type="file" accept="image/*" style="display:none;" onchange="uploadImage(this,' + yr + ',' + month + ',' + day + ')"><span>📷 新增照片</span></label>';
-        showToast('上傳失敗，請確認連線');
-      });
+      // 存到本地
+      const k = getKey(yr, month, day);
+      const entry = getEntry(yr, month, day);
+      data[k] = { text: entry.text, mood: entry.mood, imgUrl: dataUrl };
+      saveData();
+      renderEntries();
+      showToast('照片已新增 ✓');
+
+      // 靜默備份到 Drive（不影響主流程）
+      if (scriptUrl) {
+        const base64 = dataUrl.split(',')[1];
+        const params = new URLSearchParams({
+          action: 'uploadImage',
+          fileName: 'diary_' + yr + '_' + (month+1) + '_' + day + '.jpg',
+          mimeType: 'image/jpeg'
+        });
+        fetch(scriptUrl + '?' + params.toString(), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: 'imageData=' + encodeURIComponent(base64)
+        }).catch(function() {});
+
+        // 同步文字+心情到 Sheet（imgUrl 存 [img] 標記，不存 base64 避免 Sheet 爆）
+        callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: '[圖片已存於本地]' }).catch(function(){});
+      }
     };
     img.src = ev.target.result;
   };
