@@ -656,6 +656,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v0.6</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -1481,12 +1482,13 @@ function callScript(params, timeoutMs = 10000) {
     fetch(fullUrl, { redirect: 'follow' })
       .then(r => r.text())
       .then(text => {
+        console.log('fetch 回傳:', text.slice(0, 100));
         if (!done) {
-          // 手動執行 JSONP 回應
-          try { eval(text); } catch(e) {}
+          try { eval(text); } catch(e) { console.log('eval 錯誤:', e); }
         }
       })
-      .catch(() => {
+      .catch(err => {
+        console.log('fetch 失敗:', err);
         // 方法二：fallback 用 script tag
         if (!done) {
           const script = document.createElement('script');
