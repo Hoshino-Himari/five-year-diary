@@ -656,7 +656,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v0.9</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.0</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -1319,7 +1319,7 @@ function renderSettingsPage() {
 
   tempYears.forEach((yr, idx) => {
     const slot = document.createElement('div');
-    slot.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:14px;';
+    slot.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:14px;min-width:0;';
 
     const label = document.createElement('div');
     label.style.cssText = `width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;`;
@@ -1335,7 +1335,7 @@ function renderSettingsPage() {
     label.textContent = idx + 1;
 
     const select = document.createElement('select');
-    select.style.cssText = 'flex:1;padding:10px 14px;border:1.5px solid #e8e6e3;border-radius:12px;font-size:14px;font-family:"Noto Sans TC",sans-serif;color:var(--text-dark);background:var(--white);outline:none;appearance:none;-webkit-appearance:none;';
+    select.style.cssText = 'width:100%;padding:10px 30px 10px 14px;border:1.5px solid #e8e6e3;border-radius:12px;font-size:14px;font-family:"Noto Sans TC",sans-serif;color:var(--text-dark);background:var(--white);outline:none;appearance:none;-webkit-appearance:none;box-sizing:border-box;';
     select.innerHTML = allYears.map(y =>
       `<option value="${y}" ${y === yr ? 'selected' : ''}>${y} 年</option>`
     ).join('');
@@ -1348,7 +1348,7 @@ function renderSettingsPage() {
     icon.style.cssText = 'font-size:12px;color:var(--text-light);pointer-events:none;margin-left:-30px;';
 
     const wrapper = document.createElement('div');
-    wrapper.style.cssText = 'flex:1;display:flex;align-items:center;position:relative;';
+    wrapper.style.cssText = 'flex:1;min-width:0;display:flex;align-items:center;position:relative;';
     wrapper.appendChild(select);
     wrapper.appendChild(icon);
 
