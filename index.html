@@ -656,7 +656,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.1</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.2</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -716,10 +716,7 @@
         placeholder="貼上你的 Apps Script 網址"
         style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
 
-      <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <button onclick="testAndSaveScriptUrl()" style="flex:1;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">測試並連線</button>
-        <button onclick="syncFromCloud()" id="syncPullBtn" style="flex:1;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">從雲端載入</button>
-      </div>
+      <button onclick="testAndSaveScriptUrl()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:12px;">測試並連線</button>
 
       <!-- 可展開的設定說明 -->
       <div style="border:1.5px solid #e8e6e3;border-radius:12px;overflow:hidden;">
