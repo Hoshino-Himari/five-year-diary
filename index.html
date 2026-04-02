@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.0</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.1</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -1114,6 +1114,8 @@ let settings = loadSettings();
 let ACTIVE_YEARS = settings.years.slice().sort((a,b)=>a-b);
 
 loadData();
+// 套用儲存的日記名稱
+document.querySelector('.app-title').textContent = settings.name;
 renderHeader();
 renderPrompt();
 renderEntries();
@@ -2177,6 +2179,11 @@ function saveDiaryName() {
   settings.name = name;
   saveSettings(settings);
   document.querySelector('.app-title').textContent = name;
+  document.title = name;
+  // 同步更新 Google Sheet 標題
+  if (scriptUrl) {
+    callScript({ action: 'renameSheet', name }).catch(() => {});
+  }
   showToast('名稱已更新 ✓');
 }
 
