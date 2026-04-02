@@ -1447,19 +1447,25 @@ function renderSyncStatus() {
   }
 }
 
-// ── JSONP 呼叫 ──
+// ── 呼叫 Apps Script（fetch + JSONP 雙保險）──
 let _jsonpCounter = 0;
 
 function callScript(params, timeoutMs = 10000) {
   return new Promise((resolve, reject) => {
     const cbName = 'gsCallback' + (++_jsonpCounter);
+    let done = false;
 
     const timer = setTimeout(() => {
-      window[cbName] = null;
-      reject(new Error('timeout'));
+      if (!done) {
+        done = true;
+        window[cbName] = null;
+        reject(new Error('timeout'));
+      }
     }, timeoutMs);
 
     window[cbName] = function(result) {
+      if (done) return;
+      done = true;
       clearTimeout(timer);
       window[cbName] = null;
       resolve(result);
@@ -1469,15 +1475,25 @@ function callScript(params, timeoutMs = 10000) {
       .map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v)))
       .join('&');
 
-    const script = document.createElement('script');
-    script.src = scriptUrl + '?' + qs;
-    script.onerror = function() {
-      clearTimeout(timer);
-      window[cbName] = null;
-      this.remove();
-      reject(new Error('script load error'));
-    };
-    document.head.appendChild(script);
+    const fullUrl = scriptUrl + '?' + qs;
+
+    // 方法一：fetch（GitHub Pages HTTPS 環境有效）
+    fetch(fullUrl, { redirect: 'follow' })
+      .then(r => r.text())
+      .then(text => {
+        if (!done) {
+          // 手動執行 JSONP 回應
+          try { eval(text); } catch(e) {}
+        }
+      })
+      .catch(() => {
+        // 方法二：fallback 用 script tag
+        if (!done) {
+          const script = document.createElement('script');
+          script.src = fullUrl;
+          document.head.appendChild(script);
+        }
+      });
   });
 }
 
