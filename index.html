@@ -656,7 +656,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v0.6</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v0.7</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -1209,7 +1209,6 @@ function renderStats() {
   const yr = now.getFullYear();
   for (let week = 0; week < 26; week++) {
     for (let dow = 0; dow < 7; dow++) {
-      const offset = (week * 7 + dow) - now.getDayOfYear() % 7;
       const d2 = new Date(yr, 0, 1 + week*7 + dow);
       if (d2 > now) {
         const el = document.createElement('div');
@@ -1292,7 +1291,7 @@ document.addEventListener('blur', e => {
   }
 }, true);
 // ── Settings Page ──
-let tempYears = [];
+var tempYears = [];
 
 function renderSettingsPage() {
   tempYears = ACTIVE_YEARS.slice();
