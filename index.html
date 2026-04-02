@@ -783,7 +783,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.6</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.7</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -891,7 +891,7 @@
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v9）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v10）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -2422,7 +2422,7 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v9
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v10
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const FOLDER_NAME = '五年日記圖片';
@@ -2464,7 +2464,7 @@ function uploadImage(e) {
     const blob=Utilities.newBlob(bytes,mimeType,fileName);
     const file=folder.createFile(blob);
     file.setSharing(DriveApp.Access.ANYONE_WITH_LINK,DriveApp.Permission.VIEW);
-    const imgUrl='https://drive.google.com/uc?export=view&id='+file.getId();
+    const imgUrl='https://drive.google.com/thumbnail?authuser=0&sz=w1200&id='+file.getId();
     return respond({ok:true,url:imgUrl,fileId:file.getId()},cb);
   } catch(err) { return respond({ok:false,error:err.message},e.parameter&&e.parameter.callback); }
 }
