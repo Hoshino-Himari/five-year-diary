@@ -696,7 +696,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.3</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v1.4</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay"></div>
@@ -1222,6 +1222,44 @@ function closeYearPicker(e) {
   }
 }
 
+// ── 心情日記篩選 ──
+let currentMoodFilter = null;
+
+function filterMoodDiary(mood) {
+  currentMoodFilter = mood;
+  document.querySelectorAll('.mood-filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.mood === (mood || ''));
+  });
+  const list = document.getElementById('moodDiaryList');
+  if (!list) return;
+  const results = [];
+  Object.entries(data).forEach(([key, val]) => {
+    if (!val.text || !val.text.trim()) return;
+    if (mood && val.mood !== mood) return;
+    results.push({ key, text: val.text, mood: val.mood });
+  });
+  results.sort((a, b) => b.key.localeCompare(a.key));
+  if (results.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">沒有符合的日記</div>';
+    return;
+  }
+  list.innerHTML = results.map(({ key, text, mood: m }) => {
+    const parts = key.split('-');
+    const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
+    return `<div class="mood-diary-item" onclick="jumpToEntry('${key}')" style="cursor:pointer;">
+      <div class="mood-diary-date"><span>${dateStr}</span><span>${m||''}</span></div>
+      <div class="mood-diary-text">${text.slice(0,80)}${text.length>80?'…':''}</div>
+    </div>`;
+  }).join('');
+}
+
+function jumpToEntry(key) {
+  const parts = key.split('-');
+  currentDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+  switchPage('diary');
+  renderAll();
+}
+
 // ── Stats ──
 function renderStats() {
   let total = 0, days = new Set(), words = 0;
@@ -1469,48 +1507,7 @@ function copyGsCode() {
 }
 
 
-// ── 心情日記篩選 ──
-let currentMoodFilter = null;
 
-function filterMoodDiary(mood) {
-  currentMoodFilter = mood;
-  document.querySelectorAll('.mood-filter-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.mood === (mood || ''));
-  });
-
-  const list = document.getElementById('moodDiaryList');
-  if (!list) return;
-
-  const results = [];
-  Object.entries(data).forEach(([key, val]) => {
-    if (!val.text || !val.text.trim()) return;
-    if (mood && val.mood !== mood) return;
-    results.push({ key, text: val.text, mood: val.mood });
-  });
-
-  results.sort((a, b) => b.key.localeCompare(a.key));
-
-  if (results.length === 0) {
-    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">沒有符合的日記</div>';
-    return;
-  }
-
-  list.innerHTML = results.map(({ key, text, mood: m }) => {
-    const parts = key.split('-');
-    const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
-    return `<div class="mood-diary-item" onclick="jumpToEntry('${key}')" style="cursor:pointer;">
-      <div class="mood-diary-date"><span>${dateStr}</span><span>${m || ''}</span></div>
-      <div class="mood-diary-text">${text.slice(0,80)}${text.length>80?'…':''}</div>
-    </div>`;
-  }).join('');
-}
-
-function jumpToEntry(key) {
-  const parts = key.split('-');
-  currentDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
-  switchPage('diary');
-  renderAll();
-}
 
 var tempYears = [];
 
