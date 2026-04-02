@@ -783,10 +783,10 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.1</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v2.3</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
-    <div class="date-display" id="dateDisplay"></div>
+    <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
     <button class="date-nav-btn" onclick="changeDay(1)">›</button>
   </div>
   <div class="month-strip" id="monthStrip"></div>
@@ -984,6 +984,24 @@
   </div>
 </div>
 
+<!-- ── Date Picker Modal ── -->
+<div class="modal-overlay" id="datePickerOverlay" onclick="closeDatePicker(event)">
+  <div class="year-picker-sheet">
+    <div class="picker-handle"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <button class="cal-nav-btn" onclick="changeDatePickerMonth(-1)">‹</button>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button class="cal-nav-btn" onclick="changeDatePickerYear(-1)" style="font-size:11px;width:28px;height:28px;">«</button>
+        <div class="cal-month-title" style="font-size:15px;" id="dpMonthTitle"></div>
+        <button class="cal-nav-btn" onclick="changeDatePickerYear(1)" style="font-size:11px;width:28px;height:28px;">»</button>
+      </div>
+      <button class="cal-nav-btn" onclick="changeDatePickerMonth(1)">›</button>
+    </div>
+    <div class="calendar-grid" id="dpGrid"></div>
+    <button onclick="goToToday()" style="width:100%;margin-top:14px;padding:11px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">回到今天</button>
+  </div>
+</div>
+
 <!-- ── Year Picker Modal ── -->
 <div class="modal-overlay" id="yearPickerOverlay" onclick="closeYearPicker(event)">
   <div class="year-picker-sheet">
@@ -1056,18 +1074,209 @@ const MOODS = [
   '🥹','🥲','😂','🤣','😇','🫠','🥴','🫡'
 ];
 const PROMPTS = [
+  // 感謝與美好
   '今天讓你印象最深的一件事是什麼？',
   '今天你感謝的三件小事',
+  '今天遇到了什麼讓你微笑的事？',
+  '今天有什麼讓你感到驕傲的事？',
+  '今天最享受的時刻是什麼？',
+  '今天有誰讓你感到溫暖？',
+  '今天什麼事讓你覺得值得？',
+  '今天最美的一個瞬間是什麼？',
+  '今天有什麼小確幸嗎？',
+  '今天有什麼事讓你忍不住想分享？',
+  '今天吃了什麼讓你印象深刻的東西？',
+  '今天有什麼事讓你覺得「還好有做」？',
+  '今天讓你覺得生活很美好的事是什麼？',
+  '今天有什麼事讓你覺得自己很幸運？',
+  '今天有什麼讓你忍不住大笑的事？',
+
+  // 心情與感受
   '此刻你的心情是什麼顏色？',
+  '你現在最需要的是什麼？',
+  '此刻什麼事讓你感到平靜？',
+  '今天你感受最強烈的情緒是什麼？',
+  '此刻你心裡最重的事是什麼？',
+  '今天有什麼事讓你感到不安？',
+  '今天你最想逃避的事是什麼？',
+  '此刻你的心情用一首歌來形容是哪首？',
+  '今天你的情緒像什麼天氣？',
+  '今天有讓你感到疲憊的事嗎？',
+  '此刻你最想做的一件事是什麼？',
+  '今天你有沒有對自己好一點？',
+  '今天你最不想面對的事是什麼？',
+  '你今天感到孤單嗎？為什麼？',
+  '此刻你希望有人知道的事是什麼？',
+
+  // 成長與學習
   '今天學到什麼新的東西了嗎？',
   '如果今天重來一次，你會改變什麼？',
-  '今天遇到了什麼讓你微笑的事？',
-  '這個月你最想完成的一件事是什麼？',
   '今天的你，想對一年後的自己說什麼？',
-  '今天最享受的時刻是什麼？',
-  '你現在最需要的是什麼？',
-  '今天有什麼讓你感到驕傲的事？',
-  '此刻什麼事讓你感到平靜？',
+  '今天有什麼事讓你有所頓悟？',
+  '今天你做了一件平常不會做的事嗎？',
+  '今天有什麼失敗的經驗讓你學到東西？',
+  '今天你面對了什麼困難？',
+  '今天有什麼事讓你改變了原本的看法？',
+  '今天你最後悔的一件事是什麼？',
+  '今天你克服了什麼？',
+  '如果要給今天的自己打幾分，你打幾分？',
+  '今天你有沒有做一件讓自己進步的事？',
+  '你今天最勇敢的時刻是什麼？',
+  '今天有什麼事讓你意識到自己的侷限？',
+  '今天你學到什麼關於人的事？',
+
+  // 人際關係
+  '今天有誰讓你印象最深刻？',
+  '今天你對某人說了什麼讓你印象深刻的話？',
+  '今天有沒有想念某個人？',
+  '今天你有沒有讓某人感到被珍視？',
+  '今天有什麼關係讓你感到舒服？',
+  '今天有人讓你感到受傷嗎？',
+  '今天你有沒有主動聯繫某個久未聯絡的人？',
+  '今天有什麼事讓你更了解某個人？',
+  '此刻你最想見的人是誰？',
+  '今天有沒有一段對話讓你印象深刻？',
+  '今天誰的話讓你最有感觸？',
+  '今天你有沒有對某人感到愧疚？',
+  '今天有誰讓你感到被理解？',
+  '今天你對誰最感謝？',
+  '今天你有沒有讓某人失望？',
+
+  // 目標與夢想
+  '這個月你最想完成的一件事是什麼？',
+  '今天你距離你的目標近了還是遠了？',
+  '你現在最在乎的事是什麼？',
+  '如果明天是人生的最後一天，你會做什麼？',
+  '你最近一次勇敢追求夢想是什麼時候？',
+  '此刻你最大的心願是什麼？',
+  '你現在最想改變自己的一件事是什麼？',
+  '五年後的你，希望自己正在做什麼？',
+  '你最近有沒有在為什麼事努力？',
+  '今天有什麼事讓你更靠近你想成為的人？',
+  '你最近最執著的一件事是什麼？',
+  '如果不怕失敗，你最想嘗試什麼？',
+  '你現在最害怕放棄的東西是什麼？',
+  '今天你有沒有為未來做了一件小事？',
+  '什麼事情是你一直想做但還沒做的？',
+
+  // 身體與生活
+  '今天你的身體有什麼感受？',
+  '你今天睡得好嗎？',
+  '今天你有沒有好好吃飯？',
+  '今天有沒有讓你身體感到放鬆的時刻？',
+  '你最近的生活節奏讓你感覺如何？',
+  '今天你有沒有做一件照顧自己的事？',
+  '你今天的精神狀態如何？',
+  '今天你有沒有花時間在戶外？',
+  '今天有什麼讓你的身體感到疲勞？',
+  '你最近的睡眠品質如何？',
+  '今天你有沒有做讓自己開心的事？',
+  '你有多久沒有好好放鬆了？',
+  '今天你有沒有讓自己喘口氣？',
+  '你今天的狀態用一個詞來形容是什麼？',
+  '今天你有沒有好好欣賞周圍的環境？',
+
+  // 觀察與思考
+  '今天你注意到了什麼平常忽略的事？',
+  '今天你觀察到什麼有趣的事？',
+  '今天你有沒有思考過一個問題很久？',
+  '今天有什麼事讓你覺得世界很有趣？',
+  '今天你有沒有對某件事感到好奇？',
+  '今天有什麼讓你改變了對某件事的看法？',
+  '此刻你腦子裡轉得最多的念頭是什麼？',
+  '今天有什麼事讓你覺得不可思議？',
+  '今天你有沒有注意到一個小細節讓你感動？',
+  '今天你有沒有想清楚一件事？',
+  '此刻你最想知道答案的問題是什麼？',
+  '今天有沒有什麼事讓你覺得「原來如此」？',
+  '今天你觀察到什麼關於自己的事？',
+  '今天有什麼事讓你靜下來好好想？',
+  '此刻你腦海中浮現的第一個畫面是什麼？',
+
+  // 創意與想像
+  '如果今天是電影，你會給它取什麼片名？',
+  '今天你的心情像什麼動物？',
+  '如果今天的感受是一種顏色，是什麼？',
+  '今天的你用一個成語形容是什麼？',
+  '如果今天發生的事是一首詩的開頭，你會怎麼寫？',
+  '今天如果要畫一張圖，你會畫什麼？',
+  '你今天的心情像什麼食物？',
+  '如果今天是一首歌，曲風是什麼？',
+  '如果今天的心情是天氣，是什麼天氣？',
+  '今天你腦子裡有沒有一個奇怪的想法？',
+  '如果你今天是一個物品，你是什麼？',
+  '今天的你像什麼季節？',
+  '如果今天的感受可以是一種味道，是什麼？',
+  '你今天的心情像什麼地方？',
+  '如果今天是一本書的一章，這章叫什麼？',
+
+  // 過去與回憶
+  '今天有沒有什麼事讓你想起過去？',
+  '此刻你最懷念的一段時光是什麼？',
+  '今天有沒有什麼事讓你想起一個老朋友？',
+  '你最近有沒有夢到什麼讓你印象深刻的？',
+  '今天有什麼事讓你想起小時候？',
+  '你最近有沒有回想起一件很久沒想到的事？',
+  '你最近有沒有重新和某段記憶和解？',
+  '今天有沒有什麼感受跟某段往事很像？',
+  '你現在最希望能回到的一個時刻是什麼？',
+  '今天有沒有什麼事讓你覺得時間過得很快？',
+  '你最近一次深刻感受到「時間不等人」是什麼時候？',
+  '今天有沒有讓你後悔過去某個決定的事？',
+  '你有哪段回憶是越想越感謝的？',
+  '今天你有沒有對某件過去的事釋懷了一點？',
+  '你最近有沒有一個「那時候要是…就好了」的感嘆？',
+
+  // 當下與未來
+  '此刻你在哪裡？周圍有什麼？',
+  '今天你最清醒的一刻是什麼時候？',
+  '此刻你最想說出口卻沒說的話是什麼？',
+  '你今天有沒有活在當下的感覺？',
+  '今天有什麼事讓你感受到時間的重量？',
+  '此刻你覺得最重要的事是什麼？',
+  '你今天有沒有停下來好好看看周圍？',
+  '此刻你最想改變的一件事是什麼？',
+  '今天有什麼事讓你對未來更有信心？',
+  '此刻你最期待的一件事是什麼？',
+  '你今天有沒有做一件讓未來的自己感謝的事？',
+  '今天有什麼事讓你覺得「就是現在」？',
+  '你今天有沒有為某件事認真許願？',
+  '此刻你覺得最美好的事是什麼？',
+  '今天你有沒有好好感受自己活著的感覺？',
+
+  // 工作與成就
+  '今天工作或學習上最有成就感的事是什麼？',
+  '今天你做了什麼讓自己感到有意義的事？',
+  '今天你有沒有完成一件一直拖著的事？',
+  '今天你最有效率的時刻是什麼時候？',
+  '今天工作或生活上最大的挑戰是什麼？',
+  '今天你有沒有幫到別人？怎麼幫的？',
+  '今天你最專注的時刻是什麼？',
+  '今天有沒有什麼事讓你覺得自己很有用？',
+  '今天你完成了什麼？哪怕是很小的事',
+  '今天你有沒有做一件讓自己更好的決定？',
+  '你今天的付出有沒有得到應有的回報？',
+  '今天你有沒有嘗試一個新的方法做某件事？',
+  '今天你有什麼事做得比平常好？',
+  '今天你花最多時間的事是什麼？值得嗎？',
+  '今天你有沒有做到一件自己承諾過的事？',
+
+  // 自我認識
+  '你今天更了解自己的哪一面？',
+  '今天有什麼事讓你發現自己的一個習慣？',
+  '今天你有沒有違背自己的某個原則？',
+  '你今天是你想成為的那種人嗎？',
+  '今天你最真實的樣子出現在什麼時候？',
+  '今天你有沒有假裝自己沒事？',
+  '你今天有沒有做一件讓自己覺得「這才是我」的事？',
+  '今天你最不喜歡自己的哪一面出現了嗎？',
+  '你今天有沒有對自己誠實？',
+  '今天有什麼事讓你重新認識自己？',
+  '你今天的選擇反映了什麼樣的你？',
+  '今天你有沒有做一件跟「本來的你」不一樣的事？',
+  '你今天最像自己的時刻是什麼？',
+  '今天有沒有什麼事讓你看見自己的盲點？',
+  '今天你最想改掉的自己的一個習慣是什麼？',
 ];
 
 const MONTHS_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
@@ -1401,44 +1610,135 @@ function renderCalendar() {
     el.textContent = d2;
     const _yr = yr, _mo = mo, _d2 = d2;
     el.onclick = () => {
-      currentDate = new Date(_yr, _mo, _d2);
-      calViewDate = new Date(_yr, _mo, _d2);
-      renderAll();
-      switchPage('diary');
+      // 更新選中狀態
+      document.querySelectorAll('#calendarGrid .cal-day').forEach(e => e.classList.remove('selected'));
+      if (!isToday) el.classList.add('selected');
+      // 顯示那天的日記預覽
+      showCalDayPreview(_yr, _mo, _d2);
     };
     grid.appendChild(el);
   }
 
-  // Preview
+
+  // 預設顯示今天或本月第一筆有記錄的日
+  const todayInView = yr === new Date().getFullYear() && mo === new Date().getMonth();
+  if (todayInView) {
+    showCalDayPreview(yr, mo, new Date().getDate());
+  } else {
+    document.getElementById('calEntryPreview').innerHTML =
+      '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px;">點選日期查看日記</div>';
+  }
+}
+
+function showCalDayPreview(yr, mo, day) {
   const preview = document.getElementById('calEntryPreview');
-  preview.innerHTML = '';
-  let found = 0;
-  for (let d2 = 1; d2 <= daysInMonth; d2++) {
-    for (const y of ACTIVE_YEARS) {
-      const e = getEntry(y, mo, d2);
-      if (e.text && e.text.trim()) {
-        found++;
-        const card = document.createElement('div');
-        card.style.cssText = 'background:var(--white);border-radius:14px;padding:12px 14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04);';
-        card.innerHTML = `<div style="font-size:11px;color:var(--text-light);margin-bottom:6px;letter-spacing:0.05em;">${mo+1}月${d2}日・${y}年 ${e.mood||''}</div><div style="font-size:13px;color:var(--text-dark);line-height:1.6;font-family:'Noto Serif TC',serif;">${e.text.slice(0,60)}${e.text.length>60?'…':''}</div>`;
-        card.onclick = () => {
-          currentDate = new Date(y, mo, d2);
-          switchPage('diary');
-        };
-        preview.appendChild(card);
-        if (found >= 10) break;
-      }
-    }
-    if (found >= 10) break;
+  const dateStr = yr + '年 ' + (mo+1) + '月 ' + day + '日';
+  const entries = [];
+  ACTIVE_YEARS.forEach(y => {
+    const e = getEntry(y, mo, day);
+    if (e.text && e.text.trim()) entries.push({ y, text: e.text, mood: e.mood });
+  });
+
+  if (entries.length === 0) {
+    preview.innerHTML = `
+      <div style="background:var(--white);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">${dateStr}</div>
+        <div style="text-align:center;color:var(--text-light);font-size:13px;padding:10px 0;">這天沒有日記</div>
+        <button onclick="jumpToEntry('${yr}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}')" 
+          style="width:100%;margin-top:12px;padding:10px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">
+          去這天寫日記
+        </button>
+      </div>`;
+    return;
   }
-  if (!found) {
-    preview.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px;">本月尚無記錄</div>';
-  }
+
+  preview.innerHTML = `
+    <div style="font-size:11px;color:var(--text-light);letter-spacing:0.05em;margin-bottom:10px;">${dateStr}</div>
+    ${entries.map(({ y, text, mood }) => `
+      <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;"
+        onclick="jumpToEntry('${y}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}')">
+        <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;">${y}年 ${mood||''}</div>
+        <div style="font-size:13px;color:var(--text-dark);line-height:1.6;font-family:'Noto Serif TC',serif;">${text.slice(0,80)}${text.length>80?'…':''}</div>
+      </div>
+    `).join('')}
+  `;
 }
 
 function changeCalMonth(delta) {
   calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth() + delta, 1);
   renderCalendar();
+}
+
+// ── 首頁日期選擇器 ──
+var dpViewDate = new Date();
+
+function openDatePicker() {
+  dpViewDate = new Date(currentDate);
+  renderDatePickerGrid();
+  document.getElementById('datePickerOverlay').classList.add('show');
+}
+
+function closeDatePicker(e) {
+  if (!e || e.target === document.getElementById('datePickerOverlay')) {
+    document.getElementById('datePickerOverlay').classList.remove('show');
+  }
+}
+
+function changeDatePickerMonth(delta) {
+  dpViewDate = new Date(dpViewDate.getFullYear(), dpViewDate.getMonth() + delta, 1);
+  renderDatePickerGrid();
+}
+
+function changeDatePickerYear(delta) {
+  dpViewDate = new Date(dpViewDate.getFullYear() + delta, dpViewDate.getMonth(), 1);
+  renderDatePickerGrid();
+}
+
+function renderDatePickerGrid() {
+  const yr = dpViewDate.getFullYear();
+  const mo = dpViewDate.getMonth();
+  document.getElementById('dpMonthTitle').textContent = yr + '年 ' + MONTHS_ZH[mo];
+
+  const grid = document.getElementById('dpGrid');
+  grid.innerHTML = '';
+
+  DAYS_ZH.forEach(dh => {
+    const el = document.createElement('div');
+    el.className = 'cal-header';
+    el.textContent = dh;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(yr, mo, 1).getDay();
+  const daysInMonth = new Date(yr, mo+1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    const isToday = yr === today.getFullYear() && mo === today.getMonth() && d === today.getDate();
+    const isSelected = yr === currentDate.getFullYear() && mo === currentDate.getMonth() && d === currentDate.getDate();
+    el.className = 'cal-day' + (isToday ? ' today' : '') + (isSelected && !isToday ? ' selected' : '');
+    el.textContent = d;
+    const _d = d;
+    el.onclick = () => {
+      currentDate = new Date(yr, mo, _d);
+      document.getElementById('datePickerOverlay').classList.remove('show');
+      renderAll();
+    };
+    grid.appendChild(el);
+  }
+}
+
+function goToToday() {
+  currentDate = new Date();
+  document.getElementById('datePickerOverlay').classList.remove('show');
+  renderAll();
 }
 
 function openYearPicker() {
