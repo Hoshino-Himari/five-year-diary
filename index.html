@@ -785,7 +785,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.5</div>
+  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v3.6</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1001,15 +1001,15 @@
 
 <!-- ── Share Modal ── -->
 <div class="modal-overlay" id="shareOverlay" onclick="closeShare(event)">
-  <div class="year-picker-sheet" style="padding:24px 20px 40px;">
-    <div class="picker-handle"></div>
+  <div class="year-picker-sheet" id="shareSheet" style="padding:20px 20px 40px;max-height:90vh;overflow-y:auto;">
+    <div class="picker-handle" id="shareHandle" style="cursor:grab;"></div>
     <div class="picker-title">分享這篇日記</div>
 
     <!-- 拍立得卡片預覽 -->
     <div id="shareCard" style="background:#fff;border-radius:4px;padding:16px 16px 40px;margin:16px 0;box-shadow:0 4px 20px rgba(0,0,0,0.15);position:relative;">
-      <!-- 照片區 -->
-      <div id="shareCardImg" style="width:100%;background:#f0eeec;border-radius:2px;margin-bottom:14px;overflow:hidden;display:none;">
-        <img id="shareCardImgEl" style="width:100%;max-height:220px;object-fit:cover;display:block;">
+      <!-- 照片區：完整顯示不裁切 -->
+      <div id="shareCardImg" style="width:100%;border-radius:2px;margin-bottom:14px;overflow:hidden;display:none;background:#f5f5f5;text-align:center;">
+        <img id="shareCardImgEl" style="max-width:100%;height:auto;display:block;margin:0 auto;">
       </div>
       <!-- 文字區 -->
       <div id="shareCardDate" style="font-size:10px;letter-spacing:0.12em;color:#aaa;margin-bottom:8px;font-family:sans-serif;"></div>
@@ -2163,6 +2163,65 @@ function closeShare(e) {
   }
 }
 
+// 往下滑關閉分享視窗
+(function() {
+  var startY = 0, sheet;
+  document.addEventListener('touchstart', function(e) {
+    if (!document.getElementById('shareOverlay').classList.contains('show')) return;
+    sheet = document.getElementById('shareSheet');
+    // 只有在頂部才觸發下滑關閉
+    if (sheet.scrollTop > 0) return;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    if (!document.getElementById('shareOverlay').classList.contains('show')) return;
+    if (!sheet) return;
+    if (sheet.scrollTop > 0) return;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (dy > 80) {
+      document.getElementById('shareOverlay').classList.remove('show');
+    }
+    startY = 0;
+  }, { passive: true });
+})();
+
+// 往下滑關閉分享視窗
+(function() {
+  var sheet, startY, isDragging = false;
+  function initShareSwipe() {
+    sheet = document.getElementById('shareSheet');
+    if (!sheet) return;
+    var handle = document.getElementById('shareHandle');
+    if (!handle) return;
+
+    handle.addEventListener('touchstart', function(e) {
+      startY = e.touches[0].clientY;
+      isDragging = true;
+      sheet.style.transition = 'none';
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      var dy = e.touches[0].clientY - startY;
+      if (dy > 0) sheet.style.transform = 'translateY(' + dy + 'px)';
+    }, { passive: true });
+
+    document.addEventListener('touchend', function(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      var dy = e.changedTouches[0].clientY - startY;
+      sheet.style.transition = '';
+      sheet.style.transform = '';
+      if (dy > 80) {
+        document.getElementById('shareOverlay').classList.remove('show');
+      }
+    });
+  }
+  // 等 DOM 載入完
+  document.addEventListener('DOMContentLoaded', initShareSwipe);
+  setTimeout(initShareSwipe, 500);
+})();
+
 function copyShareText() {
   const text = shareData.dateStr + '\n\n' + shareData.text + '\n\n' + (shareData.mood||'') + '\n— 五年日記';
   navigator.clipboard.writeText(text).then(() => showToast('已複製 ✓')).catch(() => showToast('複製失敗'));
@@ -2188,46 +2247,41 @@ function downloadShareImage() {
     textLines.push(line || '');
   });
 
-  const imgH    = hasImg ? 200 : 0;
   const textH   = textLines.length * 24 + 20;
-  const cardH   = 40 + imgH + (hasImg ? 14 : 0) + 20 + textH + 50;
 
-  const scale = 3;
-  const canvas = document.createElement('canvas');
-  canvas.width  = cardW * scale;
-  canvas.height = cardH * scale;
-  const ctx = canvas.getContext('2d');
-  ctx.scale(scale, scale);
-
-  // 拍立得白底 + 陰影效果
-  ctx.shadowColor   = 'rgba(0,0,0,0.12)';
-  ctx.shadowBlur    = 20;
-  ctx.shadowOffsetY = 4;
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, cardW, cardH);
-  ctx.shadowColor = 'transparent';
-
-  var curY = 20;
-
-  // 圖片區
+  // 如果有圖片，需要先載入才能知道高度
   if (hasImg && shareData.imgDataUrl) {
-    const drawImg = function() {
-      const img = new Image();
-      img.onload = function() {
-        // 填滿寬度，最高 200px
-        const iW = cardW - 32, iH = Math.min(200, img.height * (iW / img.width));
-        ctx.drawImage(img, 16, curY, iW, iH);
-        curY += iH + 14;
-        drawText();
-      };
-      img.src = shareData.imgDataUrl;
+    const preloadImg = new Image();
+    preloadImg.onload = function() {
+      const iW = 288; // cardW - 32
+      const iH = Math.round(preloadImg.naturalHeight * iW / preloadImg.naturalWidth);
+      const cardH = 24 + iH + 16 + 28 + textH + 50;
+      renderCanvas(cardH, preloadImg, iW, iH);
     };
-    drawImg();
+    preloadImg.src = shareData.imgDataUrl;
   } else {
-    drawText();
+    const cardH = 24 + 28 + textH + 50;
+    renderCanvas(cardH, null, 0, 0);
   }
 
-  function drawText() {
+  function renderCanvas(cardH, imgEl, iW, iH) {
+    const scale = 3;
+    const canvas = document.createElement('canvas');
+    canvas.width  = cardW * scale;
+    canvas.height = cardH * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, cardW, cardH);
+
+    var curY = 20;
+
+    if (imgEl) {
+      ctx.drawImage(imgEl, 16, curY, iW, iH);
+      curY += iH + 16;
+    }
+
     // 日期
     ctx.fillStyle = '#aaaaaa';
     ctx.font = '10px sans-serif';
@@ -2255,18 +2309,14 @@ function downloadShareImage() {
     ctx.letterSpacing = '1px';
     ctx.fillText('五年日記', cardW - 60, curY + 18);
 
-    // 下載
     const a = document.createElement('a');
     a.download = '五年日記_' + shareData.dateStr + '.png';
     a.href = canvas.toDataURL('image/png');
     a.click();
     showToast('拍立得已儲存 ✓');
   }
-
-  if (!hasImg) drawText();
 }
 
-// ── 圖片上傳 ──
 // ── 圖片上傳 ──
 function uploadImage(input, yr, month, day) {
   const file = input.files[0];
