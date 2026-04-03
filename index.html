@@ -1244,7 +1244,7 @@
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v12）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v13）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -1285,22 +1285,10 @@
 
   <!-- Page: Stats -->
   <div class="page" id="pageStats">
-    <div class="streak-banner">
-      <div class="streak-icon">🔥</div>
-      <div class="streak-info">
-        <div class="streak-num" id="streakNum">0</div>
-        <div class="streak-label">天連續記錄</div>
-      </div>
-    </div>
-
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-num" id="totalEntries">0</div>
         <div class="stat-label">總記錄數</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="totalDays">0</div>
-        <div class="stat-label">有心情標記</div>
       </div>
       <div class="stat-card">
         <div class="stat-num" id="totalWords">0</div>
@@ -1484,7 +1472,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.8';
+const APP_VERSION = '4.9';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -3734,7 +3722,7 @@ function jumpToEntry(key) {
 
 // ── Stats ──
 function renderStats() {
-  let total = 0, moodDays = 0, words = 0;
+  let total = 0, words = 0;
   const moodCount = {};
 
   Object.entries(data).forEach(([k, v]) => {
@@ -3744,29 +3732,11 @@ function renderStats() {
     }
     if (v.mood) {
       moodCount[v.mood] = (moodCount[v.mood] || 0) + 1;
-      moodDays++;
     }
   });
 
   document.getElementById('totalEntries').textContent = total;
-  document.getElementById('totalDays').textContent = moodDays;
   document.getElementById('totalWords').textContent = words > 999 ? (words/1000).toFixed(1)+'k' : words;
-
-  // Streak
-  let streak = 0, check = new Date();
-  check.setHours(0,0,0,0);
-  while (true) {
-    const k = getKey(check.getFullYear(), check.getMonth(), check.getDate());
-    let hasAny = false;
-    for (const y of ACTIVE_YEARS) {
-      const kk = `${y}-${k.slice(5)}`;
-      if (data[kk] && data[kk].text && data[kk].text.trim()) { hasAny = true; break; }
-    }
-    if (!hasAny) break;
-    streak++;
-    check = new Date(check.getTime() - 86400000);
-  }
-  document.getElementById('streakNum').textContent = streak;
 
   // Mood stats — 只顯示有用過的
   const usedMoods = Object.entries(moodCount).filter(([m, c]) => c > 0).sort((a,b) => b[1]-a[1]);
@@ -3918,7 +3888,7 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v11
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v13
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const FOLDER_NAME = '五年日記圖片';
@@ -3926,7 +3896,7 @@ function doGet(e) {
   try {
     const action=e.parameter.action||'ping',cb=e.parameter.callback;
     let r;
-    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v8'};
+    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v13',scriptVersion:13};
     else if(action==='save') r=saveEntry(e.parameter);
     else if(action==='loadAll') r=loadAll();
     else if(action==='deleteEntry') r=deleteEntry(e.parameter);
@@ -4023,10 +3993,9 @@ function getSheet(){
 }
 function setupSheet(s){setupHeader(s);applyFormat(s);}
 function setupHeader(s){
-  s.getRange(1,7).setValue('今日抽到的塔羅-牌意');
-  s.getRange(1,1,1,7).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
-  s.getRange(1,1,1,6).setValues([['索引鍵','日期','日記內容','心情','最後更新','圖片']]);
-  s.setFrozenRows(1);s.getRange(1,1,1,6).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+  if(s.getMaxColumns()<7)s.insertColumnsAfter(s.getMaxColumns(),7-s.getMaxColumns());
+  s.getRange(1,1,1,7).setValues([['索引鍵','日期','日記內容','心情','最後更新','圖片','今日抽到的塔羅-牌意']]);
+  s.setFrozenRows(1);s.getRange(1,1,1,7).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
 }
 function applyFormat(s){
   s.setColumnWidth(7,280);
@@ -4040,7 +4009,7 @@ function respond(obj,cb){
   if(cb) return ContentService.createTextOutput(cb+'('+j+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
   return ContentService.createTextOutput(j).setMimeType(ContentService.MimeType.JSON);
 }`;
-const GS_CODE_DISPLAY = GS_CODE.replace(/v11/g, 'v12').replace(/v8/g, 'v12');
+const GS_CODE_DISPLAY = GS_CODE;
 
 function copyGsCode() {
   const box = document.getElementById('gsCodeBox');
@@ -4275,7 +4244,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 12;
+const REQUIRED_SCRIPT_VERSION = 13;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
