@@ -819,7 +819,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.3</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.4</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1149,7 +1149,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.3';
+const APP_VERSION = '4.4';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1840,10 +1840,10 @@ function classifyReviewTone(entries, topMood, topWords, avgWords) {
 }
 
 function buildPseudoAiReview(entries, title, start, end, topMood, totalWords, topWords, longest) {
+  const avgWords = entries.length ? Math.round(totalWords / entries.length) : 0;
   if (entries.length === 0) {
     return {
-      heading: `${title}的記錄輪廓`,
-      summary: '這段時間還沒有足夠的內容可以整理。',
+      heading: `${title}的記錄概況`,
       bullets: [
         `時間範圍：${getReviewRangeLabel(start, end)}`,
         '目前沒有可用的日記內容。'
@@ -1851,31 +1851,15 @@ function buildPseudoAiReview(entries, title, start, end, topMood, totalWords, to
     };
   }
 
-  const avgWords = Math.round(totalWords / entries.length);
-  const tone = classifyReviewTone(entries, topMood, topWords, avgWords);
-  const seed = entries.length + totalWords + (topWords[0] ? topWords[0][0].length : 0);
-  const toneLine = pickDeterministic(REVIEW_COPY[tone], seed);
-  const topicLabel = topWords.length > 0
-    ? `內容反覆落在 ${topWords.slice(0, 3).map(([word]) => word).join('、')}`
-    : '內容沒有明顯集中在固定主題';
-  const moodLabel = topMood ? `心情標記以 ${topMood} 為主` : '心情標記沒有明顯集中';
-  const lengthLabel = avgWords >= 110
-    ? '而且單篇篇幅偏長'
-    : avgWords >= 45
-      ? '單篇篇幅大致維持在中段'
-      : '多半是比較短的片段記錄';
-  const summary = `${topicLabel}，${moodLabel}，${lengthLabel}。`;
   const bullets = [];
   bullets.push(`時間範圍：${getReviewRangeLabel(start, end)}`);
   bullets.push(`記錄數量：${entries.length} 篇，約 ${totalWords} 字。`);
-  bullets.push(toneLine);
-  if (topWords.length > 0) bullets.push(`反覆出現：${topWords.slice(0, 3).map(([word, count]) => `${word}×${count}`).join('、')}。`);
+  bullets.push(`平均每篇：約 ${avgWords} 字。`);
   if (topMood) bullets.push(`最常心情：${topMood}。`);
   if (longest) bullets.push(`最長的一篇落在 ${longest.date.getMonth()+1}月${longest.date.getDate()}日，共 ${longest.text.length} 字。`);
 
   return {
-    heading: `${title}的記錄輪廓`,
-    summary,
+    heading: `${title}的記錄概況`,
     bullets
   };
 }
@@ -2291,26 +2275,12 @@ function renderReview() {
   </div>`;
 
   html += `<div style="background:linear-gradient(135deg, rgba(253,232,200,0.75), rgba(240,232,248,0.95));border-radius:18px;padding:18px 16px;margin-bottom:12px;box-shadow:0 3px 12px rgba(0,0,0,0.05);">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
-      <div style="font-size:11px;color:rgba(58,42,42,0.55);letter-spacing:0.14em;">AI-LIKE REVIEW</div>
-      <button onclick="renderReview()" style="border:none;background:rgba(255,255,255,0.75);color:#5b4b4b;padding:7px 12px;border-radius:999px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">重新整理語氣</button>
-    </div>
-    <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;line-height:1.6;margin-bottom:10px;">${pseudoAi.heading}</div>
-    <div style="font-family:'Noto Serif TC',serif;font-size:14px;color:#4a3b3b;line-height:1.9;margin-bottom:12px;">${pseudoAi.summary}</div>
+    <div style="font-size:11px;color:rgba(58,42,42,0.55);letter-spacing:0.14em;margin-bottom:10px;">REVIEW SNAPSHOT</div>
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;line-height:1.6;margin-bottom:12px;">${pseudoAi.heading}</div>
     <div style="display:flex;flex-direction:column;gap:8px;">
       ${pseudoAi.bullets.map(text => `<div style="display:flex;gap:8px;align-items:flex-start;color:#5a4a4a;font-size:12px;line-height:1.8;"><span style="font-size:14px;line-height:1.4;">·</span><span>${text}</span></div>`).join('')}
     </div>
   </div>`;
-
-  // 反覆提到的人事物
-  if (topWords.length > 0) {
-    html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">反覆提到的人事物</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
-        ${topWords.map(([w,c],i) => `<span style="padding:5px 12px;background:var(--bg);border-radius:20px;font-size:13px;color:var(--text-dark);">${w} <span style="color:var(--text-light);font-size:11px;">×${c}</span></span>`).join('')}
-      </div>
-    </div>`;
-  }
 
   // 最長的一篇
   if (longest) {
