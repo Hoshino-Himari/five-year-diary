@@ -1484,7 +1484,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.7';
+const APP_VERSION = '4.8';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1979,7 +1979,7 @@ function renderEntries() {
           <div style="display:flex;align-items:center;gap:8px;">
             <span class="char-count" id="cc${yr}">${entry.text.length}字</span>
             ${!isFuture ? `<button onclick="pasteToEntry('ta${yr}')" style="background:none;border:none;color:var(--text-light);font-size:12px;cursor:pointer;padding:2px 6px;border-radius:8px;">貼上</button>` : ''}
-            ${!isFuture && entry.text ? `<button onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;">↗ 分享</button>` : ''}
+            ${!isFuture && entry.text.trim() ? `<button id="shareBtn${yr}" onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;">↗ 分享</button>` : ''}
           </div>
         </div>
         ${!isFuture ? `
@@ -2592,7 +2592,7 @@ function renderTarotSectionLegacy() {
         <div class="tarot-result-copy">${chosen.reversed ? chosenCard.reversed : chosenCard.upright}</div>
         <div class="tarot-result-note">如果想更詳細了解內容，把你的問題和抽到的牌拿去問 AI。</div>
         <div class="tarot-result-actions">
-          <button class="tarot-action-btn primary" onclick="copyTarotPrompt()">複製提問素材</button>
+          <button class="tarot-action-btn primary" onclick="copyTarotPrompt(this)">複製提問素材</button>
           <button class="tarot-action-btn secondary" onclick="showToast('把你的問題、${chosenCard.name}${chosen.reversed ? '逆位' : '正位'}一起拿去問 AI 就可以了')">問 AI 提示</button>
         </div>
       </div>
@@ -2688,7 +2688,7 @@ function renderTarotSection() {
         <div class="tarot-result-copy">${savedTarot.reversed ? savedCard.reversed : savedCard.upright}</div>
         <div class="tarot-result-note">今日塔羅只能抽一次。如果想更詳細了解內容，把你的問題和抽到的牌拿去問 AI。</div>
         <div class="tarot-result-actions">
-          <button class="tarot-action-btn primary" onclick="copyTarotPrompt()">複製提問素材</button>
+          <button class="tarot-action-btn primary" onclick="copyTarotPrompt(this)">複製提問素材</button>
         </div>
       </div>
     `;
@@ -2762,6 +2762,19 @@ function onTextInput(ta, yr, month, day) {
   if (saveBtn) {
     saveBtn.classList.toggle('visible', len > 0 || getEntry(yr, month, day).text !== ta.value);
   }
+  let shareBtn = document.getElementById(`shareBtn${yr}`);
+  if (len > 0 && !shareBtn) {
+    const actionRow = ta.closest('.entry-inner')?.querySelector('.entry-footer div[style*="display:flex"]');
+    if (actionRow) {
+      shareBtn = document.createElement('button');
+      shareBtn.id = `shareBtn${yr}`;
+      shareBtn.textContent = '↗ 分享';
+      shareBtn.setAttribute('onclick', `shareEntry(${yr}, ${month}, ${day})`);
+      shareBtn.style.cssText = 'background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;';
+      actionRow.appendChild(shareBtn);
+    }
+  }
+  if (shareBtn) shareBtn.style.display = len > 0 ? '' : 'none';
 }
 
 function saveEntry(yr, month, day) {
@@ -4004,6 +4017,8 @@ function getSheet(){
   if(!s){s=ss.insertSheet(SHEET_NAME);setupSheet(s);return s;}
   const fc=String(s.getRange(1,1).getValue()).trim();
   if(fc!=='索引鍵'&&fc!=='日期'){s.insertRowBefore(1);setupHeader(s);}
+  if(s.getMaxColumns()<7)s.insertColumnsAfter(s.getMaxColumns(),7-s.getMaxColumns());
+  if(!String(s.getRange(1,7).getValue()).trim())s.getRange(1,7).setValue('今日抽到的塔羅-牌意');
   applyFormat(s);return s;
 }
 function setupSheet(s){setupHeader(s);applyFormat(s);}
@@ -4379,6 +4394,189 @@ function setEntry(year, month, day, text, mood, imgUrl, tarot) {
     callScript({ action: 'save', key: k, text: text || '', mood: mood || '', imgUrl: newImgUrl, tarotText: tarotToText(newTarot) }).catch(() => {});
   }
 }
+
+copyTarotPrompt = function(btn) {
+  ensureTarotState();
+  let sourceTarot = null;
+  let modeId = '';
+  if (tarotState && tarotState.chosenIndex !== null && tarotState.spread && tarotState.spread[tarotState.chosenIndex]) {
+    sourceTarot = tarotState.spread[tarotState.chosenIndex];
+    modeId = tarotState.mode;
+  } else {
+    const today = new Date();
+    sourceTarot = getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
+    modeId = sourceTarot && sourceTarot.mode ? sourceTarot.mode : '';
+  }
+  if (!sourceTarot || !sourceTarot.cardId) return;
+  const card = getTarotCardMeta(sourceTarot.cardId);
+  const mode = getTarotModeById(modeId);
+  if (!card) return;
+  const text = [
+    '請根據下面這張塔羅牌做更詳細的解讀。',
+    `抽牌方式：${mode.label}`,
+    '我的問題：',
+    '（把你的問題補在這裡）',
+    `抽到的牌：${card.name}${sourceTarot.reversed ? '（逆位）' : '（正位）'}`,
+    `牌意：${sourceTarot.reversed ? card.reversed : card.upright}`
+  ].join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) {
+      const original = btn.dataset.originalLabel || btn.textContent;
+      btn.dataset.originalLabel = original;
+      btn.textContent = '已複製';
+      btn.style.transform = 'scale(0.98)';
+      btn.style.opacity = '0.82';
+      btn.style.filter = 'brightness(0.98)';
+      setTimeout(() => {
+        btn.textContent = btn.dataset.originalLabel;
+        btn.style.transform = '';
+        btn.style.opacity = '';
+        btn.style.filter = '';
+      }, 1200);
+    }
+    showToast('已複製提問素材');
+  }).catch(() => showToast('複製失敗'));
+};
+
+shareEntry = function(yr, month, day) {
+  const ta = document.getElementById(`ta${yr}`);
+  const liveText = ta ? ta.value.trim() : '';
+  const entry = getEntry(yr, month, day);
+  const text = liveText || entry.text || '';
+  if (!text.trim()) { showToast('這篇還沒有內容可以分享'); return; }
+  const dateStr = `${yr}年${month + 1}月${day}日`;
+  shareData = { yr, month, day, text, mood: entry.mood, dateStr, imgDataUrl: null };
+  document.getElementById('shareCardDate').textContent = dateStr;
+  document.getElementById('shareCardText').textContent = text;
+  document.getElementById('shareCardMood').textContent = entry.mood || '';
+  const imgArea = document.getElementById('shareCardImg');
+  const imgEl = document.getElementById('shareCardImgEl');
+  imgArea.style.display = 'none';
+  if (entry.imgUrl) {
+    const k = getKey(yr, month, day);
+    getImgFromDB(k).then(function(dataUrl) {
+      if (dataUrl) {
+        imgEl.src = dataUrl;
+        imgArea.style.display = 'block';
+        shareData.imgDataUrl = dataUrl;
+      }
+    });
+  }
+  document.getElementById('shareOverlay').classList.add('show');
+};
+
+onTextInput = function(ta, yr, month, day) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+  const len = ta.value.length;
+  document.getElementById(`cc${yr}`).textContent = `${len}字`;
+  const saveBtn = document.getElementById(`saveBtn${yr}`);
+  if (saveBtn) {
+    saveBtn.classList.toggle('visible', len > 0 || getEntry(yr, month, day).text !== ta.value);
+  }
+  let shareBtn = document.getElementById(`shareBtn${yr}`);
+  if (len > 0 && !shareBtn) {
+    const actionRow = ta.closest('.entry-inner')?.querySelector('.entry-footer div[style*="display:flex"]');
+    if (actionRow) {
+      shareBtn = document.createElement('button');
+      shareBtn.id = `shareBtn${yr}`;
+      shareBtn.textContent = '↗ 分享';
+      shareBtn.setAttribute('onclick', `shareEntry(${yr}, ${month}, ${day})`);
+      shareBtn.style.cssText = 'background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;';
+      actionRow.appendChild(shareBtn);
+    }
+  }
+  if (shareBtn) shareBtn.style.display = len > 0 ? '' : 'none';
+};
+
+downloadShareImage = async function() {
+  const cardW = 320;
+  const hasImg = !!shareData.imgDataUrl;
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCtx.font = '14px serif';
+  const textLines = [];
+  shareData.text.split('\n').forEach(function(para) {
+    var line = '';
+    for (var i = 0; i < para.length; i++) {
+      var test = line + para[i];
+      if (tempCtx.measureText(test).width > cardW - 64 && line) {
+        textLines.push(line); line = para[i];
+      } else { line = test; }
+    }
+    textLines.push(line || '');
+  });
+  const textH = textLines.length * 24 + 20;
+  const renderCanvas = (imgEl, iW, iH) => {
+    const cardH = (imgEl ? 24 + iH + 16 : 24) + 28 + textH + 50;
+    const scale = 3;
+    const canvas = document.createElement('canvas');
+    canvas.width = cardW * scale;
+    canvas.height = cardH * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, cardW, cardH);
+    let curY = 20;
+    if (imgEl) {
+      ctx.drawImage(imgEl, 16, curY, iW, iH);
+      curY += iH + 16;
+    }
+    ctx.fillStyle = '#aaaaaa';
+    ctx.font = '10px sans-serif';
+    ctx.fillText(shareData.dateStr, 16, curY + 12);
+    curY += 28;
+    ctx.fillStyle = '#2d2d2d';
+    ctx.font = '14px serif';
+    textLines.forEach(function(l) {
+      ctx.fillText(l, 16, curY);
+      curY += 24;
+    });
+    curY += 10;
+    if (shareData.mood) {
+      ctx.font = '22px sans-serif';
+      ctx.fillText(shareData.mood, 16, curY + 18);
+    }
+    ctx.fillStyle = '#cccccc';
+    ctx.font = '9px sans-serif';
+    ctx.fillText('五年日記', cardW - 60, curY + 18);
+    return canvas;
+  };
+  const canvas = await new Promise(function(resolve) {
+    if (!hasImg || !shareData.imgDataUrl) {
+      resolve(renderCanvas(null, 0, 0));
+      return;
+    }
+    const preloadImg = new Image();
+    preloadImg.onload = function() {
+      const iW = 288;
+      const iH = Math.round(preloadImg.naturalHeight * iW / preloadImg.naturalWidth);
+      resolve(renderCanvas(preloadImg, iW, iH));
+    };
+    preloadImg.src = shareData.imgDataUrl;
+  });
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  if (!blob) { showToast('產生圖片失敗'); return; }
+  const fileName = `五年日記_${shareData.dateStr}.png`;
+  const file = new File([blob], fileName, { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: fileName });
+      showToast('已開啟分享選單');
+      return;
+    } catch (err) {}
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  showToast('已開始下載圖片');
+};
 
 </script>
 </body>
