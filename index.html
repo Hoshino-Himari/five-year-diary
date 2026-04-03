@@ -1137,7 +1137,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.5</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.6</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1155,6 +1155,7 @@
       <div class="prompt-label">今日提示</div>
       <div class="prompt-text" id="promptText"></div>
     </div>
+    <div id="tarotLaunchArea"></div>
 
     <div class="section-title">五年的今天</div>
     <div class="entries-list" id="entriesList"></div>
@@ -1243,7 +1244,7 @@
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v11）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v12）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -1324,15 +1325,6 @@
 
   <!-- Page: Review -->
   <div class="page" id="pageReview">
-    <div class="tarot-card-wrap">
-      <div class="tarot-header">
-        <div class="tarot-kicker">DAILY TAROT</div>
-        <div class="tarot-title">今日抽卡</div>
-        <div class="tarot-subtitle">先選今天的抽牌方式，再從攤開的牌裡憑直覺選一張。</div>
-      </div>
-      <div class="tarot-mode-grid" id="tarotModeGrid"></div>
-      <div class="tarot-spread-area" id="tarotDailySection"></div>
-    </div>
     <div style="display:flex;gap:8px;margin-bottom:16px;">
       <button class="review-tab active" onclick="switchReview('week')" id="rtWeek">本週</button>
       <button class="review-tab" onclick="switchReview('month')" id="rtMonth">本月</button>
@@ -1357,6 +1349,22 @@
     </div>
   </div>
 
+</div>
+
+<!-- ── Tarot Modal ── -->
+<div class="modal-overlay" id="tarotOverlay" onclick="closeTarotModal(event)">
+  <div class="year-picker-sheet" style="padding:16px 16px 34px;max-height:92vh;overflow-y:auto;background:transparent;box-shadow:none;">
+    <div class="picker-handle" style="background:rgba(255,255,255,0.45);"></div>
+    <div class="tarot-card-wrap" style="margin-bottom:0;">
+      <div class="tarot-header">
+        <div class="tarot-kicker">DAILY TAROT</div>
+        <div class="tarot-title">今日抽卡</div>
+        <div class="tarot-subtitle">先選今天的抽牌方式，再從攤開的牌裡憑直覺選一張。</div>
+      </div>
+      <div class="tarot-mode-grid" id="tarotModeGrid"></div>
+      <div class="tarot-spread-area" id="tarotDailySection"></div>
+    </div>
+  </div>
 </div>
 
 <!-- ── Share Modal ── -->
@@ -1476,7 +1484,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.5';
+const APP_VERSION = '4.6';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1733,6 +1741,7 @@ function loadData() {
     var raw = JSON.parse(localStorage.getItem('5yr_diary') || '{}');
     Object.keys(raw).forEach(function(k) {
       if (raw[k].imgUrl && raw[k].imgUrl.startsWith('data:')) raw[k].imgUrl = '[local]';
+      raw[k].tarot = normalizeTarotValue(raw[k].tarot);
     });
     data = raw;
   } catch(e) { data = {}; }
@@ -1740,15 +1749,23 @@ function loadData() {
 function saveData() {
   var toSave = {};
   Object.keys(data).forEach(function(k) {
-    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '' };
+    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '', tarot: data[k].tarot || null };
   });
   localStorage.setItem('5yr_diary', JSON.stringify(toSave));
 }
 function getKey(year, month, day) {
   return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
 }
+function normalizeTarotValue(tarot) {
+  if (!tarot) return null;
+  if (typeof tarot === 'string') return { textOverride: tarot };
+  if (tarot.textOverride) return tarot;
+  return tarot.cardId ? tarot : null;
+}
 function getEntry(year, month, day) {
-  return data[getKey(year, month, day)] || { text: '', mood: null, imgUrl: '' };
+  const entry = data[getKey(year, month, day)];
+  if (!entry) return { text: '', mood: null, imgUrl: '', tarot: null };
+  return { text: entry.text || '', mood: entry.mood || null, imgUrl: entry.imgUrl || '', tarot: normalizeTarotValue(entry.tarot) };
 }
 
 // ── IndexedDB 圖片儲存 ──
@@ -1866,11 +1883,14 @@ function renderEntries() {
   const d = currentDate;
   const list = document.getElementById('entriesList');
   list.innerHTML = '';
+  const today = new Date();
+  const isViewingToday = d.toDateString() === today.toDateString();
 
   ACTIVE_YEARS.forEach((yr, i) => {
     const yClass = `y${(i % 5) + 1}`;
     const entry = getEntry(yr, d.getMonth(), d.getDate());
-    const isFuture = yr > new Date().getFullYear() || (yr === new Date().getFullYear() && d > new Date());
+    const isFuture = yr > today.getFullYear() || (yr === today.getFullYear() && d > today);
+    const tarotText = isViewingToday && yr === today.getFullYear() ? tarotToText(entry.tarot) : '';
 
     const card = document.createElement('div');
     card.className = `entry-card ${yClass}`;
@@ -1894,6 +1914,12 @@ function renderEntries() {
           maxlength="5000"
           oninput="onTextInput(this, ${yr}, ${d.getMonth()}, ${d.getDate()})"
         >${entry.text}</textarea>
+        ${tarotText ? `
+          <div style="margin:12px 0 4px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg, rgba(63, 34, 99, 0.08), rgba(239, 208, 139, 0.18));border:1px solid rgba(99, 77, 129, 0.12);">
+            <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);margin-bottom:4px;">TODAY'S TAROT</div>
+            <div style="font-size:12px;line-height:1.8;color:var(--text-dark);">${tarotText}</div>
+          </div>
+        ` : ''}
         <div class="entry-footer">
           <div class="mood-row" id="moodRow${yr}"></div>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -1954,6 +1980,7 @@ function renderEntries() {
   });
 
   // 「X年前的今天」提醒
+  renderTarotLaunchArea();
   renderYearsAgoToday(d);
 }
 
@@ -2132,6 +2159,54 @@ function collectRecurringTopics(entries) {
   return topics;
 }
 
+function collectRecurringPeople(entries) {
+  const stopPhrases = new Set([
+    '今天','昨天','剛剛','等等','真的','感覺','自己','我們','你們','他們','這樣','那樣',
+    '下午','晚上','早上','中午','凌晨','明天','後天','現在','最近','剛才','之後','回家',
+    '上班','下班','睡覺','洗澡','吃飯','出去','朋友','事情','工作','公司','學校','日記',
+    '心情','時候','一下','一直','有點','很多','那個','這個'
+  ]);
+  const weakEdge = /[的了著過嗎呢吧啊呀啦喔哦很都又也還就把被讓跟和與及在去來說想要會用到完]/;
+  const counts = new Map();
+
+  entries.forEach(function(entry) {
+    const text = (entry.text || '').replace(/[^\u4e00-\u9fff]/g, '');
+    const seen = new Set();
+    for (let len = 2; len <= 4; len++) {
+      for (let i = 0; i <= text.length - len; i++) {
+        const phrase = text.slice(i, i + len);
+        if (!/^[\u4e00-\u9fff]{2,4}$/.test(phrase)) continue;
+        if (stopPhrases.has(phrase)) continue;
+        if (weakEdge.test(phrase[0]) || weakEdge.test(phrase[phrase.length - 1])) continue;
+        if (/(時間|事情|感覺|晚上|下午|早上|中午|今天|昨天|明天|回家|上班|下班|睡覺|洗澡|吃飯)/.test(phrase)) continue;
+        seen.add(phrase);
+      }
+    }
+    seen.forEach(function(phrase) {
+      counts.set(phrase, (counts.get(phrase) || 0) + 1);
+    });
+  });
+
+  const minCount = currentReviewTab === 'year' ? 3 : 2;
+  const ranked = Array.from(counts.entries())
+    .filter(function([name, count]) { return count >= minCount && !stopPhrases.has(name); })
+    .sort(function(a, b) {
+      const aScore = a[1] * 10 + (a[0].length === 2 || a[0].length === 3 ? 3 : 0);
+      const bScore = b[1] * 10 + (b[0].length === 2 || b[0].length === 3 ? 3 : 0);
+      return bScore - aScore;
+    });
+
+  const picked = [];
+  for (const [name, count] of ranked) {
+    const overlapped = picked.some(function([chosen]) {
+      return chosen.includes(name) || name.includes(chosen);
+    });
+    if (!overlapped) picked.push([name, count]);
+    if (picked.length === 5) break;
+  }
+  return picked;
+}
+
 function getReviewRangeLabel(start, end) {
   return `${start.getFullYear()}年${start.getMonth()+1}月${start.getDate()}日 - ${end.getFullYear()}年${end.getMonth()+1}月${end.getDate()}日`;
 }
@@ -2250,6 +2325,80 @@ function getTarotCardMeta(cardId) {
   return TAROT_DECK.find(card => card.id === cardId);
 }
 
+function tarotToText(tarot) {
+  if (!tarot) return '';
+  if (tarot.textOverride) return tarot.textOverride;
+  if (!tarot.cardId) return '';
+  const card = getTarotCardMeta(tarot.cardId);
+  if (!card) return '';
+  return `${card.name}${tarot.reversed ? '（逆位）' : '（正位）'}｜${tarot.reversed ? card.reversed : card.upright}`;
+}
+
+function openTarotModal() {
+  ensureTarotState();
+  document.getElementById('tarotOverlay').classList.add('show');
+  renderTarotModes();
+  renderTarotSection();
+}
+
+function closeTarotModal(e) {
+  if (!e || e.target === document.getElementById('tarotOverlay')) {
+    document.getElementById('tarotOverlay').classList.remove('show');
+  }
+}
+
+function applyTarotToTodayEntry(item, modeId) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const day = now.getDate();
+  const key = getKey(year, month, day);
+  const existing = getEntry(year, month, day);
+  const tarot = {
+    cardId: item.cardId,
+    reversed: item.reversed,
+    mode: modeId,
+    date: getTodayTarotKey()
+  };
+  data[key] = { text: existing.text, mood: existing.mood, imgUrl: existing.imgUrl || '', tarot };
+  saveData();
+  if (scriptUrl) {
+    callScript({
+      action: 'save',
+      key,
+      text: existing.text || '',
+      mood: existing.mood || '',
+      imgUrl: existing.imgUrl || '',
+      tarotText: tarotToText(tarot)
+    }).catch(() => {});
+  }
+}
+
+function renderTarotLaunchArea() {
+  const area = document.getElementById('tarotLaunchArea');
+  if (!area) return;
+  const today = new Date();
+  const isViewingToday = currentDate.toDateString() === today.toDateString();
+  const entry = getEntry(today.getFullYear(), today.getMonth(), today.getDate());
+  const tarotText = tarotToText(entry.tarot);
+  if (!isViewingToday) {
+    area.innerHTML = '';
+    return;
+  }
+  area.innerHTML = `
+    <div style="background:var(--white);border-radius:18px;padding:14px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:4px;">DAILY TAROT</div>
+          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">今日抽卡</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotText ? tarotText : '今天還沒抽牌。'}</div>
+        </div>
+        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotText ? '查看牌面' : '開始抽牌'}</button>
+      </div>
+    </div>
+  `;
+}
+
 function sampleTarotCards(count) {
   const pool = TAROT_DECK.slice();
   const picked = [];
@@ -2300,8 +2449,11 @@ function pickTarotCard(index) {
   ensureTarotState();
   if (!tarotState.spread.length || tarotState.chosenIndex !== null) return;
   tarotState.chosenIndex = index;
+  applyTarotToTodayEntry(tarotState.spread[index], tarotState.mode);
   saveTarotState();
   renderTarotSection();
+  renderTarotLaunchArea();
+  renderEntries();
   showToast('今日的牌已翻開');
 }
 
@@ -2424,7 +2576,7 @@ function saveEntry(yr, month, day) {
   const ta = document.getElementById(`ta${yr}`);
   const entry = getEntry(yr, month, day);
   // 同步到雲端（文字＋心情一起）
-  setEntry(yr, month, day, ta.value, entry.mood);
+  setEntry(yr, month, day, ta.value, entry.mood, undefined, entry.tarot);
   const saveBtn = document.getElementById(`saveBtn${yr}`);
   if (saveBtn) saveBtn.classList.remove('visible');
   showToast('已儲存並同步 ✓');
@@ -2842,6 +2994,111 @@ function renderReview() {
 }
 
 // ── 分享單篇 ──
+function renderReview() {
+  const content = document.getElementById('reviewContent');
+  if (!content) return;
+
+  const now = new Date();
+  var entries = [], title = '', start, end;
+
+  if (currentReviewTab === 'week') {
+    const day = now.getDay();
+    start = new Date(now);
+    start.setDate(now.getDate() - day);
+    start.setHours(0, 0, 0, 0);
+    end = new Date(now);
+    title = '本週回顧';
+  } else if (currentReviewTab === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+    end = new Date(now);
+    title = `${now.getFullYear()}年${now.getMonth() + 1}月回顧`;
+  } else {
+    start = new Date(now.getFullYear(), 0, 1);
+    end = new Date(now);
+    title = `${now.getFullYear()}年度回顧`;
+  }
+
+  Object.entries(data).forEach(function([key, val]) {
+    if (!val.text || !val.text.trim()) return;
+    const parts = key.split('-');
+    const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    if (date >= start && date <= end) entries.push({ key, text: val.text, mood: val.mood, date });
+  });
+  entries.sort((a, b) => b.date - a.date);
+
+  const moodMap = {};
+  const monthMap = {};
+  entries.forEach(function(entry) {
+    if (entry.mood) moodMap[entry.mood] = (moodMap[entry.mood] || 0) + 1;
+    const month = entry.date.getMonth() + 1;
+    monthMap[month] = (monthMap[month] || 0) + 1;
+  });
+
+  const topMood = Object.entries(moodMap).sort((a, b) => b[1] - a[1])[0];
+  const totalWords = entries.reduce((sum, entry) => sum + entry.text.trim().length, 0);
+  const longest = entries.reduce((best, entry) => entry.text.length > (best ? best.text.length : 0) ? entry : best, null);
+  const topMonth = Object.entries(monthMap).sort((a, b) => b[1] - a[1])[0];
+  const topPeople = collectRecurringPeople(entries);
+
+  function formatDateKey(key) {
+    const parts = key.split('-');
+    return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日`;
+  }
+
+  let html = `<div class="review-summary">
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${entries.length}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">篇日記</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${totalWords}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">總字數</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
+      </div>
+      ${topMonth ? `<div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topMonth[0]}月</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">寫最多</div>
+      </div>` : ''}
+    </div>
+  </div>`;
+
+  if (topPeople.length) {
+    html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">最常提到的人名／稱呼</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">${topPeople.map(function([name, count]) {
+        return `<span style="display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;background:#f2f3ec;color:var(--text-dark);font-size:13px;">${name}<span style="color:#8aa39b;">×${count}</span></span>`;
+      }).join('')}</div>
+    </div>`;
+  }
+
+  if (longest) {
+    html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${longest.key}')">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:6px;">篇幅最長 · ${formatDateKey(longest.key)} · ${longest.text.length} 字</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.7;">${longest.text}</div>
+    </div>`;
+  }
+
+  if (entries.length === 0) {
+    html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
+  } else {
+    const showEntries = entries.slice(0, 30);
+    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${entries.length > 30 ? '，先顯示 30 篇' : ''}</div>`;
+    html += showEntries.map(function(entry) {
+      return `<div class="review-entry-card" onclick="jumpToEntry('${entry.key}')">
+        <div class="review-entry-date"><span>${formatDateKey(entry.key)}</span><span>${entry.mood || ''}</span></div>
+        <div class="review-entry-text">${entry.text}</div>
+      </div>`;
+    }).join('');
+  }
+
+  content.innerHTML = html;
+}
+
 var shareData = {};
 
 function shareEntry(yr, month, day) {
@@ -3061,7 +3318,7 @@ function uploadImage(input, yr, month, day) {
 
       saveImgToDB(k, dataUrl).then(function() {
         const entry = getEntry(yr, month, day);
-        data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]' };
+        data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]', tarot: entry.tarot || null };
         saveData();
         renderEntries();
         showToast('照片已新增 ✓');
@@ -3095,11 +3352,11 @@ function removeImage(yr, month, day) {
   if (!confirm('確定要刪除這張照片嗎？')) return;
   const k = getKey(yr, month, day);
   const entry = getEntry(yr, month, day);
-  data[k] = { text: entry.text, mood: entry.mood, imgUrl: '' };
+  data[k] = { text: entry.text, mood: entry.mood, imgUrl: '', tarot: entry.tarot || null };
   saveData();
   deleteImgFromDB(k).catch(function(){});
   if (scriptUrl) {
-    callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: '' }).catch(function(){});
+    callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: '', tarotText: tarotToText(entry.tarot) }).catch(function(){});
   }
   renderEntries();
   showToast('照片已刪除');
@@ -3127,7 +3384,13 @@ function filterMoodDiary(mood) {
   if (scriptUrl) {
     callScript({ action: 'loadAll' }, 10000)
       .then(json => {
-        if (json.ok && json.entries) { Object.assign(data, json.entries); saveData(); }
+        if (json.ok && json.entries) {
+          Object.keys(json.entries).forEach(function(key) {
+            json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+          });
+          Object.assign(data, json.entries);
+          saveData();
+        }
         doRender();
       })
       .catch(doRender);
@@ -3407,17 +3670,17 @@ function normalizeKey(raw) {
   }return s;
 }
 function saveEntry(p) {
-  const sheet=getSheet(),key=normalizeKey(p.key),text=p.text||'',mood=p.mood||'',imgUrl=p.imgUrl||'',now=new Date().toLocaleString('zh-TW');
+  const sheet=getSheet(),key=normalizeKey(p.key),text=p.text||'',mood=p.mood||'',imgUrl=p.imgUrl||'',tarotText=p.tarotText||'',now=new Date().toLocaleString('zh-TW');
   if(!key)return{ok:false,error:'缺少key'};
   const pts=key.split('-'),display=pts[0]+'年 '+pts[1]+'/'+pts[2];
   const rows=sheet.getDataRange().getValues();
   for(let i=1;i<rows.length;i++){
     if(normalizeKey(rows[i][0])===key){
-      sheet.getRange(i+1,1,1,6).setValues([[key,display,text,mood,now,imgUrl]]);
+      sheet.getRange(i+1,1,1,7).setValues([[key,display,text,mood,now,imgUrl,tarotText]]);
       return{ok:true,action:'updated',key};
     }
   }
-  sheet.appendRow([key,display,text,mood,now,imgUrl]);
+  sheet.appendRow([key,display,text,mood,now,imgUrl,tarotText]);
   sortSheet(sheet);sheet.getRange(sheet.getLastRow(),3).setWrap(true);
   return{ok:true,action:'created',key};
 }
@@ -3427,7 +3690,7 @@ function loadAll() {
     const key=normalizeKey(rows[i][0]);
     if(key){
       if(String(rows[i][0]).trim()!==key){const pts=key.split('-');sheet.getRange(i+1,1,1,2).setValues([[key,pts[0]+'年 '+pts[1]+'/'+pts[2]]]);}
-      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:rows[i][5]||''};
+      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:rows[i][5]||'',tarot:rows[i][6]||null};
     }
   }
   sortSheet(sheet);
@@ -3442,7 +3705,7 @@ function deleteEntry(p) {
 }
 function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'五年日記');return{ok:true};}
 function initDriveAuth(){const f=getImageFolder();Logger.log('Drive授權成功！'+f.getName());return'授權完成';}
-function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,6).sort({column:1,ascending:true});}
+function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,7).sort({column:1,ascending:true});}
 function getSheet(){
   const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(SHEET_NAME);
   if(!s){s=ss.insertSheet(SHEET_NAME);setupSheet(s);return s;}
@@ -3452,10 +3715,15 @@ function getSheet(){
 }
 function setupSheet(s){setupHeader(s);applyFormat(s);}
 function setupHeader(s){
+  s.getRange(1,7).setValue('今日抽到的塔羅-牌意');
+  s.getRange(1,1,1,7).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
   s.getRange(1,1,1,6).setValues([['索引鍵','日期','日記內容','心情','最後更新','圖片']]);
   s.setFrozenRows(1);s.getRange(1,1,1,6).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
 }
 function applyFormat(s){
+  s.setColumnWidth(7,280);
+  s.getRange('G2:G1000').setWrap(true);
+  s.getRange('B2:G1000').setVerticalAlignment('middle');
   s.hideColumns(1);s.setColumnWidth(2,120);s.setColumnWidth(3,420);s.setColumnWidth(4,60);s.setColumnWidth(5,160);s.setColumnWidth(6,260);
   s.getRange('C2:C1000').setWrap(true);s.getRange('B2:F1000').setVerticalAlignment('middle');
 }
@@ -3464,6 +3732,7 @@ function respond(obj,cb){
   if(cb) return ContentService.createTextOutput(cb+'('+j+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
   return ContentService.createTextOutput(j).setMimeType(ContentService.MimeType.JSON);
 }`;
+const GS_CODE_DISPLAY = GS_CODE.replace(/v11/g, 'v12').replace(/v8/g, 'v9');
 
 function copyGsCode() {
   const box = document.getElementById('gsCodeBox');
@@ -3491,9 +3760,9 @@ function renderSettingsPage() {
   renderThemeGrid();
   // 填入 GS 程式碼（兩個文字框都填）
   const box = document.getElementById('gsCodeBox');
-  if (box) box.value = GS_CODE;
+  if (box) box.value = GS_CODE_DISPLAY;
   const box2 = document.getElementById('gsCodeBox2');
-  if (box2) box2.value = GS_CODE;
+  if (box2) box2.value = GS_CODE_DISPLAY;
 
   const container = document.getElementById('yearSlotList');
   container.innerHTML = '';
@@ -3698,7 +3967,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 8;
+const REQUIRED_SCRIPT_VERSION = 9;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
@@ -3772,9 +4041,9 @@ async function syncToCloud() {
   if (!scriptUrl) return;
   let count = 0;
   for (const [key, val] of Object.entries(data)) {
-    if (!val.text && !val.mood) continue;
+    if (!val.text && !val.mood && !tarotToText(val.tarot)) continue;
     try {
-      await callScript({ action: 'save', key, text: val.text || '', mood: val.mood || '' });
+      await callScript({ action: 'save', key, text: val.text || '', mood: val.mood || '', imgUrl: val.imgUrl || '', tarotText: tarotToText(val.tarot) });
       count++;
     } catch {}
   }
@@ -3788,6 +4057,9 @@ async function syncFromCloud() {
   try {
     const json = await callScript({ action: 'loadAll' }, 15000);
     if (json.ok && json.entries) {
+      Object.keys(json.entries).forEach(function(key) {
+        json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+      });
       Object.assign(data, json.entries);
       saveData();
       renderEntries();
@@ -3803,14 +4075,15 @@ async function syncFromCloud() {
 }
 
 // setEntry：儲存本地 + 背景靜默同步到雲端
-function setEntry(year, month, day, text, mood, imgUrl) {
+function setEntry(year, month, day, text, mood, imgUrl, tarot) {
   const k = getKey(year, month, day);
   const existing = data[k] || {};
   const newImgUrl = imgUrl !== undefined ? imgUrl : (existing.imgUrl || '');
-  data[k] = { text, mood, imgUrl: newImgUrl };
+  const newTarot = tarot !== undefined ? normalizeTarotValue(tarot) : normalizeTarotValue(existing.tarot);
+  data[k] = { text, mood, imgUrl: newImgUrl, tarot: newTarot };
   saveData();
   if (scriptUrl) {
-    callScript({ action: 'save', key: k, text: text || '', mood: mood || '', imgUrl: newImgUrl }).catch(() => {});
+    callScript({ action: 'save', key: k, text: text || '', mood: mood || '', imgUrl: newImgUrl, tarotText: tarotToText(newTarot) }).catch(() => {});
   }
 }
 
