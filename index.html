@@ -2050,13 +2050,20 @@ function renderReview() {
   });
   const topMonth = Object.entries(monthMap).sort((a,b)=>b[1]-a[1])[0];
 
-  // 最常出現的詞（用空格/標點分詞，2字以上）
+  // 最常出現的詞（使用 Intl.Segmenter 中文斷詞，降回標點切割作為備援）
   const wordMap = {};
-  const stopWords = new Set(['的','了','是','在','我','你','他','她','它','這','那','都','也','就','不','有','和','人','很','說','要','去','可以','什麼','因為','所以','但是','覺得','今天','一個','一天','自己','然後','還是','沒有','一直','真的','就是','而且','雖然','不過','其實','大家','已經','還有','如果','這樣']);
+  const stopWords = new Set(['的','了','是','在','我','你','他','她','它','這','那','都','也','就','不','有','和','人','很','說','要','去','可以','什麼','因為','所以','但是','覺得','今天','一個','一天','自己','然後','還是','沒有','一直','真的','就是','而且','雖然','不過','其實','大家','已經','還有','如果','這樣','一些','時候','因此','覺得','不是','這個','那個','只是','還在','還好','好像','所以','一樣','一起','很多','可能','知道','現在','後來','之前','之後','然後','一直','甚至']);
+  const segmenter = (typeof Intl !== 'undefined' && Intl.Segmenter)
+    ? new Intl.Segmenter('zh', { granularity: 'word' })
+    : null;
+  function extractWords(text) {
+    if (segmenter) {
+      return [...segmenter.segment(text)].filter(s => s.isWordLike).map(s => s.segment);
+    }
+    return text.split(/[\s，。！？、：；「」『』【】（）\(\)…—\-\n]/);
+  }
   entries.forEach(function(e) {
-    // 用標點和空格切詞
-    const words = e.text.split(/[\s，。！？、：；「」『』【】（）\(\)…—\-\n]/);
-    words.forEach(function(w) {
+    extractWords(e.text).forEach(function(w) {
       w = w.trim();
       if (w.length >= 2 && !/^[\d\w]+$/.test(w) && !stopWords.has(w)) {
         wordMap[w] = (wordMap[w]||0) + 1;
