@@ -313,6 +313,8 @@
   .mood-row {
     display: flex;
     gap: 6px;
+    flex: 1;
+    min-width: 0;
   }
 
   .mood-btn {
@@ -332,6 +334,38 @@
     transform: scale(1.15);
   }
   .mood-btn:active { transform: scale(0.9); }
+
+  .mood-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(42px, 1fr));
+    gap: 6px;
+    padding: 10px;
+    background: var(--bg);
+    border-radius: 14px;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .mood-option {
+    min-width: 42px;
+    min-height: 42px;
+    padding: 6px 4px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .mood-option.selected {
+    border-color: #888;
+    background: #f5ecd0;
+  }
 
   .char-count {
     font-size: 10px;
@@ -785,7 +819,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.0</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.1</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1115,6 +1149,8 @@
 
 <script>
 // ── Data ──
+const APP_VERSION = '4.1';
+document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
   '😐','🤔','😶','😴','🙃','😅','🤭','😬',
@@ -1635,11 +1671,11 @@ function renderMoodRow(yr, month, day, selectedMood) {
 
     const panel = document.createElement('div');
     panel.id = `moodPanel${yr}`;
-    panel.style.cssText = 'display:grid;grid-template-columns:repeat(8,1fr);gap:4px;padding:10px;background:var(--bg);border-radius:14px;margin-top:8px;';
+    panel.className = 'mood-panel';
 
     MOODS.forEach(mood => {
       const btn = document.createElement('button');
-      btn.style.cssText = `padding:4px;border-radius:8px;border:2px solid ${mood===selectedMood?'#888':'transparent'};background:${mood===selectedMood?'#f5ecd0':'transparent'};font-size:20px;cursor:pointer;`;
+      btn.className = 'mood-option' + (mood === selectedMood ? ' selected' : '');
       btn.textContent = mood;
       btn.onclick = () => {
         const entry = getEntry(yr, month, day);
@@ -1688,6 +1724,56 @@ function renderMoodRow(yr, month, day, selectedMood) {
     preview.appendChild(clearBtn);
   }
   row.appendChild(preview);
+}
+
+function collectRecurringTopics(entries) {
+  const stopChars = new Set(['的','了','是','在','有','和','跟','就','很','又','也','都','把','讓','被','去','來','著','過','還','會','想','說','看','到','給','對','向','跟']);
+  const stopPhrases = new Set([
+    '今天','昨天','明天','早上','晚上','中午','凌晨','半夜','剛剛','最近','後來','然後','結果','真的','覺得','感覺',
+    '沒想到','今天早上','天早上','回家後','回到家','回家','一下','一點','有點','好像','原來','因為','所以','如果',
+    '自己','我們','你們','他們','這次','那時候','這時候','開始','終於','事情','心情','狀態'
+  ]);
+  const candidates = new Map();
+
+  entries.forEach(function(entry) {
+    const text = (entry.text || '').replace(/\s+/g, '');
+    const seenInEntry = new Set();
+    for (let len = 2; len <= 4; len++) {
+      for (let i = 0; i <= text.length - len; i++) {
+        const phrase = text.slice(i, i + len);
+        if (!/^[\u4e00-\u9fff]{2,4}$/.test(phrase)) continue;
+        if (stopPhrases.has(phrase)) continue;
+        if (stopChars.has(phrase[0]) || stopChars.has(phrase[phrase.length - 1])) continue;
+        if (/[今昨明早晚晨午夜回來去想覺說看做吃睡起].*[上下前後裡外中]/.test(phrase)) continue;
+        if (/(今天|昨天|明天|早上|晚上|中午|凌晨|回家|覺得|感覺|沒想|想到)/.test(phrase)) continue;
+        seenInEntry.add(phrase);
+      }
+    }
+    seenInEntry.forEach(function(phrase) {
+      candidates.set(phrase, (candidates.get(phrase) || 0) + 1);
+    });
+  });
+
+  const minCount = currentReviewTab === 'year' ? 3 : 2;
+  const ranked = Array.from(candidates.entries())
+    .filter(function([phrase, count]) {
+      return count >= minCount && !stopPhrases.has(phrase);
+    })
+    .sort(function(a, b) {
+      const aLooksLikeName = /^[\u4e00-\u9fff]{2,4}$/.test(a[0]) ? 1 : 0;
+      const bLooksLikeName = /^[\u4e00-\u9fff]{2,4}$/.test(b[0]) ? 1 : 0;
+      return (b[1] * 10 + bLooksLikeName * 3 + b[0].length) - (a[1] * 10 + aLooksLikeName * 3 + a[0].length);
+    });
+
+  const topics = [];
+  for (const [phrase, count] of ranked) {
+    const overlaps = topics.some(function([chosen, chosenCount]) {
+      return (chosen.includes(phrase) || phrase.includes(chosen)) && chosenCount >= count;
+    });
+    if (!overlaps) topics.push([phrase, count]);
+    if (topics.length === 5) break;
+  }
+  return topics;
 }
 
 async function pasteToEntry(taId) {
@@ -2075,32 +2161,7 @@ function renderReview() {
   });
   const topMonth = Object.entries(monthMap).sort((a,b)=>b[1]-a[1])[0];
 
-  // 最常出現的短語（用 n-gram 找 3-5 字重複短語，比單詞更有意義）
-  const badRe = /[\s，。！？、：；「」『』【】（）\(\)…—\-\n\d\w！?!]/;
-  const stopSet = new Set(['的','了','是','在','我','你','他','她','它','都','也','就','不','有','和','很','說','要','去','這','那','啊','喔','唉','嗯','哦','哈','欸','呢','吧','哇']);
-  const phraseMap = {};
-  entries.forEach(function(e) {
-    const t = e.text;
-    for (let len = 3; len <= 5; len++) {
-      for (let i = 0; i <= t.length - len; i++) {
-        const phrase = t.substr(i, len);
-        if (badRe.test(phrase)) continue;
-        if (stopSet.has(phrase[0]) || stopSet.has(phrase[phrase.length-1])) continue;
-        phraseMap[phrase] = (phraseMap[phrase]||0) + 1;
-      }
-    }
-  });
-  const minCount = currentReviewTab === 'year' ? 3 : 2;
-  let candidates = Object.entries(phraseMap)
-    .filter(function(x){ return x[1] >= minCount; })
-    .sort(function(a,b){ return b[1]-a[1] || b[0].length-a[0].length; });
-  // 去除被更高頻長短語包含的子字串
-  const topWords = [];
-  for (let i = 0; i < candidates.length && topWords.length < 5; i++) {
-    const [phrase, count] = candidates[i];
-    const covered = topWords.some(function([tp, tc]){ return tp.includes(phrase) && tc >= count * 0.8; });
-    if (!covered) topWords.push([phrase, count]);
-  }
+  const topWords = collectRecurringTopics(entries);
 
   var html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
@@ -2124,10 +2185,10 @@ function renderReview() {
     </div>
   </div>`;
 
-  // 最常出現的詞
+  // 反覆提到的人事物
   if (topWords.length > 0) {
     html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">最常出現的詞</div>
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">反覆提到的人事物</div>
       <div style="display:flex;flex-wrap:wrap;gap:8px;">
         ${topWords.map(([w,c],i) => `<span style="padding:5px 12px;background:var(--bg);border-radius:20px;font-size:13px;color:var(--text-dark);">${w} <span style="color:var(--text-light);font-size:11px;">×${c}</span></span>`).join('')}
       </div>
