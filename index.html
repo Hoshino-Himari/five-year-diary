@@ -2063,7 +2063,8 @@ function renderReview() {
       }
     });
   });
-  const topWords = Object.entries(wordMap).filter(function(x){return x[1]>=2;}).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
+  const minCount = currentReviewTab === 'year' ? 2 : 1;
+  const topWords = Object.entries(wordMap).filter(function(x){return x[1]>=minCount;}).sort(function(a,b){return b[1]-a[1];}).slice(0,5);
 
   var html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
