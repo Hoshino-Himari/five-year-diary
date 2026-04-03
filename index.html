@@ -1842,7 +1842,7 @@ function classifyReviewTone(entries, topMood, topWords, avgWords) {
 function buildPseudoAiReview(entries, title, start, end, topMood, totalWords, topWords, longest) {
   if (entries.length === 0) {
     return {
-      heading: `${title}的類 AI 回顧`,
+      heading: `${title}的記錄輪廓`,
       summary: '這段時間還沒有足夠的內容可以整理。',
       bullets: [
         `時間範圍：${getReviewRangeLabel(start, end)}`,
@@ -1854,21 +1854,27 @@ function buildPseudoAiReview(entries, title, start, end, topMood, totalWords, to
   const avgWords = Math.round(totalWords / entries.length);
   const tone = classifyReviewTone(entries, topMood, topWords, avgWords);
   const seed = entries.length + totalWords + (topWords[0] ? topWords[0][0].length : 0);
-  const summary = pickDeterministic(REVIEW_COPY[tone], seed);
+  const toneLine = pickDeterministic(REVIEW_COPY[tone], seed);
+  const topicLabel = topWords.length > 0
+    ? `內容反覆落在 ${topWords.slice(0, 3).map(([word]) => word).join('、')}`
+    : '內容沒有明顯集中在固定主題';
+  const moodLabel = topMood ? `心情標記以 ${topMood} 為主` : '心情標記沒有明顯集中';
+  const lengthLabel = avgWords >= 110
+    ? '而且單篇篇幅偏長'
+    : avgWords >= 45
+      ? '單篇篇幅大致維持在中段'
+      : '多半是比較短的片段記錄';
+  const summary = `${topicLabel}，${moodLabel}，${lengthLabel}。`;
   const bullets = [];
   bullets.push(`時間範圍：${getReviewRangeLabel(start, end)}`);
   bullets.push(`記錄數量：${entries.length} 篇，約 ${totalWords} 字。`);
-  bullets.push(avgWords >= 110
-    ? '單篇篇幅偏長，這段時間留下的內容比較完整。'
-    : avgWords >= 45
-      ? '單篇篇幅中等，記錄密度維持得很穩。'
-      : '單篇篇幅偏短，很多內容是快速留下的片段。');
+  bullets.push(toneLine);
   if (topWords.length > 0) bullets.push(`反覆出現：${topWords.slice(0, 3).map(([word, count]) => `${word}×${count}`).join('、')}。`);
   if (topMood) bullets.push(`最常心情：${topMood}。`);
   if (longest) bullets.push(`最長的一篇落在 ${longest.date.getMonth()+1}月${longest.date.getDate()}日，共 ${longest.text.length} 字。`);
 
   return {
-    heading: `${title}的類 AI 回顧`,
+    heading: `${title}的記錄輪廓`,
     summary,
     bullets
   };
