@@ -1137,7 +1137,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.6</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.7</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1300,7 +1300,7 @@
       </div>
       <div class="stat-card">
         <div class="stat-num" id="totalDays">0</div>
-        <div class="stat-label">記錄天數</div>
+        <div class="stat-label">有心情標記</div>
       </div>
       <div class="stat-card">
         <div class="stat-num" id="totalWords">0</div>
@@ -1484,7 +1484,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.6';
+const APP_VERSION = '4.7';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1729,6 +1729,60 @@ const TAROT_DECK = [
   { id: 'judgement', no: 'XX', name: '審判', icon: '📯', palette: ['#e2dcf8', '#f7e1c3'], upright: '有件事差不多要被重新看見，也該重新命名了。', reversed: '你已經知道某件事需要處理，只是還沒正面碰它。' },
   { id: 'world', no: 'XXI', name: '世界', icon: '🌍', palette: ['#d5f0dd', '#f6e4bc'], upright: '事情有機會在今天收成一個完整的段落。', reversed: '整體只差最後一點收尾，別急著中途轉身。' }
 ];
+
+TAROT_DECK.push({
+  id: 'hierophant',
+  no: 'V',
+  name: '教皇',
+  icon: '✠',
+  palette: ['#efe2c6', '#ddd8f4'],
+  upright: '適合回到已經被驗證的方法，照著規則走反而比較穩。',
+  reversed: '舊規則開始顯得卡手，別人的標準不一定還適合現在的你。'
+});
+
+const TAROT_MINOR_ARCANA_META = [
+  { suit: 'wands', suitLabel: '權杖', symbol: '✦', palette: ['#f6d0a7', '#f3e6c6'], base: '行動、熱度與推進感' },
+  { suit: 'cups', suitLabel: '聖杯', symbol: '☽', palette: ['#cfe2f7', '#e8effa'], base: '情緒、關係與感受流動' },
+  { suit: 'swords', suitLabel: '寶劍', symbol: '✧', palette: ['#d9dcef', '#eef1f7'], base: '思考、判斷與壓力拉扯' },
+  { suit: 'pentacles', suitLabel: '錢幣', symbol: '☉', palette: ['#d9ecd2', '#f3e5b8'], base: '現實、工作與穩定累積' }
+];
+
+const TAROT_MINOR_RANKS = [
+  { key: 'ace', no: 'A', zh: '一', upright: '新的起點正在形成，先從最小的那一步開始。', reversed: '起點已經出現，但還沒真正落地。' },
+  { key: 'two', no: '2', zh: '二', upright: '眼前需要在兩個方向之間做出平衡。', reversed: '表面維持平衡，實際上已經有些失衡。' },
+  { key: 'three', no: '3', zh: '三', upright: '事情開始彼此連接，進展也比前幾天明顯。', reversed: '合作感沒有真正接上，節奏容易散掉。' },
+  { key: 'four', no: '4', zh: '四', upright: '先穩住現況比硬推更重要。', reversed: '停得太久了，該重新讓事情動起來。' },
+  { key: 'five', no: '5', zh: '五', upright: '眼前帶著競爭或摩擦，會需要一點硬度。', reversed: '衝突沒有消失，只是暫時被壓著。' },
+  { key: 'six', no: '6', zh: '六', upright: '局勢開始順一些了，至少有一部分正在往前。', reversed: '想要往前，但整體推進感還不夠穩。' },
+  { key: 'seven', no: '7', zh: '七', upright: '需要守住自己的位置，不是每件事都要退讓。', reversed: '界線感有點鬆，容易被外界帶著走。' },
+  { key: 'eight', no: '8', zh: '八', upright: '節奏會加快，很多事會在短時間內集中出現。', reversed: '看似在動，其實還卡在某個關鍵點。' },
+  { key: 'nine', no: '9', zh: '九', upright: '已經撐到最後一段了，別太早鬆手。', reversed: '疲勞感很明顯，硬撐的成本正在變高。' },
+  { key: 'ten', no: '10', zh: '十', upright: '負擔到了上限，該開始分配或放下。', reversed: '壓力還在，但你已經不想再照原本方式背著它。' },
+  { key: 'page', no: 'P', zh: '侍者', upright: '今天適合用比較新的眼光看同一件事。', reversed: '訊號有些模糊，先別急著下定論。' },
+  { key: 'knight', no: 'N', zh: '騎士', upright: '行動會帶來答案，今天比較適合直接推進。', reversed: '衝得太快反而容易偏掉方向。' },
+  { key: 'queen', no: 'Q', zh: '皇后', upright: '保留自己的節奏，比迎合別人更重要。', reversed: '外表穩住了，內在其實有些消耗。' },
+  { key: 'king', no: 'K', zh: '國王', upright: '今天需要的是成熟的判斷，不是情緒性的反應。', reversed: '控制感太強時，反而會把事情弄僵。' }
+];
+
+function buildMinorArcanaDeck() {
+  const cards = [];
+  TAROT_MINOR_ARCANA_META.forEach(function(suitMeta) {
+    TAROT_MINOR_RANKS.forEach(function(rankMeta) {
+      cards.push({
+        id: `${suitMeta.suit}-${rankMeta.key}`,
+        no: `${rankMeta.no}${suitMeta.symbol}`,
+        name: `${suitMeta.suitLabel}${rankMeta.zh}`,
+        icon: suitMeta.symbol,
+        palette: suitMeta.palette,
+        upright: `${suitMeta.base}。${rankMeta.upright}`,
+        reversed: `${suitMeta.base}。${rankMeta.reversed}`
+      });
+    });
+  });
+  return cards;
+}
+
+TAROT_DECK.push(...buildMinorArcanaDeck());
 
 let currentDate = new Date();
 let calViewDate = new Date();
@@ -2374,7 +2428,7 @@ function applyTarotToTodayEntry(item, modeId) {
   }
 }
 
-function renderTarotLaunchArea() {
+function renderTarotLaunchAreaLegacy() {
   const area = document.getElementById('tarotLaunchArea');
   if (!area) return;
   const today = new Date();
@@ -2414,7 +2468,7 @@ function sampleTarotCards(count) {
   return picked;
 }
 
-function renderTarotModes() {
+function renderTarotModesLegacy() {
   ensureTarotState();
   const grid = document.getElementById('tarotModeGrid');
   if (!grid) return;
@@ -2426,7 +2480,7 @@ function renderTarotModes() {
   `).join('');
 }
 
-function startTarotDraw(modeId) {
+function startTarotDrawLegacy(modeId) {
   tarotState = {
     date: getTodayTarotKey(),
     mode: modeId,
@@ -2476,7 +2530,7 @@ function copyTarotPrompt() {
     .catch(() => showToast('複製失敗'));
 }
 
-function renderTarotSection() {
+function renderTarotSectionLegacy() {
   ensureTarotState();
   const section = document.getElementById('tarotDailySection');
   if (!section) return;
@@ -2543,6 +2597,144 @@ function renderTarotSection() {
         </div>
       </div>
     ` : ''}
+  `;
+}
+
+function renderTarotLaunchArea() {
+  const area = document.getElementById('tarotLaunchArea');
+  if (!area) return;
+  const today = new Date();
+  const isViewingToday = currentDate.toDateString() === today.toDateString();
+  const entry = getEntry(today.getFullYear(), today.getMonth(), today.getDate());
+  const tarotText = tarotToText(entry.tarot);
+  if (!isViewingToday) {
+    area.innerHTML = '';
+    return;
+  }
+  area.innerHTML = `
+    <div style="background:var(--white);border-radius:18px;padding:14px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:4px;">DAILY TAROT</div>
+          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">今日塔羅</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotText ? tarotText : '今天還沒抽牌，每天只能抽一次。'}</div>
+        </div>
+        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotText ? '查看今日牌面' : '開始抽牌'}</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderTarotModes() {
+  ensureTarotState();
+  const grid = document.getElementById('tarotModeGrid');
+  if (!grid) return;
+  const today = new Date();
+  const locked = !!getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
+  if (locked) {
+    grid.innerHTML = `
+      <div style="padding:12px 14px;border-radius:16px;background:rgba(255,255,255,0.75);color:var(--text-mid);font-size:12px;line-height:1.7;">
+        今日塔羅已經抽過了。每天只會出現一張牌，現在可以查看結果，但不能重抽。
+      </div>
+    `;
+    return;
+  }
+  grid.innerHTML = TAROT_MODES.map(mode => `
+    <button class="tarot-mode-btn${tarotState.mode === mode.id ? ' active' : ''}" onclick="startTarotDraw('${mode.id}')">
+      <span class="tarot-mode-label">${mode.label}</span>
+      <span class="tarot-mode-copy">${mode.copy}</span>
+    </button>
+  `).join('');
+}
+
+function startTarotDraw(modeId) {
+  const today = new Date();
+  if (getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot) {
+    showToast('今日塔羅已抽過，每天只能抽一次。');
+    renderTarotModes();
+    renderTarotSection();
+    return;
+  }
+  tarotState = {
+    date: getTodayTarotKey(),
+    mode: modeId,
+    spread: sampleTarotCards(3),
+    chosenIndex: null
+  };
+  saveTarotState();
+  renderTarotModes();
+  renderTarotSection();
+}
+
+function renderTarotSection() {
+  ensureTarotState();
+  const section = document.getElementById('tarotDailySection');
+  if (!section) return;
+  const today = new Date();
+  const savedTarot = getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
+  const savedCard = savedTarot && savedTarot.cardId ? getTarotCardMeta(savedTarot.cardId) : null;
+  const savedMode = savedTarot && savedTarot.mode ? getTarotModeById(savedTarot.mode) : TAROT_MODES[0];
+
+  if (savedTarot && savedCard) {
+    section.innerHTML = `
+      <div class="tarot-spread-hint">今日塔羅已固定，明天才會出現新的牌。</div>
+      <div class="tarot-result">
+        <div class="tarot-result-head">
+          <div>
+            <div class="tarot-result-title">${savedCard.name}</div>
+            <div class="tarot-result-tag">${savedTarot.reversed ? '逆位' : '正位'} · ${savedMode.label}</div>
+          </div>
+        </div>
+        <div class="tarot-result-copy">${savedTarot.reversed ? savedCard.reversed : savedCard.upright}</div>
+        <div class="tarot-result-note">今日塔羅只能抽一次。如果想更詳細了解內容，把你的問題和抽到的牌拿去問 AI。</div>
+        <div class="tarot-result-actions">
+          <button class="tarot-action-btn primary" onclick="copyTarotPrompt()">複製提問素材</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (!tarotState.mode || !tarotState.spread.length) {
+    section.innerHTML = `
+      <div class="tarot-spread-hint">先選一種方式，再從今天的三張牌裡抽出一張。</div>
+      <div class="tarot-spread" style="display:flex;align-items:flex-end;justify-content:center;gap:10px;height:170px;">
+        ${TAROT_BACK_SYMBOLS.map((symbol, index) => `
+          <div style="width:82px;aspect-ratio:0.62;border-radius:16px;background:linear-gradient(135deg,#36115c,#23103e);border:2px solid #d6b26e;display:flex;align-items:center;justify-content:center;color:#efcf8b;font-size:30px;transform:rotate(${index===0?-8:index===1?0:8}deg) translateY(${index===1?0:10}px);box-shadow:0 10px 22px rgba(0,0,0,0.16);">${symbol}</div>
+        `).join('')}
+      </div>
+    `;
+    return;
+  }
+
+  const mode = getTarotModeById(tarotState.mode);
+  section.innerHTML = `
+    <div class="tarot-spread-hint">${mode.id === 'intent' ? '先放一個今天最想釐清的問題，再選一張。' : '不用先想問題，照直覺選一張就好。'}</div>
+    <div class="tarot-spread">
+      ${tarotState.spread.map((item, index) => {
+        const meta = getTarotCardMeta(item.cardId);
+        return `
+          <div class="tarot-card-slot ready" data-index="${index}" onclick="pickTarotCard(${index})">
+            <div class="tarot-card">
+              <div class="tarot-card-back">
+                <div class="tarot-back-lines"></div>
+                <div class="tarot-back-symbol">${item.backSymbol}</div>
+              </div>
+              <div class="tarot-card-face${item.reversed ? ' is-reversed' : ''}" style="--tarot-a:${meta.palette[0]};--tarot-b:${meta.palette[1]};">
+                <div class="tarot-front-crest">${meta.no}</div>
+                <div class="tarot-front-art">
+                  <div class="tarot-front-sun"></div>
+                  <div class="tarot-front-moon"></div>
+                  <div class="tarot-front-icon">${meta.icon}</div>
+                </div>
+                <div class="tarot-front-name">${meta.name}</div>
+                <div class="tarot-front-sub">${item.reversed ? 'REVERSED' : 'UPRIGHT'}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
   `;
 }
 
@@ -2888,7 +3080,7 @@ function switchReview(tab) {
   renderReview();
 }
 
-function renderReview() {
+function renderReviewLegacyUnused() {
   const content = document.getElementById('reviewContent');
   if (!content) return;
   renderTarotModes();
@@ -2994,7 +3186,7 @@ function renderReview() {
 }
 
 // ── 分享單篇 ──
-function renderReview() {
+function renderReviewLegacyCurrent() {
   const content = document.getElementById('reviewContent');
   if (!content) return;
 
@@ -3088,6 +3280,105 @@ function renderReview() {
   } else {
     const showEntries = entries.slice(0, 30);
     html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${entries.length > 30 ? '，先顯示 30 篇' : ''}</div>`;
+    html += showEntries.map(function(entry) {
+      return `<div class="review-entry-card" onclick="jumpToEntry('${entry.key}')">
+        <div class="review-entry-date"><span>${formatDateKey(entry.key)}</span><span>${entry.mood || ''}</span></div>
+        <div class="review-entry-text">${entry.text}</div>
+      </div>`;
+    }).join('');
+  }
+
+  content.innerHTML = html;
+}
+
+function renderReview() {
+  const content = document.getElementById('reviewContent');
+  if (!content) return;
+
+  const now = new Date();
+  let entries = [];
+  let title = '';
+  let start;
+  let end;
+
+  if (currentReviewTab === 'week') {
+    const day = now.getDay();
+    start = new Date(now);
+    start.setDate(now.getDate() - day);
+    start.setHours(0, 0, 0, 0);
+    end = new Date(now);
+    title = '本週回顧';
+  } else if (currentReviewTab === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+    end = new Date(now);
+    title = `${now.getFullYear()}年${now.getMonth() + 1}月回顧`;
+  } else {
+    start = new Date(now.getFullYear(), 0, 1);
+    end = new Date(now);
+    title = `${now.getFullYear()}年度回顧`;
+  }
+
+  Object.entries(data).forEach(function([key, val]) {
+    if (!val.text || !val.text.trim()) return;
+    const parts = key.split('-');
+    const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    if (date >= start && date <= end) entries.push({ key, text: val.text, mood: val.mood, date });
+  });
+
+  entries.sort((a, b) => b.date - a.date);
+
+  const moodMap = {};
+  const monthMap = {};
+  entries.forEach(function(entry) {
+    if (entry.mood) moodMap[entry.mood] = (moodMap[entry.mood] || 0) + 1;
+    const month = entry.date.getMonth() + 1;
+    monthMap[month] = (monthMap[month] || 0) + 1;
+  });
+
+  const topMood = Object.entries(moodMap).sort((a, b) => b[1] - a[1])[0];
+  const totalWords = entries.reduce((sum, entry) => sum + entry.text.trim().length, 0);
+  const longest = entries.reduce((best, entry) => entry.text.length > (best ? best.text.length : 0) ? entry : best, null);
+  const topMonth = Object.entries(monthMap).sort((a, b) => b[1] - a[1])[0];
+  const showEntries = currentReviewTab === 'year' ? entries : entries.slice(0, 30);
+
+  function formatDateKey(key) {
+    const parts = key.split('-');
+    return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日`;
+  }
+
+  let html = `<div class="review-summary">
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${entries.length}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">篇日記</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${totalWords}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">總字數</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
+      </div>
+      ${topMonth ? `<div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topMonth[0]}月</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">寫最多</div>
+      </div>` : ''}
+    </div>
+  </div>`;
+
+  if (longest) {
+    html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${longest.key}')">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:6px;">篇幅最長 · ${formatDateKey(longest.key)} · ${longest.text.length} 字</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.7;">${longest.text}</div>
+    </div>`;
+  }
+
+  if (entries.length === 0) {
+    html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
+  } else {
+    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${currentReviewTab !== 'year' && entries.length > 30 ? '，先顯示 30 篇' : ''}</div>`;
     html += showEntries.map(function(entry) {
       return `<div class="review-entry-card" onclick="jumpToEntry('${entry.key}')">
         <div class="review-entry-date"><span>${formatDateKey(entry.key)}</span><span>${entry.mood || ''}</span></div>
@@ -3430,20 +3721,22 @@ function jumpToEntry(key) {
 
 // ── Stats ──
 function renderStats() {
-  let total = 0, days = new Set(), words = 0;
+  let total = 0, moodDays = 0, words = 0;
   const moodCount = {};
 
   Object.entries(data).forEach(([k, v]) => {
     if (v.text && v.text.trim()) {
       total++;
-      days.add(k);
       words += v.text.trim().length;
     }
-    if (v.mood) moodCount[v.mood] = (moodCount[v.mood] || 0) + 1;
+    if (v.mood) {
+      moodCount[v.mood] = (moodCount[v.mood] || 0) + 1;
+      moodDays++;
+    }
   });
 
   document.getElementById('totalEntries').textContent = total;
-  document.getElementById('totalDays').textContent = days.size;
+  document.getElementById('totalDays').textContent = moodDays;
   document.getElementById('totalWords').textContent = words > 999 ? (words/1000).toFixed(1)+'k' : words;
 
   // Streak
@@ -3732,7 +4025,7 @@ function respond(obj,cb){
   if(cb) return ContentService.createTextOutput(cb+'('+j+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
   return ContentService.createTextOutput(j).setMimeType(ContentService.MimeType.JSON);
 }`;
-const GS_CODE_DISPLAY = GS_CODE.replace(/v11/g, 'v12').replace(/v8/g, 'v9');
+const GS_CODE_DISPLAY = GS_CODE.replace(/v11/g, 'v12').replace(/v8/g, 'v12');
 
 function copyGsCode() {
   const box = document.getElementById('gsCodeBox');
@@ -3967,7 +4260,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 9;
+const REQUIRED_SCRIPT_VERSION = 12;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
