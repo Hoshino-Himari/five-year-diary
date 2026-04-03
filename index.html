@@ -819,7 +819,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.2</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.3</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1149,7 +1149,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.2';
+const APP_VERSION = '4.3';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1780,53 +1780,92 @@ function getReviewRangeLabel(start, end) {
   return `${start.getFullYear()}年${start.getMonth()+1}月${start.getDate()}日 - ${end.getFullYear()}年${end.getMonth()+1}月${end.getDate()}日`;
 }
 
-function getMoodTone(topMood) {
+const REVIEW_COPY = {
+  heavy: [
+    '過度運轉後的體力與意志正處於明顯的損耗狀態。',
+    '情緒反應在長期高壓下顯得遲鈍，起伏也變少了。',
+    '思維的運作速度明顯低於往常，很多事情都變慢了。',
+    '對周遭環境的感知能力，隨著體力透支一起下降。',
+    '僅存的專注力，多半只夠維持眼前最基本的處理。',
+    '這段時間的內容偏重，很多句子都停在疲倦附近。'
+  ],
+  steady: [
+    '生活節奏維持在穩定的慣性裡，幾乎沒有太多意外。',
+    '多數時間都在處理重複性很高的日常瑣事。',
+    '個人狀態在固定日程裡，呈現一種低起伏的平緩。',
+    '事務的進度依照原本邏輯，緩慢但確實地向前推移。',
+    '這段時間的記錄偏向日常，情緒沒有太大的擺動。',
+    '很多內容都落在熟悉的路徑上，節奏相對一致。'
+  ],
+  smooth: [
+    '執行力與判斷力在這段時間裡維持著不錯的協調。',
+    '各項事情的進度大致符合預期，推進感很明顯。',
+    '溝通過程相對流暢，很多訊息都能準確落地。',
+    '思維的連貫性帶動了行動效率，也留下了實際成果。',
+    '手邊的每一件事都進展得異常順遂。',
+    '這段時間的狀態偏亮，許多事情都有往前走的感覺。'
+  ],
+  tangled: [
+    '多重目標重疊在一起，讓優先順序變得不太清楚。',
+    '突發請求打斷了原本安排好的工作節奏。',
+    '破碎的資訊來源，讓決策過程變得反覆而困難。',
+    '計畫變動的頻率，已經超過原本節奏能承受的範圍。',
+    '個人預期與現實條件之間，出現了不小的落差。',
+    '這段時間的內容有點擠，很多事情同時卡在一起。'
+  ]
+};
+
+function pickDeterministic(list, seed) {
+  if (!list.length) return '';
+  return list[seed % list.length];
+}
+
+function classifyReviewTone(entries, topMood, topWords, avgWords) {
   const calm = new Set(['😌','😊','🥰','😇','🙂','😄','😍','🤩','🥳','😎']);
-  const heavy = new Set(['😢','😭','😞','😟','😩','😰','😔','🥺','😣','😫']);
-  const tense = new Set(['😤','😠','😡','🤬','😬','🤯']);
-  if (!topMood) return '這段時間的情緒還沒有特別集中在某一種感受上，整體看起來比較像是很多小波動交錯在一起。';
-  if (calm.has(topMood)) return `這段時間最常出現的是 ${topMood}，整體氣氛偏向柔和、靠近安心或被照顧到的狀態。`;
-  if (heavy.has(topMood)) return `這段時間最常出現的是 ${topMood}，看起來你有不少時刻其實是在扛著情緒往前走。`;
-  if (tense.has(topMood)) return `這段時間最常出現的是 ${topMood}，那種緊繃、煩躁或一下子被推高的感覺蠻明顯的。`;
-  return `這段時間最常出現的是 ${topMood}，它像是在替這一段日子定調。`;
+  const heavy = new Set(['😢','😭','😞','😟','😩','😰','😔','🥺','😣','😫','😴']);
+  const tense = new Set(['😤','😠','😡','🤬','😬','🤯','😅','😐','🤔']);
+  const texts = entries.map(e => e.text).join('\n');
+  const heavyHits = (texts.match(/累|煩|壓力|疲倦|不想|卡住|哭|崩潰|焦慮|麻木|失眠|頭痛/g) || []).length;
+  const smoothHits = (texts.match(/順利|完成|喜歡|開心|期待|穩定|輕鬆|進展|舒服|好玩/g) || []).length;
+  const tangleHits = (texts.match(/但是|可是|結果|突然|打亂|來不及|好多|同時|一邊|反覆/g) || []).length;
+
+  if (topMood && heavy.has(topMood)) return 'heavy';
+  if (topMood && tense.has(topMood)) return 'tangled';
+  if (topMood && calm.has(topMood) && smoothHits >= heavyHits) return 'smooth';
+  if (tangleHits >= 3 && tangleHits >= smoothHits) return 'tangled';
+  if (heavyHits >= 3 && heavyHits > smoothHits) return 'heavy';
+  if (smoothHits >= 3 && avgWords >= 35) return 'smooth';
+  if (topWords.length === 0 && avgWords < 40) return 'steady';
+  return 'steady';
 }
 
 function buildPseudoAiReview(entries, title, start, end, topMood, totalWords, topWords, longest) {
   if (entries.length === 0) {
     return {
       heading: `${title}的類 AI 回顧`,
-      summary: '這段時間還沒有足夠的日記內容可以整理，不過等你慢慢累積幾篇之後，這裡就會開始長出比較有感的回顧。',
+      summary: '這段時間還沒有足夠的內容可以整理。',
       bullets: [
-        '先不用急著寫很多，哪怕只是一兩句，累積起來也會看出脈絡。',
-        '如果你想讓回顧更有感，可以多寫「人名、事件、心情變化」這三種內容。 '
+        `時間範圍：${getReviewRangeLabel(start, end)}`,
+        '目前沒有可用的日記內容。'
       ]
     };
   }
 
   const avgWords = Math.round(totalWords / entries.length);
-  const recentEntries = entries.slice(0, Math.min(entries.length, 3));
-  const topicText = topWords.length > 0
-    ? `你反覆提到 ${topWords.slice(0, 3).map(([word]) => word).join('、')}，它們像是這段時間一直繞回來的核心。`
-    : '這段時間沒有明顯重複的人事物，日記比較像是在記錄很多分散但真實的小片段。';
-  const writingText = avgWords >= 120
-    ? '你這段時間寫得算深，很多內容不是只記事情，而是在整理自己的感受。'
-    : avgWords >= 45
-      ? '你這段時間的文字長度剛好，像是在替每天留下穩定的情緒切片。'
-      : '你這段時間寫得比較輕，像是用短短幾句幫自己做日常打卡。';
-  const longestText = longest
-    ? `最長的一篇出現在 ${longest.date.getMonth()+1}月${longest.date.getDate()}日，代表那天對你來說多半不是普通的一天。`
-    : '';
-
-  let summary = `${getMoodTone(topMood)} ${topicText} ${writingText}`;
-  if (longestText) summary += ` ${longestText}`;
-
+  const tone = classifyReviewTone(entries, topMood, topWords, avgWords);
+  const seed = entries.length + totalWords + (topWords[0] ? topWords[0][0].length : 0);
+  const summary = pickDeterministic(REVIEW_COPY[tone], seed);
   const bullets = [];
-  bullets.push(`時間範圍是 ${getReviewRangeLabel(start, end)}，你一共留下了 ${entries.length} 篇、約 ${totalWords} 個字。`);
-  if (topWords.length > 0) bullets.push(`如果只抓主線來看，這段時間最有存在感的是 ${topWords.slice(0, 3).map(([word, count]) => `${word}（${count}次）`).join('、')}。`);
-  bullets.push(recentEntries.length >= 2
-    ? `最近幾篇的內容放在一起看，會感覺你不是在記流水帳，而是在慢慢拼出自己這一段的狀態。`
-    : `目前篇數還不多，但已經開始能看見一些情緒和生活重心。`);
-  if (longestText) bullets.push(longestText);
+  bullets.push(`時間範圍：${getReviewRangeLabel(start, end)}`);
+  bullets.push(`記錄數量：${entries.length} 篇，約 ${totalWords} 字。`);
+  bullets.push(avgWords >= 110
+    ? '單篇篇幅偏長，這段時間留下的內容比較完整。'
+    : avgWords >= 45
+      ? '單篇篇幅中等，記錄密度維持得很穩。'
+      : '單篇篇幅偏短，很多內容是快速留下的片段。');
+  if (topWords.length > 0) bullets.push(`反覆出現：${topWords.slice(0, 3).map(([word, count]) => `${word}×${count}`).join('、')}。`);
+  if (topMood) bullets.push(`最常心情：${topMood}。`);
+  if (longest) bullets.push(`最長的一篇落在 ${longest.date.getMonth()+1}月${longest.date.getDate()}日，共 ${longest.text.length} 字。`);
 
   return {
     heading: `${title}的類 AI 回顧`,
