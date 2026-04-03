@@ -819,7 +819,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.1</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.2</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1149,7 +1149,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.1';
+const APP_VERSION = '4.2';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1776,6 +1776,65 @@ function collectRecurringTopics(entries) {
   return topics;
 }
 
+function getReviewRangeLabel(start, end) {
+  return `${start.getFullYear()}年${start.getMonth()+1}月${start.getDate()}日 - ${end.getFullYear()}年${end.getMonth()+1}月${end.getDate()}日`;
+}
+
+function getMoodTone(topMood) {
+  const calm = new Set(['😌','😊','🥰','😇','🙂','😄','😍','🤩','🥳','😎']);
+  const heavy = new Set(['😢','😭','😞','😟','😩','😰','😔','🥺','😣','😫']);
+  const tense = new Set(['😤','😠','😡','🤬','😬','🤯']);
+  if (!topMood) return '這段時間的情緒還沒有特別集中在某一種感受上，整體看起來比較像是很多小波動交錯在一起。';
+  if (calm.has(topMood)) return `這段時間最常出現的是 ${topMood}，整體氣氛偏向柔和、靠近安心或被照顧到的狀態。`;
+  if (heavy.has(topMood)) return `這段時間最常出現的是 ${topMood}，看起來你有不少時刻其實是在扛著情緒往前走。`;
+  if (tense.has(topMood)) return `這段時間最常出現的是 ${topMood}，那種緊繃、煩躁或一下子被推高的感覺蠻明顯的。`;
+  return `這段時間最常出現的是 ${topMood}，它像是在替這一段日子定調。`;
+}
+
+function buildPseudoAiReview(entries, title, start, end, topMood, totalWords, topWords, longest) {
+  if (entries.length === 0) {
+    return {
+      heading: `${title}的類 AI 回顧`,
+      summary: '這段時間還沒有足夠的日記內容可以整理，不過等你慢慢累積幾篇之後，這裡就會開始長出比較有感的回顧。',
+      bullets: [
+        '先不用急著寫很多，哪怕只是一兩句，累積起來也會看出脈絡。',
+        '如果你想讓回顧更有感，可以多寫「人名、事件、心情變化」這三種內容。 '
+      ]
+    };
+  }
+
+  const avgWords = Math.round(totalWords / entries.length);
+  const recentEntries = entries.slice(0, Math.min(entries.length, 3));
+  const topicText = topWords.length > 0
+    ? `你反覆提到 ${topWords.slice(0, 3).map(([word]) => word).join('、')}，它們像是這段時間一直繞回來的核心。`
+    : '這段時間沒有明顯重複的人事物，日記比較像是在記錄很多分散但真實的小片段。';
+  const writingText = avgWords >= 120
+    ? '你這段時間寫得算深，很多內容不是只記事情，而是在整理自己的感受。'
+    : avgWords >= 45
+      ? '你這段時間的文字長度剛好，像是在替每天留下穩定的情緒切片。'
+      : '你這段時間寫得比較輕，像是用短短幾句幫自己做日常打卡。';
+  const longestText = longest
+    ? `最長的一篇出現在 ${longest.date.getMonth()+1}月${longest.date.getDate()}日，代表那天對你來說多半不是普通的一天。`
+    : '';
+
+  let summary = `${getMoodTone(topMood)} ${topicText} ${writingText}`;
+  if (longestText) summary += ` ${longestText}`;
+
+  const bullets = [];
+  bullets.push(`時間範圍是 ${getReviewRangeLabel(start, end)}，你一共留下了 ${entries.length} 篇、約 ${totalWords} 個字。`);
+  if (topWords.length > 0) bullets.push(`如果只抓主線來看，這段時間最有存在感的是 ${topWords.slice(0, 3).map(([word, count]) => `${word}（${count}次）`).join('、')}。`);
+  bullets.push(recentEntries.length >= 2
+    ? `最近幾篇的內容放在一起看，會感覺你不是在記流水帳，而是在慢慢拼出自己這一段的狀態。`
+    : `目前篇數還不多，但已經開始能看見一些情緒和生活重心。`);
+  if (longestText) bullets.push(longestText);
+
+  return {
+    heading: `${title}的類 AI 回顧`,
+    summary,
+    bullets
+  };
+}
+
 async function pasteToEntry(taId) {
   const ta = document.getElementById(taId);
   if (!ta) return;
@@ -2162,6 +2221,7 @@ function renderReview() {
   const topMonth = Object.entries(monthMap).sort((a,b)=>b[1]-a[1])[0];
 
   const topWords = collectRecurringTopics(entries);
+  const pseudoAi = buildPseudoAiReview(entries, title, start, end, topMood ? topMood[0] : '', totalWords, topWords, longest);
 
   var html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
@@ -2182,6 +2242,18 @@ function renderReview() {
         <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topMonth[0]}月</div>
         <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最多記錄</div>
       </div>` : ''}
+    </div>
+  </div>`;
+
+  html += `<div style="background:linear-gradient(135deg, rgba(253,232,200,0.75), rgba(240,232,248,0.95));border-radius:18px;padding:18px 16px;margin-bottom:12px;box-shadow:0 3px 12px rgba(0,0,0,0.05);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
+      <div style="font-size:11px;color:rgba(58,42,42,0.55);letter-spacing:0.14em;">AI-LIKE REVIEW</div>
+      <button onclick="renderReview()" style="border:none;background:rgba(255,255,255,0.75);color:#5b4b4b;padding:7px 12px;border-radius:999px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">重新整理語氣</button>
+    </div>
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;line-height:1.6;margin-bottom:10px;">${pseudoAi.heading}</div>
+    <div style="font-family:'Noto Serif TC',serif;font-size:14px;color:#4a3b3b;line-height:1.9;margin-bottom:12px;">${pseudoAi.summary}</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${pseudoAi.bullets.map(text => `<div style="display:flex;gap:8px;align-items:flex-start;color:#5a4a4a;font-size:12px;line-height:1.8;"><span style="font-size:14px;line-height:1.4;">·</span><span>${text}</span></div>`).join('')}
     </div>
   </div>`;
 
