@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>五年日記</title>
+<title>鈭僑?亥?</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -25,7 +25,7 @@
     --y5-a: #f8f0d0; --y5-b: #f0d8a8;
   }
 
-  /* ── Theme: Ocean ── */
+  /* ?? Theme: Ocean ?? */
   body.theme-ocean {
     --bg: #f0f4f8;
     --white: #ffffff;
@@ -34,7 +34,7 @@
     --text-light: #90a8b8;
     --theme-a: #c8e0f8; --theme-b: #a8c8f0;
   }
-  /* ── Theme: Forest ── */
+  /* ?? Theme: Forest ?? */
   body.theme-forest {
     --bg: #f0f5f0;
     --white: #ffffff;
@@ -43,7 +43,7 @@
     --text-light: #90a898;
     --theme-a: #c8f0d8; --theme-b: #a8e0c0;
   }
-  /* ── Theme: Lavender ── */
+  /* ?? Theme: Lavender ?? */
   body.theme-lavender {
     --bg: #f4f0f8;
     --white: #ffffff;
@@ -52,7 +52,7 @@
     --text-light: #a090b8;
     --theme-a: #e0c8f8; --theme-b: #c8a8f0;
   }
-  /* ── Theme: Dark ── */
+  /* ?? Theme: Dark ?? */
   body.theme-dark {
     --bg: #1a1a1a;
     --white: #252525;
@@ -73,7 +73,7 @@
     overflow-x: hidden;
   }
 
-  /* ── Header ── */
+  /* ?? Header ?? */
   .app-header {
     background: var(--white);
     padding: 20px 20px 0;
@@ -107,7 +107,7 @@
     letter-spacing: 0.03em;
   }
 
-  /* ── Date Nav ── */
+  /* ?? Date Nav ?? */
   .date-nav {
     display: flex;
     align-items: center;
@@ -138,7 +138,7 @@
     white-space: nowrap;
   }
 
-  /* ── Month Picker Strip ── */
+  /* ?? Month Picker Strip ?? */
   .month-strip {
     display: flex;
     overflow-x: auto;
@@ -166,12 +166,12 @@
     border-color: var(--text-dark);
   }
 
-  /* ── Main Content ── */
+  /* ?? Main Content ?? */
   .main {
     padding: 16px 16px 100px;
   }
 
-  /* ── Today's Prompt ── */
+  /* ?? Today's Prompt ?? */
   .prompt-card {
     background: linear-gradient(135deg, #fde8c8, #f8bcd0 60%, #d0c8f8);
     border-radius: 20px;
@@ -203,7 +203,7 @@
     font-weight: 400;
   }
 
-  /* ── Section Title ── */
+  /* ?? Section Title ?? */
   .section-title {
     font-size: 11px;
     text-transform: uppercase;
@@ -212,7 +212,7 @@
     margin: 8px 0 12px;
   }
 
-  /* ── Year Entry Cards ── */
+  /* ?? Year Entry Cards ?? */
   .entries-list {
     display: flex;
     flex-direction: column;
@@ -279,7 +279,7 @@
     border-radius: 20px;
   }
 
-  /* ── Textarea / Entry content ── */
+  /* ?? Textarea / Entry content ?? */
   .entry-textarea {
     width: 100%;
     border: none;
@@ -373,7 +373,7 @@
     letter-spacing: 0.03em;
   }
 
-  /* ── Write new entry fab-like ── */
+  /* ?? Write new entry fab-like ?? */
   .save-btn {
     background: var(--text-dark);
     color: white;
@@ -393,7 +393,7 @@
     pointer-events: auto;
   }
 
-  /* ── Bottom Nav ── */
+  /* ?? Bottom Nav ?? */
   .bottom-nav {
     position: fixed;
     bottom: 0; left: 0; right: 0;
@@ -423,7 +423,7 @@
   .nav-item.active { color: var(--text-dark); }
   .nav-item svg { width: 22px; height: 22px; }
 
-  /* ── Stats mini card ── */
+  /* ?? Stats mini card ?? */
   .stats-row {
     display: flex;
     gap: 10px;
@@ -451,7 +451,7 @@
     letter-spacing: 0.05em;
   }
 
-  /* ── Year color configs ── */
+  /* ?? Year color configs ?? */
   .y1 .entry-gradient-bar { background: linear-gradient(90deg, var(--y1-a), var(--y1-b)); }
   .y1 .year-dot { background: linear-gradient(135deg, var(--y1-a), var(--y1-b)); }
 
@@ -467,7 +467,7 @@
   .y5 .entry-gradient-bar { background: linear-gradient(90deg, var(--y5-a), var(--y5-b)); }
   .y5 .year-dot { background: linear-gradient(135deg, var(--y5-a), var(--y5-b)); }
 
-  /* ── Toast ── */
+  /* ?? Toast ?? */
   .toast {
     position: fixed;
     bottom: 90px;
@@ -490,7 +490,7 @@
     transform: translateX(-50%) translateY(0);
   }
 
-  /* ── Stats & Calendar page ── */
+  /* ?? Stats & Calendar page ?? */
   .page { display: none; }
   .page.active { display: block; }
 
@@ -540,7 +540,7 @@
   }
   .cal-day.empty { pointer-events: none; }
 
-  /* ── Mood Stats ── */
+  /* ?? Mood Stats ?? */
   .mood-stats-card {
     background: var(--white);
     border-radius: 18px;
@@ -575,7 +575,7 @@
     text-align: right;
   }
 
-  /* ── Year Picker Modal ── */
+  /* ?? Year Picker Modal ?? */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -659,7 +659,7 @@
     letter-spacing: 0.05em;
   }
 
-  /* ── Mood filter buttons ── */
+  /* ?? Mood filter buttons ?? */
   .mood-filter-btn {
     padding: 6px 14px;
     border-radius: 20px;
@@ -699,7 +699,7 @@
     line-height: 1.7;
   }
 
-  /* ── Review tabs ── */
+  /* ?? Review tabs ?? */
   .review-tab {
     flex: 1;
     padding: 10px;
@@ -1099,7 +1099,7 @@
   }
   .cal-nav-btn:active { background: #e8e6e3; }
 
-  /* ── Streak banner ── */
+  /* ?? Streak banner ?? */
   .streak-banner {
     background: linear-gradient(135deg, #fde8c8 0%, #f8bcd0 50%, #d0c8f8 100%);
     border-radius: 20px;
@@ -1131,125 +1131,125 @@
 </head>
 <body>
 
-<!-- ── Header ── -->
+<!-- ?? Header ?? -->
 <div class="app-header" id="mainHeader">
   <div class="header-top">
-    <span class="app-title">五年日記</span>
-    <span class="today-badge" id="todayBadge">今天</span>
+    <span class="app-title">鈭僑?亥?</span>
+    <span class="today-badge" id="todayBadge">隞予</span>
   </div>
   <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.7</div>
   <div class="date-nav">
-    <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
-    <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
-    <button class="date-nav-btn" onclick="changeDay(1)">›</button>
+    <button class="date-nav-btn" onclick="changeDay(-1)">??/button>
+    <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="暺??豢??交?"></div>
+    <button class="date-nav-btn" onclick="changeDay(1)">??/button>
   </div>
   <div class="month-strip" id="monthStrip"></div>
 </div>
 
-<!-- ── Pages ── -->
+<!-- ?? Pages ?? -->
 <div class="main">
 
   <!-- Page: Diary -->
   <div class="page active" id="pageDiary">
     <div class="prompt-card" id="promptCard">
-      <div class="prompt-label">今日提示</div>
+      <div class="prompt-label">隞?內</div>
       <div class="prompt-text" id="promptText"></div>
     </div>
     <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
     <div id="tarotLaunchArea"></div>
 
-    <div class="section-title">五年的今天</div>
+    <div class="section-title">鈭僑??憭?/div>
     <div class="entries-list" id="entriesList"></div>
   </div>
 
   <!-- Page: Calendar -->
   <div class="page" id="pageCalendar">
-    <div class="section-title">日曆總覽</div>
+    <div class="section-title">?交?蝮質汗</div>
     <div style="background:var(--white);border-radius:20px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
       <div class="cal-month-nav">
-        <button class="cal-nav-btn" onclick="changeCalMonth(-1)">‹</button>
+        <button class="cal-nav-btn" onclick="changeCalMonth(-1)">??/button>
         <div class="cal-month-title" id="calMonthTitle" onclick="openYearPicker()">
           <span id="calMonthTitleText"></span>
-          <span class="cal-month-title-hint">點擊跳年份</span>
+          <span class="cal-month-title-hint">暺?頝喳僑隞?/span>
         </div>
-        <button class="cal-nav-btn" onclick="changeCalMonth(1)">›</button>
+        <button class="cal-nav-btn" onclick="changeCalMonth(1)">??/button>
       </div>
       <div class="calendar-grid" id="calendarGrid"></div>
     </div>
-    <div class="section-title">最近記錄</div>
+    <div class="section-title">?餈???/div>
     <div id="calEntryPreview"></div>
   </div>
 
   <!-- Page: Settings -->
   <div class="page" id="pageSettings">
-    <div class="section-title">☁️ 雲端同步</div>
+    <div class="section-title">?? ?脩垢?郊</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">連結 Google Sheets</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">??? Google Sheets</div>
       <div style="font-size:12px;color:var(--text-light);margin-bottom:10px;line-height:1.7;">
-        連結後資料會同步到你的 Google 試算表，<br>換手機換電腦都不怕。
+        ???敺????郊?唬???Google 閰衣?銵剁?<br>??璈??餉?賭???
       </div>
       <div style="background:#fff8f0;border:1px solid #f0e0c8;border-radius:12px;padding:10px 12px;font-size:12px;color:#8a5a00;line-height:1.7;margin-bottom:16px;">
-        未連接 Google Sheet 時，資料只會保存在目前裝置。
+        ?芷? Google Sheet ??鞈??芣?靽??函??蝵柴?
       </div>
 
-      <!-- 連線狀態 -->
+      <!-- ??????-->
       <div id="syncStatusBar" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:var(--bg);margin-bottom:14px;">
         <div id="syncDot" style="width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;"></div>
-        <div id="syncStatusText" style="font-size:12px;color:var(--text-mid);">尚未連線</div>
+        <div id="syncStatusText" style="font-size:12px;color:var(--text-mid);">撠???</div>
       </div>
 
       <input id="scriptUrlInput" type="url"
-        placeholder="貼上你的 Apps Script 網址"
+        placeholder="鞎潔?雿? Apps Script 蝬脣?"
         style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
 
-      <button onclick="testAndSaveScriptUrl()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:12px;">測試並連線</button>
+      <button onclick="testAndSaveScriptUrl()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:12px;">皜祈岫銝阡??</button>
 
-      <!-- 版本狀態 -->
+      <!-- ????-->
       <div id="scriptVersionBar" style="display:none;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;"></div>
 
-      <!-- 可展開的設定說明 -->
+      <!-- ?臬???閮剖?隤芣? -->
       <div style="border:1.5px solid #e8e6e3;border-radius:12px;overflow:hidden;">
         <button onclick="toggleGuide()" style="width:100%;padding:12px 14px;background:none;border:none;text-align:left;font-size:12px;color:var(--text-mid);font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
-          <span>📋 設定與更新說明</span>
-          <span id="guideArrow" style="font-size:10px;">▾</span>
+          <span>?? 閮剖???啗牧??/span>
+          <span id="guideArrow" style="font-size:10px;">??/span>
         </button>
         <div id="guideBody" style="display:none;padding:0 16px 16px;border-top:1px solid #f0eeec;">
 
-          <!-- 第一次設定 -->
+          <!-- 蝚砌?甈∟身摰?-->
           <div style="margin-top:14px;margin-bottom:14px;">
-            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;letter-spacing:0.03em;">🆕 第一次設定</div>
+            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;letter-spacing:0.03em;">?? 蝚砌?甈∟身摰?/div>
             <div style="background:var(--bg);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:2.2;">
-              <b style="color:var(--text-dark);">Step 1</b> 開啟 <a href="https://sheets.new" target="_blank" style="color:#4a90d9;">Google 試算表</a>（新建一個空白的）<br>
-              <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
-              <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部刪掉</b>，貼上下方新程式碼<br>
-              <b style="color:var(--text-dark);">Step 4</b> 點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 5</b> 類型選「<b>網路應用程式</b>」<br>
-              <b style="color:var(--text-dark);">Step 6</b> 執行身分：<b>我</b>、存取權：<b>任何人</b> → 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 7</b> 如果跳出授權視窗 → 點「授權存取」→「允許」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 複製產生的網址，貼到上方欄位
+              <b style="color:var(--text-dark);">Step 1</b> ?? <a href="https://sheets.new" target="_blank" style="color:#4a90d9;">Google 閰衣?銵?/a>嚗撱箔??征?賜?嚗?br>
+              <b style="color:var(--text-dark);">Step 2</b> 銝?詨暺?b>?游??</b>????b>Apps Script</b>??br>
+              <b style="color:var(--text-dark);">Step 3</b> ?楊頛臬鋆⊥???蝔?蝣?b>?券?芣?</b>嚗票銝??寞蝔?蝣?br>
+              <b style="color:var(--text-dark);">Step 4</b> 暺銝???b>?函蔡</b>????b>?啣??函蔡</b>??br>
+              <b style="color:var(--text-dark);">Step 5</b> 憿??詻?b>蝬脰楝?蝔?</b>??br>
+              <b style="color:var(--text-dark);">Step 6</b> ?瑁?頨怠?嚗?b>??/b>????嚗?b>隞颱?鈭?/b> ????b>?函蔡</b>??br>
+              <b style="color:var(--text-dark);">Step 7</b> 憒?頝喳??閬? ??暺?甈?????閮晞?br>
+              <b style="color:var(--text-dark);">Step 8</b> 銴ˊ?Ｙ??雯?嚗票?唬??寞?雿?
             </div>
           </div>
 
-          <!-- 更新腳本 -->
+          <!-- ?湔?單 -->
           <div style="margin-bottom:14px;">
-            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;letter-spacing:0.03em;">🔄 收到更新通知時（已連線過的使用者）</div>
+            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;letter-spacing:0.03em;">?? ?嗅?湔???撌脤????雿輻??</div>
             <div style="background:#fff8f0;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:2.2;border:1px solid #f0e0c8;">
-              <b style="color:var(--text-dark);">Step 1</b> 開啟你的 Google 試算表<br>
-              <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
-              <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部選取（Ctrl+A）後刪掉</b><br>
-              <b style="color:var(--text-dark);">Step 4</b> 貼上下方最新程式碼<br>
-              <b style="color:var(--text-dark);">Step 5</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 6</b> 點右上角鉛筆✏️編輯圖示<br>
-              <b style="color:var(--text-dark);">Step 7</b> 版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> ✅ 完成！複製新的部署網址，回到五年日記重新貼上並按「測試並連線」
+              <b style="color:var(--text-dark);">Step 1</b> ??雿? Google 閰衣?銵?br>
+              <b style="color:var(--text-dark);">Step 2</b> 銝?詨暺?b>?游??</b>????b>Apps Script</b>??br>
+              <b style="color:var(--text-dark);">Step 3</b> ?楊頛臬鋆⊥???蝔?蝣?b>?券?詨?嚗trl+A嚗??芣?</b><br>
+              <b style="color:var(--text-dark);">Step 4</b> 鞎潔?銝??啁?撘Ⅳ<br>
+              <b style="color:var(--text-dark);">Step 5</b> 暺銝???b>?函蔡</b>????b>蝞∠??函蔡</b>??br>
+              <b style="color:var(--text-dark);">Step 6</b> 暺銝?????蝺刻摩?內<br>
+              <b style="color:var(--text-dark);">Step 7</b> ??詻?b>?啁???/b>?? ??b>?函蔡</b>??br>
+              <b style="color:var(--text-dark);">Step 8</b> ??摰?嚗?鋆賣?蝵脩雯?嚗??唬?撟湔閮??啗票銝蒂?葫閰虫蒂?????
             </div>
           </div>
 
-          <!-- 程式碼 -->
+          <!-- 蝔?蝣?-->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v14）</div>
-              <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 蝔?蝣潘??單? v14嚗?/div>
+              <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">銴ˊ?券</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
           </div>
@@ -1257,70 +1257,70 @@
       </div>
     </div>
 
-    <div class="section-title">✨ AI 日記總結</div>
+    <div class="section-title">??AI ?亥?蝮賜?</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">Gemini API 金鑰</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">Gemini API ?</div>
       <div style="font-size:12px;color:var(--text-light);margin-bottom:16px;line-height:1.7;">
-        設定後可在「回顧」頁面用 AI 生成日記總結。<br>金鑰只存在你的裝置上，完全不會上傳。
+        閮剖?敺?具?憿扼??Ｙ AI ???亥?蝮賜???br>??芸??其???蝵桐?嚗??其????喋?
       </div>
       <div id="aiKeyStatus" style="display:none;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:var(--bg);margin-bottom:14px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#6abf7b;flex-shrink:0;"></div>
-        <div style="font-size:12px;color:var(--text-mid);">已設定 API 金鑰</div>
+        <div style="font-size:12px;color:var(--text-mid);">撌脰身摰?API ?</div>
       </div>
       <input id="aiKeyInput" type="password"
-        placeholder="貼上 Gemini API 金鑰（AIza...）"
+        placeholder="鞎潔? Gemini API ?嚗Iza...嚗?
         style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
-      <button onclick="saveAiKey()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:8px;">儲存金鑰</button>
-      <button onclick="clearAiKey()" style="width:100%;padding:10px;background:none;color:var(--text-light);border:none;border-radius:12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:4px;">移除金鑰</button>
+      <button onclick="saveAiKey()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:8px;">?脣??</button>
+      <button onclick="clearAiKey()" style="width:100%;padding:10px;background:none;color:var(--text-light);border:none;border-radius:12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:4px;">蝘駁?</button>
       <div style="border:1.5px solid #e8e6e3;border-radius:12px;overflow:hidden;margin-top:8px;">
         <button onclick="toggleAiGuide()" style="width:100%;padding:12px 14px;background:none;border:none;text-align:left;font-size:12px;color:var(--text-mid);font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
-          <span>📋 如何取得 API 金鑰</span>
-          <span id="aiGuideArrow" style="font-size:10px;">▾</span>
+          <span>?? 憒??? API ?</span>
+          <span id="aiGuideArrow" style="font-size:10px;">??/span>
         </button>
         <div id="aiGuideBody" style="display:none;padding:0 16px 16px;border-top:1px solid #f0eeec;">
           <div style="margin-top:14px;margin-bottom:14px;">
-            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;">🆕 取得步驟</div>
+            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;">?? ??甇仿?</div>
             <div style="background:var(--bg);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:2.2;">
-              <b style="color:var(--text-dark);">Step 1</b> 前往 <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:#4a90d9;">Google Cloud Console 憑證頁面</a><br>
-              <b style="color:var(--text-dark);">Step 2</b> 點上方「<b>＋ 建立憑證</b>」→「<b>API 金鑰</b>」<br>
-              <b style="color:var(--text-dark);">Step 3</b> 複製產生的金鑰（以 <code style="background:#f0eeec;padding:1px 4px;border-radius:4px;">AIza</code> 開頭）<br>
-              <b style="color:var(--text-dark);">Step 4</b> 貼到上方欄位，按「儲存金鑰」
+              <b style="color:var(--text-dark);">Step 1</b> ?? <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:#4a90d9;">Google Cloud Console ???</a><br>
+              <b style="color:var(--text-dark);">Step 2</b> 暺??嫘?b>嚗?撱箇???</b>????b>API ?</b>??br>
+              <b style="color:var(--text-dark);">Step 3</b> 銴ˊ?Ｙ????堆?隞?<code style="background:#f0eeec;padding:1px 4px;border-radius:4px;">AIza</code> ?嚗?br>
+              <b style="color:var(--text-dark);">Step 4</b> 鞎澆銝甈?嚗??摮??啜?
             </div>
           </div>
           <div style="background:#f0f7ff;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:1.8;border:1px solid #d0e4f8;">
-            💡 使用 Gemini 2.0 Flash 模型，有啟用帳單後每分鐘可呼叫 15 次，個人使用完全足夠。
+            ?? ?? Gemini 2.5 Flash Latest ??????? model not found????????????
           </div>
         </div>
       </div>
     </div>
 
-    <div class="section-title">🎨 主題顏色</div>
+    <div class="section-title">? 銝駁?憿</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;" id="themeGrid"></div>
     </div>
 
-    <div class="section-title">五年設定</div>
+    <div class="section-title">鈭僑閮剖?</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇要顯示的年份</div>
-      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">選你想在日記頁看到的年份。<br>六年前、八年前的今天，會自動在上方顯示提醒。</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">?豢?閬＊蝷箇?撟港遢</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">?訾??喳?亥????啁?撟港遢??br>?剖僑?撟游???憭抬???銝憿舐內????/div>
       <div id="yearSlotList"></div>
-      <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--text-dark);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">儲存設定</button>
+      <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--text-dark);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">?脣?閮剖?</button>
     </div>
 
-    <div class="section-title">日記名稱</div>
+    <div class="section-title">?亥??迂</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
       <input id="diaryNameInput" type="text" maxlength="12"
         style="width:100%;border:none;outline:none;border-bottom:1.5px solid #e8e6e3;padding:8px 0;font-size:16px;font-family:'Noto Serif TC',serif;color:var(--text-dark);background:transparent;"
-        placeholder="五年日記">
-      <div style="font-size:11px;color:var(--text-light);margin-top:8px;">最多 12 個字</div>
-      <button onclick="saveDiaryName()" style="width:100%;margin-top:16px;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">更新名稱</button>
+        placeholder="鈭僑?亥?">
+      <div style="font-size:11px;color:var(--text-light);margin-top:8px;">?憭?12 ??</div>
+      <button onclick="saveDiaryName()" style="width:100%;margin-top:16px;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">?湔?迂</button>
     </div>
 
-    <div class="section-title">資料管理</div>
+    <div class="section-title">鞈?蝞∠?</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.6;">所有資料儲存在瀏覽器本地，清除瀏覽器快取會遺失資料。</div>
-      <button onclick="exportData()" style="width:100%;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:10px;">匯出日記（純文字 .txt）</button>
-      <button onclick="confirmClear()" style="width:100%;padding:12px;background:#fff0f0;color:#d06060;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">清除所有資料</button>
+      <div style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.6;">????摮?汗?冽?堆?皜?汗?典翰???箏仃鞈???/div>
+      <button onclick="exportData()" style="width:100%;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:10px;">?臬?亥?嚗??? .txt嚗?/button>
+      <button onclick="confirmClear()" style="width:100%;padding:12px;background:#fff0f0;color:#d06060;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">皜?????/button>
     </div>
   </div>
 
@@ -1329,35 +1329,35 @@
     <div class="stats-row">
       <div class="stat-card">
         <div class="stat-num" id="totalEntries">0</div>
-        <div class="stat-label">總記錄數</div>
+        <div class="stat-label">蝮質??</div>
       </div>
       <div class="stat-card">
         <div class="stat-num" id="totalWords">0</div>
-        <div class="stat-label">總字數</div>
+        <div class="stat-label">蝮賢???/div>
       </div>
     </div>
 
-    <div class="section-title">心情分布</div>
+    <div class="section-title">敹???</div>
     <div class="mood-stats-card" id="moodStatsCard"></div>
 
-    <div class="section-title">今年記錄熱力</div>
+    <div class="section-title">隞僑閮??勗?</div>
     <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
       <div id="heatmapGrid" style="display:grid;grid-template-columns:repeat(26,1fr);gap:3px;"></div>
     </div>
 
-    <div class="section-title">心情日記</div>
+    <div class="section-title">敹??亥?</div>
     <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
       <div id="moodFilterRow" style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;"></div>
-      <div id="moodDiaryList"><div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">選擇一個心情來查看日記</div></div>
+      <div id="moodDiaryList"><div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">?豢?銝?????亦??亥?</div></div>
     </div>
   </div>
 
   <!-- Page: Review -->
   <div class="page" id="pageReview">
     <div style="display:flex;gap:8px;margin-bottom:16px;">
-      <button class="review-tab active" onclick="switchReview('week')" id="rtWeek">本週</button>
-      <button class="review-tab" onclick="switchReview('month')" id="rtMonth">本月</button>
-      <button class="review-tab" onclick="switchReview('year')" id="rtYear">本年</button>
+      <button class="review-tab active" onclick="switchReview('week')" id="rtWeek">?祇?/button>
+      <button class="review-tab" onclick="switchReview('month')" id="rtMonth">?祆?</button>
+      <button class="review-tab" onclick="switchReview('year')" id="rtYear">?砍僑</button>
     </div>
     <div id="reviewContent"></div>
   </div>
@@ -1367,28 +1367,28 @@
     <div style="position:sticky;top:0;background:var(--bg);padding:16px 0 8px;z-index:10;">
       <div style="background:var(--white);border-radius:16px;padding:4px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="searchInput" type="text" placeholder="搜尋日記內容…"
+        <input id="searchInput" type="text" placeholder="???亥??批捆??
           style="flex:1;border:none;outline:none;font-size:15px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:transparent;padding:12px 0;"
           oninput="doSearch(this.value)">
-        <button onclick="document.getElementById('searchInput').value='';doSearch('');" style="border:none;background:none;color:var(--text-light);font-size:18px;cursor:pointer;padding:4px;">✕</button>
+        <button onclick="document.getElementById('searchInput').value='';doSearch('');" style="border:none;background:none;color:var(--text-light);font-size:18px;cursor:pointer;padding:4px;">??/button>
       </div>
     </div>
     <div id="searchResults" style="margin-top:8px;">
-      <div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">輸入關鍵字搜尋你的日記</div>
+      <div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">頛詨?摮?撠??閮?/div>
     </div>
   </div>
 
 </div>
 
-<!-- ── Tarot Modal ── -->
+<!-- ?? Tarot Modal ?? -->
 <div class="modal-overlay" id="tarotOverlay" onclick="closeTarotModal(event)">
   <div class="year-picker-sheet" style="padding:16px 16px 34px;max-height:92vh;overflow-y:auto;background:transparent;box-shadow:none;">
     <div class="picker-handle" style="background:rgba(255,255,255,0.45);"></div>
     <div class="tarot-card-wrap" style="margin-bottom:0;">
       <div class="tarot-header">
         <div class="tarot-kicker">DAILY TAROT</div>
-        <div class="tarot-title">今日抽卡</div>
-        <div class="tarot-subtitle">先選今天的抽牌方式，再從攤開的牌裡憑直覺選一張。</div>
+        <div class="tarot-title">隞?賢</div>
+        <div class="tarot-subtitle">?隞予??撘????日???鋆⊥??渲死?訾?撘萸?/div>
       </div>
       <div class="tarot-mode-grid" id="tarotModeGrid"></div>
       <div class="tarot-spread-area" id="tarotDailySection"></div>
@@ -1396,76 +1396,76 @@
   </div>
 </div>
 
-<!-- ── Share Modal ── -->
+<!-- ?? Share Modal ?? -->
 <div class="modal-overlay" id="shareOverlay" onclick="closeShare(event)">
   <div class="year-picker-sheet" id="shareSheet" style="padding:20px 20px 40px;max-height:90vh;overflow-y:auto;">
     <div class="picker-handle" id="shareHandle" style="cursor:grab;"></div>
-    <div class="picker-title">分享這篇日記</div>
+    <div class="picker-title">?澈???亥?</div>
 
-    <!-- 拍立得卡片預覽 -->
+    <!-- ??敺??閬?-->
     <div id="shareCard" style="background:#fff;border-radius:4px;padding:16px 16px 40px;margin:16px 0;box-shadow:0 4px 20px rgba(0,0,0,0.15);position:relative;">
-      <!-- 照片區：完整顯示不裁切 -->
+      <!-- ?抒??嚗??湧＊蝷箔?鋆? -->
       <div id="shareCardImg" style="width:100%;border-radius:2px;margin-bottom:14px;overflow:hidden;display:none;background:#f5f5f5;text-align:center;">
         <img id="shareCardImgEl" style="max-width:100%;height:auto;display:block;margin:0 auto;">
       </div>
-      <!-- 文字區 -->
+      <!-- ??? -->
       <div id="shareCardDate" style="font-size:10px;letter-spacing:0.12em;color:#aaa;margin-bottom:8px;font-family:sans-serif;"></div>
       <div id="shareCardText" style="font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.8;color:#2d2d2d;white-space:pre-wrap;word-break:break-all;margin-bottom:12px;"></div>
-      <!-- 底部：心情 + 浮水印 -->
+      <!-- 摨嚗???+ 瘚格偌??-->
       <div style="display:flex;align-items:center;justify-content:space-between;">
         <div id="shareCardMood" style="font-size:22px;"></div>
-        <div style="font-size:9px;color:#ccc;letter-spacing:0.1em;">五年日記</div>
+        <div style="font-size:9px;color:#ccc;letter-spacing:0.1em;">鈭僑?亥?</div>
       </div>
     </div>
 
     <div style="display:flex;gap:8px;">
-      <button onclick="copyShareText()" style="flex:1;padding:13px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製文字</button>
-      <button onclick="downloadShareImage()" style="flex:1;padding:13px;background:var(--text-dark);color:white;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">💾 儲存圖片</button>
+      <button onclick="copyShareText()" style="flex:1;padding:13px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">銴ˊ??</button>
+      <button onclick="downloadShareImage()" style="flex:1;padding:13px;background:var(--text-dark);color:white;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">? ?脣???</button>
     </div>
   </div>
 </div>
 
-<!-- ── Date Picker Modal ── -->
+<!-- ?? Date Picker Modal ?? -->
 <div class="modal-overlay" id="datePickerOverlay" onclick="closeDatePicker(event)">
   <div class="year-picker-sheet">
     <div class="picker-handle"></div>
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <button class="cal-nav-btn" onclick="changeDatePickerMonth(-1)">‹</button>
+      <button class="cal-nav-btn" onclick="changeDatePickerMonth(-1)">??/button>
       <div style="display:flex;align-items:center;gap:6px;">
-        <button class="cal-nav-btn" onclick="changeDatePickerYear(-1)" style="font-size:11px;width:28px;height:28px;">«</button>
+        <button class="cal-nav-btn" onclick="changeDatePickerYear(-1)" style="font-size:11px;width:28px;height:28px;">竄</button>
         <div class="cal-month-title" style="font-size:15px;" id="dpMonthTitle"></div>
-        <button class="cal-nav-btn" onclick="changeDatePickerYear(1)" style="font-size:11px;width:28px;height:28px;">»</button>
+        <button class="cal-nav-btn" onclick="changeDatePickerYear(1)" style="font-size:11px;width:28px;height:28px;">罈</button>
       </div>
-      <button class="cal-nav-btn" onclick="changeDatePickerMonth(1)">›</button>
+      <button class="cal-nav-btn" onclick="changeDatePickerMonth(1)">??/button>
     </div>
     <div class="calendar-grid" id="dpGrid"></div>
-    <button onclick="goToToday()" style="width:100%;margin-top:14px;padding:11px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">回到今天</button>
+    <button onclick="goToToday()" style="width:100%;margin-top:14px;padding:11px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">?隞予</button>
   </div>
 </div>
 
-<!-- ── 放大圖片 Modal ── -->
+<!-- ?? ?曉之?? Modal ?? -->
 <div id="zoomOverlay" onclick="closeZoom()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;align-items:center;justify-content:center;">
   <img id="zoomImg" style="max-width:95vw;max-height:90vh;border-radius:8px;object-fit:contain;">
-  <div style="position:absolute;top:20px;right:20px;color:white;font-size:24px;cursor:pointer;opacity:0.7;">✕</div>
+  <div style="position:absolute;top:20px;right:20px;color:white;font-size:24px;cursor:pointer;opacity:0.7;">??/div>
 </div>
 
-<!-- ── Year Picker Modal ── -->
+<!-- ?? Year Picker Modal ?? -->
 <div class="modal-overlay" id="yearPickerOverlay" onclick="closeYearPicker(event)">
   <div class="year-picker-sheet">
     <div class="picker-handle"></div>
-    <div class="picker-title">選擇年份</div>
+    <div class="picker-title">?豢?撟港遢</div>
     <div class="year-grid" id="yearGrid"></div>
   </div>
 </div>
 
-<!-- ── Bottom Nav ── -->
+<!-- ?? Bottom Nav ?? -->
 <div class="bottom-nav">
   <button class="nav-item active" id="navDiary" onclick="switchPage('diary')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
       <path d="M17.5 3.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 8.5-8.5z"/>
     </svg>
-    日記
+    ?亥?
   </button>
   <button class="nav-item" id="navReview" onclick="switchPage('review')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1475,7 +1475,7 @@
       <line x1="16" y1="17" x2="8" y2="17"/>
       <polyline points="10,9 9,9 8,9"/>
     </svg>
-    回顧
+    ?“
   </button>
   <button class="nav-item" id="navCalendar" onclick="switchPage('calendar')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1484,14 +1484,14 @@
       <line x1="8" y1="2" x2="8" y2="6"/>
       <line x1="3" y1="10" x2="21" y2="10"/>
     </svg>
-    日曆
+    ?交?
   </button>
   <button class="nav-item" id="navSearch" onclick="switchPage('search')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <circle cx="11" cy="11" r="8"/>
       <line x1="21" y1="21" x2="16.65" y2="16.65"/>
     </svg>
-    搜尋
+    ??
   </button>
   <button class="nav-item" id="navStats" onclick="switchPage('stats')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1499,298 +1499,298 @@
       <line x1="12" y1="20" x2="12" y2="4"/>
       <line x1="6" y1="20" x2="6" y2="14"/>
     </svg>
-    統計
+    蝯梯?
   </button>
   <button class="nav-item" id="navSettings" onclick="switchPage('settings')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <circle cx="12" cy="12" r="3"/>
       <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
     </svg>
-    設定
+    閮剖?
   </button>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Data ──
-const APP_VERSION = '6.4';
+// ?? Data ??
+const APP_VERSION = '6.5';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
-  '😊','😄','🥰','😍','🤩','😎','😌','🥳',
-  '😐','🤔','😶','😴','🙃','😅','🤭','😬',
-  '😔','😢','😭','😞','😟','🥺','😣','😩',
-  '😤','😠','😡','🤬','😫','😖','🤯','😰',
-  '🥹','🥲','😂','🤣','😇','🫠','🥴','🫡'
+  '??','??','?弘','??','?予','??','??','?戊',
+  '??','??','?','?','??','??','?五','?',
+  '??','?','?','??','??','?朮','?','?',
+  '?','??','?','?互','?','??','?仁','?',
+  '?旦','?必','??','?不','??','??','?打','?哄'
 ];
 const PROMPTS = [
-  // 感謝與美好
-  '今天讓你印象最深的一件事是什麼？',
-  '今天你感謝的三件小事',
-  '今天遇到了什麼讓你微笑的事？',
-  '今天有什麼讓你感到驕傲的事？',
-  '今天最享受的時刻是什麼？',
-  '今天有誰讓你感到溫暖？',
-  '今天什麼事讓你覺得值得？',
-  '今天最美的一個瞬間是什麼？',
-  '今天有什麼小確幸嗎？',
-  '今天有什麼事讓你忍不住想分享？',
-  '今天吃了什麼讓你印象深刻的東西？',
-  '今天有什麼事讓你覺得「還好有做」？',
-  '今天讓你覺得生活很美好的事是什麼？',
-  '今天有什麼事讓你覺得自己很幸運？',
-  '今天有什麼讓你忍不住大笑的事？',
+  // ????憟?
+  '隞予霈??啗情?瘛梁?銝隞嗡??臭?暻潘?',
+  '隞予雿?雓?銝辣撠?',
+  '隞予?鈭?暻潸?雿凝蝚?鈭?',
+  '隞予??暻潸?雿??圈??脩?鈭?',
+  '隞予?鈭怠????餅隞暻潘?',
+  '隞予?狐霈??皞急?嚗?,
+  '隞予隞暻潔?霈?閬箏??澆?嚗?,
+  '隞予?蝢?銝??隞暻潘?',
+  '隞予??暻澆?蝣箏兢??',
+  '隞予??暻潔?霈?敹?雿?澈嚗?,
+  '隞予??隞暻潸?雿鞊⊥楛?餌??梯正嚗?,
+  '隞予??暻潔?霈?閬箏???憟賣???',
+  '隞予霈?閬箏??暑敺?憟賜?鈭隞暻潘?',
+  '隞予??暻潔?霈?閬箏??芸楛敺兢??',
+  '隞予??暻潸?雿?銝?憭抒???嚗?,
 
-  // 心情與感受
-  '此刻你的心情是什麼顏色？',
-  '你現在最需要的是什麼？',
-  '此刻什麼事讓你感到平靜？',
-  '今天你感受最強烈的情緒是什麼？',
-  '此刻你心裡最重的事是什麼？',
-  '今天有什麼事讓你感到不安？',
-  '今天你最想逃避的事是什麼？',
-  '此刻你的心情用一首歌來形容是哪首？',
-  '今天你的情緒像什麼天氣？',
-  '今天有讓你感到疲憊的事嗎？',
-  '此刻你最想做的一件事是什麼？',
-  '今天你有沒有對自己好一點？',
-  '今天你最不想面對的事是什麼？',
-  '你今天感到孤單嗎？為什麼？',
-  '此刻你希望有人知道的事是什麼？',
+  // 敹?????
+  '甇文雿?敹??臭?暻潮??莎?',
+  '雿?冽??閬??臭?暻潘?',
+  '甇文隞暻潔?霈??撟喲?嚗?,
+  '隞予雿???撘瑞???蝺隞暻潘?',
+  '甇文雿?鋆⊥???鈭隞暻潘?',
+  '隞予??暻潔?霈??銝?嚗?,
+  '隞予雿??喲???臭?暻潘?',
+  '甇文雿?敹??其?擐?靘耦摰寞?芷?嚗?,
+  '隞予雿?????暻澆予瘞??',
+  '隞予??雿??啁??鈭?嚗?,
+  '甇文雿??喳???隞嗡??臭?暻潘?',
+  '隞予雿?瘝?撠撌勗末銝暺?',
+  '隞予雿?銝?Ｗ????臭?暻潘?',
+  '雿?憭拇??啣迨?桀?嚗隞暻潘?',
+  '甇文雿???鈭箇??鈭隞暻潘?',
 
-  // 成長與學習
-  '今天學到什麼新的東西了嗎？',
-  '如果今天重來一次，你會改變什麼？',
-  '今天的你，想對一年後的自己說什麼？',
-  '今天有什麼事讓你有所頓悟？',
-  '今天你做了一件平常不會做的事嗎？',
-  '今天有什麼失敗的經驗讓你學到東西？',
-  '今天你面對了什麼困難？',
-  '今天有什麼事讓你改變了原本的看法？',
-  '今天你最後悔的一件事是什麼？',
-  '今天你克服了什麼？',
-  '如果要給今天的自己打幾分，你打幾分？',
-  '今天你有沒有做一件讓自己進步的事？',
-  '你今天最勇敢的時刻是什麼？',
-  '今天有什麼事讓你意識到自己的侷限？',
-  '今天你學到什麼關於人的事？',
+  // ??飛蝧?
+  '隞予摮詨隞暻潭?镼蹂???',
+  '憒?隞予??銝甈∴?雿??寡?隞暻潘?',
+  '隞予??嚗撠?撟游??撌梯牧隞暻潘?',
+  '隞予??暻潔?霈?????嚗?,
+  '隞予雿?鈭?隞嗅像撣訾???????',
+  '隞予??暻澆仃??蝬?霈?摮詨?梯正嚗?,
+  '隞予雿撠?隞暻澆???',
+  '隞予??暻潔?霈??寡?鈭??祉???嚗?,
+  '隞予雿?敺???隞嗡??臭?暻潘?',
+  '隞予雿???隞暻潘?',
+  '憒?閬策隞予?撌望?撟曉?嚗??嗾??',
+  '隞予雿?瘝???隞嗉??芸楛?脫郊??嚗?,
+  '雿?憭拇?????餅隞暻潘?',
+  '隞予??暻潔?霈????啗撌梁?靘琿?嚗?,
+  '隞予雿飛?唬?暻潮??潔犖??嚗?,
 
-  // 人際關係
-  '今天有誰讓你印象最深刻？',
-  '今天你對某人說了什麼讓你印象深刻的話？',
-  '今天有沒有想念某個人？',
-  '今天你有沒有讓某人感到被珍視？',
-  '今天有什麼關係讓你感到舒服？',
-  '今天有人讓你感到受傷嗎？',
-  '今天你有沒有主動聯繫某個久未聯絡的人？',
-  '今天有什麼事讓你更了解某個人？',
-  '此刻你最想見的人是誰？',
-  '今天有沒有一段對話讓你印象深刻？',
-  '今天誰的話讓你最有感觸？',
-  '今天你有沒有對某人感到愧疚？',
-  '今天有誰讓你感到被理解？',
-  '今天你對誰最感謝？',
-  '今天你有沒有讓某人失望？',
+  // 鈭粹???
+  '隞予?狐霈??啗情?瘛勗嚗?,
+  '隞予雿??犖隤芯?隞暻潸?雿鞊⊥楛?餌?閰梧?',
+  '隞予???敹菜??犖嚗?,
+  '隞予雿?瘝?霈?鈭箸??啗◤??嚗?,
+  '隞予??暻潮?靽?雿??啗???',
+  '隞予?犖霈?????',
+  '隞予雿?瘝?銝餃??舐鼠???芾蝯∠?鈭綽?',
+  '隞予??暻潔?霈??港?閫???犖嚗?,
+  '甇文雿??唾??犖?航狐嚗?,
+  '隞予????畾萄?閰梯?雿鞊⊥楛?鳴?',
+  '隞予隤啁?閰梯?雿???閫賂?',
+  '隞予雿?瘝?撠?鈭箸??唳??',
+  '隞予?狐霈??鋡怎?閫??',
+  '隞予雿?隤唳???嚗?,
+  '隞予雿?瘝?霈?鈭箏仃??',
 
-  // 目標與夢想
-  '這個月你最想完成的一件事是什麼？',
-  '今天你距離你的目標近了還是遠了？',
-  '你現在最在乎的事是什麼？',
-  '如果明天是人生的最後一天，你會做什麼？',
-  '你最近一次勇敢追求夢想是什麼時候？',
-  '此刻你最大的心願是什麼？',
-  '你現在最想改變自己的一件事是什麼？',
-  '五年後的你，希望自己正在做什麼？',
-  '你最近有沒有在為什麼事努力？',
-  '今天有什麼事讓你更靠近你想成為的人？',
-  '你最近最執著的一件事是什麼？',
-  '如果不怕失敗，你最想嘗試什麼？',
-  '你現在最害怕放棄的東西是什麼？',
-  '今天你有沒有為未來做了一件小事？',
-  '什麼事情是你一直想做但還沒做的？',
+  // ?格??丐??
+  '??雿??喳???銝隞嗡??臭?暻潘?',
+  '隞予雿??Ｖ??璅?鈭??舫?鈭?',
+  '雿?冽??其????臭?暻潘?',
+  '憒??予?臭犖???敺?憭抬?雿???暻潘?',
+  '雿?餈?甈∪??Ｚ蕭瘙丐?單隞暻潭???',
+  '甇文雿?憭抒?敹??臭?暻潘?',
+  '雿?冽??單霈撌梁?銝隞嗡??臭?暻潘?',
+  '鈭僑敺?雿?撣??芸楛甇???暻潘?',
+  '雿?餈?瘝??函隞暻潔??芸?嚗?,
+  '隞予??暻潔?霈??湧?餈??單??箇?鈭綽?',
+  '雿?餈??瑁???隞嗡??臭?暻潘?',
+  '憒?銝仃??雿??喳?閰虫?暻潘?',
+  '雿?冽?摰單璉??梯正?臭?暻潘?',
+  '隞予雿?瘝??箸靘?鈭?隞嗅?鈭?',
+  '隞暻潔??雿??湔??????嚗?,
 
-  // 身體與生活
-  '今天你的身體有什麼感受？',
-  '你今天睡得好嗎？',
-  '今天你有沒有好好吃飯？',
-  '今天有沒有讓你身體感到放鬆的時刻？',
-  '你最近的生活節奏讓你感覺如何？',
-  '今天你有沒有做一件照顧自己的事？',
-  '你今天的精神狀態如何？',
-  '今天你有沒有花時間在戶外？',
-  '今天有什麼讓你的身體感到疲勞？',
-  '你最近的睡眠品質如何？',
-  '今天你有沒有做讓自己開心的事？',
-  '你有多久沒有好好放鬆了？',
-  '今天你有沒有讓自己喘口氣？',
-  '你今天的狀態用一個詞來形容是什麼？',
-  '今天你有沒有好好欣賞周圍的環境？',
+  // 頨恍???瘣?
+  '隞予雿?頨恍???暻潭???',
+  '雿?憭拍敺末??',
+  '隞予雿?瘝?憟賢末?ㄞ嚗?,
+  '隞予????雿澈擃??唳擛??嚗?,
+  '雿?餈??暑蝭憟?雿?閬箏?雿?',
+  '隞予雿?瘝???隞嗥憿扯撌梁?鈭?',
+  '雿?憭拍?蝎曄????雿?',
+  '隞予雿?瘝??望???嗅?嚗?,
+  '隞予??暻潸?雿?頨恍???脣?嚗?,
+  '雿?餈??∠??釭憒?嚗?,
+  '隞予雿?瘝????芸楛????嚗?,
+  '雿?憭?瘝?憟賢末?暸?鈭?',
+  '隞予雿?瘝?霈撌勗???除嚗?,
+  '雿?憭拍???銝??靘耦摰寞隞暻潘?',
+  '隞予雿?瘝?憟賢末甈???典??憓?',
 
-  // 觀察與思考
-  '今天你注意到了什麼平常忽略的事？',
-  '今天你觀察到什麼有趣的事？',
-  '今天你有沒有思考過一個問題很久？',
-  '今天有什麼事讓你覺得世界很有趣？',
-  '今天你有沒有對某件事感到好奇？',
-  '今天有什麼讓你改變了對某件事的看法？',
-  '此刻你腦子裡轉得最多的念頭是什麼？',
-  '今天有什麼事讓你覺得不可思議？',
-  '今天你有沒有注意到一個小細節讓你感動？',
-  '今天你有沒有想清楚一件事？',
-  '此刻你最想知道答案的問題是什麼？',
-  '今天有沒有什麼事讓你覺得「原來如此」？',
-  '今天你觀察到什麼關於自己的事？',
-  '今天有什麼事讓你靜下來好好想？',
-  '此刻你腦海中浮現的第一個畫面是什麼？',
+  // 閫撖???
+  '隞予雿釣?鈭?暻澆像撣詨蕭?亦?鈭?',
+  '隞予雿?撖隞暻潭?頞??鈭?',
+  '隞予雿?瘝???銝??憿?銋?',
+  '隞予??暻潔?霈?閬箏?銝?敺?頞??',
+  '隞予雿?瘝?撠?隞嗡??憟賢?嚗?,
+  '隞予??暻潸?雿霈?撠?隞嗡???瘜?',
+  '甇文雿摮ㄐ頧??憭?敹菟?臭?暻潘?',
+  '隞予??暻潔?霈?閬箏?銝?降嚗?,
+  '隞予雿?瘝?瘜冽??唬???蝝啁?霈???嚗?,
+  '隞予雿?瘝??單?璆?隞嗡?嚗?,
+  '甇文雿??喟??獢????臭?暻潘?',
+  '隞予????暻潔?霈?閬箏???靘?甇扎?',
+  '隞予雿?撖隞暻潮??潸撌梁?鈭?',
+  '隞予??暻潔?霈???靘末憟賣嚗?,
+  '甇文雿瘚瑚葉瘚桃?洵銝??Ｘ隞暻潘?',
 
-  // 創意與想像
-  '如果今天是電影，你會給它取什麼片名？',
-  '今天你的心情像什麼動物？',
-  '如果今天的感受是一種顏色，是什麼？',
-  '今天的你用一個成語形容是什麼？',
-  '如果今天發生的事是一首詩的開頭，你會怎麼寫？',
-  '今天如果要畫一張圖，你會畫什麼？',
-  '你今天的心情像什麼食物？',
-  '如果今天是一首歌，曲風是什麼？',
-  '如果今天的心情是天氣，是什麼天氣？',
-  '今天你腦子裡有沒有一個奇怪的想法？',
-  '如果你今天是一個物品，你是什麼？',
-  '今天的你像什麼季節？',
-  '如果今天的感受可以是一種味道，是什麼？',
-  '你今天的心情像什麼地方？',
-  '如果今天是一本書的一章，這章叫什麼？',
+  // ?菜????
+  '憒?隞予?舫敶梧?雿?蝯血???暻潛???',
+  '隞予雿?敹???暻澆??抬?',
+  '憒?隞予???銝蝔桅??莎??臭?暻潘?',
+  '隞予???其???隤耦摰寞隞暻潘?',
+  '憒?隞予?潛????臭?擐帘???哨?雿??獐撖恬?',
+  '隞予憒?閬銝撘萄?嚗??隞暻潘?',
+  '雿?憭拍?敹???暻潮??抬?',
+  '憒?隞予?臭?擐?嚗憸冽隞暻潘?',
+  '憒?隞予???憭拇除嚗隞暻澆予瘞??',
+  '隞予雿摮ㄐ???????芰??單?嚗?,
+  '憒?雿?憭拇銝???雿隞暻潘?',
+  '隞予????暻澆迤蝭嚗?,
+  '憒?隞予???隞交銝蝔桀???臭?暻潘?',
+  '雿?憭拍?敹???暻澆?對?',
+  '憒?隞予?臭??祆??蝡????思?暻潘?',
 
-  // 過去與回憶
-  '今天有沒有什麼事讓你想起過去？',
-  '此刻你最懷念的一段時光是什麼？',
-  '今天有沒有什麼事讓你想起一個老朋友？',
-  '你最近有沒有夢到什麼讓你印象深刻的？',
-  '今天有什麼事讓你想起小時候？',
-  '你最近有沒有回想起一件很久沒想到的事？',
-  '你最近有沒有重新和某段記憶和解？',
-  '今天有沒有什麼感受跟某段往事很像？',
-  '你現在最希望能回到的一個時刻是什麼？',
-  '今天有沒有什麼事讓你覺得時間過得很快？',
-  '你最近一次深刻感受到「時間不等人」是什麼時候？',
-  '今天有沒有讓你後悔過去某個決定的事？',
-  '你有哪段回憶是越想越感謝的？',
-  '今天你有沒有對某件過去的事釋懷了一點？',
-  '你最近有沒有一個「那時候要是…就好了」的感嘆？',
+  // ?????
+  '隞予????暻潔?霈??唾絲?嚗?,
+  '甇文雿??瑕艙??畾菜??隞暻潘?',
+  '隞予????暻潔?霈??唾絲銝????',
+  '雿?餈?瘝?憭Ｗ隞暻潸?雿鞊⊥楛?餌?嚗?,
+  '隞予??暻潔?霈??唾絲撠???',
+  '雿?餈?瘝??韏瑚?隞嗅?銋??喳??嚗?,
+  '雿?餈?瘝????畾菔??嗅?閫??',
+  '隞予????暻潭????挾敺鈭???',
+  '雿?冽?撣??賢??啁?銝???餅隞暻潘?',
+  '隞予????暻潔?霈?閬箏?????敺翰嚗?,
+  '雿?餈?甈⊥楛?餅??????蝑犖?隞暻潭???',
+  '隞予????雿????餅??捱摰?鈭?',
+  '雿??芣挾??航??唾?????',
+  '隞予雿?瘝?撠?隞園??餌?鈭??瑚?銝暺?',
+  '雿?餈?瘝?銝????胼血停憟賭?????嚗?,
 
-  // 當下與未來
-  '此刻你在哪裡？周圍有什麼？',
-  '今天你最清醒的一刻是什麼時候？',
-  '此刻你最想說出口卻沒說的話是什麼？',
-  '你今天有沒有活在當下的感覺？',
-  '今天有什麼事讓你感受到時間的重量？',
-  '此刻你覺得最重要的事是什麼？',
-  '你今天有沒有停下來好好看看周圍？',
-  '此刻你最想改變的一件事是什麼？',
-  '今天有什麼事讓你對未來更有信心？',
-  '此刻你最期待的一件事是什麼？',
-  '你今天有沒有做一件讓未來的自己感謝的事？',
-  '今天有什麼事讓你覺得「就是現在」？',
-  '你今天有沒有為某件事認真許願？',
-  '此刻你覺得最美好的事是什麼？',
-  '今天你有沒有好好感受自己活著的感覺？',
+  // ?嗡??靘?
+  '甇文雿?芾ㄐ嚗??隞暻潘?',
+  '隞予雿?皜????餅隞暻潭???',
+  '甇文雿??唾牧?箏?餅?隤芰?閰望隞暻潘?',
+  '雿?憭拇?瘝?瘣餃?嗡???閬綽?',
+  '隞予??暻潔?霈????唳?????嚗?,
+  '甇文雿死敺??????臭?暻潘?',
+  '雿?憭拇?瘝???靘末憟賜????',
+  '甇文雿??單霈?銝隞嗡??臭?暻潘?',
+  '隞予??暻潔?霈?撠靘?縑敹?',
+  '甇文雿?????隞嗡??臭?暻潘?',
+  '雿?憭拇?瘝???隞嗉??芯??撌望?雓?鈭?',
+  '隞予??暻潔?霈?閬箏??停?舐?具?',
+  '雿?憭拇?瘝??箸?隞嗡?隤?閮梢?嚗?,
+  '甇文雿死敺?蝢末???臭?暻潘?',
+  '隞予雿?瘝?憟賢末???芸楛瘣餉???閬綽?',
 
-  // 工作與成就
-  '今天工作或學習上最有成就感的事是什麼？',
-  '今天你做了什麼讓自己感到有意義的事？',
-  '今天你有沒有完成一件一直拖著的事？',
-  '今天你最有效率的時刻是什麼時候？',
-  '今天工作或生活上最大的挑戰是什麼？',
-  '今天你有沒有幫到別人？怎麼幫的？',
-  '今天你最專注的時刻是什麼？',
-  '今天有沒有什麼事讓你覺得自己很有用？',
-  '今天你完成了什麼？哪怕是很小的事',
-  '今天你有沒有做一件讓自己更好的決定？',
-  '你今天的付出有沒有得到應有的回報？',
-  '今天你有沒有嘗試一個新的方法做某件事？',
-  '今天你有什麼事做得比平常好？',
-  '今天你花最多時間的事是什麼？值得嗎？',
-  '今天你有沒有做到一件自己承諾過的事？',
+  // 撌乩???撠?
+  '隞予撌乩??飛蝧????撠望????臭?暻潘?',
+  '隞予雿?鈭?暻潸??芸楛???蝢拍?鈭?',
+  '隞予雿?瘝?摰?銝隞嗡??湔???鈭?',
+  '隞予雿???????臭?暻潭???',
+  '隞予撌乩???瘣颱??憭抒???臭?暻潘?',
+  '隞予雿?瘝?撟怠?乩犖嚗獐撟怎?嚗?,
+  '隞予雿?撠釣???餅隞暻潘?',
+  '隞予????暻潔?霈?閬箏??芸楛敺??剁?',
+  '隞予雿???隞暻潘??芣敺???',
+  '隞予雿?瘝???隞嗉??芸楛?游末?捱摰?',
+  '雿?憭拍?隞?????唳????嚗?,
+  '隞予雿?瘝??岫銝??瘜??辣鈭?',
+  '隞予雿?隞暻潔???瘥像撣詨末嚗?,
+  '隞予雿?憭???鈭隞暻潘??澆???',
+  '隞予雿?瘝??銝隞嗉撌望隢暸???嚗?,
 
-  // 自我認識
-  '你今天更了解自己的哪一面？',
-  '今天有什麼事讓你發現自己的一個習慣？',
-  '今天你有沒有違背自己的某個原則？',
-  '你今天是你想成為的那種人嗎？',
-  '今天你最真實的樣子出現在什麼時候？',
-  '今天你有沒有假裝自己沒事？',
-  '你今天有沒有做一件讓自己覺得「這才是我」的事？',
-  '今天你最不喜歡自己的哪一面出現了嗎？',
-  '你今天有沒有對自己誠實？',
-  '今天有什麼事讓你重新認識自己？',
-  '你今天的選擇反映了什麼樣的你？',
-  '今天你有沒有做一件跟「本來的你」不一樣的事？',
-  '你今天最像自己的時刻是什麼？',
-  '今天有沒有什麼事讓你看見自己的盲點？',
-  '今天你最想改掉的自己的一個習慣是什麼？',
+  // ?芣?隤?
+  '雿?憭拇鈭圾?芸楛?銝?ｇ?',
+  '隞予??暻潔?霈??潛?芸楛???????',
+  '隞予雿?瘝????芸楛??????',
+  '雿?憭拇雿??蝔桐犖??',
+  '隞予雿??祕?見摮?曉隞暻潭???',
+  '隞予雿?瘝????芸楛瘝?嚗?,
+  '雿?憭拇?瘝???隞嗉??芸楛閬箏????舀???鈭?',
+  '隞予雿?銝?甇∟撌梁??芯??Ｗ?曆???',
+  '雿?憭拇?瘝?撠撌梯?撖佗?',
+  '隞予??暻潔?霈??隤??芸楛嚗?,
+  '雿?憭拍??豢???鈭?暻潭見??嚗?,
+  '隞予雿?瘝???隞嗉??靘?雿?銝璅??鈭?',
+  '雿?憭拇??撌梁???臭?暻潘?',
+  '隞予????暻潔?霈????芸楛?暺?',
+  '隞予雿??單???芸楛??????隞暻潘?',
 ];
 
-const MONTHS_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
-const DAYS_ZH = ['日','一','二','三','四','五','六'];
+const MONTHS_ZH = ['1??,'2??,'3??,'4??,'5??,'6??,'7??,'8??,'9??,'10??,'11??,'12??];
+const DAYS_ZH = ['??,'銝','鈭?,'銝?,'??,'鈭?,'??];
 const TAROT_MODES = [
-  { id: 'intent', label: '先想再抽', copy: '把今天最想釐清的一件事放在心裡，再翻開這張牌。' },
-  { id: 'direct', label: '直接抽', copy: '不用先設定問題，放鬆一點，直接選最吸引你的那張。' }
+  { id: 'intent', label: '??', copy: '??憭拇??喲?皜?銝隞嗡??曉敹ㄐ嚗?蝧駁??撐?? },
+  { id: 'direct', label: '?湔??, copy: '銝?身摰?憿??暸?銝暺??湔?豢??詨?雿???撐?? }
 ];
-const TAROT_BACK_SYMBOLS = ['☾', '✦', '☉'];
+const TAROT_BACK_SYMBOLS = ['??, '??, '??];
 const TAROT_DECK = [
-  { id: 'fool', no: '00', name: '愚者', icon: '🌼', palette: ['#f7d7ab', '#cde9f7'], upright: '新的路徑剛打開，先走出去比先想太多更重要。', reversed: '腳步太快，還沒看清楚眼前真正要承擔的是什麼。' },
-  { id: 'magician', no: 'I', name: '魔術師', icon: '🪄', palette: ['#f6d0b9', '#d8f2df'], upright: '手邊的條件其實夠用，接下來是怎麼把它們排好。', reversed: '工具都在，但注意力還沒有真正集中起來。' },
-  { id: 'priestess', no: 'II', name: '女祭司', icon: '🌙', palette: ['#d7def7', '#f6efe0'], upright: '現在比較適合先觀察，不急著把答案說死。', reversed: '直覺有出來，但外界的聲音有點蓋過它。' },
-  { id: 'empress', no: 'III', name: '皇后', icon: '🍓', palette: ['#f7d0d8', '#d7eed9'], upright: '這張牌偏向照顧、滋養和讓事情慢慢長出來。', reversed: '投入很多，但節奏可能已經有點失衡。' },
-  { id: 'emperor', no: 'IV', name: '皇帝', icon: '👑', palette: ['#efd2ba', '#d9dff1'], upright: '今天更需要框架、界線和一點明確的主導。', reversed: '控制感抓得太緊，事情反而不容易前進。' },
-  { id: 'lovers', no: 'VI', name: '戀人', icon: '🩷', palette: ['#f6d7cf', '#f6e9b8'], upright: '重點不只是感情，而是你想選擇靠近什麼。', reversed: '表面上像在選擇，實際上還在猶豫裡停著。' },
-  { id: 'chariot', no: 'VII', name: '戰車', icon: '🛞', palette: ['#d3e3fb', '#f4dfb8'], upright: '方向已經出來了，今天更像是在把速度提起來。', reversed: '前進的力道有了，但方向還沒有完全對齊。' },
-  { id: 'strength', no: 'VIII', name: '力量', icon: '🦁', palette: ['#f6d1bc', '#f8e9c8'], upright: '硬碰硬不一定有用，穩住自己反而更重要。', reversed: '表面看起來撐得住，內在其實已經有點耗損。' },
-  { id: 'hermit', no: 'IX', name: '隱者', icon: '🏔️', palette: ['#dfdfdf', '#d8e7f5'], upright: '今天適合把注意力收回來，不需要同時回應太多人。', reversed: '你已經退得很後面了，再縮可能只會更模糊。' },
-  { id: 'wheel', no: 'X', name: '命運之輪', icon: '🎡', palette: ['#f4d7b5', '#d9e0f6'], upright: '局面正在轉動，順勢比硬扛更有效。', reversed: '變化已經開始了，只是你暫時還卡在舊節奏裡。' },
-  { id: 'justice', no: 'XI', name: '正義', icon: '⚖️', palette: ['#e7d7f7', '#f6ead8'], upright: '今天更適合把事情攤平來看，別只靠感覺判斷。', reversed: '標準有點搖晃，現在需要把界線重新畫清楚。' },
-  { id: 'hanged', no: 'XII', name: '吊人', icon: '🌿', palette: ['#d6e8f7', '#f7ebd8'], upright: '停一下不是浪費，反而是在換一個角度看。', reversed: '已經停得太久了，某件事需要重新動一下。' },
-  { id: 'death', no: 'XIII', name: '死神', icon: '🦋', palette: ['#e0d6d3', '#f6ddb8'], upright: '有些東西差不多該結束了，拖著只會更重。', reversed: '變化已經到了門口，但你還想再拖一下。' },
-  { id: 'temperance', no: 'XIV', name: '節制', icon: '🫖', palette: ['#d8efe7', '#f6e5c6'], upright: '今天的重點不是衝刺，而是把份量調回剛剛好。', reversed: '事情不是太多就是太少，平衡感有點跑掉了。' },
-  { id: 'devil', no: 'XV', name: '惡魔', icon: '🕯️', palette: ['#ccb7bf', '#f1d4b4'], upright: '某種慣性正在牽著你走，先看清楚比急著切斷有用。', reversed: '你已經感覺到不對勁了，現在差的是鬆手。' },
-  { id: 'tower', no: 'XVI', name: '高塔', icon: '⚡', palette: ['#d7d7f7', '#f3cfab'], upright: '原本的安排可能要被打亂，重點是保留能用的部分。', reversed: '震動沒有消失，只是還卡在即將發生的邊緣。' },
-  { id: 'star', no: 'XVII', name: '星星', icon: '⭐', palette: ['#d5e6fb', '#f5efd6'], upright: '這張牌偏輕，像是在提醒你把視線放遠一點。', reversed: '方向感沒有完全不見，只是暫時被雜訊蓋住了。' },
-  { id: 'moon', no: 'XVIII', name: '月亮', icon: '🌘', palette: ['#d8d1f2', '#f6dfc2'], upright: '今天不一定適合求快，很多東西還在半清楚的狀態。', reversed: '霧開始散了，但你可能還不太敢相信眼前的輪廓。' },
-  { id: 'sun', no: 'XIX', name: '太陽', icon: '🌞', palette: ['#f6d06f', '#d9eef8'], upright: '這張牌很亮，今天適合把事情攤開、做實、往前。', reversed: '亮面還在，但你的狀態暫時跟不上那個節奏。' },
-  { id: 'judgement', no: 'XX', name: '審判', icon: '📯', palette: ['#e2dcf8', '#f7e1c3'], upright: '有件事差不多要被重新看見，也該重新命名了。', reversed: '你已經知道某件事需要處理，只是還沒正面碰它。' },
-  { id: 'world', no: 'XXI', name: '世界', icon: '🌍', palette: ['#d5f0dd', '#f6e4bc'], upright: '事情有機會在今天收成一個完整的段落。', reversed: '整體只差最後一點收尾，別急著中途轉身。' }
+  { id: 'fool', no: '00', name: '??, icon: '?', palette: ['#f7d7ab', '#cde9f7'], upright: '?啁?頝臬??????粥?箏瘥??喳云憭????, reversed: '?單郊憭芸翰嚗?瘝?皜??澆??迤閬???臭?暻潦? },
+  { id: 'magician', no: 'I', name: '擳?撣?, icon: '??', palette: ['#f6d0b9', '#d8f2df'], upright: '????隞嗅撖血??剁??乩?靘?獐????憟賬?, reversed: '撌亙?賢嚗?瘜冽???瘝??迤?葉韏瑚??? },
+  { id: 'priestess', no: 'II', name: '憟喟平??, icon: '??', palette: ['#d7def7', '#f6efe0'], upright: '?曉瘥??拙???撖?銝亥???獢牧甇颯?, reversed: '?渲死?靘?雿????脤????摰? },
+  { id: 'empress', no: 'III', name: '??', icon: '??', palette: ['#f7d0d8', '#d7eed9'], upright: '?撐???憿扼?擗?霈???ａ?箔???, reversed: '?敺?嚗?蝭憟?賢歇蝬?暺仃銵～? },
+  { id: 'emperor', no: 'IV', name: '??', icon: '??', palette: ['#efd2ba', '#d9dff1'], upright: '隞予?湧?閬??嗚?蝺?銝暺?蝣箇?銝餃???, reversed: '?批??敺云蝺?鈭???摰寞??脯? },
+  { id: 'lovers', no: 'VI', name: '?鈭?, icon: '?弧', palette: ['#f6d7cf', '#f6e9b8'], upright: '??銝?舀????雿?豢???隞暻潦?, reversed: '銵券銝??券??撖阡?銝??函鞊怨ㄐ???? },
+  { id: 'chariot', no: 'VII', name: '?啗?', icon: '??', palette: ['#d3e3fb', '#f4dfb8'], upright: '?孵?撌脩??箔?鈭?隞予?游??臬?漲?絲靘?, reversed: '?脩?????嚗??孵??????典?朣? },
+  { id: 'strength', no: 'VIII', name: '??', icon: '??', palette: ['#f6d1bc', '#f8e9c8'], upright: '蝖祉１蝖砌?銝摰??剁?蝛拐??芸楛?????, reversed: '銵券?絲靘?敺?嚗?典撖血歇蝬?暺??? },
+  { id: 'hermit', no: 'IX', name: '?梯?, icon: '??儭?, palette: ['#dfdfdf', '#d8e7f5'], upright: '隞予?拙??釣???嗅?靘?銝?閬????云憭犖??, reversed: '雿歇蝬敺?敺鈭??葬?航?芣??湔芋蝟? },
+  { id: 'wheel', no: 'X', name: '?賡?銋憚', icon: '?', palette: ['#f4d7b5', '#d9e0f6'], upright: '撅?Ｘ迤?刻????瘥′?????, reversed: '霈?撌脩???鈭??芣雿???∪??憟ㄐ?? },
+  { id: 'justice', no: 'XI', name: '甇?儔', icon: '??', palette: ['#e7d7f7', '#f6ead8'], upright: '隞予?湧??鈭??文像靘?嚗?芷??死?斗??, reversed: '璅?????嚗?券?閬?????急?璆? },
+  { id: 'hanged', no: 'XII', name: '?犖', icon: '?', palette: ['#d6e8f7', '#f7ebd8'], upright: '??銝??舀答鞎鳴???冽?銝??摨衣???, reversed: '撌脩???憭芯?鈭??辣鈭?閬??啣?銝銝? },
+  { id: 'death', no: 'XIII', name: '甇餌?', icon: '??', palette: ['#e0d6d3', '#f6ddb8'], upright: '???梯正撌桐?憭府蝯?鈭????芣??湧???, reversed: '霈?撌脩??唬?????雿????銝銝? },
+  { id: 'temperance', no: 'XIV', name: '蝭??, icon: '??', palette: ['#d8efe7', '#f6e5c6'], upright: '隞予??暺??航??綽???遢?矽???末??, reversed: '鈭?銝憭芸?撠望憭芸?嚗像銵⊥???頝?鈭? },
+  { id: 'devil', no: 'XV', name: '?⊿?', icon: '?儭?, palette: ['#ccb7bf', '#f1d4b4'], upright: '?車??扳迤?函??韏堆???皜?瘥亥?????, reversed: '雿歇蝬?閬箏銝???嚗?典榆?擛??? },
+  { id: 'tower', no: 'XVI', name: '擃?', icon: '??, palette: ['#d7d7f7', '#f3cfab'], upright: '?????質?鋡急?鈭????臭???函??典???, reversed: '??瘝?瘨仃嚗?舫??∪?喳??潛???蝺?? },
+  { id: 'star', no: 'XVII', name: '??', icon: '潃?, palette: ['#d5e6fb', '#f5efd6'], upright: '?撐??頛???冽?????蝺??暺?, reversed: '?孵??????其?閬??芣?急?鋡恍?閮?雿??? },
+  { id: 'moon', no: 'XVIII', name: '?漁', icon: '??', palette: ['#d8d1f2', '#f6dfc2'], upright: '隞予銝?摰??敹恬?敺??梯正???璆????, reversed: '?折?憪鈭?雿??航??憭芣?訾縑?澆??憚撱? },
+  { id: 'sun', no: 'XIX', name: '憭芷', icon: '??', palette: ['#f6d06f', '#d9eef8'], upright: '?撐??鈭殷?隞予?拙??????撖艾???, reversed: '鈭桅?嚗?雿?????銝????憟? },
+  { id: 'judgement', no: 'XX', name: '撖拙', icon: '?', palette: ['#e2dcf8', '#f7e1c3'], upright: '?辣鈭榆銝?閬◤???嚗?閰脤??啣????, reversed: '雿歇蝬??隞嗡??閬????芣??甇?蝣啣??? },
+  { id: 'world', no: 'XXI', name: '銝?', icon: '??', palette: ['#d5f0dd', '#f6e4bc'], upright: '鈭????隞予?嗆?銝???渡?畾菔??, reversed: '?湧??芸榆?敺?暺撠橘??交亥?銝剝?頨怒? }
 ];
 
 TAROT_DECK.push({
   id: 'hierophant',
   no: 'V',
-  name: '教皇',
-  icon: '✠',
+  name: '??',
+  icon: '??,
   palette: ['#efe2c6', '#ddd8f4'],
-  upright: '適合回到已經被驗證的方法，照著規則走反而比較穩。',
-  reversed: '舊規則開始顯得卡手，別人的標準不一定還適合現在的你。'
+  upright: '?拙??撌脩?鋡恍?霅??寞?嚗???粥??頛帘??,
+  reversed: '????憪＊敺???乩犖??皞?銝摰??拙??曉????
 });
 
 const TAROT_MINOR_ARCANA_META = [
-  { suit: 'wands', suitLabel: '權杖', symbol: '✦', palette: ['#f6d0a7', '#f3e6c6'], base: '行動、熱度與推進感' },
-  { suit: 'cups', suitLabel: '聖杯', symbol: '☽', palette: ['#cfe2f7', '#e8effa'], base: '情緒、關係與感受流動' },
-  { suit: 'swords', suitLabel: '寶劍', symbol: '✧', palette: ['#d9dcef', '#eef1f7'], base: '思考、判斷與壓力拉扯' },
-  { suit: 'pentacles', suitLabel: '錢幣', symbol: '☉', palette: ['#d9ecd2', '#f3e5b8'], base: '現實、工作與穩定累積' }
+  { suit: 'wands', suitLabel: '甈?', symbol: '??, palette: ['#f6d0a7', '#f3e6c6'], base: '銵??摨西??券脫?' },
+  { suit: 'cups', suitLabel: '?', symbol: '??, palette: ['#cfe2f7', '#e8effa'], base: '????靽???瘚?' },
+  { suit: 'swords', suitLabel: '撖嗅?', symbol: '??, palette: ['#d9dcef', '#eef1f7'], base: '??瑁?憯??' },
+  { suit: 'pentacles', suitLabel: '?Ｗ馳', symbol: '??, palette: ['#d9ecd2', '#f3e5b8'], base: '?曉祕?極雿?蝛拙?蝝舐?' }
 ];
 
 const TAROT_MINOR_RANKS = [
-  { key: 'ace', no: 'A', zh: '一', upright: '新的起點正在形成，先從最小的那一步開始。', reversed: '起點已經出現，但還沒真正落地。' },
-  { key: 'two', no: '2', zh: '二', upright: '眼前需要在兩個方向之間做出平衡。', reversed: '表面維持平衡，實際上已經有些失衡。' },
-  { key: 'three', no: '3', zh: '三', upright: '事情開始彼此連接，進展也比前幾天明顯。', reversed: '合作感沒有真正接上，節奏容易散掉。' },
-  { key: 'four', no: '4', zh: '四', upright: '先穩住現況比硬推更重要。', reversed: '停得太久了，該重新讓事情動起來。' },
-  { key: 'five', no: '5', zh: '五', upright: '眼前帶著競爭或摩擦，會需要一點硬度。', reversed: '衝突沒有消失，只是暫時被壓著。' },
-  { key: 'six', no: '6', zh: '六', upright: '局勢開始順一些了，至少有一部分正在往前。', reversed: '想要往前，但整體推進感還不夠穩。' },
-  { key: 'seven', no: '7', zh: '七', upright: '需要守住自己的位置，不是每件事都要退讓。', reversed: '界線感有點鬆，容易被外界帶著走。' },
-  { key: 'eight', no: '8', zh: '八', upright: '節奏會加快，很多事會在短時間內集中出現。', reversed: '看似在動，其實還卡在某個關鍵點。' },
-  { key: 'nine', no: '9', zh: '九', upright: '已經撐到最後一段了，別太早鬆手。', reversed: '疲勞感很明顯，硬撐的成本正在變高。' },
-  { key: 'ten', no: '10', zh: '十', upright: '負擔到了上限，該開始分配或放下。', reversed: '壓力還在，但你已經不想再照原本方式背著它。' },
-  { key: 'page', no: 'P', zh: '侍者', upright: '今天適合用比較新的眼光看同一件事。', reversed: '訊號有些模糊，先別急著下定論。' },
-  { key: 'knight', no: 'N', zh: '騎士', upright: '行動會帶來答案，今天比較適合直接推進。', reversed: '衝得太快反而容易偏掉方向。' },
-  { key: 'queen', no: 'Q', zh: '皇后', upright: '保留自己的節奏，比迎合別人更重要。', reversed: '外表穩住了，內在其實有些消耗。' },
-  { key: 'king', no: 'K', zh: '國王', upright: '今天需要的是成熟的判斷，不是情緒性的反應。', reversed: '控制感太強時，反而會把事情弄僵。' }
+  { key: 'ace', no: 'A', zh: '銝', upright: '?啁?韏琿?甇?敶Ｘ?嚗?敺?撠????甇仿?憪?, reversed: '韏琿?撌脩??箇嚗????迤?賢?? },
+  { key: 'two', no: '2', zh: '鈭?, upright: '?澆??閬?拙?????箏像銵～?, reversed: '銵券蝬剜?撟唾﹛嚗祕??撌脩???憭梯﹛?? },
+  { key: 'three', no: '3', zh: '銝?, upright: '鈭???敶潭迨??嚗脣?銋??嗾憭拇?憿胯?, reversed: '??????甇?銝?蝭憟捆??? },
+  { key: 'four', no: '4', zh: '??, upright: '?帘雿瘜?蝖祆?湧?閬?, reversed: '??憭芯?鈭?閰脤??啗?鈭??絲靘? },
+  { key: 'five', no: '5', zh: '鈭?, upright: '?澆?撣嗉?蝡嗥??佗???閬?暺′摨艾?, reversed: '銵?瘝?瘨仃嚗?舀?◤憯??? },
+  { key: 'six', no: '6', zh: '??, upright: '撅?ａ?憪?銝鈭?嚗撠?銝?典?甇?敺??, reversed: '?唾?敺??雿擃?脫???憭帘?? },
+  { key: 'seven', no: '7', zh: '銝?, upright: '?閬?雿撌梁?雿蔭嚗??舀?隞嗡??質??霈?, reversed: '????暺?嚗捆?◤憭?撣嗉?韏啜? },
+  { key: 'eight', no: '8', zh: '??, upright: '蝭憟??翰嚗?憭???剜???葉?箇??, reversed: '?撮?典?嚗撖阡??∪???菟??? },
+  { key: 'nine', no: '9', zh: '銋?, upright: '撌脩???敺?畾萎?嚗憭芣擛???, reversed: '?脣????＊嚗′???甇?霈??? },
+  { key: 'ten', no: '10', zh: '??, upright: '鞎??唬?銝?嚗府?????銝?, reversed: '憯??嚗?雿歇蝬??喳??批??祆撘????? },
+  { key: 'page', no: 'P', zh: '靘?, upright: '隞予?拙??冽?頛?????隞嗡???, reversed: '閮???璅∠?嚗??交亥?銝?隢? },
+  { key: 'knight', no: 'N', zh: '擉ㄚ', upright: '銵??葆靘?獢?隞予瘥??拙??湔?券脯?, reversed: '銵?憭芸翰?捆????? },
+  { key: 'queen', no: 'Q', zh: '??', upright: '靽??芸楛??憟?瘥??鈭箸????, reversed: '憭”蝛拐?鈭??批?嗅祕??瘨? },
+  { key: 'king', no: 'K', zh: '??', upright: '隞予?閬??舀????斗嚗??舀?蝺抒?????, reversed: '?批?云撘瑟?嚗????????萸? }
 ];
 
 function buildMinorArcanaDeck() {
@@ -1803,8 +1803,8 @@ function buildMinorArcanaDeck() {
         name: `${suitMeta.suitLabel}${rankMeta.zh}`,
         icon: suitMeta.symbol,
         palette: suitMeta.palette,
-        upright: `${suitMeta.base}。${rankMeta.upright}`,
-        reversed: `${suitMeta.base}。${rankMeta.reversed}`
+        upright: `${suitMeta.base}??{rankMeta.upright}`,
+        reversed: `${suitMeta.base}??{rankMeta.reversed}`
       });
     });
   });
@@ -1852,13 +1852,13 @@ function normalizeUpdatedAtValue(value) {
   const str = String(value).trim();
   if (!str) return null;
   if (/^\d+$/.test(str)) return parseInt(str, 10);
-  let m = str.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})\s*(上午|下午)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+  let m = str.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})\s*(銝?|銝?)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
   if (m) {
     let hour = parseInt(m[5], 10);
     const minute = parseInt(m[6], 10);
     const second = parseInt(m[7] || '0', 10);
-    if (m[4] === '下午' && hour < 12) hour += 12;
-    if (m[4] === '上午' && hour === 12) hour = 0;
+    if (m[4] === '銝?' && hour < 12) hour += 12;
+    if (m[4] === '銝?' && hour === 12) hour = 0;
     return new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10), hour, minute, second).getTime();
   }
   const parsed = Date.parse(str);
@@ -1870,7 +1870,7 @@ function getEntry(year, month, day) {
   return { text: entry.text || '', mood: entry.mood || null, imgUrl: entry.imgUrl || '', tarot: normalizeTarotValue(entry.tarot), updatedAt: normalizeUpdatedAtValue(entry.updatedAt) };
 }
 
-// ── IndexedDB 圖片儲存 ──
+// ?? IndexedDB ???脣? ??
 var imgDB = null;
 function openImgDB() {
   return new Promise(function(resolve, reject) {
@@ -1912,8 +1912,8 @@ function deleteImgFromDB(key) {
   });
 }
 
-// ── Init ──
-// ── Settings ──
+// ?? Init ??
+// ?? Settings ??
 function defaultYears() {
   const cur = new Date().getFullYear();
   return [cur-4, cur-3, cur-2, cur-1, cur];
@@ -1923,9 +1923,9 @@ function loadSettings() {
     const s = JSON.parse(localStorage.getItem('5yr_settings') || '{}');
     return {
       years: Array.isArray(s.years) && s.years.length >= 1 ? s.years : defaultYears(),
-      name: s.name || '五年日記'
+      name: s.name || '鈭僑?亥?'
     };
-  } catch { return { years: defaultYears(), name: '五年日記' }; }
+  } catch { return { years: defaultYears(), name: '鈭僑?亥?' }; }
 }
 function saveSettings(settings) {
   localStorage.setItem('5yr_settings', JSON.stringify(settings));
@@ -1935,7 +1935,7 @@ let settings = loadSettings();
 let ACTIVE_YEARS = settings.years.slice().sort((a,b)=>a-b);
 
 loadData();
-// 套用儲存的日記名稱
+// 憟?脣??閮?蝔?
 document.querySelector('.app-title').textContent = settings.name;
 document.title = settings.name;
 renderHeader();
@@ -1948,13 +1948,13 @@ syncFromCloudSilently();
 
 function renderHeader() {
   const d = currentDate;
-  const dayStr = ['日','一','二','三','四','五','六'][d.getDay()];
+  const dayStr = ['??,'銝','鈭?,'銝?,'??,'鈭?,'??][d.getDay()];
   document.getElementById('dateDisplay').textContent =
-    `${d.getFullYear()}年 ${d.getMonth()+1}月 ${d.getDate()}日（${dayStr}）`;
+    `${d.getFullYear()}撟?${d.getMonth()+1}??${d.getDate()}?伐?${dayStr}嚗;
 
   const today = new Date();
   const isToday = d.toDateString() === today.toDateString();
-  document.getElementById('todayBadge').textContent = isToday ? '今天' : `${Math.round(Math.abs(d-today)/86400000)}天前`;
+  document.getElementById('todayBadge').textContent = isToday ? '隞予' : `${Math.round(Math.abs(d-today)/86400000)}憭拙?`;
 
   // Month strip
   const strip = document.getElementById('monthStrip');
@@ -2007,13 +2007,13 @@ function renderEntries() {
             <span class="year-text">${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <button class="save-btn" id="saveBtn${yr}" onclick="saveEntry(${yr}, ${d.getMonth()}, ${d.getDate()})">儲存</button>
+            <button class="save-btn" id="saveBtn${yr}" onclick="saveEntry(${yr}, ${d.getMonth()}, ${d.getDate()})">?脣?</button>
           </div>
         </div>
         <textarea
           class="entry-textarea"
           id="ta${yr}"
-          placeholder="${isFuture ? '還沒到這一天…' : `${yr}年的今天，我寫下…`}"
+          placeholder="${isFuture ? '???圈?憭抽? : `${yr}撟渡?隞予嚗?撖思??圳}"
           ${isFuture ? 'disabled' : ''}
           maxlength="5000"
           oninput="onTextInput(this, ${yr}, ${d.getMonth()}, ${d.getDate()})"
@@ -2027,20 +2027,20 @@ function renderEntries() {
         <div class="entry-footer">
           <div class="mood-row" id="moodRow${yr}"></div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <span class="char-count" id="cc${yr}">${entry.text.length}字</span>
-            ${!isFuture ? `<button onclick="pasteToEntry('ta${yr}')" style="background:none;border:none;color:var(--text-light);font-size:12px;cursor:pointer;padding:2px 6px;border-radius:8px;">貼上</button>` : ''}
-            ${!isFuture && entry.text.trim() ? `<button id="shareBtn${yr}" onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;">↗ 分享</button>` : ''}
+            <span class="char-count" id="cc${yr}">${entry.text.length}摮?/span>
+            ${!isFuture ? `<button onclick="pasteToEntry('ta${yr}')" style="background:none;border:none;color:var(--text-light);font-size:12px;cursor:pointer;padding:2px 6px;border-radius:8px;">鞎潔?</button>` : ''}
+            ${!isFuture && entry.text.trim() ? `<button id="shareBtn${yr}" onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;">???澈</button>` : ''}
           </div>
         </div>
         ${!isFuture ? `
         <div id="imgArea${yr}" style="margin-top:10px;">
           ${entry.imgUrl ? `
-            <div style="color:var(--text-light);font-size:12px;padding:4px 0;">圖片載入中…</div>
+            <div style="color:var(--text-light);font-size:12px;padding:4px 0;">??頛銝凌?/div>
           ` : `
             <label style="display:flex;align-items:center;gap:6px;color:var(--text-light);font-size:12px;cursor:pointer;padding:4px 0;">
               <input type="file" accept="image/*" style="display:none;" onchange="uploadImage(this, ${yr}, ${d.getMonth()}, ${d.getDate()})">
-              <span style="font-size:16px;">📷</span>
-              <span>新增照片</span>
+              <span style="font-size:16px;">?</span>
+              <span>?啣??抒?</span>
             </label>
           `}
         </div>
@@ -2051,13 +2051,13 @@ function renderEntries() {
 
     if (!isFuture) renderMoodRow(yr, d.getMonth(), d.getDate(), entry.mood);
 
-    // 自動展開高度
+    // ?芸?撅?擃漲
     setTimeout(function() {
       const ta = document.getElementById('ta' + yr);
       if (ta) { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
     }, 0);
 
-    // 非同步從 IndexedDB 載入圖片
+    // ??甇亙? IndexedDB 頛??
     if (!isFuture && entry.imgUrl) {
       const _yr = yr, _mo = d.getMonth(), _dy = d.getDate();
       const _k = getKey(_yr, _mo, _dy);
@@ -2068,14 +2068,14 @@ function renderEntries() {
           area.innerHTML = `
             <div style="position:relative;background:#f0eeec;border-radius:12px;overflow:hidden;text-align:center;">
               <img src="${dataUrl}" onclick="zoomImage('${dataUrl}')" style="max-width:100%;max-height:300px;width:auto;height:auto;display:block;margin:0 auto;cursor:zoom-in;border-radius:12px;">
-              <button onclick="removeImage(${_yr},${_mo},${_dy})" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:28px;text-align:center;">✕</button>
+              <button onclick="removeImage(${_yr},${_mo},${_dy})" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:28px;text-align:center;">??/button>
             </div>`;
         } else {
-          // IndexedDB 沒有，顯示上傳按鈕
+          // IndexedDB 瘝?嚗＊蝷箔??單???
           area.innerHTML = `
             <label style="display:flex;align-items:center;gap:6px;color:var(--text-light);font-size:12px;cursor:pointer;padding:4px 0;">
               <input type="file" accept="image/*" style="display:none;" onchange="uploadImage(this,${_yr},${_mo},${_dy})">
-              <span style="font-size:16px;">📷</span><span>新增照片</span>
+              <span style="font-size:16px;">?</span><span>?啣??抒?</span>
             </label>`;
         }
       });
@@ -2083,13 +2083,13 @@ function renderEntries() {
 
   });
 
-  // 「X年前的今天」提醒
+  // ?撟游???憭押???
   renderTarotLaunchArea();
   renderYearsAgoToday(d);
 }
 
 function renderYearsAgoToday(d) {
-  // 移除舊的提醒
+  // 蝘駁????
   const old = document.getElementById('yearsAgoToday');
   if (old) old.remove();
 
@@ -2103,7 +2103,7 @@ function renderYearsAgoToday(d) {
 
   milestones.forEach(n => {
     const yr = curYr - n;
-    if (ACTIVE_YEARS.includes(yr)) return; // 已在日記卡片裡顯示
+    if (ACTIVE_YEARS.includes(yr)) return; // 撌脣?亥??∠?鋆⊿＊蝷?
     const entry = getEntry(yr, d.getMonth(), d.getDate());
     if (entry.text && entry.text.trim()) {
       found.push({ yr, n, text: entry.text, mood: entry.mood });
@@ -2118,7 +2118,7 @@ function renderYearsAgoToday(d) {
 
   const label = document.createElement('div');
   label.className = 'section-title';
-  label.textContent = '⏳ 記憶回放';
+  label.textContent = '??閮?';
   label.style.marginBottom = '10px';
   banner.appendChild(label);
 
@@ -2126,7 +2126,7 @@ function renderYearsAgoToday(d) {
     const card = document.createElement('div');
     card.style.cssText = 'background:linear-gradient(135deg,#f8f0e8,#f0e8f8);border-radius:16px;padding:14px 16px;margin-bottom:10px;cursor:pointer;';
     card.innerHTML = `
-      <div style="font-size:11px;color:#7a6a7a;letter-spacing:0.05em;margin-bottom:6px;">${n} 年前的今天 · ${yr}年 ${mood||''}</div>
+      <div style="font-size:11px;color:#7a6a7a;letter-spacing:0.05em;margin-bottom:6px;">${n} 撟游???憭?繚 ${yr}撟?${mood||''}</div>
       <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:#3a2a3a;line-height:1.7;">${text}</div>
     `;
     card.onclick = () => jumpToEntry(`${yr}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
@@ -2142,14 +2142,14 @@ function renderMoodRow(yr, month, day, selectedMood) {
   if (!row) return;
   row.innerHTML = '';
 
-  // 顯示已選心情 + 展開按鈕
+  // 憿舐內撌脤敹? + 撅???
   const preview = document.createElement('div');
   preview.style.cssText = 'display:flex;align-items:center;gap:6px;flex:1;';
 
   const selectedBtn = document.createElement('button');
   selectedBtn.className = 'mood-btn' + (selectedMood ? ' selected' : '');
-  selectedBtn.textContent = selectedMood || '＋';
-  selectedBtn.title = '點擊選擇心情';
+  selectedBtn.textContent = selectedMood || '嚗?;
+  selectedBtn.title = '暺??豢?敹?';
   selectedBtn.style.fontSize = selectedMood ? '18px' : '14px';
 
   const togglePanel = () => {
@@ -2172,18 +2172,18 @@ function renderMoodRow(yr, month, day, selectedMood) {
         saveData();
         panel.remove();
         renderMoodRow(yr, month, day, newMood);
-        showToast('心情已記錄 ' + (newMood || ''));
+        showToast('敹?撌脰???' + (newMood || ''));
         const saveBtn = document.getElementById(`saveBtn${yr}`);
         if (saveBtn) saveBtn.classList.add('visible');
       };
       panel.appendChild(btn);
     });
 
-    // 插入在 entry-footer 之後
+    // ???entry-footer 銋?
     const footer = row.closest('.entry-footer');
     if (footer) footer.insertAdjacentElement('afterend', panel);
 
-    // 點外面自動關閉
+    // 暺??Ｚ????
     const outsideClick = (ev) => {
       if (!panel.contains(ev.target) && ev.target !== selectedBtn) {
         panel.remove();
@@ -2198,7 +2198,7 @@ function renderMoodRow(yr, month, day, selectedMood) {
   if (selectedMood) {
     const clearBtn = document.createElement('button');
     clearBtn.style.cssText = 'border:none;background:none;color:var(--text-light);font-size:12px;cursor:pointer;padding:2px 6px;';
-    clearBtn.textContent = '✕';
+    clearBtn.textContent = '??;
     clearBtn.onclick = () => {
       const entry = getEntry(yr, month, day);
       const k = getKey(yr, month, day);
@@ -2218,36 +2218,36 @@ function renderMoodRow(yr, month, day, selectedMood) {
 
 const REVIEW_COPY = {
   heavy: [
-    '過度運轉後的體力與意志正處於明顯的損耗狀態。',
-    '情緒反應在長期高壓下顯得遲鈍，起伏也變少了。',
-    '思維的運作速度明顯低於往常，很多事情都變慢了。',
-    '對周遭環境的感知能力，隨著體力透支一起下降。',
-    '僅存的專注力，多半只夠維持眼前最基本的處理。',
-    '這段時間的內容偏重，很多句子都停在疲倦附近。'
+    '?漲??敺?擃???敹迤??＊??????,
+    '?????券??憯?憿臬??脤?嚗絲隡?霈?鈭?,
+    '?雁??雿漲?＊雿敺撣賂?敺?鈭??質??Ｖ???,
+    '撠?剔憓???賢?嚗???銝韏瑚???,
+    '????瘜典?嚗??憭雁????箸????,
+    '?挾???摰孵???敺??亙??賢??函?阡?餈?
   ],
   steady: [
-    '生活節奏維持在穩定的慣性裡，幾乎沒有太多意外。',
-    '多數時間都在處理重複性很高的日常瑣事。',
-    '個人狀態在固定日程裡，呈現一種低起伏的平緩。',
-    '事務的進度依照原本邏輯，緩慢但確實地向前推移。',
-    '這段時間的記錄偏向日常，情緒沒有太大的擺動。',
-    '很多內容都落在熟悉的路徑上，節奏相對一致。'
+    '?暑蝭憟雁?蝛拙???扯ㄐ嚗嗾銋??云憭?憭?,
+    '憭???賢?????批?擃??亙虜?????,
+    '?犖???箏??亦?鋆∴??銝蝔桐?韏瑚??像蝺押?,
+    '鈭??脣漲靘??摩嚗楨?Ｖ?蝣箏祕?啣??蝘颯?,
+    '?挾???????撣賂???瘝?憭芸之???,
+    '敺??批捆?質?函???頝臬?銝?蝭憟撠??氬?
   ],
   smooth: [
-    '執行力與判斷力在這段時間裡維持著不錯的協調。',
-    '各項事情的進度大致符合預期，推進感很明顯。',
-    '溝通過程相對流暢，很多訊息都能準確落地。',
-    '思維的連貫性帶動了行動效率，也留下了實際成果。',
-    '手邊的每一件事都進展得異常順遂。',
-    '這段時間的狀態偏亮，許多事情都有往前走的感覺。'
+    '?瑁????斗??挾??鋆∠雁??銝??隤踴?,
+    '??鈭??脣漲憭扯蝚血???嚗?脫?敺?憿胯?,
+    '皞?蝔撠??ｇ?敺?閮?質皞Ⅱ?賢??,
+    '?雁??疵?批葆??銵???嚗???鈭祕????,
+    '????銝隞嗡??賡脣?敺撣賊???,
+    '?挾??????鈭殷?閮勗?鈭??賣?敺?粥??閬箝?
   ],
   tangled: [
-    '多重目標重疊在一起，讓優先順序變得不太清楚。',
-    '突發請求打斷了原本安排好的工作節奏。',
-    '破碎的資訊來源，讓決策過程變得反覆而困難。',
-    '計畫變動的頻率，已經超過原本節奏能承受的範圍。',
-    '個人預期與現實條件之間，出現了不小的落差。',
-    '這段時間的內容有點擠，很多事情同時卡在一起。'
+    '憭??格????其?韏瘀?霈??摨?敺?憭芣?璆?,
+    '蝒隢??鈭??砍??末?極雿?憟?,
+    '?渡???閮?皞?霈捱蝑?蝔?敺?閬???,
+    '閮霈????撌脩?頞??蝭憟?踹?????,
+    '?犖???撖行?隞嗡????箇鈭?撠??賢榆??,
+    '?挾???摰寞?暺?嚗?憭?????其?韏瑯?
   ]
 };
 
@@ -2289,7 +2289,7 @@ function tarotToText(tarot) {
   if (!tarot.cardId) return '';
   const card = getTarotCardMeta(tarot.cardId);
   if (!card) return '';
-  return `${card.name}${tarot.reversed ? '（逆位）' : '（正位）'}｜${tarot.reversed ? card.reversed : card.upright}`;
+  return `${card.name}${tarot.reversed ? '嚗?嚗? : '嚗迤雿?'}嚚?{tarot.reversed ? card.reversed : card.upright}`;
 }
 
 function openTarotModal() {
@@ -2363,7 +2363,7 @@ function pickTarotCard(index) {
   renderTarotSection();
   renderTarotLaunchArea();
   renderEntries();
-  showToast('今日的牌已翻開');
+  showToast('隞??撌脩蕃??);
 }
 
 function copyTarotPrompt() {
@@ -2373,16 +2373,16 @@ function copyTarotPrompt() {
   const card = getTarotCardMeta(chosen.cardId);
   const mode = getTarotModeById(tarotState.mode);
   const text = [
-    '請幫我解讀這張塔羅牌。',
-    `抽牌方式：${mode.label}`,
-    '我的問題：',
-    '（把你的問題補在這裡）',
-    `抽到的牌：${card.name}${chosen.reversed ? '（逆位）' : '（正位）'}`,
-    `牌面短解讀：${chosen.reversed ? card.reversed : card.upright}`
+    '隢鼠?圾霈?撐憛???,
+    `?賜??孵?嚗?{mode.label}`,
+    '????嚗?,
+    '嚗?雿???鋆?ㄐ嚗?,
+    `?賢??嚗?{card.name}${chosen.reversed ? '嚗?嚗? : '嚗迤雿?'}`,
+    `??剛圾霈嚗?{chosen.reversed ? card.reversed : card.upright}`
   ].join('\n');
   navigator.clipboard.writeText(text)
-    .then(() => showToast('已複製提問素材'))
-    .catch(() => showToast('複製失敗'));
+    .then(() => showToast('撌脰?鋆賣?????))
+    .catch(() => showToast('銴ˊ憭望?'));
 }
 
 function renderTarotLaunchArea() {
@@ -2401,10 +2401,10 @@ function renderTarotLaunchArea() {
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div>
           <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:4px;">DAILY TAROT</div>
-          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">今日塔羅</div>
-          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotText ? tarotText : '今天還沒抽牌，每天只能抽一次。'}</div>
+          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">隞憛?</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotText ? tarotText : '隞予???賜?嚗?憭拙?賣銝甈～?}</div>
         </div>
-        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotText ? '查看今日牌面' : '開始抽牌'}</button>
+        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotText ? '?亦?隞?' : '???賜?'}</button>
       </div>
     </div>
   `;
@@ -2419,7 +2419,7 @@ function renderTarotModes() {
   if (locked) {
     grid.innerHTML = `
       <div style="padding:12px 14px;border-radius:16px;background:rgba(255,255,255,0.75);color:var(--text-mid);font-size:12px;line-height:1.7;">
-        今日塔羅已經抽過了。每天只會出現一張牌，現在可以查看結果，但不能重抽。
+        隞憛?撌脩??賡?鈭?憭拙??曆?撘萇?嚗?典隞交????雿??賡??賬?
       </div>
     `;
     return;
@@ -2435,7 +2435,7 @@ function renderTarotModes() {
 function startTarotDraw(modeId) {
   const today = new Date();
   if (getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot) {
-    showToast('今日塔羅已抽過，每天只能抽一次。');
+    showToast('隞憛?撌脫??瘥予?芾?賭?甈～?);
     renderTarotModes();
     renderTarotSection();
     return;
@@ -2462,18 +2462,18 @@ function renderTarotSection() {
 
   if (savedTarot && savedCard) {
     section.innerHTML = `
-      <div class="tarot-spread-hint">今日塔羅已固定，明天才會出現新的牌。</div>
+      <div class="tarot-spread-hint">隞憛?撌脣摰??予???箇?啁???/div>
       <div class="tarot-result">
         <div class="tarot-result-head">
           <div>
             <div class="tarot-result-title">${savedCard.name}</div>
-            <div class="tarot-result-tag">${savedTarot.reversed ? '逆位' : '正位'} · ${savedMode.label}</div>
+            <div class="tarot-result-tag">${savedTarot.reversed ? '??' : '甇??'} 繚 ${savedMode.label}</div>
           </div>
         </div>
         <div class="tarot-result-copy">${savedTarot.reversed ? savedCard.reversed : savedCard.upright}</div>
-        <div class="tarot-result-note">今日塔羅只能抽一次。如果想更詳細了解內容，把你的問題和抽到的牌拿去問 AI。</div>
+        <div class="tarot-result-note">隞憛??芾?賭?甈～???渲底蝝唬?閫?摰對?????憿??賢???踹??AI??/div>
         <div class="tarot-result-actions">
-          <button class="tarot-action-btn primary" onclick="copyTarotPrompt(this)">複製提問素材</button>
+          <button class="tarot-action-btn primary" onclick="copyTarotPrompt(this)">銴ˊ??蝝?</button>
         </div>
       </div>
     `;
@@ -2482,7 +2482,7 @@ function renderTarotSection() {
 
   if (!tarotState.mode || !tarotState.spread.length) {
     section.innerHTML = `
-      <div class="tarot-spread-hint">先選一種方式，再從今天的三張牌裡抽出一張。</div>
+      <div class="tarot-spread-hint">?銝蝔格撘???隞予??撘萇?鋆⊥?箔?撘萸?/div>
       <div class="tarot-spread" style="display:flex;align-items:flex-end;justify-content:center;gap:10px;height:170px;">
         ${TAROT_BACK_SYMBOLS.map((symbol, index) => `
           <div style="width:82px;aspect-ratio:0.62;border-radius:16px;background:linear-gradient(135deg,#36115c,#23103e);border:2px solid #d6b26e;display:flex;align-items:center;justify-content:center;color:#efcf8b;font-size:30px;transform:rotate(${index===0?-8:index===1?0:8}deg) translateY(${index===1?0:10}px);box-shadow:0 10px 22px rgba(0,0,0,0.16);">${symbol}</div>
@@ -2494,7 +2494,7 @@ function renderTarotSection() {
 
   const mode = getTarotModeById(tarotState.mode);
   section.innerHTML = `
-    <div class="tarot-spread-hint">${mode.id === 'intent' ? '先放一個今天最想釐清的問題，再選一張。' : '不用先想問題，照直覺選一張就好。'}</div>
+    <div class="tarot-spread-hint">${mode.id === 'intent' ? '?銝??憭拇??喲?皜???嚗??訾?撘萸? : '銝???嚗?渲死?訾?撘萄停憟賬?}</div>
     <div class="tarot-spread">
       ${tarotState.spread.map((item, index) => {
         const meta = getTarotCardMeta(item.cardId);
@@ -2534,7 +2534,7 @@ async function pasteToEntry(taId) {
     ta.dispatchEvent(new Event('input', { bubbles: true }));
     ta.focus();
   } catch(e) {
-    showToast('請用長按選單貼上');
+    showToast('隢?瑟??詨鞎潔?');
   }
 }
 
@@ -2542,7 +2542,7 @@ function onTextInput(ta, yr, month, day) {
   ta.style.height = 'auto';
   ta.style.height = ta.scrollHeight + 'px';
   const len = ta.value.length;
-  document.getElementById(`cc${yr}`).textContent = `${len}字`;
+  document.getElementById(`cc${yr}`).textContent = `${len}摮;
   const saveBtn = document.getElementById(`saveBtn${yr}`);
   if (saveBtn) {
     saveBtn.classList.toggle('visible', len > 0 || getEntry(yr, month, day).text !== ta.value);
@@ -2553,7 +2553,7 @@ function onTextInput(ta, yr, month, day) {
     if (actionRow) {
       shareBtn = document.createElement('button');
       shareBtn.id = `shareBtn${yr}`;
-      shareBtn.textContent = '↗ 分享';
+      shareBtn.textContent = '???澈';
       shareBtn.setAttribute('onclick', `shareEntry(${yr}, ${month}, ${day})`);
       shareBtn.style.cssText = 'background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;';
       actionRow.appendChild(shareBtn);
@@ -2565,11 +2565,11 @@ function onTextInput(ta, yr, month, day) {
 function saveEntry(yr, month, day) {
   const ta = document.getElementById(`ta${yr}`);
   const entry = getEntry(yr, month, day);
-  // 同步到雲端（文字＋心情一起）
+  // ?郊?圈蝡荔???嚗???韏瘀?
   setEntry(yr, month, day, ta.value, entry.mood, undefined, entry.tarot);
   const saveBtn = document.getElementById(`saveBtn${yr}`);
   if (saveBtn) saveBtn.classList.remove('visible');
-  showToast('已儲存並同步 ✓');
+  showToast('撌脣摮蒂?郊 ??);
   if (activeTab === 'stats') renderStats();
 }
 
@@ -2586,12 +2586,12 @@ function renderAll() {
   if (activeTab === 'stats') renderStats();
 }
 
-// ── Calendar ──
+// ?? Calendar ??
 function renderCalendar() {
   const d = calViewDate;
   const yr = d.getFullYear();
   const mo = d.getMonth();
-  document.getElementById('calMonthTitleText').textContent = `${yr}年 ${MONTHS_ZH[mo]}`;
+  document.getElementById('calMonthTitleText').textContent = `${yr}撟?${MONTHS_ZH[mo]}`;
 
   const grid = document.getElementById('calendarGrid');
   grid.innerHTML = '';
@@ -2629,29 +2629,29 @@ function renderCalendar() {
     el.textContent = d2;
     const _yr = yr, _mo = mo, _d2 = d2;
     el.onclick = () => {
-      // 更新選中狀態
+      // ?湔?訾葉???
       document.querySelectorAll('#calendarGrid .cal-day').forEach(e => e.classList.remove('selected'));
       if (!isToday) el.classList.add('selected');
-      // 顯示那天的日記預覽
+      // 憿舐內??予?閮?閬?
       showCalDayPreview(_yr, _mo, _d2);
     };
     grid.appendChild(el);
   }
 
 
-  // 預設顯示今天或本月第一筆有記錄的日
+  // ?身憿舐內隞予??洵銝蝑?閮??
   const todayInView = yr === new Date().getFullYear() && mo === new Date().getMonth();
   if (todayInView) {
     showCalDayPreview(yr, mo, new Date().getDate());
   } else {
     document.getElementById('calEntryPreview').innerHTML =
-      '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px;">點選日期查看日記</div>';
+      '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px;">暺?交??亦??亥?</div>';
   }
 }
 
 function showCalDayPreview(yr, mo, day) {
   const preview = document.getElementById('calEntryPreview');
-  const dateStr = yr + '年 ' + (mo+1) + '月 ' + day + '日';
+  const dateStr = yr + '撟?' + (mo+1) + '??' + day + '??;
   const entries = [];
   ACTIVE_YEARS.forEach(y => {
     const e = getEntry(y, mo, day);
@@ -2662,10 +2662,10 @@ function showCalDayPreview(yr, mo, day) {
     preview.innerHTML = `
       <div style="background:var(--white);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
         <div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">${dateStr}</div>
-        <div style="text-align:center;color:var(--text-light);font-size:13px;padding:10px 0;">這天沒有日記</div>
+        <div style="text-align:center;color:var(--text-light);font-size:13px;padding:10px 0;">?予瘝??亥?</div>
         <button onclick="jumpToEntry('${yr}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}')" 
           style="width:100%;margin-top:12px;padding:10px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">
-          去這天寫日記
+          ?駁予撖急閮?
         </button>
       </div>`;
     return;
@@ -2676,7 +2676,7 @@ function showCalDayPreview(yr, mo, day) {
     ${entries.map(({ y, text, mood }) => `
       <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;"
         onclick="jumpToEntry('${y}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}')">
-        <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;">${y}年 ${mood||''}</div>
+        <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;">${y}撟?${mood||''}</div>
         <div style="font-size:13px;color:var(--text-dark);line-height:1.6;font-family:'Noto Serif TC',serif;">${text}</div>
       </div>
     `).join('')}
@@ -2688,7 +2688,7 @@ function changeCalMonth(delta) {
   renderCalendar();
 }
 
-// ── 首頁日期選擇器 ──
+// ?? 擐??交??豢?????
 var dpViewDate = new Date();
 
 function openDatePicker() {
@@ -2716,7 +2716,7 @@ function changeDatePickerYear(delta) {
 function renderDatePickerGrid() {
   const yr = dpViewDate.getFullYear();
   const mo = dpViewDate.getMonth();
-  document.getElementById('dpMonthTitle').textContent = yr + '年 ' + MONTHS_ZH[mo];
+  document.getElementById('dpMonthTitle').textContent = yr + '撟?' + MONTHS_ZH[mo];
 
   const grid = document.getElementById('dpGrid');
   grid.innerHTML = '';
@@ -2792,13 +2792,13 @@ function closeYearPicker(e) {
   }
 }
 
-// ── 搜尋 ──
+// ?? ?? ??
 function doSearch(query) {
   const results = document.getElementById('searchResults');
   if (!results) return;
   const q = query.trim();
   if (!q) {
-    results.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">輸入關鍵字搜尋你的日記</div>';
+    results.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">頛詨?摮?撠??閮?/div>';
     return;
   }
   const hits = [];
@@ -2810,20 +2810,20 @@ function doSearch(query) {
   });
   hits.sort((a,b) => b.key.localeCompare(a.key));
   if (hits.length === 0) {
-    results.innerHTML = `<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">找不到「${q}」</div>`;
+    results.innerHTML = `<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">?曆??啜?{q}??/div>`;
     return;
   }
   results.innerHTML = hits.map(({ key, text, mood, idx }) => {
     const parts = key.split('-');
-    const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
-    // 高亮關鍵字前後各30字
+    const dateStr = parts[0] + '撟?' + parseInt(parts[1]) + '??' + parseInt(parts[2]) + '??;
+    // 擃漁?摮?敺?30摮?
     const start = Math.max(0, idx - 30);
     const end = Math.min(text.length, idx + q.length + 30);
-    const snippet = (start > 0 ? '…' : '') +
+    const snippet = (start > 0 ? '?? : '') +
       text.slice(start, idx) +
       `<mark style="background:#fde8a0;border-radius:3px;padding:0 2px;">${text.slice(idx, idx + q.length)}</mark>` +
       text.slice(idx + q.length, end) +
-      (end < text.length ? '…' : '');
+      (end < text.length ? '?? : '');
     return `<div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${key}')">
       <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;display:flex;gap:6px;align-items:center;">
         <span>${dateStr}</span><span>${mood||''}</span>
@@ -2833,13 +2833,13 @@ function doSearch(query) {
   }).join('');
 }
 
-// ── 主題 ──
+// ?? 銝駁? ??
 var THEMES = [
-  { id: '', label: '暖米', bg: '#f7f5f2', dot: 'linear-gradient(135deg,#fde8c8,#f8bcd0)' },
-  { id: 'ocean', label: '海洋', bg: '#f0f4f8', dot: 'linear-gradient(135deg,#c8e0f8,#a8c8f0)' },
-  { id: 'forest', label: '森林', bg: '#f0f5f0', dot: 'linear-gradient(135deg,#c8f0d8,#a8e0c0)' },
-  { id: 'lavender', label: '薰衣草', bg: '#f4f0f8', dot: 'linear-gradient(135deg,#e0c8f8,#c8a8f0)' },
-  { id: 'dark', label: '深夜', bg: '#1a1a1a', dot: 'linear-gradient(135deg,#3a3030,#302838)' },
+  { id: '', label: '?掖', bg: '#f7f5f2', dot: 'linear-gradient(135deg,#fde8c8,#f8bcd0)' },
+  { id: 'ocean', label: '瘚瑟?', bg: '#f0f4f8', dot: 'linear-gradient(135deg,#c8e0f8,#a8c8f0)' },
+  { id: 'forest', label: '璉格?', bg: '#f0f5f0', dot: 'linear-gradient(135deg,#c8f0d8,#a8e0c0)' },
+  { id: 'lavender', label: '?啗﹝??, bg: '#f4f0f8', dot: 'linear-gradient(135deg,#e0c8f8,#c8a8f0)' },
+  { id: 'dark', label: '瘛勗?', bg: '#1a1a1a', dot: 'linear-gradient(135deg,#3a3030,#302838)' },
 ];
 
 function applyTheme(id) {
@@ -2860,13 +2860,13 @@ function renderThemeGrid() {
   `).join('');
 }
 
-// 載入時套用儲存的主題
+// 頛???典摮?銝駁?
 (function() {
   const saved = localStorage.getItem('5yr_theme') || '';
   document.body.className = saved ? 'theme-' + saved : '';
 })();
 
-// ── 回顧 ──
+// ?? ?“ ??
 var currentReviewTab = 'week';
 
 function switchReview(tab) {
@@ -2894,15 +2894,15 @@ function renderReview() {
     start.setDate(now.getDate() - day);
     start.setHours(0, 0, 0, 0);
     end = new Date(now);
-    title = '本週回顧';
+    title = '?祇勗?憿?;
   } else if (currentReviewTab === 'month') {
     start = new Date(now.getFullYear(), now.getMonth(), 1);
     end = new Date(now);
-    title = `${now.getFullYear()}年${now.getMonth() + 1}月回顧`;
+    title = `${now.getFullYear()}撟?{now.getMonth() + 1}??憿呎;
   } else {
     start = new Date(now.getFullYear(), 0, 1);
     end = new Date(now);
-    title = `${now.getFullYear()}年度回顧`;
+    title = `${now.getFullYear()}撟游漲?“`;
   }
 
   Object.entries(data).forEach(function([key, val]) {
@@ -2949,24 +2949,24 @@ function renderReview() {
   function formatDateKey(key) {
     const parts = key.split('-');
     const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    const weekday = ['日', '一', '二', '三', '四', '五', '六'][date.getDay()];
-    return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日（${weekday}）`;
+    const weekday = ['??, '銝', '鈭?, '銝?, '??, '鈭?, '??][date.getDay()];
+    return `${parts[0]}撟?{parseInt(parts[1])}??{parseInt(parts[2])}?伐?${weekday}嚗;
   }
 
   function formatTopSlot(slot) {
     if (!slot) return null;
     if (currentReviewTab === 'week') {
-      const weekdays = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
-      return { value: weekdays[parseInt(slot[0], 10)] || '—', label: '寫最多' };
+      const weekdays = ['?望', '?曹?', '?曹?', '?曹?', '?勗?', '?曹?', '?勗'];
+      return { value: weekdays[parseInt(slot[0], 10)] || '??, label: '撖急?憭? };
     }
     if (currentReviewTab === 'month') {
-      return { value: `${slot[0]}號`, label: '寫最多' };
+      return { value: `${slot[0]}?, label: '撖急?憭? };
     }
-    return { value: `${slot[0]}月`, label: '寫最多' };
+    return { value: `${slot[0]}?, label: '撖急?憭? };
   }
 
   const topSlotDisplay = formatTopSlot(topSlot);
-  const weekdayLabels = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+  const weekdayLabels = ['?望', '?曹?', '?曹?', '?曹?', '?勗?', '?曹?', '?勗'];
   const topWeekdayLabel = topWeekday ? weekdayLabels[parseInt(topWeekday[0], 10)] || null : null;
   const topHourLabel = topHour ? `${String(parseInt(topHour[0], 10)).padStart(2, '0')}:00` : null;
 
@@ -2975,15 +2975,15 @@ function renderReview() {
     <div style="display:flex;gap:16px;flex-wrap:wrap;">
       <div style="text-align:center;">
         <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${entries.length}</div>
-        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">篇日記</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">蝭閮?/div>
       </div>
       <div style="text-align:center;">
         <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${totalWords}</div>
-        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">總字數</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">蝮賢???/div>
       </div>
       <div style="text-align:center;">
-        <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
-        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
+        <div style="font-size:26px;">${topMood ? topMood[0] : '??}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">?撣詨???/div>
       </div>
       ${topSlotDisplay ? `<div style="text-align:center;">
         <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topSlotDisplay.value}</div>
@@ -2991,23 +2991,23 @@ function renderReview() {
       </div>` : ''}
     </div>
     ${entries.length ? `<div style="margin-top:14px;font-size:12px;color:rgba(58,42,42,0.6);line-height:1.9;">
-      平均每篇約 ${avgWords} 字。${topWeekdayLabel ? `最常在 ${topWeekdayLabel} 寫日記。` : ''}${topHourLabel ? `最常在 ${topHourLabel} 左右寫日記。` : ''}
+      撟喳?瘥?蝝?${avgWords} 摮?{topWeekdayLabel ? `?撣詨 ${topWeekdayLabel} 撖急閮 : ''}${topHourLabel ? `?撣詨 ${topHourLabel} 撌血撖急閮 : ''}
     </div>` : ''}
   </div>`;
 
   if (entries.length === 0) {
-    html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
+    html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">?挾??????“?閮?/div>';
   } else {
-    // AI 總結按鈕（有設定 key 才顯示）
+    // AI 蝮賜???嚗?閮剖? key ?＊蝷綽?
     const _gk = localStorage.getItem('geminiApiKey') || 'AIzaSyC1X8FKtVEVg7tp_HtC50OY-78PJmjZ3h0';
     if (_gk) {
       html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 總結</div>
+        <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 蝮賜?</div>
         <div id="aiSummaryText" style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.9;margin-bottom:12px;display:none;white-space:pre-wrap;"></div>
-        <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">✨ 生成 AI 總結</button>
+        <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">???? AI 蝮賜?</button>
       </div>`;
     }
-    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${currentReviewTab !== 'year' && entries.length > 30 ? '，先顯示 30 篇' : ''}</div>`;
+    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">?餈???${entries.length} 蝭?{currentReviewTab !== 'year' && entries.length > 30 ? '嚗?憿舐內 30 蝭? : ''}</div>`;
     html += showEntries.map(function(entry) {
       return `<div class="review-entry-card" onclick="jumpToEntry('${entry.key}')">
         <div class="review-entry-date"><span>${formatDateKey(entry.key)}</span><span>${entry.mood || ''}</span></div>
@@ -3023,15 +3023,15 @@ var shareData = {};
 
 function shareEntry(yr, month, day) {
   const entry = getEntry(yr, month, day);
-  if (!entry.text || !entry.text.trim()) { showToast('這天還沒有日記'); return; }
-  const dateStr = yr + '年 ' + (month+1) + '月 ' + day + '日';
+  if (!entry.text || !entry.text.trim()) { showToast('?予???閮?); return; }
+  const dateStr = yr + '撟?' + (month+1) + '??' + day + '??;
   shareData = { yr, month, day, text: entry.text, mood: entry.mood, dateStr, imgDataUrl: null };
 
   document.getElementById('shareCardDate').textContent = dateStr;
   document.getElementById('shareCardText').textContent = entry.text;
   document.getElementById('shareCardMood').textContent = entry.mood || '';
 
-  // 嘗試從 IndexedDB 載入圖片
+  // ?岫敺?IndexedDB 頛??
   const imgArea = document.getElementById('shareCardImg');
   const imgEl   = document.getElementById('shareCardImgEl');
   imgArea.style.display = 'none';
@@ -3056,13 +3056,13 @@ function closeShare(e) {
   }
 }
 
-// 往下滑關閉分享視窗
+// 敺銝????澈閬?
 (function() {
   var startY = 0, sheet;
   document.addEventListener('touchstart', function(e) {
     if (!document.getElementById('shareOverlay').classList.contains('show')) return;
     sheet = document.getElementById('shareSheet');
-    // 只有在頂部才觸發下滑關閉
+    // ?芣??券??冽?閫貊銝???
     if (sheet.scrollTop > 0) return;
     startY = e.touches[0].clientY;
   }, { passive: true });
@@ -3078,7 +3078,7 @@ function closeShare(e) {
   }, { passive: true });
 })();
 
-// 往下滑關閉分享視窗
+// 敺銝????澈閬?
 (function() {
   var sheet, startY, isDragging = false;
   function initShareSwipe() {
@@ -3110,21 +3110,21 @@ function closeShare(e) {
       }
     });
   }
-  // 等 DOM 載入完
+  // 蝑?DOM 頛摰?
   document.addEventListener('DOMContentLoaded', initShareSwipe);
   setTimeout(initShareSwipe, 500);
 })();
 
 function copyShareText() {
-  const text = shareData.dateStr + '\n\n' + shareData.text + '\n\n' + (shareData.mood||'') + '\n— 五年日記';
-  navigator.clipboard.writeText(text).then(() => showToast('已複製 ✓')).catch(() => showToast('複製失敗'));
+  const text = shareData.dateStr + '\n\n' + shareData.text + '\n\n' + (shareData.mood||'') + '\n??鈭僑?亥?';
+  navigator.clipboard.writeText(text).then(() => showToast('撌脰?鋆???)).catch(() => showToast('銴ˊ憭望?'));
 }
 
 function downloadShareImage() {
   const cardW = 320;
   const hasImg = !!shareData.imgDataUrl;
 
-  // 預估文字行數
+  // ?摯??銵
   const tempCanvas = document.createElement('canvas');
   const tempCtx = tempCanvas.getContext('2d');
   tempCtx.font = '14px serif';
@@ -3142,7 +3142,7 @@ function downloadShareImage() {
 
   const textH   = textLines.length * 24 + 20;
 
-  // 如果有圖片，需要先載入才能知道高度
+  // 憒??????閬?頛??仿?擃漲
   if (hasImg && shareData.imgDataUrl) {
     const preloadImg = new Image();
     preloadImg.onload = function() {
@@ -3175,14 +3175,14 @@ function downloadShareImage() {
       curY += iH + 16;
     }
 
-    // 日期
+    // ?交?
     ctx.fillStyle = '#aaaaaa';
     ctx.font = '10px sans-serif';
     ctx.letterSpacing = '1px';
     ctx.fillText(shareData.dateStr, 16, curY + 12);
     curY += 28;
 
-    // 正文
+    // 甇??
     ctx.fillStyle = '#2d2d2d';
     ctx.font = '14px serif';
     ctx.letterSpacing = '0px';
@@ -3192,7 +3192,7 @@ function downloadShareImage() {
     });
     curY += 10;
 
-    // 心情 + 浮水印
+    // 敹? + 瘚格偌??
     if (shareData.mood) {
       ctx.font = '22px sans-serif';
       ctx.fillText(shareData.mood, 16, curY + 18);
@@ -3200,30 +3200,30 @@ function downloadShareImage() {
     ctx.fillStyle = '#cccccc';
     ctx.font = '9px sans-serif';
     ctx.letterSpacing = '1px';
-    ctx.fillText('五年日記', cardW - 60, curY + 18);
+    ctx.fillText('鈭僑?亥?', cardW - 60, curY + 18);
 
     const a = document.createElement('a');
-    a.download = '五年日記_' + shareData.dateStr + '.png';
+    a.download = '鈭僑?亥?_' + shareData.dateStr + '.png';
     a.href = canvas.toDataURL('image/png');
     a.click();
-    showToast('拍立得已儲存 ✓');
+    showToast('??敺歇?脣? ??);
   }
 }
 
-// ── 圖片上傳 ──
+// ?? ??銝 ??
 function uploadImage(input, yr, month, day) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 20 * 1024 * 1024) { showToast('圖片太大，請選擇 20MB 以下'); return; }
+  if (file.size > 20 * 1024 * 1024) { showToast('??憭芸之嚗??豢? 20MB 隞乩?'); return; }
 
   const imgArea = document.getElementById('imgArea' + yr);
-  if (imgArea) imgArea.innerHTML = '<div style="color:var(--text-light);font-size:12px;padding:8px 0;">處理中…⏳</div>';
+  if (imgArea) imgArea.innerHTML = '<div style="color:var(--text-light);font-size:12px;padding:8px 0;">??銝凌色</div>';
 
   const reader = new FileReader();
   reader.onload = function(ev) {
     const img = new Image();
     img.onload = function() {
-      // 保持原始比例縮放，最長邊不超過 1200px
+      // 靽???瘥?蝮格嚗??琿?銝???1200px
       const canvas = document.createElement('canvas');
       const maxSize = 1200;
       var w = img.width, h = img.height;
@@ -3241,13 +3241,13 @@ function uploadImage(input, yr, month, day) {
         data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
         saveData();
         renderEntries();
-        showToast('照片已新增 ✓');
+        showToast('?抒?撌脫憓???);
       }).catch(function(err) {
-        if (imgArea) imgArea.innerHTML = '<div style="color:#d06060;font-size:12px;padding:8px 0;">儲存失敗，請重試</div>';
-        showToast('儲存失敗');
+        if (imgArea) imgArea.innerHTML = '<div style="color:#d06060;font-size:12px;padding:8px 0;">?脣?憭望?嚗??岫</div>';
+        showToast('?脣?憭望?');
       });
 
-      // 靜默備份到 Drive
+      // ???遢??Drive
       if (scriptUrl) {
         const base64 = dataUrl.split(',')[1];
         const params = new URLSearchParams({ action: 'uploadImage', fileName: 'diary_' + yr + '_' + (month+1) + '_' + day + '.jpg', mimeType: 'image/jpeg' });
@@ -3259,7 +3259,7 @@ function uploadImage(input, yr, month, day) {
   reader.readAsDataURL(file);
 }
 
-// ── 放大圖片 ──
+// ?? ?曉之?? ??
 function zoomImage(dataUrl) {
   document.getElementById('zoomImg').src = dataUrl;
   document.getElementById('zoomOverlay').style.display = 'flex';
@@ -3269,7 +3269,7 @@ function closeZoom() {
 }
 
 function removeImage(yr, month, day) {
-  if (!confirm('確定要刪除這張照片嗎？')) return;
+  if (!confirm('蝣箏?閬?日撐?抒???')) return;
   const k = getKey(yr, month, day);
   const entry = getEntry(yr, month, day);
   data[k] = { text: entry.text, mood: entry.mood, imgUrl: '', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
@@ -3279,7 +3279,7 @@ function removeImage(yr, month, day) {
     callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: '', tarotText: tarotToText(entry.tarot) }).catch(function(){});
   }
   renderEntries();
-  showToast('照片已刪除');
+  showToast('?抒?撌脣??);
 }
 
 var currentMoodFilter = null;
@@ -3293,11 +3293,11 @@ function filterMoodDiary(mood) {
   if (!list) return;
 
   if (!mood) {
-    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">選擇一個心情來查看日記</div>';
+    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">?豢?銝?????亦??亥?</div>';
     return;
   }
 
-  list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">載入中…</div>';
+  list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">頛銝凌?/div>';
 
   const doRender = () => renderMoodList(mood, list);
 
@@ -3329,12 +3329,12 @@ function renderMoodList(mood, list) {
   });
   results.sort((a, b) => b.key.localeCompare(a.key));
   if (results.length === 0) {
-    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">沒有符合的日記</div>';
+    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">瘝?蝚血??閮?/div>';
     return;
   }
   list.innerHTML = results.map(({ key, text, mood: m }) => {
     const parts = key.split('-');
-    const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
+    const dateStr = parts[0] + '撟?' + parseInt(parts[1]) + '??' + parseInt(parts[2]) + '??;
     return `<div class="mood-diary-item" onclick="jumpToEntry('${key}')" style="cursor:pointer;">
       <div class="mood-diary-date"><span>${dateStr}</span><span>${m||''}</span></div>
       <div class="mood-diary-text">${text}</div>
@@ -3349,7 +3349,7 @@ function jumpToEntry(key) {
   renderAll();
 }
 
-// ── Stats ──
+// ?? Stats ??
 function renderStats() {
   let total = 0, words = 0;
   const moodCount = {};
@@ -3367,12 +3367,12 @@ function renderStats() {
   document.getElementById('totalEntries').textContent = total;
   document.getElementById('totalWords').textContent = words > 999 ? (words/1000).toFixed(1)+'k' : words;
 
-  // Mood stats — 只顯示有用過的
+  // Mood stats ???芷＊蝷箸??券???
   const usedMoods = Object.entries(moodCount).filter(([m, c]) => c > 0).sort((a,b) => b[1]-a[1]);
   const maxM = Math.max(...usedMoods.map(([,c])=>c), 1);
   const moodCard = document.getElementById('moodStatsCard');
   if (usedMoods.length === 0) {
-    moodCard.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px 0;">還沒有心情記錄</div>';
+    moodCard.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px 0;">????????/div>';
   } else {
     moodCard.innerHTML = usedMoods.map(([m, c]) => `
       <div class="mood-bar-row">
@@ -3385,12 +3385,12 @@ function renderStats() {
     `).join('');
   }
 
-  // 心情篩選按鈕 — 只顯示用過的
+  // 敹?蝭拚?? ???芷＊蝷箇??
   const filterRow = document.getElementById('moodFilterRow');
   if (filterRow) {
     filterRow.innerHTML = '';
     if (usedMoods.length === 0) {
-      filterRow.innerHTML = '<div style="color:var(--text-light);font-size:12px;">還沒有心情記錄</div>';
+      filterRow.innerHTML = '<div style="color:var(--text-light);font-size:12px;">????????/div>';
     } else {
       usedMoods.forEach(([m]) => {
         const btn = document.createElement('button');
@@ -3428,7 +3428,7 @@ function renderStats() {
     }
   }
 
-  // 心情日記清單
+  // 敹??亥?皜
   filterMoodDiary(currentMoodFilter);
 }
 
@@ -3439,7 +3439,7 @@ Date.prototype.getDayOfYear = function() {
   return Math.floor(diff / 86400000);
 };
 
-// ── Page switching ──
+// ?? Page switching ??
 function switchPage(tab) {
   activeTab = tab;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -3486,7 +3486,7 @@ function switchPage(tab) {
   }
 }
 
-// ── Toast ──
+// ?? Toast ??
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -3502,7 +3502,7 @@ document.addEventListener('blur', e => {
     if (!isNaN(yr)) {
       const entry = getEntry(yr, d.getMonth(), d.getDate());
       if (e.target.value !== entry.text) {
-        // 失焦只存本地，不推雲端
+        // 憭梁?芸??砍嚗??券蝡?
         const k = getKey(yr, d.getMonth(), d.getDate());
         data[k] = { text: e.target.value, mood: entry.mood };
         saveData();
@@ -3510,20 +3510,20 @@ document.addEventListener('blur', e => {
     }
   }
 }, true);
-// ── 設定說明展開/收合 ──
-// ── AI 金鑰管理 ──
+// ?? 閮剖?隤芣?撅?/?嗅? ??
+// ?? AI ?蝞∠? ??
 function saveAiKey() {
   const val = document.getElementById('aiKeyInput').value.trim();
-  if (!val) { alert('請貼上 API 金鑰'); return; }
+  if (!val) { alert('隢票銝?API ?'); return; }
   localStorage.setItem('geminiApiKey', val);
   document.getElementById('aiKeyInput').value = '';
   updateAiKeyStatus();
-  alert('✅ 金鑰已儲存！');
+  alert('???撌脣摮?');
 }
 function clearAiKey() {
   localStorage.removeItem('geminiApiKey');
   updateAiKeyStatus();
-  alert('已移除金鑰');
+  alert('撌脩宏?日???);
 }
 function updateAiKeyStatus() {
   const bar = document.getElementById('aiKeyStatus');
@@ -3535,17 +3535,17 @@ function toggleAiGuide() {
   const arrow = document.getElementById('aiGuideArrow');
   const open = body.style.display === 'none';
   body.style.display = open ? 'block' : 'none';
-  arrow.textContent = open ? '▴' : '▾';
+  arrow.textContent = open ? '?? : '??;
 }
 
-// ── AI 總結生成（Gemini） ──
+// ?? AI 蝮賜???嚗emini嚗???
 async function generateAiSummary() {
   const key = localStorage.getItem('geminiApiKey') || 'AIzaSyC1X8FKtVEVg7tp_HtC50OY-78PJmjZ3h0';
   if (!key) return;
   const btn = document.getElementById('aiSummaryBtn');
   const textEl = document.getElementById('aiSummaryText');
   btn.disabled = true;
-  btn.textContent = '生成中…';
+  btn.textContent = '??銝凌?;
   textEl.style.display = 'none';
 
   const now = new Date();
@@ -3553,24 +3553,24 @@ async function generateAiSummary() {
   if (currentReviewTab === 'week') {
     const day = now.getDay();
     start = new Date(now); start.setDate(now.getDate() - day); start.setHours(0,0,0,0);
-    end = new Date(now); label = '這週';
+    end = new Date(now); label = '??;
   } else if (currentReviewTab === 'month') {
     start = new Date(now.getFullYear(), now.getMonth(), 1);
-    end = new Date(now); label = '這個月';
+    end = new Date(now); label = '??';
   } else {
     start = new Date(now.getFullYear(), 0, 1);
-    end = new Date(now); label = '今年';
+    end = new Date(now); label = '隞僑';
   }
   const diaryEntries = Object.entries(data)
     .filter(([k]) => { const d = new Date(k); return d >= start && d <= end; })
     .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([k, v]) => `${k}：${v.text}`)
+    .map(([k, v]) => `${k}嚗?{v.text}`)
     .join('\n');
 
-  const prompt = `以下是使用者${label}的日記記錄：\n\n${diaryEntries}\n\n請用溫暖、親切的語氣幫使用者寫一段${label}的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。`;
+  const prompt = `隞乩??臭蝙?刻?{label}?閮???\n\n${diaryEntries}\n\n隢皞急??扛??隤除撟思蝙?刻神銝畾?{label}?閮蜇蝯?蝝?00??50摮蝜?銝剜?嚗???銝璅?牧閰梧????霈??虜?箇?蜓憿??鞊∠?鈭?銝?璇?嚗?芰?挾?賣?摮;
 
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-latest:generateContent?key=${key}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
@@ -3579,14 +3579,14 @@ async function generateAiSummary() {
     if (json.candidates && json.candidates[0]) {
       textEl.textContent = json.candidates[0].content.parts[0].text;
       textEl.style.display = 'block';
-      btn.textContent = '重新生成';
+      btn.textContent = '???';
     } else if (json.error) {
-      alert('API 錯誤：' + json.error.message);
-      btn.textContent = '✨ 生成 AI 總結';
+      alert('API ?航炊嚗? + json.error.message);
+      btn.textContent = '???? AI 蝮賜?';
     }
   } catch(e) {
-    alert('網路錯誤，請稍後再試');
-    btn.textContent = '✨ 生成 AI 總結';
+    alert('蝬脰楝?航炊嚗?蝔??岫');
+    btn.textContent = '???? AI 蝮賜?';
   }
   btn.disabled = false;
 }
@@ -3596,24 +3596,24 @@ function toggleGuide() {
   const arrow = document.getElementById('guideArrow');
   const open  = body.style.display === 'none';
   body.style.display  = open ? 'block' : 'none';
-  arrow.textContent   = open ? '▴' : '▾';
+  arrow.textContent   = open ? '?? : '??;
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v14
-// 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
-const SHEET_NAME = '日記資料';
-const FOLDER_NAME = '五年日記圖片';
+const GS_CODE = `// 鈭僑?亥? ? Google Sheets + Drive ?郊?單 v14
+// ?函蔡嚗???賤?Apps Script?票銝??函蔡?雯頝舀??函?撘?隞颱?鈭箏摮?
+const SHEET_NAME = '?亥?鞈?';
+const FOLDER_NAME = '鈭僑?亥???';
 function doGet(e) {
   try {
     const action=e.parameter.action||'ping',cb=e.parameter.callback;
     let r;
-    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v14',scriptVersion:14};
+    if(action==='ping') r={ok:true,message:'鈭僑?亥??單??甇?虜 v14',scriptVersion:14};
     else if(action==='save') r=saveEntry(e.parameter);
     else if(action==='loadAll') r=loadAll();
     else if(action==='deleteEntry') r=deleteEntry(e.parameter);
     else if(action==='renameSheet') r=renameSpreadsheet(e.parameter);
-    else if(action==='uploadImage') r={ok:false,error:'圖片請用POST'};
-    else r={ok:false,error:'未知指令'};
+    else if(action==='uploadImage') r={ok:false,error:'??隢POST'};
+    else r={ok:false,error:'?芰?誘'};
     const j=JSON.stringify(r);
     if(cb) return ContentService.createTextOutput(cb+'('+j+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
     return ContentService.createTextOutput(j).setMimeType(ContentService.MimeType.JSON);
@@ -3635,7 +3635,7 @@ function doPost(e) {
 function uploadImage(e) {
   try {
     const base64=e.parameter.imageData,mimeType=e.parameter.mimeType||'image/jpeg',fileName=e.parameter.fileName||('diary_'+Date.now()+'.jpg'),cb=e.parameter.callback;
-    if(!base64) return respond({ok:false,error:'缺少圖片'},cb);
+    if(!base64) return respond({ok:false,error:'蝻箏???'},cb);
     const folder=getImageFolder();
     const bytes=Utilities.base64Decode(base64);
     const blob=Utilities.newBlob(bytes,mimeType,fileName);
@@ -3658,8 +3658,8 @@ function normalizeKey(raw) {
 }
 function saveEntry(p) {
   const sheet=getSheet(),key=normalizeKey(p.key),text=p.text||'',mood=p.mood||'',tarotText=p.tarotText||'',now=new Date().toLocaleString('zh-TW');
-  if(!key)return{ok:false,error:'缺少key'};
-  const pts=key.split('-'),display=pts[0]+'年 '+pts[1]+'/'+pts[2];
+  if(!key)return{ok:false,error:'蝻箏?key'};
+  const pts=key.split('-'),display=pts[0]+'撟?'+pts[1]+'/'+pts[2];
   const rows=sheet.getDataRange().getValues();
   for(let i=1;i<rows.length;i++){
     if(normalizeKey(rows[i][0])===key){
@@ -3676,7 +3676,7 @@ function loadAll() {
   for(let i=1;i<rows.length;i++){
     const key=normalizeKey(rows[i][0]);
     if(key){
-      if(String(rows[i][0]).trim()!==key){const pts=key.split('-');sheet.getRange(i+1,1,1,2).setValues([[key,pts[0]+'年 '+pts[1]+'/'+pts[2]]]);}
+      if(String(rows[i][0]).trim()!==key){const pts=key.split('-');sheet.getRange(i+1,1,1,2).setValues([[key,pts[0]+'撟?'+pts[1]+'/'+pts[2]]]);}
       entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:'',tarot:rows[i][5]||rows[i][6]||null,updatedAt:rows[i][4]||''};
     }
   }
@@ -3685,19 +3685,19 @@ function loadAll() {
   return{ok:true,entries,diaryName};
 }
 function deleteEntry(p) {
-  const sheet=getSheet(),key=normalizeKey(p.key);if(!key)return{ok:false,error:'缺少key'};
+  const sheet=getSheet(),key=normalizeKey(p.key);if(!key)return{ok:false,error:'蝻箏?key'};
   const rows=sheet.getDataRange().getValues();
   for(let i=1;i<rows.length;i++){if(normalizeKey(rows[i][0])===key){sheet.deleteRow(i+1);return{ok:true,action:'deleted',key};}}
-  return{ok:false,error:'找不到'};
+  return{ok:false,error:'?曆???};
 }
-function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'五年日記');return{ok:true};}
-function initDriveAuth(){const f=getImageFolder();Logger.log('Drive授權成功！'+f.getName());return'授權完成';}
+function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'鈭僑?亥?');return{ok:true};}
+function initDriveAuth(){const f=getImageFolder();Logger.log('Drive????嚗?+f.getName());return'??摰?';}
 function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,6).sort({column:1,ascending:true});}
 function getSheet(){
   const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(SHEET_NAME);
   if(!s){s=ss.insertSheet(SHEET_NAME);setupSheet(s);return s;}
   const fc=String(s.getRange(1,1).getValue()).trim();
-  if(fc!=='索引鍵'&&fc!=='日期'){s.insertRowBefore(1);setupHeader(s);}
+  if(fc!=='蝝Ｗ???&&fc!=='?交?'){s.insertRowBefore(1);setupHeader(s);}
   if(s.getMaxColumns()<6)s.insertColumnsAfter(s.getMaxColumns(),6-s.getMaxColumns());
   migrateSheetColumns(s);
   applyFormat(s);return s;
@@ -3705,13 +3705,13 @@ function getSheet(){
 function setupSheet(s){setupHeader(s);applyFormat(s);}
 function setupHeader(s){
   if(s.getMaxColumns()<6)s.insertColumnsAfter(s.getMaxColumns(),6-s.getMaxColumns());
-  s.getRange(1,1,1,6).setValues([['索引鍵','日期','日記內容','心情','最後更新','今日抽到的塔羅-牌意']]);
+  s.getRange(1,1,1,6).setValues([['蝝Ｗ???,'?交?','?亥??批捆','敹?','?敺??,'隞?賢??蝢???']]);
   s.setFrozenRows(1);s.getRange(1,1,1,6).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
 }
 function migrateSheetColumns(s){
   const fHeader=String(s.getRange(1,6).getValue()).trim();
   const gHeader=s.getMaxColumns()>=7?String(s.getRange(1,7).getValue()).trim():'';
-  if(fHeader==='圖片' || !fHeader)s.getRange(1,6).setValue('今日抽到的塔羅-牌意');
+  if(fHeader==='??' || !fHeader)s.getRange(1,6).setValue('隞?賢??蝢???');
   const lr=s.getLastRow();
   if(lr>1 && s.getMaxColumns()>=7){
     const fVals=s.getRange(2,6,lr-1,1).getValues();
@@ -3744,13 +3744,13 @@ function copyGsCode() {
   const box = document.getElementById('gsCodeBox');
   box.select();
   try {
-    navigator.clipboard.writeText(box.value).then(() => showToast('程式碼已複製 ✓')).catch(() => {
+    navigator.clipboard.writeText(box.value).then(() => showToast('蝔?蝣澆歇銴ˊ ??)).catch(() => {
       document.execCommand('copy');
-      showToast('程式碼已複製 ✓');
+      showToast('蝔?蝣澆歇銴ˊ ??);
     });
   } catch {
     document.execCommand('copy');
-    showToast('程式碼已複製 ✓');
+    showToast('蝔?蝣澆歇銴ˊ ??);
   }
 }
 
@@ -3765,7 +3765,7 @@ function renderSettingsPage() {
   renderSyncStatus();
   updateAiKeyStatus();
   renderThemeGrid();
-  // 填入 GS 程式碼（兩個文字框都填）
+  // 憛怠 GS 蝔?蝣潘??拙?摮??賢‵嚗?
   const box = document.getElementById('gsCodeBox');
   if (box) box.value = GS_CODE_DISPLAY;
   const box2 = document.getElementById('gsCodeBox2');
@@ -3798,14 +3798,14 @@ function renderSettingsPage() {
     const select = document.createElement('select');
     select.style.cssText = 'width:100%;padding:10px 30px 10px 14px;border:1.5px solid #e8e6e3;border-radius:12px;font-size:14px;font-family:"Noto Sans TC",sans-serif;color:var(--text-dark);background:var(--white);outline:none;appearance:none;-webkit-appearance:none;box-sizing:border-box;';
     select.innerHTML = allYears.map(y =>
-      `<option value="${y}" ${y === yr ? 'selected' : ''}>${y} 年</option>`
+      `<option value="${y}" ${y === yr ? 'selected' : ''}>${y} 撟?/option>`
     ).join('');
     select.onchange = () => {
       tempYears[idx] = parseInt(select.value);
     };
 
     const icon = document.createElement('div');
-    icon.textContent = '▾';
+    icon.textContent = '??;
     icon.style.cssText = 'font-size:12px;color:var(--text-light);pointer-events:none;margin-left:-30px;';
 
     const wrapper = document.createElement('div');
@@ -3823,32 +3823,32 @@ function saveYearSettings() {
   // Check no duplicates
   const unique = new Set(tempYears);
   if (unique.size < tempYears.length) {
-    showToast('年份不能重複！'); return;
+    showToast('撟港遢銝??嚗?); return;
   }
   ACTIVE_YEARS = tempYears.slice().sort((a,b) => a-b);
   settings.years = ACTIVE_YEARS;
   saveSettings(settings);
   renderEntries();
-  showToast('年份已更新 ✓');
+  showToast('撟港遢撌脫????);
 }
 
 function saveDiaryName() {
   const name = document.getElementById('diaryNameInput').value.trim();
-  if (!name) { showToast('名稱不能為空'); return; }
+  if (!name) { showToast('?迂銝?箇征'); return; }
   settings.name = name;
   saveSettings(settings);
   document.querySelector('.app-title').textContent = name;
   document.title = name;
-  // 同步更新 Google Sheet 標題
+  // ?郊?湔 Google Sheet 璅?
   if (scriptUrl) {
     callScript({ action: 'renameSheet', name }).catch(() => {});
   }
-  showToast('名稱已更新 ✓');
+  showToast('?迂撌脫????);
 }
 
 function exportData() {
-  let txt = `${settings.name}\n匯出時間：${new Date().toLocaleString('zh-TW')}\n`;
-  txt += '═'.repeat(30) + '\n\n';
+  let txt = `${settings.name}\n?臬??嚗?{new Date().toLocaleString('zh-TW')}\n`;
+  txt += '??.repeat(30) + '\n\n';
 
   // Collect all entries, group by date
   const allKeys = new Set();
@@ -3867,42 +3867,42 @@ function exportData() {
       const e = data[k];
       if (e && e.text && e.text.trim()) {
         if (!hasContent) {
-          block += `📅 ${mmdd.replace('-','月')}日\n`;
+          block += `?? ${mmdd.replace('-','??)}?功n`;
           hasContent = true;
         }
-        block += `【${yr}年】${e.mood || ''}\n`;
+        block += `??{yr}撟氬?{e.mood || ''}\n`;
         block += e.text.trim() + '\n\n';
       }
     });
     if (hasContent) {
-      txt += block + '─'.repeat(20) + '\n\n';
+      txt += block + '?'.repeat(20) + '\n\n';
     }
   });
 
   if (allKeys.size === 0) {
-    txt += '（尚無任何日記記錄）\n';
+    txt += '嚗??∩遙雿閮???\n';
   }
 
   const encoded = encodeURIComponent(txt);
   const a = document.createElement('a');
   a.href = 'data:text/plain;charset=utf-8,' + encoded;
-  a.download = `五年日記_${new Date().toISOString().slice(0,10)}.txt`;
+  a.download = `鈭僑?亥?_${new Date().toISOString().slice(0,10)}.txt`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  showToast('已匯出 .txt ✓');
+  showToast('撌脣??.txt ??);
 }
 
 function confirmClear() {
-  if (confirm('確定要清除所有日記資料嗎？此動作無法復原。')) {
+  if (confirm('蝣箏?閬??斗??閮???嚗迨???⊥?敺拙???)) {
     localStorage.removeItem('5yr_diary');
     data = {};
-    showToast('資料已清除');
+    showToast('鞈?撌脫???);
     renderEntries();
   }
 }
 
-// ── Google Sheets 雲端同步（使用 GET 避免 CORS）──
+// ?? Google Sheets ?脩垢?郊嚗蝙??GET ?踹? CORS嚗??
 var scriptUrl = localStorage.getItem('5yr_script_url') || '';
 let lastScriptVersion = null;
 
@@ -3922,14 +3922,14 @@ function setScriptVersionBars(version) {
     [settingsBar, homeBar].filter(Boolean).forEach(bar => {
       bar.style.display = 'block';
       bar.style.cssText = 'display:block;padding:12px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.8;background:#fff3e0;border:1.5px solid #f0c080;color:#8a5a00;';
-      bar.innerHTML = `⚠️ <b>腳本需要更新</b>（目前 v${version || 0}，需要 v${REQUIRED_SCRIPT_VERSION}）<br>請到設定頁重新貼上最新 Apps Script 程式碼並重新部署。`;
+      bar.innerHTML = `?? <b>?單?閬??/b>嚗??v${version || 0}嚗?閬?v${REQUIRED_SCRIPT_VERSION}嚗?br>隢閮剖????啗票銝???Apps Script 蝔?蝣潔蒂??函蔡?;
     });
     return;
   }
   if (settingsBar) {
     settingsBar.style.display = 'block';
     settingsBar.style.cssText = 'display:block;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
-    settingsBar.innerHTML = `✅ 腳本已更新到最新版（v${version}）`;
+    settingsBar.innerHTML = `???單撌脫?啣??啁?嚗${version}嚗;
   }
   if (homeBar) {
     homeBar.style.display = 'none';
@@ -3967,23 +3967,23 @@ function renderSyncStatus() {
   if (scriptUrl) {
     dot.style.background = '#4caf82';
     if (lastScriptVersion === null) {
-      txt.textContent = '已連線 · 檢查腳本版本中…';
+      txt.textContent = '撌脤?? 繚 瑼Ｘ?單?銝凌?;
     } else if (lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
-      txt.textContent = `已連線 · 腳本 v${lastScriptVersion}（最新版）`;
+      txt.textContent = `撌脤?? 繚 ?單 v${lastScriptVersion}嚗??啁?嚗;
     } else {
-      txt.textContent = `已連線 · 腳本 v${lastScriptVersion}（需更新）`;
+      txt.textContent = `撌脤?? 繚 ?單 v${lastScriptVersion}嚗??湔嚗;
     }
     if (pullBtn) pullBtn.disabled = false;
     if (input) input.value = scriptUrl;
   } else {
     dot.style.background = '#ccc';
-    txt.textContent = '尚未連線';
+    txt.textContent = '撠???';
     if (pullBtn) pullBtn.disabled = true;
   }
   if (lastScriptVersion !== null) setScriptVersionBars(lastScriptVersion);
 }
 
-// ── 呼叫 Apps Script（fetch + JSONP 雙保險）──
+// ?? ?澆 Apps Script嚗etch + JSONP ???迎???
 let _jsonpCounter = 0;
 
 function callScript(params, timeoutMs = 10000) {
@@ -4013,18 +4013,18 @@ function callScript(params, timeoutMs = 10000) {
 
     const fullUrl = scriptUrl + '?' + qs;
 
-    // 方法一：fetch（GitHub Pages HTTPS 環境有效）
+    // ?寞?銝嚗etch嚗itHub Pages HTTPS ?啣???嚗?
     fetch(fullUrl, { redirect: 'follow' })
       .then(r => r.text())
       .then(text => {
-        console.log('fetch 回傳:', text.slice(0, 100));
+        console.log('fetch ?:', text.slice(0, 100));
         if (!done) {
-          try { eval(text); } catch(e) { console.log('eval 錯誤:', e); }
+          try { eval(text); } catch(e) { console.log('eval ?航炊:', e); }
         }
       })
       .catch(err => {
-        console.log('fetch 失敗:', err);
-        // 方法二：fallback 用 script tag
+        console.log('fetch 憭望?:', err);
+        // ?寞?鈭?fallback ??script tag
         if (!done) {
           const script = document.createElement('script');
           script.src = fullUrl;
@@ -4038,20 +4038,20 @@ const REQUIRED_SCRIPT_VERSION = 14;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
-  if (!url) { showToast('請先貼上網址'); return; }
+  if (!url) { showToast('隢?鞎潔?蝬脣?'); return; }
   if (!url.startsWith('https://script.google.com')) {
-    showToast('網址格式不對，請確認是 Google Apps Script 網址'); return;
+    showToast('蝬脣??澆?銝?嚗?蝣箄???Google Apps Script 蝬脣?'); return;
   }
 
   const dot = document.getElementById('syncDot');
   const txt = document.getElementById('syncStatusText');
   if (dot) dot.style.background = '#f0c040';
-  if (txt) txt.textContent = '測試連線中…';
+  if (txt) txt.textContent = '皜祈岫???銝凌?;
   scriptUrl = url;
 
   try {
     const json = await callScript({ action: 'ping' }, 10000);
-    if (!json || !json.ok) throw new Error('回傳格式錯誤');
+    if (!json || !json.ok) throw new Error('??澆??航炊');
     lastScriptVersion = json.scriptVersion || 0;
 
     localStorage.setItem('5yr_script_url', url);
@@ -4060,22 +4060,22 @@ async function testAndSaveScriptUrl() {
 
     const allJson = await callScript({ action: 'loadAll' }, 15000);
     if (allJson.ok) {
-      // 套用雲端日記名稱
-      if (allJson.diaryName && allJson.diaryName !== '五年日記') {
+      // 憟?脩垢?亥??迂
+      if (allJson.diaryName && allJson.diaryName !== '鈭僑?亥?') {
         settings.name = allJson.diaryName;
         saveSettings(settings);
         document.querySelector('.app-title').textContent = allJson.diaryName;
         document.title = allJson.diaryName;
       }
-      // 載入日記資料
+      // 頛?亥?鞈?
       if (allJson.entries && Object.keys(allJson.entries).length > 0) {
         Object.assign(data, allJson.entries);
         saveData();
         renderEntries();
-        showToast(`連線成功，已載入 ${Object.keys(allJson.entries).length} 筆 ✓`);
+        showToast(`?????嚗歇頛 ${Object.keys(allJson.entries).length} 蝑??);
       } else {
         await syncToCloud();
-        showToast('連線成功 ✓');
+        showToast('????? ??);
       }
     }
   } catch (err) {
@@ -4083,11 +4083,11 @@ async function testAndSaveScriptUrl() {
     lastScriptVersion = null;
     setScriptVersionBars(null);
     if (dot) dot.style.background = '#e06060';
-    if (txt) txt.textContent = '無法連線';
+    if (txt) txt.textContent = '?⊥????';
     if (err.message === 'timeout') {
-      showToast('連線逾時，請確認已「重新部署為新版本」');
+      showToast('????暹?嚗?蝣箄?撌脯??圈蝵脩?啁??研?);
     } else {
-      showToast('連線失敗：' + err.message);
+      showToast('???憭望?嚗? + err.message);
     }
   }
 }
@@ -4102,13 +4102,13 @@ async function syncToCloud() {
       count++;
     } catch {}
   }
-  if (count > 0) showToast(`已同步 ${count} 筆到雲端 ✓`);
+  if (count > 0) showToast(`撌脣?甇?${count} 蝑?脩垢 ?);
 }
 
 async function syncFromCloud() {
-  if (!scriptUrl) { showToast('尚未連線'); return; }
+  if (!scriptUrl) { showToast('撠???'); return; }
   const txt = document.getElementById('syncStatusText');
-  if (txt) txt.textContent = '載入中…';
+  if (txt) txt.textContent = '頛銝凌?;
   try {
     const json = await callScript({ action: 'loadAll' }, 15000);
     if (json.ok && json.entries) {
@@ -4120,12 +4120,12 @@ async function syncFromCloud() {
       saveData();
       renderEntries();
       renderSyncStatus();
-      showToast(`載入完成，共 ${Object.keys(json.entries).length} 筆 ✓`);
+      showToast(`頛摰?嚗 ${Object.keys(json.entries).length} 蝑??);
     } else {
-      showToast('載入失敗，請重試');
+      showToast('頛憭望?嚗??岫');
     }
   } catch {
-    showToast('載入逾時，請重試');
+    showToast('頛?暹?嚗??岫');
     renderSyncStatus();
   }
 }
@@ -4147,7 +4147,7 @@ async function syncFromCloudSilently() {
   } catch {}
 }
 
-// setEntry：儲存本地 + 背景靜默同步到雲端
+// setEntry嚗摮??+ ????郊?圈蝡?
 function setEntry(year, month, day, text, mood, imgUrl, tarot) {
   const k = getKey(year, month, day);
   const existing = data[k] || {};
@@ -4177,18 +4177,18 @@ copyTarotPrompt = function(btn) {
   const mode = getTarotModeById(modeId);
   if (!card) return;
   const text = [
-    '請根據下面這張塔羅牌做更詳細的解讀。',
-    `抽牌方式：${mode.label}`,
-    '我的問題：',
-    '（把你的問題補在這裡）',
-    `抽到的牌：${card.name}${sourceTarot.reversed ? '（逆位）' : '（正位）'}`,
-    `牌意：${sourceTarot.reversed ? card.reversed : card.upright}`
+    '隢???ａ撐憛????渲底蝝啁?閫????,
+    `?賜??孵?嚗?{mode.label}`,
+    '????嚗?,
+    '嚗?雿???鋆?ㄐ嚗?,
+    `?賢??嚗?{card.name}${sourceTarot.reversed ? '嚗?嚗? : '嚗迤雿?'}`,
+    `??嚗?{sourceTarot.reversed ? card.reversed : card.upright}`
   ].join('\n');
   navigator.clipboard.writeText(text).then(() => {
     if (btn) {
       const original = btn.dataset.originalLabel || btn.textContent;
       btn.dataset.originalLabel = original;
-      btn.textContent = '已複製';
+      btn.textContent = '撌脰?鋆?;
       btn.style.transform = 'scale(0.98)';
       btn.style.opacity = '0.82';
       btn.style.filter = 'brightness(0.98)';
@@ -4199,8 +4199,8 @@ copyTarotPrompt = function(btn) {
         btn.style.filter = '';
       }, 1200);
     }
-    showToast('已複製提問素材');
-  }).catch(() => showToast('複製失敗'));
+    showToast('撌脰?鋆賣?????);
+  }).catch(() => showToast('銴ˊ憭望?'));
 };
 
 shareEntry = function(yr, month, day) {
@@ -4208,8 +4208,8 @@ shareEntry = function(yr, month, day) {
   const liveText = ta ? ta.value.trim() : '';
   const entry = getEntry(yr, month, day);
   const text = liveText || entry.text || '';
-  if (!text.trim()) { showToast('這篇還沒有內容可以分享'); return; }
-  const dateStr = `${yr}年${month + 1}月${day}日`;
+  if (!text.trim()) { showToast('?????摰孵隞亙?鈭?); return; }
+  const dateStr = `${yr}撟?{month + 1}??{day}?匝;
   shareData = { yr, month, day, text, mood: entry.mood, dateStr, imgDataUrl: null };
   document.getElementById('shareCardDate').textContent = dateStr;
   document.getElementById('shareCardText').textContent = text;
@@ -4234,7 +4234,7 @@ onTextInput = function(ta, yr, month, day) {
   ta.style.height = 'auto';
   ta.style.height = ta.scrollHeight + 'px';
   const len = ta.value.length;
-  document.getElementById(`cc${yr}`).textContent = `${len}字`;
+  document.getElementById(`cc${yr}`).textContent = `${len}摮;
   const saveBtn = document.getElementById(`saveBtn${yr}`);
   if (saveBtn) {
     saveBtn.classList.toggle('visible', len > 0 || getEntry(yr, month, day).text !== ta.value);
@@ -4245,7 +4245,7 @@ onTextInput = function(ta, yr, month, day) {
     if (actionRow) {
       shareBtn = document.createElement('button');
       shareBtn.id = `shareBtn${yr}`;
-      shareBtn.textContent = '↗ 分享';
+      shareBtn.textContent = '???澈';
       shareBtn.setAttribute('onclick', `shareEntry(${yr}, ${month}, ${day})`);
       shareBtn.style.cssText = 'background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;';
       actionRow.appendChild(shareBtn);
@@ -4304,7 +4304,7 @@ downloadShareImage = async function() {
     }
     ctx.fillStyle = '#cccccc';
     ctx.font = '9px sans-serif';
-    ctx.fillText('五年日記', cardW - 60, curY + 18);
+    ctx.fillText('鈭僑?亥?', cardW - 60, curY + 18);
     return canvas;
   };
   const canvas = await new Promise(function(resolve) {
@@ -4321,13 +4321,13 @@ downloadShareImage = async function() {
     preloadImg.src = shareData.imgDataUrl;
   });
   const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-  if (!blob) { showToast('產生圖片失敗'); return; }
-  const fileName = `五年日記_${shareData.dateStr}.png`;
+  if (!blob) { showToast('?Ｙ???憭望?'); return; }
+  const fileName = `鈭僑?亥?_${shareData.dateStr}.png`;
   const file = new File([blob], fileName, { type: 'image/png' });
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
     try {
       await navigator.share({ files: [file], title: fileName });
-      showToast('已開啟分享選單');
+      showToast('撌脤???鈭恍??);
       return;
     } catch (err) {}
   }
@@ -4340,7 +4340,7 @@ downloadShareImage = async function() {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 2000);
-  showToast('已開始下載圖片');
+  showToast('撌脤?憪?頛???);
 };
 
 </script>
