@@ -1525,7 +1525,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.2';
+const APP_VERSION = '7.3';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const SHARED_GEMINI_API_KEY = 'AIzaSyCm9yxBUxi-akpqJdNIMl6S6utgfTYXh0s';
@@ -2975,8 +2975,9 @@ function renderReview() {
 
   if (currentReviewTab === 'week') {
     const day = now.getDay();
+    const offset = day === 0 ? 6 : day - 1;
     start = new Date(now);
-    start.setDate(now.getDate() - day);
+    start.setDate(now.getDate() - offset);
     start.setHours(0, 0, 0, 0);
     end = new Date(now);
     title = '本週回顧';
@@ -3585,7 +3586,8 @@ async function generateAiSummary() {
   let start, end, label;
   if (currentReviewTab === 'week') {
     const day = now.getDay();
-    start = new Date(now); start.setDate(now.getDate() - day); start.setHours(0,0,0,0);
+    const offset = day === 0 ? 6 : day - 1;
+    start = new Date(now); start.setDate(now.getDate() - offset); start.setHours(0,0,0,0);
     end = new Date(now); label = '這週';
   } else if (currentReviewTab === 'month') {
     start = new Date(now.getFullYear(), now.getMonth(), 1);
