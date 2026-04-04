@@ -1527,7 +1527,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '8.1';
+const APP_VERSION = '8.2';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2494,6 +2494,10 @@ async function refreshTodayTarotFromCloud() {
     renderTarotLaunchArea();
     renderTarotSection();
     renderEntries();
+    const latestTarot = normalizeTarotValue((data[key] || {}).tarot);
+    if (latestTarot && latestTarot.cardId && !latestTarot.aiText) {
+      generateTarotAiReading();
+    }
   } catch (e) {}
 }
 
