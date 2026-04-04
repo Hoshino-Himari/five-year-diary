@@ -489,6 +489,36 @@
     opacity: 1;
     transform: translateX(-50%) translateY(0);
   }
+  .update-banner {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 10px 16px 0;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: #fff7df;
+    border: 1px solid #efdca7;
+    color: #5f4b1a;
+  }
+  .update-banner.show {
+    display: flex;
+  }
+  .update-banner-copy {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .update-banner-btn {
+    flex-shrink: 0;
+    border: none;
+    border-radius: 12px;
+    padding: 9px 12px;
+    background: #2d2d2d;
+    color: #fff;
+    font-size: 12px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+  }
 
   /* ── Stats & Calendar page ── */
   .page { display: none; }
@@ -1160,6 +1190,10 @@
   </div>
   <div class="month-strip" id="monthStrip"></div>
 </div>
+<div class="update-banner" id="updateBanner">
+  <div class="update-banner-copy">有新版本可用，重新整理後就會更新到最新版。</div>
+  <button class="update-banner-btn" onclick="reloadLatestVersion()">重新載入</button>
+</div>
 
 <!-- ── Pages ── -->
 <div class="main">
@@ -1528,8 +1562,9 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.0';
+const APP_VERSION = '7.1';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
+let latestVersionCheckTimer = null;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
   '😐','🤔','😶','😴','🙃','😅','🤭','😬',
@@ -1960,6 +1995,9 @@ renderCalendar();
 renderStats();
 refreshScriptVersionStatus();
 syncFromCloudSilently();
+checkForLatestVersion();
+if (latestVersionCheckTimer) clearInterval(latestVersionCheckTimer);
+latestVersionCheckTimer = setInterval(checkForLatestVersion, 60000);
 
 function renderHeader() {
   const d = currentDate;
@@ -2629,6 +2667,44 @@ function renderAll() {
   renderEntries();
   if (activeTab === 'calendar') renderCalendar();
   if (activeTab === 'stats') renderStats();
+}
+
+function compareVersionStrings(a, b) {
+  const pa = String(a).split('.').map(n => parseInt(n, 10) || 0);
+  const pb = String(b).split('.').map(n => parseInt(n, 10) || 0);
+  const maxLen = Math.max(pa.length, pb.length);
+  for (let i = 0; i < maxLen; i++) {
+    const av = pa[i] || 0;
+    const bv = pb[i] || 0;
+    if (av > bv) return 1;
+    if (av < bv) return -1;
+  }
+  return 0;
+}
+
+function setUpdateBannerVisible(visible) {
+  const banner = document.getElementById('updateBanner');
+  if (!banner) return;
+  banner.classList.toggle('show', !!visible);
+}
+
+async function checkForLatestVersion() {
+  try {
+    const res = await fetch(`./index.html?_ts=${Date.now()}`, { cache: 'no-store' });
+    const html = await res.text();
+    const match = html.match(/const APP_VERSION = '([^']+)'/);
+    if (!match) return;
+    const remoteVersion = match[1];
+    setUpdateBannerVisible(compareVersionStrings(remoteVersion, APP_VERSION) > 0);
+  } catch (e) {
+    // Ignore version check failures; this is only a convenience hint.
+  }
+}
+
+function reloadLatestVersion() {
+  const url = new URL(window.location.href);
+  url.searchParams.set('_reload', Date.now().toString());
+  window.location.replace(url.toString());
 }
 
 // ── Calendar ──
