@@ -1476,7 +1476,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '5.7';
+const APP_VERSION = '5.8';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1788,6 +1788,7 @@ function loadData() {
     Object.keys(raw).forEach(function(k) {
       if (raw[k].imgUrl && raw[k].imgUrl.startsWith('data:')) raw[k].imgUrl = '[local]';
       raw[k].tarot = normalizeTarotValue(raw[k].tarot);
+      raw[k].updatedAt = normalizeUpdatedAtValue(raw[k].updatedAt);
     });
     data = raw;
   } catch(e) { data = {}; }
@@ -1795,7 +1796,7 @@ function loadData() {
 function saveData() {
   var toSave = {};
   Object.keys(data).forEach(function(k) {
-    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '', tarot: data[k].tarot || null };
+    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '', tarot: data[k].tarot || null, updatedAt: data[k].updatedAt || null };
   });
   localStorage.setItem('5yr_diary', JSON.stringify(toSave));
 }
@@ -1808,10 +1809,28 @@ function normalizeTarotValue(tarot) {
   if (tarot.textOverride) return tarot;
   return tarot.cardId ? tarot : null;
 }
+function normalizeUpdatedAtValue(value) {
+  if (!value) return null;
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  const str = String(value).trim();
+  if (!str) return null;
+  if (/^\d+$/.test(str)) return parseInt(str, 10);
+  let m = str.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})\s*(上午|下午)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+  if (m) {
+    let hour = parseInt(m[5], 10);
+    const minute = parseInt(m[6], 10);
+    const second = parseInt(m[7] || '0', 10);
+    if (m[4] === '下午' && hour < 12) hour += 12;
+    if (m[4] === '上午' && hour === 12) hour = 0;
+    return new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10), hour, minute, second).getTime();
+  }
+  const parsed = Date.parse(str);
+  return Number.isNaN(parsed) ? null : parsed;
+}
 function getEntry(year, month, day) {
   const entry = data[getKey(year, month, day)];
-  if (!entry) return { text: '', mood: null, imgUrl: '', tarot: null };
-  return { text: entry.text || '', mood: entry.mood || null, imgUrl: entry.imgUrl || '', tarot: normalizeTarotValue(entry.tarot) };
+  if (!entry) return { text: '', mood: null, imgUrl: '', tarot: null, updatedAt: null };
+  return { text: entry.text || '', mood: entry.mood || null, imgUrl: entry.imgUrl || '', tarot: normalizeTarotValue(entry.tarot), updatedAt: normalizeUpdatedAtValue(entry.updatedAt) };
 }
 
 // ── IndexedDB 圖片儲存 ──
@@ -2112,7 +2131,7 @@ function renderMoodRow(yr, month, day, selectedMood) {
         const entry = getEntry(yr, month, day);
         const newMood = mood === entry.mood ? null : mood;
         const k = getKey(yr, month, day);
-        data[k] = { text: entry.text, mood: newMood };
+        data[k] = { text: entry.text, mood: newMood, imgUrl: entry.imgUrl || '', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
         saveData();
         panel.remove();
         renderMoodRow(yr, month, day, newMood);
@@ -2146,7 +2165,7 @@ function renderMoodRow(yr, month, day, selectedMood) {
     clearBtn.onclick = () => {
       const entry = getEntry(yr, month, day);
       const k = getKey(yr, month, day);
-      data[k] = { text: entry.text, mood: null };
+      data[k] = { text: entry.text, mood: null, imgUrl: entry.imgUrl || '', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
       saveData();
       renderMoodRow(yr, month, day, null);
       const saveBtn = document.getElementById(`saveBtn${yr}`);
@@ -2408,7 +2427,7 @@ function applyTarotToTodayEntry(item, modeId) {
     mode: modeId,
     date: getTodayTarotKey()
   };
-  data[key] = { text: existing.text, mood: existing.mood, imgUrl: existing.imgUrl || '', tarot };
+  data[key] = { text: existing.text, mood: existing.mood, imgUrl: existing.imgUrl || '', tarot, updatedAt: existing.updatedAt || null };
   saveData();
   if (scriptUrl) {
     callScript({
@@ -3336,8 +3355,17 @@ function renderReview() {
 
   const moodMap = {};
   const slotMap = {};
+  const weekdayMap = {};
+  const hourMap = {};
   entries.forEach(function(entry) {
     if (entry.mood) moodMap[entry.mood] = (moodMap[entry.mood] || 0) + 1;
+    const weekday = entry.date.getDay();
+    weekdayMap[weekday] = (weekdayMap[weekday] || 0) + 1;
+    const hourDate = entry.updatedAt ? new Date(entry.updatedAt) : null;
+    if (hourDate && !Number.isNaN(hourDate.getTime())) {
+      const hour = hourDate.getHours();
+      hourMap[hour] = (hourMap[hour] || 0) + 1;
+    }
     let slotKey = '';
     if (currentReviewTab === 'week') {
       slotKey = String(entry.date.getDay());
@@ -3353,11 +3381,15 @@ function renderReview() {
   const totalWords = entries.reduce((sum, entry) => sum + entry.text.trim().length, 0);
   const avgWords = entries.length ? Math.round(totalWords / entries.length) : 0;
   const topSlot = Object.entries(slotMap).sort((a, b) => b[1] - a[1])[0];
+  const topWeekday = Object.entries(weekdayMap).sort((a, b) => b[1] - a[1])[0];
+  const topHour = Object.entries(hourMap).sort((a, b) => b[1] - a[1])[0];
   const showEntries = currentReviewTab === 'year' ? entries : entries.slice(0, 30);
 
   function formatDateKey(key) {
     const parts = key.split('-');
-    return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日`;
+    const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    const weekday = ['日', '一', '二', '三', '四', '五', '六'][date.getDay()];
+    return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日（${weekday}）`;
   }
 
   function formatTopSlot(slot) {
@@ -3373,6 +3405,9 @@ function renderReview() {
   }
 
   const topSlotDisplay = formatTopSlot(topSlot);
+  const weekdayLabels = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+  const topWeekdayLabel = topWeekday ? weekdayLabels[parseInt(topWeekday[0], 10)] || null : null;
+  const topHourLabel = topHour ? `${String(parseInt(topHour[0], 10)).padStart(2, '0')}:00` : null;
 
   let html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
@@ -3394,7 +3429,9 @@ function renderReview() {
         <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">${topSlotDisplay.label}</div>
       </div>` : ''}
     </div>
-    ${entries.length ? `<div style="margin-top:14px;font-size:12px;color:rgba(58,42,42,0.6);line-height:1.7;">平均每篇約 ${avgWords} 字。</div>` : ''}
+    ${entries.length ? `<div style="margin-top:14px;font-size:12px;color:rgba(58,42,42,0.6);line-height:1.9;">
+      平均每篇約 ${avgWords} 字。${topWeekdayLabel ? `最常在 ${topWeekdayLabel} 寫日記。` : ''}${topHourLabel ? `最常在 ${topHourLabel} 左右寫日記。` : ''}
+    </div>` : ''}
   </div>`;
 
   if (entries.length === 0) {
@@ -3631,7 +3668,7 @@ function uploadImage(input, yr, month, day) {
 
       saveImgToDB(k, dataUrl).then(function() {
         const entry = getEntry(yr, month, day);
-        data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]', tarot: entry.tarot || null };
+        data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
         saveData();
         renderEntries();
         showToast('照片已新增 ✓');
@@ -3665,7 +3702,7 @@ function removeImage(yr, month, day) {
   if (!confirm('確定要刪除這張照片嗎？')) return;
   const k = getKey(yr, month, day);
   const entry = getEntry(yr, month, day);
-  data[k] = { text: entry.text, mood: entry.mood, imgUrl: '', tarot: entry.tarot || null };
+  data[k] = { text: entry.text, mood: entry.mood, imgUrl: '', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
   saveData();
   deleteImgFromDB(k).catch(function(){});
   if (scriptUrl) {
@@ -3700,6 +3737,7 @@ function filterMoodDiary(mood) {
         if (json.ok && json.entries) {
           Object.keys(json.entries).forEach(function(key) {
             json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+            json.entries[key].updatedAt = normalizeUpdatedAtValue(json.entries[key].updatedAt);
           });
           Object.assign(data, json.entries);
           saveData();
@@ -3989,7 +4027,7 @@ function loadAll() {
     const key=normalizeKey(rows[i][0]);
     if(key){
       if(String(rows[i][0]).trim()!==key){const pts=key.split('-');sheet.getRange(i+1,1,1,2).setValues([[key,pts[0]+'年 '+pts[1]+'/'+pts[2]]]);}
-      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:'',tarot:rows[i][5]||rows[i][6]||null};
+      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:'',tarot:rows[i][5]||rows[i][6]||null,updatedAt:rows[i][4]||''};
     }
   }
   sortSheet(sheet);
@@ -4425,6 +4463,7 @@ async function syncFromCloud() {
     if (json.ok && json.entries) {
       Object.keys(json.entries).forEach(function(key) {
         json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+        json.entries[key].updatedAt = normalizeUpdatedAtValue(json.entries[key].updatedAt);
       });
       Object.assign(data, json.entries);
       saveData();
@@ -4447,6 +4486,7 @@ async function syncFromCloudSilently() {
     if (json && json.ok && json.entries) {
       Object.keys(json.entries).forEach(function(key) {
         json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+        json.entries[key].updatedAt = normalizeUpdatedAtValue(json.entries[key].updatedAt);
       });
       Object.assign(data, json.entries);
       saveData();
@@ -4462,7 +4502,7 @@ function setEntry(year, month, day, text, mood, imgUrl, tarot) {
   const existing = data[k] || {};
   const newImgUrl = imgUrl !== undefined ? imgUrl : (existing.imgUrl || '');
   const newTarot = tarot !== undefined ? normalizeTarotValue(tarot) : normalizeTarotValue(existing.tarot);
-  data[k] = { text, mood, imgUrl: newImgUrl, tarot: newTarot };
+  data[k] = { text, mood, imgUrl: newImgUrl, tarot: newTarot, updatedAt: Date.now() };
   saveData();
   if (scriptUrl) {
     callScript({ action: 'save', key: k, text: text || '', mood: mood || '', imgUrl: '', tarotText: tarotToText(newTarot) }).catch(() => {});
