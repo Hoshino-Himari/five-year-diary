@@ -1476,7 +1476,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '5.6';
+const APP_VERSION = '5.7';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -3335,23 +3335,44 @@ function renderReview() {
   entries.sort((a, b) => b.date - a.date);
 
   const moodMap = {};
-  const monthMap = {};
+  const slotMap = {};
   entries.forEach(function(entry) {
     if (entry.mood) moodMap[entry.mood] = (moodMap[entry.mood] || 0) + 1;
-    const month = entry.date.getMonth() + 1;
-    monthMap[month] = (monthMap[month] || 0) + 1;
+    let slotKey = '';
+    if (currentReviewTab === 'week') {
+      slotKey = String(entry.date.getDay());
+    } else if (currentReviewTab === 'month') {
+      slotKey = String(entry.date.getDate());
+    } else {
+      slotKey = String(entry.date.getMonth() + 1);
+    }
+    slotMap[slotKey] = (slotMap[slotKey] || 0) + 1;
   });
 
   const topMood = Object.entries(moodMap).sort((a, b) => b[1] - a[1])[0];
   const totalWords = entries.reduce((sum, entry) => sum + entry.text.trim().length, 0);
-  const longest = entries.reduce((best, entry) => entry.text.length > (best ? best.text.length : 0) ? entry : best, null);
-  const topMonth = Object.entries(monthMap).sort((a, b) => b[1] - a[1])[0];
+  const avgWords = entries.length ? Math.round(totalWords / entries.length) : 0;
+  const topSlot = Object.entries(slotMap).sort((a, b) => b[1] - a[1])[0];
   const showEntries = currentReviewTab === 'year' ? entries : entries.slice(0, 30);
 
   function formatDateKey(key) {
     const parts = key.split('-');
     return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日`;
   }
+
+  function formatTopSlot(slot) {
+    if (!slot) return null;
+    if (currentReviewTab === 'week') {
+      const weekdays = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+      return { value: weekdays[parseInt(slot[0], 10)] || '—', label: '寫最多' };
+    }
+    if (currentReviewTab === 'month') {
+      return { value: `${slot[0]}號`, label: '寫最多' };
+    }
+    return { value: `${slot[0]}月`, label: '寫最多' };
+  }
+
+  const topSlotDisplay = formatTopSlot(topSlot);
 
   let html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
@@ -3368,19 +3389,13 @@ function renderReview() {
         <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
         <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
       </div>
-      ${topMonth ? `<div style="text-align:center;">
-        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topMonth[0]}月</div>
-        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">寫最多</div>
+      ${topSlotDisplay ? `<div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topSlotDisplay.value}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">${topSlotDisplay.label}</div>
       </div>` : ''}
     </div>
+    ${entries.length ? `<div style="margin-top:14px;font-size:12px;color:rgba(58,42,42,0.6);line-height:1.7;">平均每篇約 ${avgWords} 字。</div>` : ''}
   </div>`;
-
-  if (longest) {
-    html += `<div style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${longest.key}')">
-      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:6px;">篇幅最長 · ${formatDateKey(longest.key)} · ${longest.text.length} 字</div>
-      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.7;">${longest.text}</div>
-    </div>`;
-  }
 
   if (entries.length === 0) {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
