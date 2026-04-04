@@ -1525,7 +1525,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.4';
+const APP_VERSION = '7.5';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const SHARED_GEMINI_API_KEY = 'AIzaSyCm9yxBUxi-akpqJdNIMl6S6utgfTYXh0s';
@@ -2666,6 +2666,81 @@ function setUpdateBannerVisible(visible) {
   banner.classList.toggle('show', !!visible);
 }
 
+function getReviewMeta() {
+  const now = new Date();
+  let start, end, label, title, type, scopeKey;
+  if (currentReviewTab === 'week') {
+    const day = now.getDay();
+    const offset = day === 0 ? 6 : day - 1;
+    start = new Date(now);
+    start.setDate(now.getDate() - offset);
+    start.setHours(0, 0, 0, 0);
+    end = new Date(now);
+    label = '這週';
+    title = '本週回顧';
+    type = 'week';
+    const monday = new Date(start);
+    scopeKey = `${monday.getFullYear()}-W${String(monday.getMonth() + 1).padStart(2, '0')}${String(monday.getDate()).padStart(2, '0')}`;
+  } else if (currentReviewTab === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+    end = new Date(now);
+    label = '這個月';
+    title = `${now.getFullYear()}年${now.getMonth() + 1}月回顧`;
+    type = 'month';
+    scopeKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  } else {
+    start = new Date(now.getFullYear(), 0, 1);
+    end = new Date(now);
+    label = '今年';
+    title = `${now.getFullYear()}年度回顧`;
+    type = 'year';
+    scopeKey = `${now.getFullYear()}`;
+  }
+  return { now, start, end, label, title, type, scopeKey };
+}
+
+function collectReviewDiaryEntries(start, end) {
+  return Object.entries(data)
+    .filter(([k, v]) => {
+      if (!v.text || !v.text.trim()) return false;
+      const d = new Date(k);
+      return d >= start && d <= end;
+    })
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([k, v]) => `${k}：${v.text}`)
+    .join('\n');
+}
+
+async function hydrateAiReviewCard() {
+  const block = document.getElementById('aiSummaryBlock');
+  const textEl = document.getElementById('aiSummaryText');
+  const hintEl = document.getElementById('aiSummaryHint');
+  const btn = document.getElementById('aiSummaryBtn');
+  if (!block || !textEl || !hintEl || !btn) return;
+  textEl.style.display = 'none';
+  textEl.textContent = '';
+  hintEl.style.display = 'block';
+  hintEl.textContent = '尚未生成這段回顧。';
+  btn.disabled = false;
+  btn.textContent = '生成 AI 回顧';
+  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) {
+    hintEl.textContent = '連接並更新 Google Sheet 腳本後，就能儲存這段 AI 回顧。';
+    return;
+  }
+  const meta = getReviewMeta();
+  try {
+    const json = await callScript({ action: 'loadAiReview', type: meta.type, scopeKey: meta.scopeKey }, 10000);
+    if (json.ok && json.review && json.review.content) {
+      textEl.textContent = json.review.content;
+      textEl.style.display = 'block';
+      hintEl.style.display = 'none';
+      btn.textContent = '重新生成';
+    }
+  } catch (e) {
+    hintEl.textContent = '目前讀不到雲端回顧，仍可直接重新生成。';
+  }
+}
+
 async function checkForLatestVersion() {
   try {
     const res = await fetch(`./index.html?_ts=${Date.now()}`, { cache: 'no-store' });
@@ -3043,29 +3118,12 @@ function renderReview() {
   const content = document.getElementById('reviewContent');
   if (!content) return;
 
-  const now = new Date();
+  const meta = getReviewMeta();
+  const now = meta.now;
   let entries = [];
-  let title = '';
-  let start;
-  let end;
-
-  if (currentReviewTab === 'week') {
-    const day = now.getDay();
-    const offset = day === 0 ? 6 : day - 1;
-    start = new Date(now);
-    start.setDate(now.getDate() - offset);
-    start.setHours(0, 0, 0, 0);
-    end = new Date(now);
-    title = '本週回顧';
-  } else if (currentReviewTab === 'month') {
-    start = new Date(now.getFullYear(), now.getMonth(), 1);
-    end = new Date(now);
-    title = `${now.getFullYear()}年${now.getMonth() + 1}月回顧`;
-  } else {
-    start = new Date(now.getFullYear(), 0, 1);
-    end = new Date(now);
-    title = `${now.getFullYear()}年度回顧`;
-  }
+  const title = meta.title;
+  const start = meta.start;
+  const end = meta.end;
 
   Object.entries(data).forEach(function([key, val]) {
     if (!val.text || !val.text.trim()) return;
@@ -3155,6 +3213,7 @@ function renderReview() {
   }
 
   content.innerHTML = html;
+  hydrateAiReviewCard();
 }
 
 var shareData = {};
@@ -3654,31 +3713,15 @@ async function generateAiSummary() {
   const key = SHARED_GEMINI_API_KEY;
   const btn = document.getElementById('aiSummaryBtn');
   const textEl = document.getElementById('aiSummaryText');
+  const hintEl = document.getElementById('aiSummaryHint');
   btn.disabled = true;
   btn.textContent = '生成中…';
   textEl.style.display = 'none';
+  if (hintEl) hintEl.style.display = 'none';
 
-  const now = new Date();
-  let start, end, label;
-  if (currentReviewTab === 'week') {
-    const day = now.getDay();
-    const offset = day === 0 ? 6 : day - 1;
-    start = new Date(now); start.setDate(now.getDate() - offset); start.setHours(0,0,0,0);
-    end = new Date(now); label = '這週';
-  } else if (currentReviewTab === 'month') {
-    start = new Date(now.getFullYear(), now.getMonth(), 1);
-    end = new Date(now); label = '這個月';
-  } else {
-    start = new Date(now.getFullYear(), 0, 1);
-    end = new Date(now); label = '今年';
-  }
-  const diaryEntries = Object.entries(data)
-    .filter(([k]) => { const d = new Date(k); return d >= start && d <= end; })
-    .sort((a, b) => a[0].localeCompare(b[0]))
-    .map(([k, v]) => `${k}：${v.text}`)
-    .join('\n');
-
-  const prompt = `以下是使用者${label}的日記記錄：\n\n${diaryEntries}\n\n請用溫暖、親切的語氣幫使用者寫一段${label}的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。`;
+  const meta = getReviewMeta();
+  const diaryEntries = collectReviewDiaryEntries(meta.start, meta.end);
+  const prompt = `以下是使用者${meta.label}的日記記錄：\n\n${diaryEntries}\n\n請用溫暖、親切的語氣幫使用者寫一段${meta.label}的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。`;
 
   try {
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
@@ -3688,9 +3731,19 @@ async function generateAiSummary() {
     });
     const json = await res.json();
     if (json.candidates && json.candidates[0]) {
-      textEl.textContent = json.candidates[0].content.parts[0].text;
+      const content = String(json.candidates[0].content.parts[0].text || '').trim();
+      textEl.textContent = content;
       textEl.style.display = 'block';
       btn.textContent = '重新生成';
+      if (scriptUrl && lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
+        callScript({
+          action: 'saveAiReview',
+          type: meta.type,
+          scopeKey: meta.scopeKey,
+          title: meta.title,
+          content
+        }, 10000).catch(() => {});
+      }
     } else if (json.error) {
       const message = String(json.error.message || '');
       if (message.toLowerCase().includes('leaked')) {
@@ -3715,17 +3768,20 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v14
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v15
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
+const AI_REVIEW_SHEET_NAME = 'AI回顧';
 const FOLDER_NAME = '五年日記圖片';
 function doGet(e) {
   try {
     const action=e.parameter.action||'ping',cb=e.parameter.callback;
     let r;
-    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v14',scriptVersion:14};
+    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v15',scriptVersion:15};
     else if(action==='save') r=saveEntry(e.parameter);
     else if(action==='loadAll') r=loadAll();
+    else if(action==='loadAiReview') r=loadAiReview(e.parameter);
+    else if(action==='saveAiReview') r=saveAiReview(e.parameter);
     else if(action==='deleteEntry') r=deleteEntry(e.parameter);
     else if(action==='renameSheet') r=renameSpreadsheet(e.parameter);
     else if(action==='uploadImage') r={ok:false,error:'圖片請用POST'};
@@ -3809,6 +3865,32 @@ function deleteEntry(p) {
 function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'五年日記');return{ok:true};}
 function initDriveAuth(){const f=getImageFolder();Logger.log('Drive授權成功！'+f.getName());return'授權完成';}
 function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,6).sort({column:1,ascending:true});}
+function loadAiReview(p){
+  const sheet=getAiReviewSheet(),type=String(p.type||'').trim(),scopeKey=String(p.scopeKey||'').trim();
+  if(!type||!scopeKey)return{ok:false,error:'缺少範圍'};
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){
+    if(String(rows[i][0]).trim()===type&&String(rows[i][1]).trim()===scopeKey){
+      return{ok:true,review:{type:rows[i][0],scopeKey:rows[i][1],title:rows[i][2]||'',content:rows[i][3]||'',generatedAt:rows[i][4]||''}};
+    }
+  }
+  return{ok:true,review:null};
+}
+function saveAiReview(p){
+  const sheet=getAiReviewSheet(),type=String(p.type||'').trim(),scopeKey=String(p.scopeKey||'').trim(),title=String(p.title||'').trim(),content=String(p.content||'').trim(),now=new Date().toLocaleString('zh-TW');
+  if(!type||!scopeKey||!content)return{ok:false,error:'缺少回顧資料'};
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){
+    if(String(rows[i][0]).trim()===type&&String(rows[i][1]).trim()===scopeKey){
+      sheet.getRange(i+1,1,1,5).setValues([[type,scopeKey,title,content,now]]);
+      sheet.getRange(i+1,4).setWrap(true);
+      return{ok:true,action:'updated',type,scopeKey};
+    }
+  }
+  sheet.appendRow([type,scopeKey,title,content,now]);
+  sheet.getRange(sheet.getLastRow(),4).setWrap(true);
+  return{ok:true,action:'created',type,scopeKey};
+}
 function getSheet(){
   const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(SHEET_NAME);
   if(!s){s=ss.insertSheet(SHEET_NAME);setupSheet(s);return s;}
@@ -3817,6 +3899,20 @@ function getSheet(){
   if(s.getMaxColumns()<6)s.insertColumnsAfter(s.getMaxColumns(),6-s.getMaxColumns());
   migrateSheetColumns(s);
   applyFormat(s);return s;
+}
+function getAiReviewSheet(){
+  const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(AI_REVIEW_SHEET_NAME);
+  if(!s){
+    s=ss.insertSheet(AI_REVIEW_SHEET_NAME);
+    s.getRange(1,1,1,5).setValues([['類型','範圍鍵','標題','內容','最後更新']]);
+    s.setFrozenRows(1);
+    s.getRange(1,1,1,5).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+  }
+  if(s.getMaxColumns()<5)s.insertColumnsAfter(s.getMaxColumns(),5-s.getMaxColumns());
+  s.setColumnWidth(1,80);s.setColumnWidth(2,110);s.setColumnWidth(3,150);s.setColumnWidth(4,520);s.setColumnWidth(5,160);
+  s.getRange('A:E').setVerticalAlignment('middle');
+  s.getRange('D2:D1000').setWrap(true);
+  return s;
 }
 function setupSheet(s){setupHeader(s);applyFormat(s);}
 function setupHeader(s){
@@ -4149,7 +4245,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 14;
+const REQUIRED_SCRIPT_VERSION = 15;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
