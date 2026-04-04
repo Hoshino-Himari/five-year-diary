@@ -1542,7 +1542,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '8.6';
+const APP_VERSION = '8.7';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2076,6 +2076,10 @@ function renderEntries() {
             </div>
             <div style="font-size:15px;color:var(--text-dark);font-family:'Noto Serif TC',serif;margin-bottom:4px;">${tarotDisplay.title}</div>
             <div style="font-size:12px;line-height:1.8;color:var(--text-dark);">${tarotDisplay.copy}</div>
+            ${tarotDisplay.aiCopy ? `
+              <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);margin:10px 0 6px;">AI EXTENDED READING</div>
+              <div style="font-size:12px;line-height:1.8;color:var(--text-dark);padding:10px 12px;border-radius:12px;background:rgba(255,250,241,0.95);border:1px solid rgba(209,185,142,0.28);">${tarotDisplay.aiCopy}</div>
+            ` : ''}
           </div>
         ` : ''}
         <div class="entry-footer">
