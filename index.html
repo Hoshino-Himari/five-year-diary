@@ -1473,7 +1473,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '5.0';
+const APP_VERSION = '5.1';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1885,6 +1885,7 @@ renderEntries();
 renderCalendar();
 renderStats();
 refreshScriptVersionStatus();
+syncFromCloudSilently();
 
 function renderHeader() {
   const d = currentDate;
@@ -4395,6 +4396,22 @@ async function syncFromCloud() {
     showToast('載入逾時，請重試');
     renderSyncStatus();
   }
+}
+
+async function syncFromCloudSilently() {
+  if (!scriptUrl) return;
+  try {
+    const json = await callScript({ action: 'loadAll' }, 15000);
+    if (json && json.ok && json.entries) {
+      Object.keys(json.entries).forEach(function(key) {
+        json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+      });
+      Object.assign(data, json.entries);
+      saveData();
+      renderAll();
+      renderSyncStatus();
+    }
+  } catch {}
 }
 
 // setEntry：儲存本地 + 背景靜默同步到雲端
