@@ -1527,7 +1527,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '8.0';
+const APP_VERSION = '8.1';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -1855,10 +1855,26 @@ function saveData() {
 function getKey(year, month, day) {
   return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
 }
+function parseTarotTextValue(text) {
+  const raw = String(text || '').trim();
+  if (!raw) return null;
+  const parts = raw.split(/\nAI延伸解讀：/);
+  const head = parts[0].trim();
+  const aiText = (parts[1] || '').trim();
+  const match = head.match(/^(.+?)（(正位|逆位)）｜(.+)$/);
+  if (!match) return { textOverride: raw };
+  const [, cardName, orientation, baseMeaning] = match;
+  const card = TAROT_DECK.find(item => item.name === String(cardName).trim());
+  if (!card) return { textOverride: raw };
+  const reversed = orientation === '逆位';
+  const expectedMeaning = reversed ? card.reversed : card.upright;
+  if (String(expectedMeaning).trim() !== String(baseMeaning).trim()) return { textOverride: raw };
+  return { cardId: card.id, reversed, mode: '', date: '', aiText };
+}
 function normalizeTarotValue(tarot) {
   if (!tarot) return null;
-  if (typeof tarot === 'string') return { textOverride: tarot };
-  if (tarot.textOverride) return tarot;
+  if (typeof tarot === 'string') return parseTarotTextValue(tarot);
+  if (tarot.textOverride) return parseTarotTextValue(tarot.textOverride);
   return tarot.cardId ? tarot : null;
 }
 function normalizeUpdatedAtValue(value) {
@@ -2347,6 +2363,7 @@ function openTarotModal() {
   document.getElementById('tarotOverlay').classList.add('show');
   renderTarotModes();
   renderTarotSection();
+  refreshTodayTarotFromCloud();
 }
 
 function closeTarotModal(e) {
@@ -2462,6 +2479,24 @@ function renderTarotLaunchArea() {
   `;
 }
 
+async function refreshTodayTarotFromCloud() {
+  if (!scriptUrl) return;
+  const today = new Date();
+  const key = getKey(today.getFullYear(), today.getMonth(), today.getDate());
+  try {
+    const json = await callScript({ action: 'loadAll' }, 15000);
+    if (!(json && json.ok && json.entries && json.entries[key])) return;
+    const cloudEntry = json.entries[key];
+    cloudEntry.tarot = normalizeTarotValue(cloudEntry.tarot);
+    cloudEntry.updatedAt = normalizeUpdatedAtValue(cloudEntry.updatedAt);
+    data[key] = Object.assign({}, data[key] || {}, cloudEntry);
+    saveData();
+    renderTarotLaunchArea();
+    renderTarotSection();
+    renderEntries();
+  } catch (e) {}
+}
+
 function renderTarotModes() {
   ensureTarotState();
   const grid = document.getElementById('tarotModeGrid');
@@ -2510,31 +2545,36 @@ function renderTarotSection() {
   const today = new Date();
   const savedTarot = getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
   const savedCard = savedTarot && savedTarot.cardId ? getTarotCardMeta(savedTarot.cardId) : null;
-  const savedMode = savedTarot && savedTarot.mode ? getTarotModeById(savedTarot.mode) : TAROT_MODES[0];
+  const tarotDisplay = getTarotDisplayParts(savedTarot);
+  const savedMode = savedTarot && savedTarot.mode ? getTarotModeById(savedTarot.mode) : null;
 
-  if (savedTarot && savedCard) {
+  if (savedTarot && (savedCard || tarotDisplay)) {
+    const tagParts = [];
+    if (savedTarot.cardId) tagParts.push(savedTarot.reversed ? '逆位' : '正位');
+    if (savedMode && savedTarot.mode) tagParts.push(savedMode.label);
+    const showAiPlaceholder = !!savedCard && !savedTarot.aiText;
     section.innerHTML = `
       <div class="tarot-spread-hint">今日塔羅已固定，明天才會出現新的牌。</div>
       <div class="tarot-result">
         <div class="tarot-result-head">
           <div>
-            <div class="tarot-result-title">${savedCard.name}</div>
-            <div class="tarot-result-tag">${savedTarot.reversed ? '逆位' : '正位'} · ${savedMode.label}</div>
+            <div class="tarot-result-title">${savedCard ? savedCard.name : tarotDisplay.title}</div>
+            <div class="tarot-result-tag">${tagParts.join(' · ')}</div>
           </div>
         </div>
         <div class="tarot-result-copy">
-          <div style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--text-dark);margin-bottom:6px;">${savedCard.name}</div>
-          <div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin-bottom:10px;">${savedTarot.reversed ? 'REVERSED' : 'UPRIGHT'}</div>
-          <div style="margin-bottom:${savedTarot.aiText ? '14px' : '0'};">${savedTarot.reversed ? savedCard.reversed : savedCard.upright}</div>
+          <div style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--text-dark);margin-bottom:6px;">${savedCard ? savedCard.name : tarotDisplay.title}</div>
+          ${savedCard ? `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin-bottom:10px;">${savedTarot.reversed ? 'REVERSED' : 'UPRIGHT'}</div>` : ''}
+          <div style="margin-bottom:${savedTarot.aiText ? '14px' : '0'};">${savedCard ? (savedTarot.reversed ? savedCard.reversed : savedCard.upright) : tarotDisplay.copy}</div>
           ${savedTarot.aiText ? `
             <div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin:0 0 8px;">AI EXTENDED READING</div>
             <div style="padding:12px 14px;border-radius:14px;background:#fffaf1;border:1px solid rgba(209,185,142,0.35);font-size:13px;line-height:1.85;color:var(--text-dark);">${savedTarot.aiText}</div>
-          ` : `
+          ` : showAiPlaceholder ? `
             <div style="font-size:12px;color:var(--text-mid);line-height:1.8;">正在補上 AI 延伸解讀…</div>
-          `}
+          ` : ''}
         </div>
         <div class="tarot-result-note">今日塔羅只能抽一次。如果想自己再追問，也可以把這張牌和你的問題一起拿去問 AI。</div>
-        <div class="tarot-result-actions">
+        <div class="tarot-result-actions"${savedCard ? '' : ' style="display:none;"'}>
           <button class="tarot-action-btn primary" onclick="copyTarotPrompt(this)">複製提問素材</button>
         </div>
       </div>
