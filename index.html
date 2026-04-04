@@ -1306,43 +1306,6 @@
       </div>
     </div>
 
-    <div class="section-title">✨ AI 日記總結</div>
-    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
-      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">Gemini API 金鑰</div>
-      <div style="font-size:12px;color:var(--text-light);margin-bottom:16px;line-height:1.7;">
-        設定後可在「回顧」頁面用 AI 生成日記總結。<br>金鑰只存在你的裝置上，完全不會上傳。
-      </div>
-      <div id="aiKeyStatus" style="display:none;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:var(--bg);margin-bottom:14px;">
-        <div style="width:8px;height:8px;border-radius:50%;background:#6abf7b;flex-shrink:0;"></div>
-        <div style="font-size:12px;color:var(--text-mid);">已設定 API 金鑰</div>
-      </div>
-      <input id="aiKeyInput" type="password"
-        placeholder="貼上 Gemini API 金鑰（AIza...）"
-        style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
-      <button onclick="saveAiKey()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:8px;">儲存金鑰</button>
-      <button onclick="clearAiKey()" style="width:100%;padding:10px;background:none;color:var(--text-light);border:none;border-radius:12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:4px;">移除金鑰</button>
-      <div style="border:1.5px solid #e8e6e3;border-radius:12px;overflow:hidden;margin-top:8px;">
-        <button onclick="toggleAiGuide()" style="width:100%;padding:12px 14px;background:none;border:none;text-align:left;font-size:12px;color:var(--text-mid);font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
-          <span>📋 如何取得 API 金鑰</span>
-          <span id="aiGuideArrow" style="font-size:10px;">▾</span>
-        </button>
-        <div id="aiGuideBody" style="display:none;padding:0 16px 16px;border-top:1px solid #f0eeec;">
-          <div style="margin-top:14px;margin-bottom:14px;">
-            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;">🆕 取得步驟</div>
-            <div style="background:var(--bg);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:2.2;">
-              <b style="color:var(--text-dark);">Step 1</b> 前往 <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:#4a90d9;">Google Cloud Console 憑證頁面</a><br>
-              <b style="color:var(--text-dark);">Step 2</b> 點上方「<b>＋ 建立憑證</b>」→「<b>API 金鑰</b>」<br>
-              <b style="color:var(--text-dark);">Step 3</b> 複製產生的金鑰（以 <code style="background:#f0eeec;padding:1px 4px;border-radius:4px;">AIza</code> 開頭）<br>
-              <b style="color:var(--text-dark);">Step 4</b> 貼到上方欄位，按「儲存金鑰」
-            </div>
-          </div>
-          <div style="background:#f0f7ff;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:1.8;border:1px solid #d0e4f8;">
-            💡 使用 Gemini 2.5 Flash 模型；如果遇到 not found，請先確認 API key、帳單狀態與模型名稱。
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="section-title">🎨 主題顏色</div>
     <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;" id="themeGrid"></div>
@@ -1562,9 +1525,10 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.1';
+const APP_VERSION = '7.2';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
+const SHARED_GEMINI_API_KEY = 'AIzaSyCm9yxBUxi-akpqJdNIMl6S6utgfTYXh0s';
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
   '😐','🤔','😶','😴','🙃','😅','🤭','😬',
@@ -3098,12 +3062,11 @@ function renderReview() {
   if (entries.length === 0) {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
   } else {
-    const _gk = localStorage.getItem('geminiApiKey');
     html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
       <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 回顧</div>
-      <div id="aiSummaryHint" style="font-size:12px;color:var(--text-mid);line-height:1.8;margin-bottom:12px;${_gk ? 'display:none;' : ''}">尚未設定 Gemini API 金鑰，先到設定頁貼上後才能生成。</div>
+      <div id="aiSummaryHint" style="display:none;font-size:12px;color:var(--text-mid);line-height:1.8;margin-bottom:12px;"></div>
       <div id="aiSummaryText" style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.9;margin-bottom:12px;display:none;white-space:pre-wrap;"></div>
-      <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:${_gk ? 'pointer' : 'not-allowed'};letter-spacing:0.05em;opacity:${_gk ? '1' : '0.55'};" ${_gk ? '' : 'disabled'}>生成 AI 回顧</button>
+      <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">生成 AI 回顧</button>
     </div>`;
     html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${currentReviewTab !== 'year' && entries.length > 30 ? '，僅顯示 30 篇' : ''}</div>`;
     html += showEntries.map(function(entry) {
@@ -3609,40 +3572,9 @@ document.addEventListener('blur', e => {
   }
 }, true);
 // ── 設定說明展開/收合 ──
-// ── AI 金鑰管理 ──
-function saveAiKey() {
-  const val = document.getElementById('aiKeyInput').value.trim();
-  if (!val) { alert('請貼上 API 金鑰'); return; }
-  localStorage.setItem('geminiApiKey', val);
-  document.getElementById('aiKeyInput').value = '';
-  updateAiKeyStatus();
-  alert('✅ 金鑰已儲存！');
-}
-function clearAiKey() {
-  localStorage.removeItem('geminiApiKey');
-  updateAiKeyStatus();
-  alert('已移除金鑰');
-}
-function updateAiKeyStatus() {
-  const bar = document.getElementById('aiKeyStatus');
-  if (!bar) return;
-  bar.style.display = localStorage.getItem('geminiApiKey') ? 'flex' : 'none';
-}
-function toggleAiGuide() {
-  const body = document.getElementById('aiGuideBody');
-  const arrow = document.getElementById('aiGuideArrow');
-  const open = body.style.display === 'none';
-  body.style.display = open ? 'block' : 'none';
-  arrow.textContent = open ? '▴' : '▾';
-}
-
 // ── AI 總結生成（Gemini） ──
 async function generateAiSummary() {
-  const key = localStorage.getItem('geminiApiKey');
-  if (!key) {
-    showToast('請先在設定頁貼上 Gemini API 金鑰');
-    return;
-  }
+  const key = SHARED_GEMINI_API_KEY;
   const btn = document.getElementById('aiSummaryBtn');
   const textEl = document.getElementById('aiSummaryText');
   btn.disabled = true;
@@ -3684,9 +3616,7 @@ async function generateAiSummary() {
     } else if (json.error) {
       const message = String(json.error.message || '');
       if (message.toLowerCase().includes('leaked')) {
-        localStorage.removeItem('geminiApiKey');
-        refreshApiStatusBar();
-        showToast('這把 Gemini 金鑰已失效，請換一把新的');
+        showToast('目前共用 AI 金鑰已失效，需要更換新的');
       } else {
         alert('API 錯誤：' + message);
       }
@@ -3871,7 +3801,6 @@ function renderSettingsPage() {
   tempYears = ACTIVE_YEARS.slice();
   document.getElementById('diaryNameInput').value = settings.name;
   renderSyncStatus();
-  updateAiKeyStatus();
   renderThemeGrid();
   // 填入 GS 程式碼（兩個文字框都填）
   const box = document.getElementById('gsCodeBox');
