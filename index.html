@@ -2999,7 +2999,7 @@ function renderReview() {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
   } else {
     // AI 總結按鈕（有設定 key 才顯示）
-    const _gk = localStorage.getItem('geminiApiKey') || 'AIzaSyAyI0gx2-GkbqKauKupSdHD3A99L-5VNPI';
+    const _gk = localStorage.getItem('geminiApiKey') || 'AIzaSyC1X8FKtVEVg7tp_HtC50OY-78PJmjZ3h0';
     if (_gk) {
       html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
         <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 總結</div>
@@ -3540,7 +3540,7 @@ function toggleAiGuide() {
 
 // ── AI 總結生成（Gemini） ──
 async function generateAiSummary() {
-  const key = localStorage.getItem('geminiApiKey') || 'AIzaSyAyI0gx2-GkbqKauKupSdHD3A99L-5VNPI';
+  const key = localStorage.getItem('geminiApiKey') || 'AIzaSyC1X8FKtVEVg7tp_HtC50OY-78PJmjZ3h0';
   if (!key) return;
   const btn = document.getElementById('aiSummaryBtn');
   const textEl = document.getElementById('aiSummaryText');
