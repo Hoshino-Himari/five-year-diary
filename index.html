@@ -1473,7 +1473,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '5.3';
+const APP_VERSION = '5.4';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -4241,15 +4241,12 @@ async function refreshScriptVersionStatus(showSuccessState = false) {
     if (!json || !json.ok) throw new Error('bad ping');
     lastScriptVersion = json.scriptVersion || 0;
     setScriptVersionBars(lastScriptVersion);
-    if (!showSuccessState && lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
-      setTimeout(() => {
-        if (lastScriptVersion >= REQUIRED_SCRIPT_VERSION) setScriptVersionBars(null);
-      }, 1400);
-    }
+    renderSyncStatus();
     return json;
   } catch {
     lastScriptVersion = null;
     setScriptVersionBars(null);
+    renderSyncStatus();
     return null;
   }
 }
@@ -4262,7 +4259,13 @@ function renderSyncStatus() {
   if (!dot) return;
   if (scriptUrl) {
     dot.style.background = '#4caf82';
-    txt.textContent = '已連線 · ' + scriptUrl.slice(8, 52) + '…';
+    if (lastScriptVersion === null) {
+      txt.textContent = '已連線 · 檢查腳本版本中…';
+    } else if (lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
+      txt.textContent = `已連線 · 腳本 v${lastScriptVersion}（最新版）`;
+    } else {
+      txt.textContent = `已連線 · 腳本 v${lastScriptVersion}（需更新）`;
+    }
     if (pullBtn) pullBtn.disabled = false;
     if (input) input.value = scriptUrl;
   } else {
