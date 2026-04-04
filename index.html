@@ -1528,7 +1528,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '6.9';
+const APP_VERSION = '7.0';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -3023,13 +3023,12 @@ function renderReview() {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
   } else {
     const _gk = localStorage.getItem('geminiApiKey');
-    if (_gk) {
-      html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 回顧</div>
-        <div id="aiSummaryText" style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.9;margin-bottom:12px;display:none;white-space:pre-wrap;"></div>
-        <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">生成 AI 回顧</button>
-      </div>`;
-    }
+    html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 回顧</div>
+      <div id="aiSummaryHint" style="font-size:12px;color:var(--text-mid);line-height:1.8;margin-bottom:12px;${_gk ? 'display:none;' : ''}">尚未設定 Gemini API 金鑰，先到設定頁貼上後才能生成。</div>
+      <div id="aiSummaryText" style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.9;margin-bottom:12px;display:none;white-space:pre-wrap;"></div>
+      <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:${_gk ? 'pointer' : 'not-allowed'};letter-spacing:0.05em;opacity:${_gk ? '1' : '0.55'};" ${_gk ? '' : 'disabled'}>生成 AI 回顧</button>
+    </div>`;
     html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${currentReviewTab !== 'year' && entries.length > 30 ? '，僅顯示 30 篇' : ''}</div>`;
     html += showEntries.map(function(entry) {
       return `<div class="review-entry-card" onclick="jumpToEntry('${entry.key}')">
