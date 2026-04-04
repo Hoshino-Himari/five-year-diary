@@ -1238,7 +1238,7 @@
         連結後資料會同步到你的 Google 試算表，<br>換手機換電腦都不怕。
       </div>
       <div style="background:#fff8f0;border:1px solid #f0e0c8;border-radius:12px;padding:10px 12px;font-size:12px;color:#8a5a00;line-height:1.7;margin-bottom:16px;">
-        未連接 Google Sheet 時，資料只會保存在目前裝置。<br>AI 回顧與 AI 塔羅解讀也需要先連接雲端才能使用。
+        未連接 Google Sheet 時，資料只會保存在目前裝置。<br>AI 回顧與 AI 塔羅解讀可用設定頁裡自己的 Gemini 金鑰直接使用。
       </div>
 
       <!-- 連線狀態 -->
@@ -1272,12 +1272,10 @@
               <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部刪掉</b>，貼上下方新程式碼<br>
               <b style="color:var(--text-dark);">Step 4</b> 先按一次<b>儲存</b><br>
-              <b style="color:var(--text-dark);">Step 5</b> 左側點「<b>專案設定</b>」，在「<b>指令碼屬性</b>」新增一筆：鍵填 <b>GEMINI_API_KEY</b>，值貼你的 Gemini API 金鑰<br>
-              <b style="color:var(--text-dark);">Step 6</b> 回到編輯器，在上方函式選單選 <b>initAiAuth</b><br>
-              <b style="color:var(--text-dark);">Step 7</b> 按<b>執行</b>，如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> AI 權限授權完成後，再點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 9</b> 類型選「<b>網路應用程式</b>」，執行身分選<b>我</b>，存取權選<b>任何人</b><br>
-              <b style="color:var(--text-dark);">Step 10</b> 按「<b>部署</b>」，複製產生的網址，貼到上方欄位
+              <b style="color:var(--text-dark);">Step 5</b> 點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 6</b> 類型選「<b>網路應用程式</b>」，執行身分選<b>我</b>，存取權選<b>任何人</b><br>
+              <b style="color:var(--text-dark);">Step 7</b> 按「<b>部署</b>」，複製產生的網址，貼到上方欄位<br>
+              <b style="color:var(--text-dark);">Step 8</b> 如果要用 AI，再到這個頁面的「<b>AI 設定</b>」貼上你自己的 Gemini API 金鑰
             </div>
           </div>
 
@@ -1290,11 +1288,10 @@
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部選取（Ctrl+A）後刪掉</b><br>
               <b style="color:var(--text-dark);">Step 4</b> 貼上下方最新程式碼<br>
               <b style="color:var(--text-dark);">Step 5</b> 先按一次<b>儲存</b><br>
-              <b style="color:var(--text-dark);">Step 6</b> 確認左側「<b>專案設定</b>」裡的 <b>GEMINI_API_KEY</b> 還在，不需要再把金鑰貼進程式碼<br>
-              <b style="color:var(--text-dark);">Step 7</b> 在上方函式選單選 <b>initAiAuth</b>，按<b>執行</b>；如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 9</b> 點鉛筆✏️圖示編輯，版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 10</b> ✅ 完成！通常可以直接沿用原本網址，不用重新貼；如果五年日記連線異常，再回來重新貼網址並按「測試並連線」
+              <b style="color:var(--text-dark);">Step 6</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 7</b> 點鉛筆✏️圖示編輯，版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 8</b> ✅ 完成！通常可以直接沿用原本網址，不用重新貼；如果五年日記連線異常，再回來重新貼網址並按「測試並連線」<br>
+              <b style="color:var(--text-dark);">Step 9</b> AI 金鑰不用貼進 Apps Script，留在五年日記的「<b>AI 設定</b>」就好
             </div>
           </div>
 
@@ -1307,6 +1304,24 @@
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="section-title">🤖 AI 設定</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">Gemini API 金鑰</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:10px;line-height:1.7;">
+        只存在目前這台裝置，用你自己的就好。<br>不跟別人共用時，這樣最簡單。
+      </div>
+      <div style="background:#fff8f0;border:1px solid #f0e0c8;border-radius:12px;padding:10px 12px;font-size:12px;color:#8a5a00;line-height:1.7;margin-bottom:12px;">
+        這把金鑰不會同步到 Google Sheet。換手機或換瀏覽器時，要再貼一次。
+      </div>
+      <div id="geminiKeyStatus" style="display:none;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;"></div>
+      <input id="geminiApiKeyInput" type="password" placeholder="貼上你自己的 Gemini API 金鑰"
+        style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
+      <button onclick="saveGeminiApiKey()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">儲存 AI 金鑰</button>
+      <div style="font-size:11px;color:var(--text-light);line-height:1.7;margin-top:10px;">
+        教學：到 Google AI Studio 建立 API key，回來貼在這裡即可。<br>之後 AI 回顧和 AI 塔羅會直接使用這把金鑰。
       </div>
     </div>
 
@@ -1529,7 +1544,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '8.3';
+const APP_VERSION = '8.4';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -1956,9 +1971,10 @@ function loadSettings() {
     const s = JSON.parse(localStorage.getItem('5yr_settings') || '{}');
     return {
       years: Array.isArray(s.years) && s.years.length >= 1 ? s.years : defaultYears(),
-      name: s.name || '五年日記'
+      name: s.name || '五年日記',
+      geminiApiKey: s.geminiApiKey || ''
     };
-  } catch { return { years: defaultYears(), name: '五年日記' }; }
+  } catch { return { years: defaultYears(), name: '五年日記', geminiApiKey: '' }; }
 }
 function saveSettings(settings) {
   localStorage.setItem('5yr_settings', JSON.stringify(settings));
@@ -2767,13 +2783,11 @@ async function hydrateAiReviewCard() {
   textEl.style.display = 'none';
   textEl.textContent = '';
   hintEl.style.display = 'block';
-  hintEl.textContent = '尚未生成這段回顧。';
+  hintEl.textContent = settings.geminiApiKey ? '尚未生成這段回顧。' : '先到設定頁貼上自己的 Gemini API 金鑰，就能生成 AI 回顧。';
   btn.disabled = false;
   btn.textContent = '生成 AI 回顧';
-  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) {
-    hintEl.textContent = '連接並更新 Google Sheet 腳本後，才能使用 AI 回顧。';
-    return;
-  }
+  if (!settings.geminiApiKey) return;
+  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) return;
   const meta = getReviewMeta();
   try {
     const json = await callScript({ action: 'loadAiReview', type: meta.type, scopeKey: meta.scopeKey }, 10000);
@@ -2809,7 +2823,7 @@ async function generateTarotAiReading() {
   const entry = getEntry(year, month, day);
   const tarot = normalizeTarotValue(entry.tarot);
   if (!tarot || !tarot.cardId || tarot.aiText) return;
-  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) return;
+  if (!settings.geminiApiKey) return;
   const card = getTarotCardMeta(tarot.cardId);
   if (!card) return;
 
@@ -2817,16 +2831,16 @@ async function generateTarotAiReading() {
   const baseMeaning = tarot.reversed ? card.reversed : card.upright;
 
   try {
-    const json = await callScript({
-      action: 'generateTarotReading',
-      key: getKey(year, month, day),
-      modeLabel: mode.label,
-      cardName: card.name,
-      orientation: tarot.reversed ? '逆位' : '正位',
-      baseMeaning
-    }, 15000);
-    if (!json.ok || !json.content) return;
-    const aiText = String(json.content || '').trim();
+    const prompt = [
+      '請幫我寫一段塔羅延伸解讀。',
+      '用繁體中文，語氣自然，不要太玄，不要條列，不要反問句。',
+      '長度約 60 到 100 字。',
+      '抽牌方式：' + mode.label,
+      '牌名：' + card.name + '（' + (tarot.reversed ? '逆位' : '正位') + '）',
+      '基礎牌義：' + baseMeaning,
+      '請補充今天可以怎麼理解這張牌，但不要重複照抄牌義。'
+    ].join('\n');
+    const aiText = await callGeminiClient(prompt, 15000);
     if (!aiText) return;
 
     const updatedTarot = Object.assign({}, tarot, { aiText });
@@ -3753,10 +3767,10 @@ async function generateAiSummary() {
   const btn = document.getElementById('aiSummaryBtn');
   const textEl = document.getElementById('aiSummaryText');
   const hintEl = document.getElementById('aiSummaryHint');
-  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) {
+  if (!settings.geminiApiKey) {
     if (hintEl) {
       hintEl.style.display = 'block';
-      hintEl.textContent = '連接並更新 Google Sheet 腳本後，才能使用 AI 回顧。';
+      hintEl.textContent = '先到設定頁貼上自己的 Gemini API 金鑰，就能使用 AI 回顧。';
     }
     return;
   }
@@ -3768,26 +3782,26 @@ async function generateAiSummary() {
   const meta = getReviewMeta();
 
   try {
-    const json = await callScript({
-      action: 'generateAiReview',
-      type: meta.type,
-      scopeKey: meta.scopeKey,
-      title: meta.title,
-      label: meta.label,
-      startDate: meta.start.toISOString().slice(0, 10),
-      endDate: meta.end.toISOString().slice(0, 10)
-    }, 20000);
-    if (json.ok && json.content) {
-      const content = String(json.content || '').trim();
-      textEl.textContent = content;
-      textEl.style.display = 'block';
-      btn.textContent = '重新生成';
-    } else if (json && json.error) {
-      alert('AI 錯誤：' + String(json.error));
-      btn.textContent = '✨ 生成 AI 總結';
+    const diaryEntries = collectReviewDiaryEntries(meta.start, meta.end);
+    if (!diaryEntries.trim()) {
+      throw new Error('這段時間還沒有可回顧的日記');
+    }
+    const prompt = '以下是使用者' + meta.label + '的日記記錄：\n\n' + diaryEntries + '\n\n請用溫暖、親切的語氣幫使用者寫一段' + meta.label + '的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。';
+    const content = await callGeminiClient(prompt, 20000);
+    textEl.textContent = content;
+    textEl.style.display = 'block';
+    btn.textContent = '重新生成';
+    if (scriptUrl && lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
+      callScript({
+        action: 'saveAiReview',
+        type: meta.type,
+        scopeKey: meta.scopeKey,
+        title: meta.title,
+        content
+      }, 15000).catch(() => {});
     }
   } catch(e) {
-    alert('雲端 AI 暫時無法使用，請稍後再試');
+    alert('AI 錯誤：' + (e && e.message ? e.message : '請稍後再試'));
     btn.textContent = '✨ 生成 AI 總結';
   }
   btn.disabled = false;
@@ -3799,6 +3813,31 @@ function toggleGuide() {
   const open  = body.style.display === 'none';
   body.style.display  = open ? 'block' : 'none';
   arrow.textContent   = open ? '▴' : '▾';
+}
+
+async function callGeminiClient(prompt, timeoutMs = 20000) {
+  const apiKey = String(settings.geminiApiKey || '').trim();
+  if (!apiKey) throw new Error('尚未設定 Gemini API 金鑰');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      signal: controller.signal
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || json.error) throw new Error((json.error && json.error.message) || `Gemini 請求失敗：${res.status}`);
+    const text = String((((json.candidates || [])[0] || {}).content || {}).parts?.[0]?.text || '').trim();
+    if (!text) throw new Error('Gemini 沒有回傳內容');
+    return text;
+  } catch (e) {
+    if (e.name === 'AbortError') throw new Error('Gemini 請求逾時，請稍後再試');
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v18
@@ -4062,6 +4101,9 @@ var tempYears = [];
 function renderSettingsPage() {
   tempYears = ACTIVE_YEARS.slice();
   document.getElementById('diaryNameInput').value = settings.name;
+  const geminiInput = document.getElementById('geminiApiKeyInput');
+  if (geminiInput) geminiInput.value = settings.geminiApiKey || '';
+  renderGeminiKeyStatus();
   renderSyncStatus();
   renderThemeGrid();
   // 填入 GS 程式碼（兩個文字框都填）
@@ -4199,6 +4241,29 @@ function confirmClear() {
     showToast('資料已清除');
     renderEntries();
   }
+}
+
+function renderGeminiKeyStatus() {
+  const bar = document.getElementById('geminiKeyStatus');
+  if (!bar) return;
+  if (settings.geminiApiKey) {
+    bar.style.display = 'block';
+    bar.style.cssText = 'display:block;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
+    bar.textContent = '此裝置已設定 Gemini API 金鑰';
+  } else {
+    bar.style.display = 'block';
+    bar.style.cssText = 'display:block;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f7f5f2;border:1.5px solid #e8e6e3;color:#6b6b6b;';
+    bar.textContent = '此裝置尚未設定 Gemini API 金鑰';
+  }
+}
+
+function saveGeminiApiKey() {
+  const input = document.getElementById('geminiApiKeyInput');
+  if (!input) return;
+  settings.geminiApiKey = input.value.trim();
+  saveSettings(settings);
+  renderGeminiKeyStatus();
+  showToast(settings.geminiApiKey ? 'AI 金鑰已儲存 ✓' : 'AI 金鑰已清除');
 }
 
 // ── Google Sheets 雲端同步（使用 GET 避免 CORS）──
