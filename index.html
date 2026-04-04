@@ -1245,7 +1245,7 @@
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v13）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v14）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -1473,7 +1473,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '5.1';
+const APP_VERSION = '5.2';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -2413,7 +2413,7 @@ function applyTarotToTodayEntry(item, modeId) {
       key,
       text: existing.text || '',
       mood: existing.mood || '',
-      imgUrl: existing.imgUrl || '',
+      imgUrl: '',
       tarotText: tarotToText(tarot)
     }).catch(() => {});
   }
@@ -3893,7 +3893,7 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v13
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v14
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const FOLDER_NAME = '五年日記圖片';
@@ -3901,7 +3901,7 @@ function doGet(e) {
   try {
     const action=e.parameter.action||'ping',cb=e.parameter.callback;
     let r;
-    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v13',scriptVersion:13};
+    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v14',scriptVersion:14};
     else if(action==='save') r=saveEntry(e.parameter);
     else if(action==='loadAll') r=loadAll();
     else if(action==='deleteEntry') r=deleteEntry(e.parameter);
@@ -3951,17 +3951,17 @@ function normalizeKey(raw) {
   }return s;
 }
 function saveEntry(p) {
-  const sheet=getSheet(),key=normalizeKey(p.key),text=p.text||'',mood=p.mood||'',imgUrl=p.imgUrl||'',tarotText=p.tarotText||'',now=new Date().toLocaleString('zh-TW');
+  const sheet=getSheet(),key=normalizeKey(p.key),text=p.text||'',mood=p.mood||'',tarotText=p.tarotText||'',now=new Date().toLocaleString('zh-TW');
   if(!key)return{ok:false,error:'缺少key'};
   const pts=key.split('-'),display=pts[0]+'年 '+pts[1]+'/'+pts[2];
   const rows=sheet.getDataRange().getValues();
   for(let i=1;i<rows.length;i++){
     if(normalizeKey(rows[i][0])===key){
-      sheet.getRange(i+1,1,1,7).setValues([[key,display,text,mood,now,imgUrl,tarotText]]);
+      sheet.getRange(i+1,1,1,6).setValues([[key,display,text,mood,now,tarotText]]);
       return{ok:true,action:'updated',key};
     }
   }
-  sheet.appendRow([key,display,text,mood,now,imgUrl,tarotText]);
+  sheet.appendRow([key,display,text,mood,now,tarotText]);
   sortSheet(sheet);sheet.getRange(sheet.getLastRow(),3).setWrap(true);
   return{ok:true,action:'created',key};
 }
@@ -3971,7 +3971,7 @@ function loadAll() {
     const key=normalizeKey(rows[i][0]);
     if(key){
       if(String(rows[i][0]).trim()!==key){const pts=key.split('-');sheet.getRange(i+1,1,1,2).setValues([[key,pts[0]+'年 '+pts[1]+'/'+pts[2]]]);}
-      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:rows[i][5]||'',tarot:rows[i][6]||null};
+      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:'',tarot:rows[i][5]||rows[i][6]||null};
     }
   }
   sortSheet(sheet);
@@ -3986,27 +3986,45 @@ function deleteEntry(p) {
 }
 function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'五年日記');return{ok:true};}
 function initDriveAuth(){const f=getImageFolder();Logger.log('Drive授權成功！'+f.getName());return'授權完成';}
-function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,7).sort({column:1,ascending:true});}
+function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,6).sort({column:1,ascending:true});}
 function getSheet(){
   const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(SHEET_NAME);
   if(!s){s=ss.insertSheet(SHEET_NAME);setupSheet(s);return s;}
   const fc=String(s.getRange(1,1).getValue()).trim();
   if(fc!=='索引鍵'&&fc!=='日期'){s.insertRowBefore(1);setupHeader(s);}
-  if(s.getMaxColumns()<7)s.insertColumnsAfter(s.getMaxColumns(),7-s.getMaxColumns());
-  if(!String(s.getRange(1,7).getValue()).trim())s.getRange(1,7).setValue('今日抽到的塔羅-牌意');
+  if(s.getMaxColumns()<6)s.insertColumnsAfter(s.getMaxColumns(),6-s.getMaxColumns());
+  migrateSheetColumns(s);
   applyFormat(s);return s;
 }
 function setupSheet(s){setupHeader(s);applyFormat(s);}
 function setupHeader(s){
-  if(s.getMaxColumns()<7)s.insertColumnsAfter(s.getMaxColumns(),7-s.getMaxColumns());
-  s.getRange(1,1,1,7).setValues([['索引鍵','日期','日記內容','心情','最後更新','圖片','今日抽到的塔羅-牌意']]);
-  s.setFrozenRows(1);s.getRange(1,1,1,7).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+  if(s.getMaxColumns()<6)s.insertColumnsAfter(s.getMaxColumns(),6-s.getMaxColumns());
+  s.getRange(1,1,1,6).setValues([['索引鍵','日期','日記內容','心情','最後更新','今日抽到的塔羅-牌意']]);
+  s.setFrozenRows(1);s.getRange(1,1,1,6).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+}
+function migrateSheetColumns(s){
+  const fHeader=String(s.getRange(1,6).getValue()).trim();
+  const gHeader=s.getMaxColumns()>=7?String(s.getRange(1,7).getValue()).trim():'';
+  if(fHeader==='圖片' || !fHeader)s.getRange(1,6).setValue('今日抽到的塔羅-牌意');
+  const lr=s.getLastRow();
+  if(lr>1 && s.getMaxColumns()>=7){
+    const fVals=s.getRange(2,6,lr-1,1).getValues();
+    const gVals=s.getRange(2,7,lr-1,1).getValues();
+    let changed=false;
+    for(let i=0;i<fVals.length;i++){
+      const cur=String(fVals[i][0]||'').trim();
+      const alt=String(gVals[i][0]||'').trim();
+      if((!cur || cur==='[local]') && alt){fVals[i][0]=alt;changed=true;}
+      if(cur==='[local]'){fVals[i][0]='';changed=true;}
+    }
+    if(changed)s.getRange(2,6,lr-1,1).setValues(fVals);
+  }
 }
 function applyFormat(s){
-  s.setColumnWidth(7,280);
-  s.getRange('G2:G1000').setWrap(true);
-  s.getRange('B2:G1000').setVerticalAlignment('middle');
-  s.hideColumns(1);s.setColumnWidth(2,120);s.setColumnWidth(3,420);s.setColumnWidth(4,60);s.setColumnWidth(5,160);s.setColumnWidth(6,260);
+  s.setColumnWidth(6,280);
+  s.getRange('F2:F1000').setWrap(true);
+  s.getRange('B2:F1000').setVerticalAlignment('middle');
+  s.hideColumns(1);s.setColumnWidth(2,120);s.setColumnWidth(3,420);s.setColumnWidth(4,60);s.setColumnWidth(5,160);
   s.getRange('C2:C1000').setWrap(true);s.getRange('B2:F1000').setVerticalAlignment('middle');
 }
 function respond(obj,cb){
@@ -4303,7 +4321,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 13;
+const REQUIRED_SCRIPT_VERSION = 14;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
@@ -4367,7 +4385,7 @@ async function syncToCloud() {
   for (const [key, val] of Object.entries(data)) {
     if (!val.text && !val.mood && !tarotToText(val.tarot)) continue;
     try {
-      await callScript({ action: 'save', key, text: val.text || '', mood: val.mood || '', imgUrl: val.imgUrl || '', tarotText: tarotToText(val.tarot) });
+      await callScript({ action: 'save', key, text: val.text || '', mood: val.mood || '', imgUrl: '', tarotText: tarotToText(val.tarot) });
       count++;
     } catch {}
   }
@@ -4423,7 +4441,7 @@ function setEntry(year, month, day, text, mood, imgUrl, tarot) {
   data[k] = { text, mood, imgUrl: newImgUrl, tarot: newTarot };
   saveData();
   if (scriptUrl) {
-    callScript({ action: 'save', key: k, text: text || '', mood: mood || '', imgUrl: newImgUrl, tarotText: tarotToText(newTarot) }).catch(() => {});
+    callScript({ action: 'save', key: k, text: text || '', mood: mood || '', imgUrl: '', tarotText: tarotToText(newTarot) }).catch(() => {});
   }
 }
 
