@@ -1473,7 +1473,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '5.2';
+const APP_VERSION = '5.3';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -4200,10 +4200,9 @@ var scriptUrl = localStorage.getItem('5yr_script_url') || '';
 let lastScriptVersion = null;
 
 function setScriptVersionBars(version) {
-  const bars = [
-    document.getElementById('scriptVersionBar'),
-    document.getElementById('homeScriptVersionBar')
-  ].filter(Boolean);
+  const settingsBar = document.getElementById('scriptVersionBar');
+  const homeBar = document.getElementById('homeScriptVersionBar');
+  const bars = [settingsBar, homeBar].filter(Boolean);
   if (!bars.length) return;
   if (!scriptUrl) {
     bars.forEach(bar => {
@@ -4213,18 +4212,22 @@ function setScriptVersionBars(version) {
     return;
   }
   if (!version || version < REQUIRED_SCRIPT_VERSION) {
-    bars.forEach(bar => {
+    [settingsBar, homeBar].filter(Boolean).forEach(bar => {
       bar.style.display = 'block';
       bar.style.cssText = 'display:block;padding:12px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.8;background:#fff3e0;border:1.5px solid #f0c080;color:#8a5a00;';
       bar.innerHTML = `⚠️ <b>腳本需要更新</b>（目前 v${version || 0}，需要 v${REQUIRED_SCRIPT_VERSION}）<br>請到設定頁重新貼上最新 Apps Script 程式碼並重新部署。`;
     });
     return;
   }
-  bars.forEach(bar => {
-    bar.style.display = 'block';
-    bar.style.cssText = 'display:block;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
-    bar.innerHTML = `✅ 腳本已更新到最新版（v${version}）`;
-  });
+  if (settingsBar) {
+    settingsBar.style.display = 'block';
+    settingsBar.style.cssText = 'display:block;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
+    settingsBar.innerHTML = `✅ 腳本已更新到最新版（v${version}）`;
+  }
+  if (homeBar) {
+    homeBar.style.display = 'none';
+    homeBar.innerHTML = '';
+  }
 }
 
 async function refreshScriptVersionStatus(showSuccessState = false) {
@@ -4294,7 +4297,7 @@ function callScript(params, timeoutMs = 10000) {
       resolve(result);
     };
 
-    const qs = Object.entries({ ...params, callback: cbName })
+    const qs = Object.entries({ ...params, callback: cbName, _ts: Date.now() + '_' + Math.random().toString(36).slice(2) })
       .map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v)))
       .join('&');
 
