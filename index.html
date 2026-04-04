@@ -1271,12 +1271,12 @@
               <b style="color:var(--text-dark);">Step 1</b> 開啟 <a href="https://sheets.new" target="_blank" style="color:#4a90d9;">Google 試算表</a>（新建一個空白的）<br>
               <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部刪掉</b>，貼上下方新程式碼<br>
-              <b style="color:var(--text-dark);">Step 4</b> 點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 5</b> 類型選「<b>網路應用程式</b>」<br>
-              <b style="color:var(--text-dark);">Step 6</b> 執行身分：<b>我</b>、存取權：<b>任何人</b> → 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 7</b> 如果跳出授權視窗 → 點「授權存取」→「允許」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 在 Apps Script 上方函式選單執行一次 <b>initAiAuth</b>，完成 AI 權限授權<br>
-              <b style="color:var(--text-dark);">Step 9</b> 複製產生的網址，貼到上方欄位
+              <b style="color:var(--text-dark);">Step 4</b> 先按一次<b>儲存</b><br>
+              <b style="color:var(--text-dark);">Step 5</b> 在上方函式選單選 <b>initAiAuth</b><br>
+              <b style="color:var(--text-dark);">Step 6</b> 按<b>執行</b>，如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
+              <b style="color:var(--text-dark);">Step 7</b> AI 權限授權完成後，再點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 8</b> 類型選「<b>網路應用程式</b>」，執行身分選<b>我</b>，存取權選<b>任何人</b><br>
+              <b style="color:var(--text-dark);">Step 9</b> 按「<b>部署</b>」，複製產生的網址，貼到上方欄位
             </div>
           </div>
 
@@ -1288,11 +1288,11 @@
               <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部選取（Ctrl+A）後刪掉</b><br>
               <b style="color:var(--text-dark);">Step 4</b> 貼上下方最新程式碼<br>
-              <b style="color:var(--text-dark);">Step 5</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 6</b> 點右上角鉛筆✏️編輯圖示<br>
-              <b style="color:var(--text-dark);">Step 7</b> 版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 在 Apps Script 上方函式選單執行一次 <b>initAiAuth</b>，完成新的 AI 權限授權<br>
-              <b style="color:var(--text-dark);">Step 9</b> ✅ 完成！複製新的部署網址，回到五年日記重新貼上並按「測試並連線」
+              <b style="color:var(--text-dark);">Step 5</b> 先按一次<b>儲存</b><br>
+              <b style="color:var(--text-dark);">Step 6</b> 在上方函式選單選 <b>initAiAuth</b>，按<b>執行</b>；如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
+              <b style="color:var(--text-dark);">Step 7</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 8</b> 點鉛筆✏️圖示編輯，版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 9</b> ✅ 完成！通常可以直接沿用原本網址，不用重新貼；如果五年日記連線異常，再回來重新貼網址並按「測試並連線」
             </div>
           </div>
 
@@ -1527,7 +1527,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.9';
+const APP_VERSION = '8.0';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
