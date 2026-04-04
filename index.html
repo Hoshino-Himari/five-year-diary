@@ -1275,7 +1275,8 @@
               <b style="color:var(--text-dark);">Step 5</b> 類型選「<b>網路應用程式</b>」<br>
               <b style="color:var(--text-dark);">Step 6</b> 執行身分：<b>我</b>、存取權：<b>任何人</b> → 按「<b>部署</b>」<br>
               <b style="color:var(--text-dark);">Step 7</b> 如果跳出授權視窗 → 點「授權存取」→「允許」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 複製產生的網址，貼到上方欄位
+              <b style="color:var(--text-dark);">Step 8</b> 在 Apps Script 上方函式選單執行一次 <b>initAiAuth</b>，完成 AI 權限授權<br>
+              <b style="color:var(--text-dark);">Step 9</b> 複製產生的網址，貼到上方欄位
             </div>
           </div>
 
@@ -1290,7 +1291,8 @@
               <b style="color:var(--text-dark);">Step 5</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
               <b style="color:var(--text-dark);">Step 6</b> 點右上角鉛筆✏️編輯圖示<br>
               <b style="color:var(--text-dark);">Step 7</b> 版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> ✅ 完成！複製新的部署網址，回到五年日記重新貼上並按「測試並連線」
+              <b style="color:var(--text-dark);">Step 8</b> 在 Apps Script 上方函式選單執行一次 <b>initAiAuth</b>，完成新的 AI 權限授權<br>
+              <b style="color:var(--text-dark);">Step 9</b> ✅ 完成！複製新的部署網址，回到五年日記重新貼上並按「測試並連線」
             </div>
           </div>
 
@@ -1525,7 +1527,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.6';
+const APP_VERSION = '7.7';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -3852,6 +3854,7 @@ function deleteEntry(p) {
 }
 function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'五年日記');return{ok:true};}
 function initDriveAuth(){const f=getImageFolder();Logger.log('Drive授權成功！'+f.getName());return'授權完成';}
+function initAiAuth(){return callGemini('Reply with exactly OK');}
 function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,6).sort({column:1,ascending:true});}
 function loadAiReview(p){
   const sheet=getAiReviewSheet(),type=String(p.type||'').trim(),scopeKey=String(p.scopeKey||'').trim();
