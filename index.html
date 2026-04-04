@@ -222,7 +222,7 @@
   .entry-card {
     background: var(--white);
     border-radius: 18px;
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     transition: transform 0.15s, box-shadow 0.15s;
     position: relative;
@@ -1542,7 +1542,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '8.7';
+const APP_VERSION = '8.8';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2776,11 +2776,34 @@ function collectReviewDiaryEntries(start, end) {
     .join('\n');
 }
 
+function getAiReviewCacheKey(type, scopeKey) {
+  return `5yr_ai_review_${type}_${scopeKey}`;
+}
+
+function readAiReviewCache(type, scopeKey) {
+  try {
+    return localStorage.getItem(getAiReviewCacheKey(type, scopeKey)) || '';
+  } catch {
+    return '';
+  }
+}
+
+function writeAiReviewCache(type, scopeKey, content) {
+  try {
+    if (!content) {
+      localStorage.removeItem(getAiReviewCacheKey(type, scopeKey));
+    } else {
+      localStorage.setItem(getAiReviewCacheKey(type, scopeKey), content);
+    }
+  } catch {}
+}
+
 async function hydrateAiReviewCard() {
   const block = document.getElementById('aiSummaryBlock');
   const textEl = document.getElementById('aiSummaryText');
   const hintEl = document.getElementById('aiSummaryHint');
   const btn = document.getElementById('aiSummaryBtn');
+  const badgeEl = document.getElementById('aiSummaryBadge');
   if (!block || !textEl || !hintEl || !btn) return;
   textEl.style.display = 'none';
   textEl.textContent = '';
@@ -2788,9 +2811,21 @@ async function hydrateAiReviewCard() {
   hintEl.textContent = settings.geminiApiKey ? '尚未生成這段回顧。' : '先到設定頁貼上自己的 Gemini API 金鑰，就能生成 AI 回顧。';
   btn.disabled = false;
   btn.textContent = '生成 AI 回顧';
+  if (badgeEl) badgeEl.style.display = 'none';
+  const meta = getReviewMeta();
+  const cached = readAiReviewCache(meta.type, meta.scopeKey);
+  if (cached) {
+    textEl.textContent = cached;
+    textEl.style.display = 'block';
+    hintEl.style.display = 'none';
+    btn.textContent = '重新生成';
+    if (badgeEl) {
+      badgeEl.style.display = 'inline-flex';
+      badgeEl.textContent = '已儲存';
+    }
+  }
   if (!settings.geminiApiKey) return;
   if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) return;
-  const meta = getReviewMeta();
   try {
     const json = await callScript({ action: 'loadAiReview', type: meta.type, scopeKey: meta.scopeKey }, 10000);
     if (json.ok && json.review && json.review.content) {
@@ -2798,6 +2833,11 @@ async function hydrateAiReviewCard() {
       textEl.style.display = 'block';
       hintEl.style.display = 'none';
       btn.textContent = '重新生成';
+      writeAiReviewCache(meta.type, meta.scopeKey, json.review.content);
+      if (badgeEl) {
+        badgeEl.style.display = 'inline-flex';
+        badgeEl.textContent = '已儲存';
+      }
     }
   } catch (e) {
     hintEl.textContent = '目前讀不到雲端回顧，仍可直接重新生成。';
@@ -3254,7 +3294,10 @@ function renderReview() {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
   } else {
     html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-      <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 回顧</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
+        <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;">AI 回顧</div>
+        <div id="aiSummaryBadge" style="display:none;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;background:#f7f5f2;color:var(--text-mid);font-size:10px;letter-spacing:0.06em;">已儲存</div>
+      </div>
       <div id="aiSummaryHint" style="display:none;font-size:12px;color:var(--text-mid);line-height:1.8;margin-bottom:12px;"></div>
       <div id="aiSummaryText" style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.9;margin-bottom:12px;display:none;white-space:pre-wrap;"></div>
       <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">生成 AI 回顧</button>
@@ -3793,6 +3836,12 @@ async function generateAiSummary() {
     textEl.textContent = content;
     textEl.style.display = 'block';
     btn.textContent = '重新生成';
+    writeAiReviewCache(meta.type, meta.scopeKey, content);
+    const badgeEl = document.getElementById('aiSummaryBadge');
+    if (badgeEl) {
+      badgeEl.style.display = 'inline-flex';
+      badgeEl.textContent = '剛生成';
+    }
     if (scriptUrl && lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
       callScript({
         action: 'saveAiReview',
