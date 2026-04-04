@@ -1155,6 +1155,7 @@
       <div class="prompt-label">今日提示</div>
       <div class="prompt-text" id="promptText"></div>
     </div>
+    <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
     <div id="tarotLaunchArea"></div>
 
     <div class="section-title">五年的今天</div>
@@ -1472,7 +1473,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '4.9';
+const APP_VERSION = '5.0';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1883,6 +1884,7 @@ renderPrompt();
 renderEntries();
 renderCalendar();
 renderStats();
+refreshScriptVersionStatus();
 
 function renderHeader() {
   const d = currentDate;
@@ -3821,6 +3823,7 @@ function switchPage(tab) {
     document.getElementById('navDiary').classList.add('active');
     document.getElementById('mainHeader').style.display = '';
     document.querySelector('.main').style.paddingTop = '';
+    refreshScriptVersionStatus();
   } else if (tab === 'calendar') {
     document.getElementById('pageCalendar').classList.add('active');
     document.getElementById('navCalendar').classList.add('active');
@@ -3852,6 +3855,7 @@ function switchPage(tab) {
     document.getElementById('mainHeader').style.display = 'none';
     document.querySelector('.main').style.paddingTop = '24px';
     renderSettingsPage();
+    refreshScriptVersionStatus(true);
   }
 }
 
@@ -4174,6 +4178,59 @@ function confirmClear() {
 
 // ── Google Sheets 雲端同步（使用 GET 避免 CORS）──
 var scriptUrl = localStorage.getItem('5yr_script_url') || '';
+let lastScriptVersion = null;
+
+function setScriptVersionBars(version) {
+  const bars = [
+    document.getElementById('scriptVersionBar'),
+    document.getElementById('homeScriptVersionBar')
+  ].filter(Boolean);
+  if (!bars.length) return;
+  if (!scriptUrl) {
+    bars.forEach(bar => {
+      bar.style.display = 'none';
+      bar.innerHTML = '';
+    });
+    return;
+  }
+  if (!version || version < REQUIRED_SCRIPT_VERSION) {
+    bars.forEach(bar => {
+      bar.style.display = 'block';
+      bar.style.cssText = 'display:block;padding:12px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.8;background:#fff3e0;border:1.5px solid #f0c080;color:#8a5a00;';
+      bar.innerHTML = `⚠️ <b>腳本需要更新</b>（目前 v${version || 0}，需要 v${REQUIRED_SCRIPT_VERSION}）<br>請到設定頁重新貼上最新 Apps Script 程式碼並重新部署。`;
+    });
+    return;
+  }
+  bars.forEach(bar => {
+    bar.style.display = 'block';
+    bar.style.cssText = 'display:block;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
+    bar.innerHTML = `✅ 腳本已更新到最新版（v${version}）`;
+  });
+}
+
+async function refreshScriptVersionStatus(showSuccessState = false) {
+  if (!scriptUrl) {
+    lastScriptVersion = null;
+    setScriptVersionBars(null);
+    return null;
+  }
+  try {
+    const json = await callScript({ action: 'ping' }, 10000);
+    if (!json || !json.ok) throw new Error('bad ping');
+    lastScriptVersion = json.scriptVersion || 0;
+    setScriptVersionBars(lastScriptVersion);
+    if (!showSuccessState && lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
+      setTimeout(() => {
+        if (lastScriptVersion >= REQUIRED_SCRIPT_VERSION) setScriptVersionBars(null);
+      }, 1400);
+    }
+    return json;
+  } catch {
+    lastScriptVersion = null;
+    setScriptVersionBars(null);
+    return null;
+  }
+}
 
 function renderSyncStatus() {
   const dot = document.getElementById('syncDot');
@@ -4191,6 +4248,7 @@ function renderSyncStatus() {
     txt.textContent = '尚未連線';
     if (pullBtn) pullBtn.disabled = true;
   }
+  if (lastScriptVersion !== null) setScriptVersionBars(lastScriptVersion);
 }
 
 // ── 呼叫 Apps Script（fetch + JSONP 雙保險）──
@@ -4262,25 +4320,11 @@ async function testAndSaveScriptUrl() {
   try {
     const json = await callScript({ action: 'ping' }, 10000);
     if (!json || !json.ok) throw new Error('回傳格式錯誤');
+    lastScriptVersion = json.scriptVersion || 0;
 
     localStorage.setItem('5yr_script_url', url);
     renderSyncStatus();
-
-    // 版本檢查
-    const versionBar = document.getElementById('scriptVersionBar');
-    if (versionBar) {
-      const sv = json.scriptVersion || 0;
-      if (sv < REQUIRED_SCRIPT_VERSION) {
-        versionBar.style.display = 'block';
-        versionBar.style.cssText = 'display:block;padding:12px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.8;background:#fff3e0;border:1.5px solid #f0c080;color:#8a5a00;';
-        versionBar.innerHTML = `⚠️ <b>腳本需要更新</b>（目前 v${sv}，需要 v${REQUIRED_SCRIPT_VERSION}）<br>
-          請展開下方「設定與更新說明」，依照「<b>收到更新通知時</b>」的步驟更新腳本。`;
-      } else {
-        versionBar.style.display = 'block';
-        versionBar.style.cssText = 'display:block;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
-        versionBar.innerHTML = `✅ 腳本版本正確（v${sv}），一切正常`;
-      }
-    }
+    setScriptVersionBars(lastScriptVersion);
 
     const allJson = await callScript({ action: 'loadAll' }, 15000);
     if (allJson.ok) {
@@ -4304,6 +4348,8 @@ async function testAndSaveScriptUrl() {
     }
   } catch (err) {
     scriptUrl = localStorage.getItem('5yr_script_url') || '';
+    lastScriptVersion = null;
+    setScriptVersionBars(null);
     if (dot) dot.style.background = '#e06060';
     if (txt) txt.textContent = '無法連線';
     if (err.message === 'timeout') {
