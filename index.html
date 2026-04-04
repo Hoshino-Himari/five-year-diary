@@ -1238,7 +1238,7 @@
         連結後資料會同步到你的 Google 試算表，<br>換手機換電腦都不怕。
       </div>
       <div style="background:#fff8f0;border:1px solid #f0e0c8;border-radius:12px;padding:10px 12px;font-size:12px;color:#8a5a00;line-height:1.7;margin-bottom:16px;">
-        未連接 Google Sheet 時，資料只會保存在目前裝置。
+        未連接 Google Sheet 時，資料只會保存在目前裝置。<br>AI 回顧與 AI 塔羅解讀也需要先連接雲端才能使用。
       </div>
 
       <!-- 連線狀態 -->
@@ -1525,10 +1525,9 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.5';
+const APP_VERSION = '7.6';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
-const SHARED_GEMINI_API_KEY = 'AIzaSyCm9yxBUxi-akpqJdNIMl6S6utgfTYXh0s';
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
   '😐','🤔','😶','😴','🙃','😅','🤭','😬',
@@ -2724,7 +2723,7 @@ async function hydrateAiReviewCard() {
   btn.disabled = false;
   btn.textContent = '生成 AI 回顧';
   if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) {
-    hintEl.textContent = '連接並更新 Google Sheet 腳本後，就能儲存這段 AI 回顧。';
+    hintEl.textContent = '連接並更新 Google Sheet 腳本後，才能使用 AI 回顧。';
     return;
   }
   const meta = getReviewMeta();
@@ -2755,7 +2754,6 @@ async function checkForLatestVersion() {
 }
 
 async function generateTarotAiReading() {
-  const key = SHARED_GEMINI_API_KEY;
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -2763,30 +2761,24 @@ async function generateTarotAiReading() {
   const entry = getEntry(year, month, day);
   const tarot = normalizeTarotValue(entry.tarot);
   if (!tarot || !tarot.cardId || tarot.aiText) return;
+  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) return;
   const card = getTarotCardMeta(tarot.cardId);
   if (!card) return;
 
   const mode = getTarotModeById(tarot.mode);
   const baseMeaning = tarot.reversed ? card.reversed : card.upright;
-  const prompt = [
-    '請幫我寫一段塔羅延伸解讀。',
-    '用繁體中文，語氣自然，不要太玄，不要條列，不要反問句。',
-    '長度約 60 到 100 字。',
-    `抽牌方式：${mode.label}`,
-    `牌名：${card.name}${tarot.reversed ? '（逆位）' : '（正位）'}`,
-    `基礎牌義：${baseMeaning}`,
-    '請補充今天可以怎麼理解這張牌，但不要重複照抄牌義。'
-  ].join('\n');
 
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-    const json = await res.json();
-    if (!json.candidates || !json.candidates[0]) return;
-    const aiText = String(json.candidates[0].content.parts[0].text || '').trim();
+    const json = await callScript({
+      action: 'generateTarotReading',
+      key: getKey(year, month, day),
+      modeLabel: mode.label,
+      cardName: card.name,
+      orientation: tarot.reversed ? '逆位' : '正位',
+      baseMeaning
+    }, 15000);
+    if (!json.ok || !json.content) return;
+    const aiText = String(json.content || '').trim();
     if (!aiText) return;
 
     const updatedTarot = Object.assign({}, tarot, { aiText });
@@ -3710,51 +3702,44 @@ document.addEventListener('blur', e => {
 // ── 設定說明展開/收合 ──
 // ── AI 總結生成（Gemini） ──
 async function generateAiSummary() {
-  const key = SHARED_GEMINI_API_KEY;
   const btn = document.getElementById('aiSummaryBtn');
   const textEl = document.getElementById('aiSummaryText');
   const hintEl = document.getElementById('aiSummaryHint');
+  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) {
+    if (hintEl) {
+      hintEl.style.display = 'block';
+      hintEl.textContent = '連接並更新 Google Sheet 腳本後，才能使用 AI 回顧。';
+    }
+    return;
+  }
   btn.disabled = true;
   btn.textContent = '生成中…';
   textEl.style.display = 'none';
   if (hintEl) hintEl.style.display = 'none';
 
   const meta = getReviewMeta();
-  const diaryEntries = collectReviewDiaryEntries(meta.start, meta.end);
-  const prompt = `以下是使用者${meta.label}的日記記錄：\n\n${diaryEntries}\n\n請用溫暖、親切的語氣幫使用者寫一段${meta.label}的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。`;
 
   try {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-    });
-    const json = await res.json();
-    if (json.candidates && json.candidates[0]) {
-      const content = String(json.candidates[0].content.parts[0].text || '').trim();
+    const json = await callScript({
+      action: 'generateAiReview',
+      type: meta.type,
+      scopeKey: meta.scopeKey,
+      title: meta.title,
+      label: meta.label,
+      startDate: meta.start.toISOString().slice(0, 10),
+      endDate: meta.end.toISOString().slice(0, 10)
+    }, 20000);
+    if (json.ok && json.content) {
+      const content = String(json.content || '').trim();
       textEl.textContent = content;
       textEl.style.display = 'block';
       btn.textContent = '重新生成';
-      if (scriptUrl && lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
-        callScript({
-          action: 'saveAiReview',
-          type: meta.type,
-          scopeKey: meta.scopeKey,
-          title: meta.title,
-          content
-        }, 10000).catch(() => {});
-      }
-    } else if (json.error) {
-      const message = String(json.error.message || '');
-      if (message.toLowerCase().includes('leaked')) {
-        showToast('目前共用 AI 金鑰已失效，需要更換新的');
-      } else {
-        alert('API 錯誤：' + message);
-      }
+    } else if (json && json.error) {
+      alert('AI 錯誤：' + String(json.error));
       btn.textContent = '✨ 生成 AI 總結';
     }
   } catch(e) {
-    alert('網路錯誤，請稍後再試');
+    alert('雲端 AI 暫時無法使用，請稍後再試');
     btn.textContent = '✨ 生成 AI 總結';
   }
   btn.disabled = false;
@@ -3768,20 +3753,23 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v15
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v16
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const AI_REVIEW_SHEET_NAME = 'AI回顧';
 const FOLDER_NAME = '五年日記圖片';
+const GEMINI_API_KEY = 'AIzaSyAzLwT2bDRf5W4uWPtj_a785hltFWs5Q2I';
 function doGet(e) {
   try {
     const action=e.parameter.action||'ping',cb=e.parameter.callback;
     let r;
-    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v15',scriptVersion:15};
+    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v16',scriptVersion:16};
     else if(action==='save') r=saveEntry(e.parameter);
     else if(action==='loadAll') r=loadAll();
     else if(action==='loadAiReview') r=loadAiReview(e.parameter);
     else if(action==='saveAiReview') r=saveAiReview(e.parameter);
+    else if(action==='generateAiReview') r=generateAiReview(e.parameter);
+    else if(action==='generateTarotReading') r=generateTarotReading(e.parameter);
     else if(action==='deleteEntry') r=deleteEntry(e.parameter);
     else if(action==='renameSheet') r=renameSpreadsheet(e.parameter);
     else if(action==='uploadImage') r={ok:false,error:'圖片請用POST'};
@@ -3890,6 +3878,54 @@ function saveAiReview(p){
   sheet.appendRow([type,scopeKey,title,content,now]);
   sheet.getRange(sheet.getLastRow(),4).setWrap(true);
   return{ok:true,action:'created',type,scopeKey};
+}
+function generateAiReview(p){
+  const type=String(p.type||'').trim(),scopeKey=String(p.scopeKey||'').trim(),title=String(p.title||'').trim(),label=String(p.label||'').trim();
+  const startDate=new Date(String(p.startDate||'')),endDate=new Date(String(p.endDate||''));
+  if(!type||!scopeKey||!label||isNaN(startDate.getTime())||isNaN(endDate.getTime()))return{ok:false,error:'缺少回顧範圍'};
+  const rows=getSheet().getDataRange().getValues();
+  const diaryEntries=[];
+  for(let i=1;i<rows.length;i++){
+    const key=normalizeKey(rows[i][0]),text=String(rows[i][2]||'').trim();
+    if(!key||!text)continue;
+    const d=new Date(key);
+    if(d>=startDate&&d<=endDate) diaryEntries.push(key+'：'+text);
+  }
+  if(!diaryEntries.length)return{ok:false,error:'這段時間還沒有可回顧的日記'};
+  const prompt='以下是使用者'+label+'的日記記錄：\\n\\n'+diaryEntries.join('\\n')+'\\n\\n請用溫暖、親切的語氣幫使用者寫一段'+label+'的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。';
+  const content=callGemini(prompt);
+  saveAiReview({type:type,scopeKey:scopeKey,title:title,content:content});
+  return{ok:true,content:content};
+}
+function generateTarotReading(p){
+  const modeLabel=String(p.modeLabel||'').trim(),cardName=String(p.cardName||'').trim(),orientation=String(p.orientation||'').trim(),baseMeaning=String(p.baseMeaning||'').trim();
+  if(!cardName||!baseMeaning)return{ok:false,error:'缺少塔羅資料'};
+  const prompt=[
+    '請幫我寫一段塔羅延伸解讀。',
+    '用繁體中文，語氣自然，不要太玄，不要條列，不要反問句。',
+    '長度約 60 到 100 字。',
+    '抽牌方式：'+modeLabel,
+    '牌名：'+cardName+'（'+orientation+'）',
+    '基礎牌義：'+baseMeaning,
+    '請補充今天可以怎麼理解這張牌，但不要重複照抄牌義。'
+  ].join('\\n');
+  const content=callGemini(prompt);
+  return{ok:true,content:content};
+}
+function callGemini(prompt){
+  if(!GEMINI_API_KEY)return'';
+  const payload={contents:[{parts:[{text:prompt}]}]};
+  const resp=UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(GEMINI_API_KEY),{
+    method:'post',
+    contentType:'application/json',
+    payload:JSON.stringify(payload),
+    muteHttpExceptions:true
+  });
+  const code=resp.getResponseCode();
+  const text=resp.getContentText();
+  const json=JSON.parse(text||'{}');
+  if(code>=400||json.error) throw new Error((json.error&&json.error.message)||('Gemini 請求失敗：'+code));
+  return String((((json.candidates||[])[0]||{}).content||{}).parts&&json.candidates[0].content.parts[0]&&json.candidates[0].content.parts[0].text||'').trim();
 }
 function getSheet(){
   const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(SHEET_NAME);
@@ -4245,7 +4281,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 15;
+const REQUIRED_SCRIPT_VERSION = 16;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
