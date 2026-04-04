@@ -1272,11 +1272,12 @@
               <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部刪掉</b>，貼上下方新程式碼<br>
               <b style="color:var(--text-dark);">Step 4</b> 先按一次<b>儲存</b><br>
-              <b style="color:var(--text-dark);">Step 5</b> 在上方函式選單選 <b>initAiAuth</b><br>
-              <b style="color:var(--text-dark);">Step 6</b> 按<b>執行</b>，如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
-              <b style="color:var(--text-dark);">Step 7</b> AI 權限授權完成後，再點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 類型選「<b>網路應用程式</b>」，執行身分選<b>我</b>，存取權選<b>任何人</b><br>
-              <b style="color:var(--text-dark);">Step 9</b> 按「<b>部署</b>」，複製產生的網址，貼到上方欄位
+              <b style="color:var(--text-dark);">Step 5</b> 左側點「<b>專案設定</b>」，在「<b>指令碼屬性</b>」新增一筆：鍵填 <b>GEMINI_API_KEY</b>，值貼你的 Gemini API 金鑰<br>
+              <b style="color:var(--text-dark);">Step 6</b> 回到編輯器，在上方函式選單選 <b>initAiAuth</b><br>
+              <b style="color:var(--text-dark);">Step 7</b> 按<b>執行</b>，如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
+              <b style="color:var(--text-dark);">Step 8</b> AI 權限授權完成後，再點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 9</b> 類型選「<b>網路應用程式</b>」，執行身分選<b>我</b>，存取權選<b>任何人</b><br>
+              <b style="color:var(--text-dark);">Step 10</b> 按「<b>部署</b>」，複製產生的網址，貼到上方欄位
             </div>
           </div>
 
@@ -1289,17 +1290,18 @@
               <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部選取（Ctrl+A）後刪掉</b><br>
               <b style="color:var(--text-dark);">Step 4</b> 貼上下方最新程式碼<br>
               <b style="color:var(--text-dark);">Step 5</b> 先按一次<b>儲存</b><br>
-              <b style="color:var(--text-dark);">Step 6</b> 在上方函式選單選 <b>initAiAuth</b>，按<b>執行</b>；如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
-              <b style="color:var(--text-dark);">Step 7</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 8</b> 點鉛筆✏️圖示編輯，版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
-              <b style="color:var(--text-dark);">Step 9</b> ✅ 完成！通常可以直接沿用原本網址，不用重新貼；如果五年日記連線異常，再回來重新貼網址並按「測試並連線」
+              <b style="color:var(--text-dark);">Step 6</b> 確認左側「<b>專案設定</b>」裡的 <b>GEMINI_API_KEY</b> 還在，不需要再把金鑰貼進程式碼<br>
+              <b style="color:var(--text-dark);">Step 7</b> 在上方函式選單選 <b>initAiAuth</b>，按<b>執行</b>；如果跳出驗證畫面就點「<b>進階</b>」→「<b>前往 xxx（不安全）</b>」→「<b>允許</b>」<br>
+              <b style="color:var(--text-dark);">Step 8</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 9</b> 點鉛筆✏️圖示編輯，版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 10</b> ✅ 完成！通常可以直接沿用原本網址，不用重新貼；如果五年日記連線異常，再回來重新貼網址並按「測試並連線」
             </div>
           </div>
 
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v17）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v18）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -1527,7 +1529,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '8.2';
+const APP_VERSION = '8.3';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -3799,17 +3801,16 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v17
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v18
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const AI_REVIEW_SHEET_NAME = 'AI回顧';
 const FOLDER_NAME = '五年日記圖片';
-const GEMINI_API_KEY = 'AIzaSyAzLwT2bDRf5W4uWPtj_a785hltFWs5Q2I';
 function doGet(e) {
   try {
     const action=e.parameter.action||'ping',cb=e.parameter.callback;
     let r;
-    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v17',scriptVersion:17};
+    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v18',scriptVersion:18};
     else if(action==='save') r=saveEntry(e.parameter);
     else if(action==='loadAll') r=loadAll();
     else if(action==='loadAiReview') r=loadAiReview(e.parameter);
@@ -3959,8 +3960,12 @@ function generateTarotReading(p){
   const content=callGemini(prompt);
   return{ok:true,content:content};
 }
+function getGeminiApiKey(){
+  return PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY')||'';
+}
 function callGemini(prompt){
-  if(!GEMINI_API_KEY)return'';
+  const GEMINI_API_KEY=getGeminiApiKey();
+  if(!GEMINI_API_KEY) throw new Error('尚未設定 GEMINI_API_KEY。請到 Apps Script 的「專案設定」→「指令碼屬性」新增。');
   const payload={contents:[{parts:[{text:prompt}]}]};
   const resp=UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(GEMINI_API_KEY),{
     method:'post',
@@ -4328,7 +4333,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 17;
+const REQUIRED_SCRIPT_VERSION = 18;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
