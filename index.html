@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
@@ -1513,7 +1513,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '6.6';
+const APP_VERSION = '6.7';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 const MOODS = [
   '😊','😄','🥰','😍','🤩','😎','😌','🥳',
@@ -1994,7 +1994,7 @@ function renderEntries() {
     const yClass = `y${(i % 5) + 1}`;
     const entry = getEntry(yr, d.getMonth(), d.getDate());
     const isFuture = yr > today.getFullYear() || (yr === today.getFullYear() && d > today);
-    const tarotText = isViewingToday && yr === today.getFullYear() ? tarotToText(entry.tarot) : '';
+    const tarotDisplay = isViewingToday && yr === today.getFullYear() ? getTarotDisplayParts(entry.tarot) : null;
 
     const card = document.createElement('div');
     card.className = `entry-card ${yClass}`;
@@ -2018,10 +2018,14 @@ function renderEntries() {
           maxlength="5000"
           oninput="onTextInput(this, ${yr}, ${d.getMonth()}, ${d.getDate()})"
         >${entry.text}</textarea>
-        ${tarotText ? `
-          <div style="margin:12px 0 4px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg, rgba(63, 34, 99, 0.08), rgba(239, 208, 139, 0.18));border:1px solid rgba(99, 77, 129, 0.12);">
-            <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);margin-bottom:4px;">TODAY'S TAROT</div>
-            <div style="font-size:12px;line-height:1.8;color:var(--text-dark);">${tarotText}</div>
+        ${tarotDisplay ? `
+          <div style="margin:12px 0 4px;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg, rgba(63, 34, 99, 0.08), rgba(239, 208, 139, 0.18));border:1px solid rgba(99, 77, 129, 0.12);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;">
+              <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);">TODAY'S TAROT</div>
+              ${tarotDisplay.tag ? `<div style="font-size:10px;color:#5c4a74;background:rgba(92,74,116,0.08);padding:4px 8px;border-radius:999px;">${tarotDisplay.tag}</div>` : ''}
+            </div>
+            <div style="font-size:15px;color:var(--text-dark);font-family:'Noto Serif TC',serif;margin-bottom:4px;">${tarotDisplay.title}</div>
+            <div style="font-size:12px;line-height:1.8;color:var(--text-dark);">${tarotDisplay.copy}</div>
           </div>
         ` : ''}
         <div class="entry-footer">
@@ -2292,6 +2296,32 @@ function tarotToText(tarot) {
   return `${card.name}${tarot.reversed ? '（逆位）' : '（正位）'}｜${tarot.reversed ? card.reversed : card.upright}`;
 }
 
+function getTarotDisplayParts(tarot) {
+  if (!tarot) return null;
+  if (tarot.textOverride) {
+    return {
+      title: '今日塔羅',
+      tag: '',
+      copy: tarot.textOverride
+    };
+  }
+  if (!tarot.cardId) return null;
+  const card = getTarotCardMeta(tarot.cardId);
+  if (!card) return null;
+  return {
+    title: card.name,
+    tag: tarot.reversed ? '逆位' : '正位',
+    copy: tarot.reversed ? card.reversed : card.upright
+  };
+}
+
+function getHourLabel(hourValue) {
+  if (hourValue === null || hourValue === undefined || hourValue === '') return '未記錄';
+  const hour = parseInt(hourValue, 10);
+  if (Number.isNaN(hour)) return '未記錄';
+  return `${String(hour).padStart(2, '0')}:00`;
+}
+
 function openTarotModal() {
   ensureTarotState();
   document.getElementById('tarotOverlay').classList.add('show');
@@ -2391,20 +2421,20 @@ function renderTarotLaunchArea() {
   const today = new Date();
   const isViewingToday = currentDate.toDateString() === today.toDateString();
   const entry = getEntry(today.getFullYear(), today.getMonth(), today.getDate());
-  const tarotText = tarotToText(entry.tarot);
+  const tarotDisplay = getTarotDisplayParts(entry.tarot);
   if (!isViewingToday) {
     area.innerHTML = '';
     return;
   }
-  area.innerHTML = `
+  area.innerHTML =     `
     <div style="background:var(--white);border-radius:18px;padding:14px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:18px;">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div>
           <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:4px;">DAILY TAROT</div>
-          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">今日塔羅</div>
-          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotText ? tarotText : '今天還沒抽牌，每天只能抽一次。'}</div>
+          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">${tarotDisplay ? tarotDisplay.title : '????'}</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotDisplay ? `${tarotDisplay.tag ? tarotDisplay.tag + '?' : ''}${tarotDisplay.copy}` : '???????????????'}</div>
         </div>
-        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotText ? '查看今日牌面' : '開始抽牌'}</button>
+        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotDisplay ? '????' : '????'}</button>
       </div>
     </div>
   `;
@@ -2470,7 +2500,7 @@ function renderTarotSection() {
             <div class="tarot-result-tag">${savedTarot.reversed ? '逆位' : '正位'} · ${savedMode.label}</div>
           </div>
         </div>
-        <div class="tarot-result-copy">${savedTarot.reversed ? savedCard.reversed : savedCard.upright}</div>
+        <div class="tarot-result-copy"><div style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--text-dark);margin-bottom:6px;">${savedCard.name}</div><div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin-bottom:10px;">${savedTarot.reversed ? 'REVERSED' : 'UPRIGHT'}</div>${savedTarot.reversed ? savedCard.reversed : savedCard.upright}</div>
         <div class="tarot-result-note">今日塔羅只能抽一次。如果想更詳細了解內容，把你的問題和抽到的牌拿去問 AI。</div>
         <div class="tarot-result-actions">
           <button class="tarot-action-btn primary" onclick="copyTarotPrompt(this)">複製提問素材</button>
@@ -2908,71 +2938,48 @@ function renderReview() {
   Object.entries(data).forEach(function([key, val]) {
     if (!val.text || !val.text.trim()) return;
     const parts = key.split('-');
-    const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    if (date >= start && date <= end) entries.push({ key, text: val.text, mood: val.mood, date });
+    const date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    if (date >= start && date <= end) {
+      entries.push({ key, text: val.text, mood: val.mood, date, updatedAt: val.updatedAt || null });
+    }
   });
 
   entries.sort((a, b) => b.date - a.date);
 
   const moodMap = {};
-  const slotMap = {};
   const weekdayMap = {};
   const hourMap = {};
+
   entries.forEach(function(entry) {
     if (entry.mood) moodMap[entry.mood] = (moodMap[entry.mood] || 0) + 1;
     const weekday = entry.date.getDay();
     weekdayMap[weekday] = (weekdayMap[weekday] || 0) + 1;
-    const hourDate = entry.updatedAt ? new Date(entry.updatedAt) : null;
-    if (hourDate && !Number.isNaN(hourDate.getTime())) {
-      const hour = hourDate.getHours();
+    const ts = normalizeUpdatedAtValue(entry.updatedAt);
+    if (ts) {
+      const hour = new Date(ts).getHours();
       hourMap[hour] = (hourMap[hour] || 0) + 1;
     }
-    let slotKey = '';
-    if (currentReviewTab === 'week') {
-      slotKey = String(entry.date.getDay());
-    } else if (currentReviewTab === 'month') {
-      slotKey = String(entry.date.getDate());
-    } else {
-      slotKey = String(entry.date.getMonth() + 1);
-    }
-    slotMap[slotKey] = (slotMap[slotKey] || 0) + 1;
   });
 
   const topMood = Object.entries(moodMap).sort((a, b) => b[1] - a[1])[0];
-  const totalWords = entries.reduce((sum, entry) => sum + entry.text.trim().length, 0);
-  const avgWords = entries.length ? Math.round(totalWords / entries.length) : 0;
-  const topSlot = Object.entries(slotMap).sort((a, b) => b[1] - a[1])[0];
   const topWeekday = Object.entries(weekdayMap).sort((a, b) => b[1] - a[1])[0];
   const topHour = Object.entries(hourMap).sort((a, b) => b[1] - a[1])[0];
+  const totalWords = entries.reduce((sum, entry) => sum + entry.text.trim().length, 0);
+  const avgWords = entries.length ? Math.round(totalWords / entries.length) : 0;
   const showEntries = currentReviewTab === 'year' ? entries : entries.slice(0, 30);
+  const weekdayLabels = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+  const topWeekdayLabel = topWeekday ? weekdayLabels[parseInt(topWeekday[0], 10)] || '—' : '—';
+  const topHourLabel = topHour ? getHourLabel(topHour[0]) : '—';
 
   function formatDateKey(key) {
     const parts = key.split('-');
-    const date = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-    const weekday = ['日', '一', '二', '三', '四', '五', '六'][date.getDay()];
-    return `${parts[0]}年${parseInt(parts[1])}月${parseInt(parts[2])}日（${weekday}）`;
+    const date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    return `${parts[0]}年${parseInt(parts[1], 10)}月${parseInt(parts[2], 10)}日（${weekdayLabels[date.getDay()]}）`;
   }
-
-  function formatTopSlot(slot) {
-    if (!slot) return null;
-    if (currentReviewTab === 'week') {
-      const weekdays = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
-      return { value: weekdays[parseInt(slot[0], 10)] || '—', label: '寫最多' };
-    }
-    if (currentReviewTab === 'month') {
-      return { value: `${slot[0]}號`, label: '寫最多' };
-    }
-    return { value: `${slot[0]}月`, label: '寫最多' };
-  }
-
-  const topSlotDisplay = formatTopSlot(topSlot);
-  const weekdayLabels = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
-  const topWeekdayLabel = topWeekday ? weekdayLabels[parseInt(topWeekday[0], 10)] || null : null;
-  const topHourLabel = topHour ? `${String(parseInt(topHour[0], 10)).padStart(2, '0')}:00` : null;
 
   let html = `<div class="review-summary">
     <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:14px;">
       <div style="text-align:center;">
         <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${entries.length}</div>
         <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">篇日記</div>
@@ -2985,29 +2992,30 @@ function renderReview() {
         <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
         <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
       </div>
-      ${topSlotDisplay ? `<div style="text-align:center;">
-        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topSlotDisplay.value}</div>
-        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">${topSlotDisplay.label}</div>
-      </div>` : ''}
+      <div style="text-align:center;">
+        <div style="font-size:22px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topWeekdayLabel}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常在這天寫</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:22px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topHourLabel}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常在這時寫</div>
+      </div>
     </div>
-    ${entries.length ? `<div style="margin-top:14px;font-size:12px;color:rgba(58,42,42,0.6);line-height:1.9;">
-      平均每篇約 ${avgWords} 字。${topWeekdayLabel ? `最常在 ${topWeekdayLabel} 寫日記。` : ''}${topHourLabel ? `最常在 ${topHourLabel} 左右寫日記。` : ''}
-    </div>` : ''}
+    ${entries.length ? `<div style="margin-top:14px;font-size:12px;color:rgba(58,42,42,0.6);line-height:1.9;">平均每篇約 ${avgWords} 字。</div>` : ''}
   </div>`;
 
   if (entries.length === 0) {
     html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
   } else {
-    // AI 總結按鈕（有設定 key 才顯示）
     const _gk = localStorage.getItem('geminiApiKey') || 'AIzaSyC1X8FKtVEVg7tp_HtC50OY-78PJmjZ3h0';
     if (_gk) {
       html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
-        <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 總結</div>
+        <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:10px;">AI 回顧</div>
         <div id="aiSummaryText" style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.9;margin-bottom:12px;display:none;white-space:pre-wrap;"></div>
-        <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">✨ 生成 AI 總結</button>
+        <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">生成 AI 回顧</button>
       </div>`;
     }
-    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${currentReviewTab !== 'year' && entries.length > 30 ? '，先顯示 30 篇' : ''}</div>`;
+    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${currentReviewTab !== 'year' && entries.length > 30 ? '，僅顯示 30 篇' : ''}</div>`;
     html += showEntries.map(function(entry) {
       return `<div class="review-entry-card" onclick="jumpToEntry('${entry.key}')">
         <div class="review-entry-date"><span>${formatDateKey(entry.key)}</span><span>${entry.mood || ''}</span></div>
