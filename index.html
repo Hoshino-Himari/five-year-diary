@@ -1299,7 +1299,7 @@
           <!-- 程式碼 -->
           <div style="position:relative;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v16）</div>
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v17）</div>
               <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
             </div>
             <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
@@ -1527,7 +1527,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '7.8';
+const APP_VERSION = '7.9';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -3755,7 +3755,7 @@ function toggleGuide() {
   arrow.textContent   = open ? '▴' : '▾';
 }
 
-const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v16
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v17
 // 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
 const SHEET_NAME = '日記資料';
 const AI_REVIEW_SHEET_NAME = 'AI回顧';
@@ -3765,7 +3765,7 @@ function doGet(e) {
   try {
     const action=e.parameter.action||'ping',cb=e.parameter.callback;
     let r;
-    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v16',scriptVersion:16};
+    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v17',scriptVersion:17};
     else if(action==='save') r=saveEntry(e.parameter);
     else if(action==='loadAll') r=loadAll();
     else if(action==='loadAiReview') r=loadAiReview(e.parameter);
@@ -4284,7 +4284,7 @@ function callScript(params, timeoutMs = 10000) {
   });
 }
 
-const REQUIRED_SCRIPT_VERSION = 16;
+const REQUIRED_SCRIPT_VERSION = 17;
 
 async function testAndSaveScriptUrl() {
   const url = document.getElementById('scriptUrlInput').value.trim();
