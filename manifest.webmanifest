@@ -1,0 +1,20 @@
+{
+  "name": "\u4e94\u5e74\u65e5\u8a18",
+  "short_name": "\u4e94\u5e74\u65e5\u8a18",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f7f5f2",
+  "theme_color": "#f7f5f2",
+  "icons": [
+    {
+      "src": "./assets/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "./assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
