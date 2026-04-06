@@ -14,59 +14,63 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f7f5f2;
-    --white: #ffffff;
-    --text-dark: #2d2d2d;
-    --text-mid: #6b6b6b;
-    --text-light: #aaaaaa;
-    --accent: #e8a4b8;
-    --accent2: #a4b8e8;
-    --accent3: #b8e8a4;
-    --theme-a: #fde8c8; --theme-b: #f8bcd0; /* prompt gradient */
+    --bg: #f5f4ed;
+    --white: #fefcf8;
+    --text-dark: #1c1917;
+    --text-mid: #78716c;
+    --text-light: #a8a29e;
+    --accent: #c96442;
+    --accent2: #d97757;
+    --accent3: #e8c9b0;
+    --theme-a: #f5e6d3; --theme-b: #ecd4be; /* prompt gradient */
 
     /* Year color themes */
-    --y1-a: #fde8c8; --y1-b: #f8bcd0;
-    --y2-a: #d0e8fb; --y2-b: #b8cef8;
-    --y3-a: #d8f8e0; --y3-b: #b8e8d0;
-    --y4-a: #f0d8f8; --y4-b: #d8b8f0;
-    --y5-a: #f8f0d0; --y5-b: #f0d8a8;
+    --y1-a: #f5e0c8; --y1-b: #edcbad;
+    --y2-a: #c8dff0; --y2-b: #a8c4e0;
+    --y3-a: #cce8d8; --y3-b: #a8d8bc;
+    --y4-a: #e8d4f0; --y4-b: #d4b8e4;
+    --y5-a: #f0e4c0; --y5-b: #e4cc94;
   }
 
   /* ── Theme: Ocean ── */
   body.theme-ocean {
-    --bg: #f0f4f8;
-    --white: #ffffff;
+    --bg: #eef3f8;
+    --white: #f8fbff;
     --text-dark: #1a2a3a;
     --text-mid: #4a6070;
     --text-light: #90a8b8;
+    --accent: #3a7abd;
     --theme-a: #c8e0f8; --theme-b: #a8c8f0;
   }
   /* ── Theme: Forest ── */
   body.theme-forest {
-    --bg: #f0f5f0;
-    --white: #ffffff;
+    --bg: #eef4ee;
+    --white: #f8fdf8;
     --text-dark: #1a2a1a;
     --text-mid: #4a6050;
     --text-light: #90a898;
+    --accent: #3a8a5a;
     --theme-a: #c8f0d8; --theme-b: #a8e0c0;
   }
   /* ── Theme: Lavender ── */
   body.theme-lavender {
-    --bg: #f4f0f8;
-    --white: #ffffff;
+    --bg: #f2eef8;
+    --white: #fdf8ff;
     --text-dark: #2a1a3a;
     --text-mid: #5a4a6a;
     --text-light: #a090b8;
+    --accent: #7a52b0;
     --theme-a: #e0c8f8; --theme-b: #c8a8f0;
   }
   /* ── Theme: Dark ── */
   body.theme-dark {
-    --bg: #1a1a1a;
-    --white: #252525;
-    --text-dark: #e8e8e8;
-    --text-mid: #a0a0a0;
-    --text-light: #606060;
-    --theme-a: #3a3030; --theme-b: #302838;
+    --bg: #1a1a18;
+    --white: #242320;
+    --text-dark: #e8e4dc;
+    --text-mid: #a09890;
+    --text-light: #605850;
+    --accent: #d97757;
+    --theme-a: #3a3028; --theme-b: #302820;
   }
   body { transition: background 0.3s; }
 
@@ -168,9 +172,9 @@
     letter-spacing: 0.03em;
   }
   .month-chip.active {
-    background: var(--text-dark);
+    background: var(--accent);
     color: white;
-    border-color: var(--text-dark);
+    border-color: var(--accent);
   }
 
   /* ── Main Content ── */
@@ -180,12 +184,13 @@
 
   /* ── Today's Prompt ── */
   .prompt-card {
-    background: linear-gradient(135deg, #fde8c8, #f8bcd0 60%, #d0c8f8);
+    background: linear-gradient(135deg, #f5e6d3 0%, #ecd4be 55%, #e4c8aa 100%);
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(180,140,100,0.15);
   }
   .prompt-card::before {
     content: '';
@@ -193,19 +198,19 @@
     top: -20px; right: -20px;
     width: 100px; height: 100px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.25);
   }
   .prompt-label {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: rgba(80,60,50,0.5);
+    color: rgba(100,70,50,0.55);
     margin-bottom: 6px;
   }
   .prompt-text {
     font-family: 'Noto Serif TC', serif;
     font-size: 15px;
-    color: #5a3d3d;
+    color: #5c3d2e;
     line-height: 1.6;
     font-weight: 400;
   }
@@ -230,7 +235,7 @@
     background: var(--white);
     border-radius: 18px;
     overflow: visible;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 12px rgba(100,70,40,0.07);
     transition: transform 0.15s, box-shadow 0.15s;
     position: relative;
   }
@@ -314,7 +319,7 @@
     justify-content: space-between;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid #f0f0f0;
+    border-top: 1px solid rgba(140,110,80,0.1);
   }
 
   .mood-row {
@@ -337,8 +342,9 @@
     justify-content: center;
   }
   .mood-btn.selected {
-    background: #f5ecd0;
+    background: #f0e4d0;
     transform: scale(1.15);
+    box-shadow: 0 0 0 2px rgba(201,100,66,0.3);
   }
   .mood-btn:active { transform: scale(0.9); }
 
@@ -370,8 +376,8 @@
   }
 
   .mood-option.selected {
-    border-color: #888;
-    background: #f5ecd0;
+    border-color: var(--accent);
+    background: #f5e8d8;
   }
 
   .char-count {
@@ -382,7 +388,7 @@
 
   /* ── Write new entry fab-like ── */
   .save-btn {
-    background: var(--text-dark);
+    background: var(--accent);
     color: white;
     border: none;
     border-radius: 12px;
@@ -405,7 +411,7 @@
     position: fixed;
     bottom: 0; left: 0; right: 0;
     background: var(--white);
-    border-top: 1px solid #f0eeec;
+    border-top: 1px solid rgba(140,110,80,0.12);
     display: flex;
     padding: 8px 0 20px;
     z-index: 100;
@@ -427,7 +433,7 @@
     letter-spacing: 0.05em;
     transition: color 0.2s;
   }
-  .nav-item.active { color: var(--text-dark); }
+  .nav-item.active { color: var(--accent); }
   .nav-item svg { width: 22px; height: 22px; }
 
   /* ── Stats mini card ── */
@@ -442,7 +448,7 @@
     border-radius: 16px;
     padding: 14px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 8px rgba(100,70,40,0.06);
   }
   .stat-num {
     font-family: 'Noto Serif TC', serif;
@@ -567,7 +573,7 @@
     background: var(--accent);
   }
   .cal-day.today {
-    background: var(--text-dark);
+    background: var(--accent);
     color: white;
     font-weight: 500;
   }
@@ -582,7 +588,7 @@
     background: var(--white);
     border-radius: 18px;
     padding: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 12px rgba(100,70,40,0.07);
     margin-bottom: 12px;
   }
   .mood-bar-row {
@@ -602,7 +608,7 @@
   .mood-bar-fill {
     height: 100%;
     border-radius: 4px;
-    background: linear-gradient(90deg, #fde8c8, #f8bcd0);
+    background: linear-gradient(90deg, #e8c4a0, #c96442);
     transition: width 0.6s ease;
   }
   .mood-bar-count {
@@ -673,9 +679,9 @@
     font-family: 'Noto Sans TC', sans-serif;
   }
   .year-btn.active {
-    background: var(--text-dark);
+    background: var(--accent);
     color: white;
-    border-color: var(--text-dark);
+    border-color: var(--accent);
   }
   .year-btn:active { transform: scale(0.95); }
   .cal-month-title {
@@ -709,9 +715,9 @@
     color: var(--text-mid);
   }
   .mood-filter-btn.active {
-    background: var(--text-dark);
+    background: var(--accent);
     color: white;
-    border-color: var(--text-dark);
+    border-color: var(--accent);
   }
   .mood-filter-btn:active { transform: scale(0.95); }
 
@@ -750,16 +756,16 @@
     transition: all 0.15s;
   }
   .review-tab.active {
-    background: var(--text-dark);
+    background: var(--accent);
     color: white;
-    border-color: var(--text-dark);
+    border-color: var(--accent);
   }
   .review-entry-card {
     background: var(--white);
     border-radius: 16px;
     padding: 16px;
     margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 8px rgba(100,70,40,0.06);
     cursor: pointer;
   }
   .review-entry-date {
@@ -778,7 +784,7 @@
     line-height: 1.7;
   }
   .review-summary {
-    background: linear-gradient(135deg, var(--theme-a, #fde8c8), var(--theme-b, #f8bcd0));
+    background: linear-gradient(135deg, var(--theme-a, #f5e6d3), var(--theme-b, #ecd4be));
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 16px;
@@ -1153,7 +1159,7 @@
 
   /* ── Streak banner ── */
   .streak-banner {
-    background: linear-gradient(135deg, #fde8c8 0%, #f8bcd0 50%, #d0c8f8 100%);
+    background: linear-gradient(135deg, #f5e6d3 0%, #edd5c0 50%, #e4c4a8 100%);
     border-radius: 20px;
     padding: 16px 20px;
     display: flex;
@@ -1170,12 +1176,12 @@
     font-family: 'Noto Serif TC', serif;
     font-size: 26px;
     font-weight: 300;
-    color: #5a3d3d;
+    color: #5c3d2e;
     line-height: 1;
   }
   .streak-label {
     font-size: 11px;
-    color: rgba(90,61,61,0.6);
+    color: rgba(92,61,46,0.65);
     letter-spacing: 0.05em;
     margin-top: 2px;
   }
@@ -1221,7 +1227,7 @@
   <!-- Page: Calendar -->
   <div class="page" id="pageCalendar">
     <div class="section-title">日曆總覽</div>
-    <div style="background:var(--white);border-radius:20px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:20px;padding:16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div class="cal-month-nav">
         <button class="cal-nav-btn" onclick="changeCalMonth(-1)">‹</button>
         <div class="cal-month-title" id="calMonthTitle" onclick="openYearPicker()">
@@ -1239,7 +1245,7 @@
   <!-- Page: Settings -->
   <div class="page" id="pageSettings">
     <div class="section-title">☁️ 雲端同步</div>
-    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">連結 Google Sheets</div>
       <div style="font-size:12px;color:var(--text-light);margin-bottom:10px;line-height:1.7;">
         連結後資料會同步到你的 Google 試算表，<br>換手機換電腦都不怕。
@@ -1258,7 +1264,7 @@
         placeholder="貼上你的 Apps Script 網址"
         style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
 
-      <button onclick="testAndSaveScriptUrl()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:12px;">測試並連線</button>
+      <button onclick="testAndSaveScriptUrl()" style="width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:12px;">測試並連線</button>
 
       <!-- 版本狀態 -->
       <div id="scriptVersionBar" style="display:none;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;"></div>
@@ -1313,7 +1319,7 @@
     </div>
 
     <div class="section-title">🤖 AI 設定</div>
-    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">Gemini API 金鑰</div>
       <div style="font-size:12px;color:var(--text-light);margin-bottom:10px;line-height:1.7;">
         只存在目前這台裝置，用你自己的就好。<br>不跟別人共用時，這樣最簡單。
@@ -1324,27 +1330,27 @@
       <div id="geminiKeyStatus" style="display:none;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;"></div>
       <input id="geminiApiKeyInput" type="password" placeholder="貼上你自己的 Gemini API 金鑰"
         style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
-      <button onclick="saveGeminiApiKey()" style="width:100%;padding:12px;background:var(--text-dark);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">儲存 AI 金鑰</button>
+      <button onclick="saveGeminiApiKey()" style="width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">儲存 AI 金鑰</button>
       <div style="font-size:11px;color:var(--text-light);line-height:1.7;margin-top:10px;">
-        教學：到 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color:#4a90d9;">Google AI Studio API Keys</a> 建立 API key，回來貼在這裡即可。<br>之後 AI 回顧和 AI 塔羅會直接使用這把金鑰。
+        教學：到 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Google AI Studio API Keys</a> 建立 API key，回來貼在這裡即可。<br>之後 AI 回顧和 AI 塔羅會直接使用這把金鑰。
       </div>
     </div>
 
     <div class="section-title">🎨 主題顏色</div>
-    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;" id="themeGrid"></div>
     </div>
 
     <div class="section-title">五年設定</div>
-    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇要顯示的年份</div>
       <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">選你想在日記頁看到的年份。<br>六年前、八年前的今天，會自動在上方顯示提醒。</div>
       <div id="yearSlotList"></div>
-      <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--text-dark);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">儲存設定</button>
+      <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--accent);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">儲存設定</button>
     </div>
 
     <div class="section-title">日記名稱</div>
-    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <input id="diaryNameInput" type="text" maxlength="12"
         style="width:100%;border:none;outline:none;border-bottom:1.5px solid #e8e6e3;padding:8px 0;font-size:16px;font-family:'Noto Serif TC',serif;color:var(--text-dark);background:transparent;"
         placeholder="五年日記">
@@ -1353,7 +1359,7 @@
     </div>
 
     <div class="section-title">資料管理</div>
-    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.6;">所有資料儲存在瀏覽器本地，清除瀏覽器快取會遺失資料。</div>
       <button onclick="exportData()" style="width:100%;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:10px;">匯出日記（純文字 .txt）</button>
       <button onclick="confirmClear()" style="width:100%;padding:12px;background:#fff0f0;color:#d06060;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">清除所有資料</button>
@@ -1377,12 +1383,12 @@
     <div class="mood-stats-card" id="moodStatsCard"></div>
 
     <div class="section-title">今年記錄熱力</div>
-    <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div id="heatmapGrid" style="display:grid;grid-template-columns:repeat(26,1fr);gap:3px;"></div>
     </div>
 
     <div class="section-title">心情日記</div>
-    <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:16px;">
+    <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
       <div id="moodFilterRow" style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;"></div>
       <div id="moodDiaryList"><div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">選擇一個心情來查看日記</div></div>
     </div>
@@ -1549,7 +1555,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '8.9';
+const APP_VERSION = '9.0';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2492,8 +2498,8 @@ function renderTarotLaunchArea() {
     area.innerHTML = '';
     return;
   }
-  area.innerHTML =     `
-    <div style="background:var(--white);border-radius:18px;padding:14px 16px;box-shadow:0 2px 12px rgba(0,0,0,0.05);margin-bottom:18px;">
+  area.innerHTML = `
+    <div style="background:var(--white);border-radius:18px;padding:14px 16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:18px;">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div>
           <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:4px;">DAILY TAROT</div>
