@@ -87,35 +87,36 @@
   /* ── Header ── */
   .app-header {
     background: var(--white);
-    padding: 20px 20px 0;
+    padding: 18px 20px 0;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(140,110,80,0.1);
   }
 
   .header-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .app-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 22px;
-    font-weight: 400;
+    font-size: 21px;
+    font-weight: 500;
     color: var(--text-dark);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
   }
 
   .today-badge {
-    font-size: 12px;
-    color: var(--text-mid);
-    background: var(--bg);
-    padding: 5px 12px;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(201,100,66,0.1);
+    padding: 5px 13px;
     border-radius: 20px;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
+    font-weight: 500;
   }
 
   /* ── Date Nav ── */
@@ -143,9 +144,10 @@
   .date-display {
     flex: 1;
     text-align: center;
-    font-size: 14px;
-    color: var(--text-mid);
-    letter-spacing: 0.05em;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    letter-spacing: 0.06em;
     white-space: nowrap;
   }
 
@@ -161,7 +163,7 @@
 
   .month-chip {
     flex-shrink: 0;
-    padding: 5px 14px;
+    padding: 6px 15px;
     border-radius: 20px;
     border: 1.5px solid transparent;
     font-size: 12px;
@@ -169,7 +171,8 @@
     color: var(--text-mid);
     background: var(--bg);
     transition: all 0.2s;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
+    font-weight: 500;
   }
   .month-chip.active {
     background: var(--accent);
@@ -185,43 +188,68 @@
   /* ── Today's Prompt ── */
   .prompt-card {
     background: linear-gradient(135deg, #f5e6d3 0%, #ecd4be 55%, #e4c8aa 100%);
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 22px;
+    padding: 22px 20px 20px;
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(180,140,100,0.15);
+    box-shadow: 0 0 0 1px rgba(180,140,100,0.18), 0 4px 16px rgba(140,90,50,0.1);
   }
   .prompt-card::before {
+    content: '「';
+    position: absolute;
+    top: -8px; left: 12px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 80px;
+    color: rgba(140,80,40,0.1);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .prompt-card::after {
     content: '';
     position: absolute;
-    top: -20px; right: -20px;
-    width: 100px; height: 100px;
+    bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.18);
   }
   .prompt-label {
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: rgba(100,70,50,0.55);
-    margin-bottom: 6px;
+    letter-spacing: 0.2em;
+    color: rgba(100,70,50,0.5);
+    margin-bottom: 8px;
+    position: relative;
   }
   .prompt-text {
     font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
+    font-size: 16px;
     color: #5c3d2e;
-    line-height: 1.6;
+    line-height: 1.65;
     font-weight: 400;
+    position: relative;
   }
 
   /* ── Section Title ── */
   .section-title {
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
     color: var(--text-light);
-    margin: 8px 0 12px;
+    margin: 14px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+    flex-shrink: 0;
+    opacity: 0.7;
   }
 
   /* ── Year Entry Cards ── */
@@ -242,8 +270,9 @@
   .entry-card:active { transform: scale(0.99); }
 
   .entry-gradient-bar {
-    height: 4px;
+    height: 5px;
     width: 100%;
+    border-radius: 20px 20px 0 0;
   }
 
   .entry-inner {
@@ -254,41 +283,44 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
 
   .entry-year-label {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
   }
 
   .year-dot {
-    width: 28px; height: 28px;
+    width: 32px; height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.02em;
     color: #5a4a4a;
     flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
 
   .year-text {
-    font-size: 13px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
     font-weight: 500;
-    color: var(--text-mid);
-    letter-spacing: 0.03em;
+    color: var(--text-dark);
+    letter-spacing: 0.04em;
   }
 
   .entry-age {
     font-size: 10px;
     color: var(--text-light);
     background: var(--bg);
-    padding: 3px 9px;
+    padding: 4px 10px;
     border-radius: 20px;
+    letter-spacing: 0.03em;
   }
 
   /* ── Textarea / Entry content ── */
@@ -298,8 +330,8 @@
     outline: none;
     resize: none;
     font-family: 'Noto Serif TC', serif;
-    font-size: 14px;
-    line-height: 1.75;
+    font-size: 15px;
+    line-height: 1.85;
     color: var(--text-dark);
     background: transparent;
     min-height: 80px;
@@ -311,6 +343,7 @@
   .entry-textarea::placeholder {
     color: var(--text-light);
     font-style: italic;
+    font-size: 14px;
   }
 
   .entry-footer {
@@ -388,19 +421,21 @@
 
   /* ── Write new entry fab-like ── */
   .save-btn {
-    background: var(--accent);
+    background: linear-gradient(135deg, #d97757, #c96442);
     color: white;
     border: none;
-    border-radius: 12px;
-    padding: 8px 18px;
+    border-radius: 14px;
+    padding: 9px 20px;
     font-size: 12px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     font-family: 'Noto Sans TC', sans-serif;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, transform 0.15s;
     pointer-events: none;
+    box-shadow: 0 2px 8px rgba(201,100,66,0.35);
   }
+  .save-btn.visible:active { transform: scale(0.96); }
   .save-btn.visible {
     opacity: 1;
     pointer-events: auto;
@@ -432,8 +467,19 @@
     font-family: 'Noto Sans TC', sans-serif;
     letter-spacing: 0.05em;
     transition: color 0.2s;
+    position: relative;
   }
   .nav-item.active { color: var(--accent); }
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 24px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 0 0 4px 4px;
+    opacity: 0.85;
+  }
   .nav-item svg { width: 22px; height: 22px; }
 
   /* ── Stats mini card ── */
@@ -445,23 +491,25 @@
   .stat-card {
     flex: 1;
     background: var(--white);
-    border-radius: 16px;
-    padding: 14px;
+    border-radius: 20px;
+    padding: 18px 14px;
     text-align: center;
     box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 8px rgba(100,70,40,0.06);
   }
   .stat-num {
     font-family: 'Noto Serif TC', serif;
-    font-size: 24px;
+    font-size: 36px;
     font-weight: 300;
     color: var(--text-dark);
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
   }
   .stat-label {
     font-size: 10px;
     color: var(--text-light);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   /* ── Year color configs ── */
@@ -486,17 +534,19 @@
     bottom: 90px;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
-    background: var(--text-dark);
-    color: white;
-    padding: 10px 22px;
+    background: rgba(28,25,23,0.92);
+    color: #fefcf8;
+    padding: 11px 24px;
     border-radius: 30px;
     font-size: 13px;
     opacity: 0;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.34,1.2,0.64,1);
     pointer-events: none;
     z-index: 200;
     white-space: nowrap;
     letter-spacing: 0.03em;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   }
   .toast.show {
     opacity: 1;
@@ -578,7 +628,8 @@
     font-weight: 500;
   }
   .cal-day.selected {
-    background: #f0eeec;
+    background: rgba(201,100,66,0.12);
+    color: var(--accent);
     font-weight: 500;
   }
   .cal-day.empty { pointer-events: none; }
@@ -637,17 +688,18 @@
   .year-picker-sheet {
     background: var(--white);
     width: 100%;
-    border-radius: 24px 24px 0 0;
+    border-radius: 28px 28px 0 0;
     padding: 20px 20px 40px;
     transform: translateY(100%);
     transition: transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
+    box-shadow: 0 -4px 30px rgba(100,70,40,0.1);
   }
   .modal-overlay.show .year-picker-sheet {
     transform: translateY(0);
   }
   .picker-handle {
-    width: 36px; height: 4px;
-    background: #e0dedd;
+    width: 40px; height: 4px;
+    background: rgba(140,110,80,0.2);
     border-radius: 2px;
     margin: 0 auto 16px;
   }
@@ -722,8 +774,8 @@
   .mood-filter-btn:active { transform: scale(0.95); }
 
   .mood-diary-item {
-    padding: 12px 0;
-    border-bottom: 1px solid #f0eeec;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(140,110,80,0.1);
   }
   .mood-diary-item:last-child { border-bottom: none; }
   .mood-diary-date {
@@ -745,15 +797,16 @@
   /* ── Review tabs ── */
   .review-tab {
     flex: 1;
-    padding: 10px;
-    border-radius: 12px;
-    border: 1.5px solid #e8e6e3;
+    padding: 11px 10px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(140,110,80,0.15);
     background: var(--white);
     font-size: 13px;
     font-family: 'Noto Sans TC', sans-serif;
     color: var(--text-mid);
     cursor: pointer;
     transition: all 0.15s;
+    letter-spacing: 0.03em;
   }
   .review-tab.active {
     background: var(--accent);
@@ -762,7 +815,7 @@
   }
   .review-entry-card {
     background: var(--white);
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 16px;
     margin-bottom: 12px;
     box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 8px rgba(100,70,40,0.06);
@@ -785,9 +838,10 @@
   }
   .review-summary {
     background: linear-gradient(135deg, var(--theme-a, #f5e6d3), var(--theme-b, #ecd4be));
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 24px;
+    padding: 22px 20px;
     margin-bottom: 16px;
+    box-shadow: 0 0 0 1px rgba(180,140,100,0.15);
   }
 
   .tarot-card-wrap {
@@ -1555,7 +1609,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '9.0';
+const APP_VERSION = '9.1';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
