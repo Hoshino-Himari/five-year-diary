@@ -1,1 +1,4919 @@
-77u/PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9InpoLVRXIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAsIG1heGltdW0tc2NhbGU9MS4wLCB1c2VyLXNjYWxhYmxlPW5vIj4KPHRpdGxlPuS6lOW5tOaXpeiomDwvdGl0bGU+CjxtZXRhIG5hbWU9InRoZW1lLWNvbG9yIiBjb250ZW50PSIjZjdmNWYyIj4KPG1ldGEgbmFtZT0iYXBwbGUtbW9iaWxlLXdlYi1hcHAtY2FwYWJsZSIgY29udGVudD0ieWVzIj4KPG1ldGEgbmFtZT0iYXBwbGUtbW9iaWxlLXdlYi1hcHAtc3RhdHVzLWJhci1zdHlsZSIgY29udGVudD0iZGVmYXVsdCI+CjxtZXRhIG5hbWU9ImFwcGxlLW1vYmlsZS13ZWItYXBwLXRpdGxlIiBjb250ZW50PSLkupTlubTml6XoqJgiPgo8bGluayByZWw9Imljb24iIHR5cGU9ImltYWdlL3N2Zyt4bWwiIGhyZWY9Ii4vYXNzZXRzL2ljb25zL2Zhdmljb24uc3ZnIj4KPGxpbmsgcmVsPSJhcHBsZS10b3VjaC1pY29uIiBzaXplcz0iMTgweDE4MCIgaHJlZj0iLi9hc3NldHMvaWNvbnMvYXBwbGUtdG91Y2gtaWNvbi5wbmciPgo8bGluayByZWw9Im1hbmlmZXN0IiBocmVmPSIuL21hbmlmZXN0LndlYm1hbmlmZXN0Ij4KPGxpbmsgaHJlZj0iaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1Ob3RvK1NlcmlmK1RDOndnaHRAMzAwOzQwMDs1MDAmZmFtaWx5PU5vdG8rU2Fucyt
+﻿<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>五年日記</title>
+<meta name="theme-color" content="#f7f5f2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="五年日記">
+<link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f4ed;
+    --white: #fefcf8;
+    --text-dark: #1c1917;
+    --text-mid: #78716c;
+    --text-light: #a8a29e;
+    --accent: #c96442;
+    --accent2: #d97757;
+    --accent3: #e8c9b0;
+    --theme-a: #f5e6d3; --theme-b: #ecd4be; /* prompt gradient */
+
+    /* Year color themes */
+    --y1-a: #f5e0c8; --y1-b: #edcbad;
+    --y2-a: #c8dff0; --y2-b: #a8c4e0;
+    --y3-a: #cce8d8; --y3-b: #a8d8bc;
+    --y4-a: #e8d4f0; --y4-b: #d4b8e4;
+    --y5-a: #f0e4c0; --y5-b: #e4cc94;
+  }
+
+  /* ── Theme: Ocean ── */
+  body.theme-ocean {
+    --bg: #eef3f8;
+    --white: #f8fbff;
+    --text-dark: #1a2a3a;
+    --text-mid: #4a6070;
+    --text-light: #90a8b8;
+    --accent: #3a7abd;
+    --theme-a: #c8e0f8; --theme-b: #a8c8f0;
+  }
+  /* ── Theme: Forest ── */
+  body.theme-forest {
+    --bg: #eef4ee;
+    --white: #f8fdf8;
+    --text-dark: #1a2a1a;
+    --text-mid: #4a6050;
+    --text-light: #90a898;
+    --accent: #3a8a5a;
+    --theme-a: #c8f0d8; --theme-b: #a8e0c0;
+  }
+  /* ── Theme: Lavender ── */
+  body.theme-lavender {
+    --bg: #f2eef8;
+    --white: #fdf8ff;
+    --text-dark: #2a1a3a;
+    --text-mid: #5a4a6a;
+    --text-light: #a090b8;
+    --accent: #7a52b0;
+    --theme-a: #e0c8f8; --theme-b: #c8a8f0;
+  }
+  /* ── Theme: Dark ── */
+  body.theme-dark {
+    --bg: #1a1a18;
+    --white: #242320;
+    --text-dark: #e8e4dc;
+    --text-mid: #a09890;
+    --text-light: #605850;
+    --accent: #d97757;
+    --theme-a: #3a3028; --theme-b: #302820;
+  }
+  body { transition: background 0.3s; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  .app-header {
+    background: var(--white);
+    padding: 18px 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(140,110,80,0.1);
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .app-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: 0.08em;
+  }
+
+  .today-badge {
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(201,100,66,0.1);
+    padding: 5px 13px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  /* ── Date Nav ── */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 0;
+    -ms-overflow-style: none;
+  }
+  .date-nav::-webkit-scrollbar { display: none; }
+
+  .date-nav-btn {
+    background: none;
+    border: none;
+    padding: 8px 10px;
+    color: var(--text-light);
+    font-size: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .date-display {
+    flex: 1;
+    text-align: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  /* ── Month Picker Strip ── */
+  .month-strip {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding: 10px 0 14px;
+    gap: 6px;
+  }
+  .month-strip::-webkit-scrollbar { display: none; }
+
+  .month-chip {
+    flex-shrink: 0;
+    padding: 6px 15px;
+    border-radius: 20px;
+    border: 1.5px solid transparent;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text-mid);
+    background: var(--bg);
+    transition: all 0.2s;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+  .month-chip.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* ── Main Content ── */
+  .main {
+    padding: 16px 16px 100px;
+  }
+
+  /* ── Today's Prompt ── */
+  .prompt-card {
+    background: linear-gradient(135deg, #f5e6d3 0%, #ecd4be 55%, #e4c8aa 100%);
+    border-radius: 22px;
+    padding: 22px 20px 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(180,140,100,0.18), 0 4px 16px rgba(140,90,50,0.1);
+  }
+  .prompt-card::before {
+    content: '';
+    position: absolute;
+    top: -28px; left: -28px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(180,120,60,0.12);
+    pointer-events: none;
+  }
+  .prompt-card::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+  }
+  .prompt-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(100,70,50,0.5);
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .prompt-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    color: #5c3d2e;
+    line-height: 1.65;
+    font-weight: 400;
+    position: relative;
+  }
+
+  /* ── Section Title ── */
+  .section-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-light);
+    margin: 14px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::before {
+    content: '';
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  /* ── Year Entry Cards ── */
+  .entries-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .entry-card {
+    background: var(--white);
+    border-radius: 18px;
+    overflow: visible;
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 12px rgba(100,70,40,0.07);
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .entry-card:active { transform: scale(0.99); }
+
+  /* gradient bar replaced by card background-image per year class */
+  .entry-gradient-bar { display: none; }
+
+  .entry-card {
+    background-color: var(--white);
+    background-image: linear-gradient(90deg, var(--entry-a, var(--bg)), var(--entry-b, var(--bg)));
+    background-size: 100% 5px;
+    background-position: top;
+    background-repeat: no-repeat;
+  }
+  .y1 { --entry-a: var(--y1-a); --entry-b: var(--y1-b); }
+  .y2 { --entry-a: var(--y2-a); --entry-b: var(--y2-b); }
+  .y3 { --entry-a: var(--y3-a); --entry-b: var(--y3-b); }
+  .y4 { --entry-a: var(--y4-a); --entry-b: var(--y4-b); }
+  .y5 { --entry-a: var(--y5-a); --entry-b: var(--y5-b); }
+
+  .entry-inner {
+    padding: 14px 16px 16px;
+  }
+
+  .entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .entry-year-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .year-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #5a4a4a;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  }
+
+  .year-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: 0.04em;
+  }
+
+  .entry-age {
+    font-size: 10px;
+    color: var(--text-light);
+    background: var(--bg);
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Textarea / Entry content ── */
+  .entry-textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--text-dark);
+    background: transparent;
+    min-height: 80px;
+    height: auto;
+    overflow: hidden;
+    padding: 0;
+    caret-color: var(--accent);
+  }
+  .entry-textarea::placeholder {
+    color: var(--text-light);
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  .entry-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(140,110,80,0.1);
+  }
+
+  .mood-row {
+    display: flex;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mood-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg);
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mood-btn.selected {
+    background: #f0e4d0;
+    transform: scale(1.15);
+    box-shadow: 0 0 0 2px rgba(201,100,66,0.3);
+  }
+  .mood-btn:active { transform: scale(0.9); }
+
+  .mood-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(42px, 1fr));
+    gap: 6px;
+    padding: 10px;
+    background: var(--bg);
+    border-radius: 14px;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .mood-option {
+    min-width: 42px;
+    min-height: 42px;
+    padding: 6px 4px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .mood-option.selected {
+    border-color: var(--accent);
+    background: #f5e8d8;
+  }
+
+  .char-count {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Write new entry fab-like ── */
+  .save-btn {
+    background: linear-gradient(135deg, #d97757, #c96442);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 9px 20px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.15s;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(201,100,66,0.35);
+  }
+  .save-btn.visible:active { transform: scale(0.96); }
+  .save-btn.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Bottom Nav ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid rgba(140,110,80,0.12);
+    display: flex;
+    padding: 8px 0 20px;
+    z-index: 100;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px 0;
+    border: none;
+    background: none;
+    color: var(--text-light);
+    font-size: 10px;
+    font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-item.active { color: var(--accent); }
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 24px;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 0 0 4px 4px;
+    opacity: 0.85;
+  }
+  .nav-item svg { width: 22px; height: 22px; }
+
+  /* ── Stats mini card ── */
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    flex: 1;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 8px rgba(100,70,40,0.06);
+  }
+  .stat-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--text-dark);
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── Year color configs ── */
+  .y1 .entry-gradient-bar { background: linear-gradient(90deg, var(--y1-a), var(--y1-b)); }
+  .y1 .year-dot { background: linear-gradient(135deg, var(--y1-a), var(--y1-b)); }
+
+  .y2 .entry-gradient-bar { background: linear-gradient(90deg, var(--y2-a), var(--y2-b)); }
+  .y2 .year-dot { background: linear-gradient(135deg, var(--y2-a), var(--y2-b)); }
+
+  .y3 .entry-gradient-bar { background: linear-gradient(90deg, var(--y3-a), var(--y3-b)); }
+  .y3 .year-dot { background: linear-gradient(135deg, var(--y3-a), var(--y3-b)); }
+
+  .y4 .entry-gradient-bar { background: linear-gradient(90deg, var(--y4-a), var(--y4-b)); }
+  .y4 .year-dot { background: linear-gradient(135deg, var(--y4-a), var(--y4-b)); }
+
+  .y5 .entry-gradient-bar { background: linear-gradient(90deg, var(--y5-a), var(--y5-b)); }
+  .y5 .year-dot { background: linear-gradient(135deg, var(--y5-a), var(--y5-b)); }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(28,25,23,0.92);
+    color: #fefcf8;
+    padding: 11px 24px;
+    border-radius: 30px;
+    font-size: 13px;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34,1.2,0.64,1);
+    pointer-events: none;
+    z-index: 200;
+    white-space: nowrap;
+    letter-spacing: 0.03em;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .update-banner {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 10px 16px 0;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: #fff7df;
+    border: 1px solid #efdca7;
+    color: #5f4b1a;
+  }
+  .update-banner.show {
+    display: flex;
+  }
+  .update-banner-copy {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .update-banner-btn {
+    flex-shrink: 0;
+    border: none;
+    border-radius: 12px;
+    padding: 9px 12px;
+    background: #2d2d2d;
+    color: #fff;
+    font-size: 12px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+  }
+
+  /* ── Stats & Calendar page ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  .cal-header {
+    font-size: 10px;
+    text-align: center;
+    color: var(--text-light);
+    padding: 4px 0;
+    letter-spacing: 0.05em;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--text-mid);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s;
+  }
+  .cal-day.has-entry::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .cal-day.today {
+    background: var(--accent);
+    color: white;
+    font-weight: 500;
+  }
+  .cal-day.selected {
+    background: rgba(201,100,66,0.12);
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .cal-day.empty { pointer-events: none; }
+
+  /* ── Mood Stats ── */
+  .mood-stats-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 12px rgba(100,70,40,0.07);
+    margin-bottom: 12px;
+  }
+  .mood-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .mood-bar-label { font-size: 18px; }
+  .mood-bar-track {
+    flex: 1;
+    height: 6px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .mood-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #e8c4a0, #c96442);
+    transition: width 0.6s ease;
+  }
+  .mood-bar-count {
+    font-size: 11px;
+    color: var(--text-light);
+    min-width: 20px;
+    text-align: right;
+  }
+
+  /* ── Year Picker Modal ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 300;
+    display: flex;
+    align-items: flex-end;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .year-picker-sheet {
+    background: var(--white);
+    width: 100%;
+    border-radius: 28px 28px 0 0;
+    padding: 20px 20px 40px;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
+    box-shadow: 0 -4px 30px rgba(100,70,40,0.1);
+  }
+  .modal-overlay.show .year-picker-sheet {
+    transform: translateY(0);
+  }
+  .picker-handle {
+    width: 40px; height: 4px;
+    background: rgba(140,110,80,0.2);
+    border-radius: 2px;
+    margin: 0 auto 16px;
+  }
+  .picker-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .year-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .year-btn {
+    padding: 10px 4px;
+    border-radius: 12px;
+    border: 1.5px solid transparent;
+    background: var(--bg);
+    font-size: 14px;
+    color: var(--text-mid);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-family: 'Noto Sans TC', sans-serif;
+  }
+  .year-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .year-btn:active { transform: scale(0.95); }
+  .cal-month-title {
+    cursor: pointer;
+    user-select: none;
+    padding: 4px 10px;
+    border-radius: 10px;
+    transition: background 0.15s;
+    text-align: center;
+  }
+  .cal-month-title:active { background: var(--bg); }
+  .cal-month-title-hint {
+    font-size: 9px;
+    color: var(--text-light);
+    display: block;
+    text-align: center;
+    margin-top: 1px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Mood filter buttons ── */
+  .mood-filter-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #e8e6e3;
+    background: var(--bg);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text-mid);
+  }
+  .mood-filter-btn.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .mood-filter-btn:active { transform: scale(0.95); }
+
+  .mood-diary-item {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(140,110,80,0.1);
+  }
+  .mood-diary-item:last-child { border-bottom: none; }
+  .mood-diary-date {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mood-diary-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.7;
+  }
+
+  /* ── Review tabs ── */
+  .review-tab {
+    flex: 1;
+    padding: 11px 10px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(140,110,80,0.15);
+    background: var(--white);
+    font-size: 13px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .review-tab.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .review-entry-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 8px rgba(100,70,40,0.06);
+    cursor: pointer;
+  }
+  .review-entry-date {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .review-entry-text {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.7;
+  }
+  .review-summary {
+    background: linear-gradient(135deg, var(--theme-a, #f5e6d3), var(--theme-b, #ecd4be));
+    border-radius: 24px;
+    padding: 22px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 0 0 1px rgba(180,140,100,0.15);
+  }
+
+  .tarot-card-wrap {
+    background: linear-gradient(180deg, #16161e 0%, #1d1d2a 100%);
+    border-radius: 24px;
+    padding: 18px 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+    position: relative;
+    overflow: hidden;
+    color: #fff8f0;
+  }
+  .tarot-card-wrap::before { display: none; }
+  .tarot-header {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 14px;
+  }
+  .tarot-kicker {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 8px;
+  }
+  .tarot-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    color: #ffffff;
+  }
+  .tarot-subtitle {
+    font-size: 13px;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.6);
+  }
+  .tarot-mode-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .tarot-mode-btn {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    color: #ffffff;
+    padding: 16px 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .tarot-mode-btn:hover {
+    background: rgba(255,255,255,0.07);
+  }
+  .tarot-mode-btn:active { transform: scale(0.98); }
+  .tarot-mode-btn.active {
+    background: rgba(252, 208, 123, 0.08);
+    border-color: #FCD07B;
+    box-shadow: 0 0 20px rgba(252, 208, 123, 0.12);
+  }
+  .tarot-mode-btn.active .tarot-mode-label {
+    color: #FCD07B;
+  }
+  .tarot-mode-label {
+    display: block;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    transition: color 0.25s ease;
+    color: #ffffff;
+  }
+  .tarot-mode-copy {
+    display: block;
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.5);
+  }
+  .tarot-spread-area {
+    position: relative;
+    z-index: 1;
+    min-height: 140px;
+  }
+  @keyframes tarotFadeIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .tarot-spread-area.animate-in {
+    animation: tarotFadeIn 0.5s ease forwards;
+  }
+  .tarot-spread-hint {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: #FCD07B;
+    line-height: 1.8;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  /* ── Horizontal scroll spread (78 cards) ── */
+  .tarot-spread {
+    display: flex;
+    overflow-x: auto;
+    padding: 16px calc(50% - 31px) 22px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+    scroll-snap-type: x mandatory;
+    margin: 0 -16px 12px;
+    user-select: none;
+  }
+  .tarot-spread::-webkit-scrollbar { display: none; }
+  .tarot-spread.drag-active { cursor: grabbing; scroll-snap-type: none; }
+  .tarot-card-slot {
+    flex: 0 0 62px;
+    height: 98px;
+    transform-style: preserve-3d;
+    transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, filter 0.3s ease;
+    cursor: pointer;
+    scroll-snap-align: center;
+    position: relative;
+    margin-left: -32px;
+    z-index: 1;
+  }
+  .tarot-card-slot:first-child { margin-left: 0; }
+  .tarot-card-slot:hover:not(.is-muted):not(.revealed):not(.selected) {
+    transform: scale(1.15) translateY(-8px);
+    z-index: 10;
+  }
+  .tarot-card-slot.selected {
+    transform: scale(1.15) translateY(-8px);
+    z-index: 10;
+  }
+  .tarot-card-slot.is-muted {
+    opacity: 0.28;
+    filter: blur(1px);
+    pointer-events: none;
+  }
+  .tarot-card-slot.revealed {
+    transform: scale(1.15) translateY(-8px);
+    z-index: 10;
+  }
+  .tarot-card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.85s cubic-bezier(0.22, 0.86, 0.31, 1.08);
+  }
+  .tarot-card-slot.revealed .tarot-card {
+    transform: rotateY(180deg);
+    filter: drop-shadow(0 0 14px rgba(252, 208, 123, 0.45));
+  }
+  .tarot-card-face, .tarot-card-back {
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    backface-visibility: hidden;
+    overflow: hidden;
+  }
+  .tarot-card-back {
+    background: #1e1e28;
+    border: 1.5px solid rgba(252, 208, 123, 0.25);
+    box-shadow: -6px 0 14px rgba(0,0,0,0.6);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .tarot-card-slot:hover:not(.is-muted):not(.revealed) .tarot-card-back,
+  .tarot-card-slot.selected .tarot-card-back,
+  .tarot-card-slot.revealed .tarot-card-back {
+    border-color: #FCD07B;
+    box-shadow: 0 0 16px rgba(252, 208, 123, 0.3), -4px 0 12px rgba(0,0,0,0.5);
+  }
+  .tarot-card-back::before,
+  .tarot-card-back::after { display: none; }
+  .tarot-back-lines { display: none; }
+  .tarot-back-symbol {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(252, 208, 123, 0.55);
+    font-size: 22px;
+    transition: color 0.25s ease;
+  }
+  .tarot-card-slot:hover:not(.is-muted):not(.revealed) .tarot-back-symbol,
+  .tarot-card-slot.selected .tarot-back-symbol {
+    color: #FCD07B;
+  }
+  .tarot-card-face {
+    transform: rotateY(180deg);
+    background: linear-gradient(180deg, #fffaf0 0%, #fff6ea 100%);
+    border: 6px solid #f9f2e8;
+    color: #433235;
+    display: flex;
+    flex-direction: column;
+  }
+  .tarot-card-face.is-reversed { transform: rotateY(180deg) rotate(180deg); }
+  .tarot-front-crest {
+    padding: 7px 8px 1px;
+    text-align: center;
+    font-size: 9px;
+    color: #9c776e;
+    letter-spacing: 0.1em;
+  }
+  .tarot-front-art {
+    flex: 1;
+    margin: 4px 7px 6px;
+    border-radius: 9px;
+    background: linear-gradient(180deg, var(--tarot-a, #f6d8b4), var(--tarot-b, #d8eef5));
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .tarot-front-art::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(255,255,255,0.42);
+    border-radius: 7px;
+  }
+  .tarot-front-sun, .tarot-front-moon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    opacity: 0.18;
+  }
+  .tarot-front-sun {
+    top: -6px;
+    right: -4px;
+    background: radial-gradient(circle, #ffd05f 0%, #ffad47 72%, transparent 73%);
+  }
+  .tarot-front-moon {
+    bottom: -8px;
+    left: -8px;
+    background: radial-gradient(circle at 60% 45%, #fef3db 0%, #f6d79d 70%, transparent 71%);
+  }
+  .tarot-front-icon {
+    font-size: 34px;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.08));
+  }
+  .tarot-front-name {
+    padding: 0 6px 3px;
+    text-align: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px;
+  }
+  .tarot-front-sub {
+    padding: 0 6px 8px;
+    text-align: center;
+    font-size: 9px;
+    color: #8d7779;
+    letter-spacing: 0.06em;
+  }
+  @keyframes tarotResultSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .tarot-result {
+    background: linear-gradient(145deg, rgba(252,227,138,0.14) 0%, rgba(243,129,129,0.1) 100%);
+    border: 1px solid rgba(252, 208, 123, 0.35);
+    border-radius: 20px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    animation: tarotResultSlideUp 0.45s ease forwards;
+  }
+  .tarot-result-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .tarot-result-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  .tarot-result-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(252, 208, 123, 0.18);
+    border: 1px solid rgba(252, 208, 123, 0.3);
+    font-size: 11px;
+    color: #FCD07B;
+    letter-spacing: 0.05em;
+  }
+  .tarot-result-copy {
+    font-size: 12px;
+    line-height: 1.8;
+    color: rgba(255,247,240,0.88);
+    margin-bottom: 12px;
+  }
+  .tarot-result-note {
+    font-size: 11px;
+    line-height: 1.8;
+    color: rgba(255,247,240,0.72);
+    margin-bottom: 12px;
+  }
+  .tarot-result-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .tarot-action-btn {
+    flex: 1;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 12px;
+    font-family: 'Noto Sans TC', sans-serif;
+    cursor: pointer;
+  }
+  .tarot-action-btn.primary {
+    background: linear-gradient(135deg, #FCE38A, #F0C060);
+    color: #3a2a18;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(252,200,80,0.3);
+  }
+  .tarot-action-btn.secondary {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,247,240,0.9);
+    border: 1px solid rgba(252, 208, 123, 0.3);
+  }
+  @media (max-width: 390px) {
+    .tarot-card-slot { flex: 0 0 56px; height: 90px; margin-left: -28px; }
+    .tarot-spread { padding: 14px calc(50% - 28px) 20px; }
+  }
+  @media (max-width: 430px) {
+    .bottom-nav {
+      padding: 6px 0 calc(12px + env(safe-area-inset-bottom));
+    }
+    .nav-item {
+      gap: 3px;
+      padding: 6px 0 4px;
+      font-size: 9px;
+      letter-spacing: 0;
+    }
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* Subtle page transitions */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page.active { animation: fadeIn 0.25s ease forwards; }
+
+  .cal-month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .cal-month-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    color: var(--text-dark);
+    font-weight: 400;
+  }
+  .cal-nav-btn {
+    background: var(--bg);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-mid);
+    font-size: 16px;
+    transition: background 0.15s;
+  }
+  .cal-nav-btn:active { background: #e8e6e3; }
+
+  /* ── Streak banner ── */
+  .streak-banner {
+    background: linear-gradient(135deg, #f5e6d3 0%, #edd5c0 50%, #e4c4a8 100%);
+    border-radius: 20px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .streak-icon {
+    font-size: 30px;
+    line-height: 1;
+  }
+  .streak-info { flex: 1; }
+  .streak-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: #5c3d2e;
+    line-height: 1;
+  }
+  .streak-label {
+    font-size: 11px;
+    color: rgba(92,61,46,0.65);
+    letter-spacing: 0.05em;
+    margin-top: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="app-header" id="mainHeader">
+  <div class="header-top">
+    <span class="app-title">五年日記</span>
+    <span class="today-badge" id="todayBadge">今天</span>
+  </div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.7</div>
+  <div class="date-nav">
+    <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
+    <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
+    <button class="date-nav-btn" onclick="changeDay(1)">›</button>
+  </div>
+  <div class="month-strip" id="monthStrip"></div>
+</div>
+<div class="update-banner" id="updateBanner">
+  <div class="update-banner-copy">有新版本可用，重新整理後就會更新到最新版。</div>
+  <button class="update-banner-btn" onclick="reloadLatestVersion()">重新載入</button>
+</div>
+
+<!-- ── Pages ── -->
+<div class="main">
+
+  <!-- Page: Diary -->
+  <div class="page active" id="pageDiary">
+    <div class="prompt-card" id="promptCard">
+      <div class="prompt-label">今日提示</div>
+      <div class="prompt-text" id="promptText"></div>
+    </div>
+    <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
+    <div id="tarotLaunchArea"></div>
+
+    <div class="section-title">五年的今天</div>
+    <div class="entries-list" id="entriesList"></div>
+  </div>
+
+  <!-- Page: Calendar -->
+  <div class="page" id="pageCalendar">
+    <div class="section-title">日曆總覽</div>
+    <div style="background:var(--white);border-radius:20px;padding:16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div class="cal-month-nav">
+        <button class="cal-nav-btn" onclick="changeCalMonth(-1)">‹</button>
+        <div class="cal-month-title" id="calMonthTitle" onclick="openYearPicker()">
+          <span id="calMonthTitleText"></span>
+          <span class="cal-month-title-hint">點擊跳年份</span>
+        </div>
+        <button class="cal-nav-btn" onclick="changeCalMonth(1)">›</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+    <div class="section-title">最近記錄</div>
+    <div id="calEntryPreview"></div>
+  </div>
+
+  <!-- Page: Settings -->
+  <div class="page" id="pageSettings">
+    <div class="section-title">☁️ 雲端同步</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">連結 Google Sheets</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:10px;line-height:1.7;">
+        連結後資料會同步到你的 Google 試算表，<br>換手機換電腦都不怕。
+      </div>
+      <div style="background:#fff8f0;border:1px solid #f0e0c8;border-radius:12px;padding:10px 12px;font-size:12px;color:#8a5a00;line-height:1.7;margin-bottom:16px;">
+        未連接 Google Sheet 時，資料只會保存在目前裝置。<br>AI 回顧與 AI 塔羅解讀可用設定頁裡自己的 Gemini 金鑰直接使用。
+      </div>
+
+      <!-- 連線狀態 -->
+      <div id="syncStatusBar" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:var(--bg);margin-bottom:14px;">
+        <div id="syncDot" style="width:8px;height:8px;border-radius:50%;background:#ccc;flex-shrink:0;"></div>
+        <div id="syncStatusText" style="font-size:12px;color:var(--text-mid);">尚未連線</div>
+      </div>
+
+      <input id="scriptUrlInput" type="url"
+        placeholder="貼上你的 Apps Script 網址"
+        style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
+
+      <button onclick="testAndSaveScriptUrl()" style="width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:12px;">測試並連線</button>
+
+      <!-- 版本狀態 -->
+      <div id="scriptVersionBar" style="display:none;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;"></div>
+
+      <!-- 可展開的設定說明 -->
+      <div style="border:1.5px solid #e8e6e3;border-radius:12px;overflow:hidden;">
+        <button onclick="toggleGuide()" style="width:100%;padding:12px 14px;background:none;border:none;text-align:left;font-size:12px;color:var(--text-mid);font-family:'Noto Sans TC',sans-serif;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+          <span>📋 設定與更新說明</span>
+          <span id="guideArrow" style="font-size:10px;">▾</span>
+        </button>
+        <div id="guideBody" style="display:none;padding:0 16px 16px;border-top:1px solid #f0eeec;">
+
+          <!-- 第一次設定 -->
+          <div style="margin-top:14px;margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;letter-spacing:0.03em;">🆕 第一次設定</div>
+            <div style="background:var(--bg);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:2.2;">
+              <b style="color:var(--text-dark);">Step 1</b> 開啟 <a href="https://sheets.new" target="_blank" style="color:#4a90d9;">Google 試算表</a>（新建一個空白的）<br>
+              <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
+              <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部刪掉</b>，貼上下方新程式碼<br>
+              <b style="color:var(--text-dark);">Step 4</b> 先按一次<b>儲存</b><br>
+              <b style="color:var(--text-dark);">Step 5</b> 點右上角「<b>部署</b>」→「<b>新增部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 6</b> 類型選「<b>網路應用程式</b>」，執行身分選<b>我</b>，存取權選<b>任何人</b><br>
+              <b style="color:var(--text-dark);">Step 7</b> 按「<b>部署</b>」，複製產生的網址，貼到上方欄位
+            </div>
+          </div>
+
+          <!-- 更新腳本 -->
+          <div style="margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:500;color:var(--text-dark);margin-bottom:10px;letter-spacing:0.03em;">🔄 收到更新通知時（已連線過的使用者）</div>
+            <div style="background:#fff8f0;border-radius:10px;padding:12px 14px;font-size:12px;color:var(--text-mid);line-height:2.2;border:1px solid #f0e0c8;">
+              <b style="color:var(--text-dark);">Step 1</b> 開啟你的 Google 試算表<br>
+              <b style="color:var(--text-dark);">Step 2</b> 上方選單點「<b>擴充功能</b>」→「<b>Apps Script</b>」<br>
+              <b style="color:var(--text-dark);">Step 3</b> 把編輯器裡所有舊程式碼<b>全部選取（Ctrl+A）後刪掉</b><br>
+              <b style="color:var(--text-dark);">Step 4</b> 貼上下方最新程式碼<br>
+              <b style="color:var(--text-dark);">Step 5</b> 先按一次<b>儲存</b><br>
+              <b style="color:var(--text-dark);">Step 6</b> 點右上角「<b>部署</b>」→「<b>管理部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 7</b> 點鉛筆✏️圖示編輯，版本選「<b>新版本</b>」→ 按「<b>部署</b>」<br>
+              <b style="color:var(--text-dark);">Step 8</b> ✅ 完成！通常可以直接沿用原本網址，不用重新貼；如果五年日記連線異常，再回來重新貼網址並按「測試並連線」
+            </div>
+          </div>
+
+          <!-- 程式碼 -->
+          <div style="position:relative;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+              <div style="font-size:11px;color:var(--text-light);">Apps Script 程式碼（腳本版本 v18）</div>
+              <button onclick="copyGsCode()" style="padding:5px 12px;background:var(--text-dark);color:white;border:none;border-radius:8px;font-size:11px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製全部</button>
+            </div>
+            <textarea id="gsCodeBox" readonly style="width:100%;box-sizing:border-box;height:180px;padding:12px;background:#f7f5f2;border:none;border-radius:10px;font-size:11px;font-family:monospace;color:#444;resize:none;outline:none;line-height:1.6;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">🤖 AI 設定</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">Gemini API 金鑰</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:10px;line-height:1.7;">
+        只存在目前這台裝置，用你自己的就好。<br>不跟別人共用時，這樣最簡單。
+      </div>
+      <div style="background:#fff8f0;border:1px solid #f0e0c8;border-radius:12px;padding:10px 12px;font-size:12px;color:#8a5a00;line-height:1.7;margin-bottom:12px;">
+        這把金鑰不會同步到 Google Sheet。換手機或換瀏覽器時，要再貼一次。
+      </div>
+      <div id="geminiKeyStatus" style="display:none;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;"></div>
+      <input id="geminiApiKeyInput" type="password" placeholder="貼上你自己的 Gemini API 金鑰"
+        style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
+      <button onclick="saveGeminiApiKey()" style="width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">儲存 AI 金鑰</button>
+      <div style="font-size:11px;color:var(--text-light);line-height:1.7;margin-top:10px;">
+        教學：到 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Google AI Studio API Keys</a> 建立 API key，回來貼在這裡即可。<br>之後 AI 回顧和 AI 塔羅會直接使用這把金鑰。
+      </div>
+    </div>
+
+    <div class="section-title">🎨 主題顏色</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;" id="themeGrid"></div>
+    </div>
+
+    <div class="section-title">五年設定</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div style="font-family:'Noto Serif TC',serif;font-size:15px;color:var(--text-dark);margin-bottom:6px;">選擇要顯示的年份</div>
+      <div style="font-size:12px;color:var(--text-light);margin-bottom:20px;line-height:1.6;">選你想在日記頁看到的年份。<br>六年前、八年前的今天，會自動在上方顯示提醒。</div>
+      <div id="yearSlotList"></div>
+      <button onclick="saveYearSettings()" style="width:100%;margin-top:20px;padding:14px;background:var(--accent);color:white;border:none;border-radius:16px;font-size:14px;font-family:'Noto Sans TC',sans-serif;letter-spacing:0.05em;cursor:pointer;">儲存設定</button>
+    </div>
+
+    <div class="section-title">日記名稱</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <input id="diaryNameInput" type="text" maxlength="12"
+        style="width:100%;border:none;outline:none;border-bottom:1.5px solid #e8e6e3;padding:8px 0;font-size:16px;font-family:'Noto Serif TC',serif;color:var(--text-dark);background:transparent;"
+        placeholder="五年日記">
+      <div style="font-size:11px;color:var(--text-light);margin-top:8px;">最多 12 個字</div>
+      <button onclick="saveDiaryName()" style="width:100%;margin-top:16px;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">更新名稱</button>
+    </div>
+
+    <div class="section-title">資料管理</div>
+    <div style="background:var(--white);border-radius:20px;padding:20px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div style="font-size:13px;color:var(--text-mid);margin-bottom:16px;line-height:1.6;">所有資料儲存在瀏覽器本地，清除瀏覽器快取會遺失資料。</div>
+      <button onclick="exportData()" style="width:100%;padding:12px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;margin-bottom:10px;">匯出日記（純文字 .txt）</button>
+      <button onclick="confirmClear()" style="width:100%;padding:12px;background:#fff0f0;color:#d06060;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">清除所有資料</button>
+    </div>
+  </div>
+
+  <!-- Page: Stats -->
+  <div class="page" id="pageStats">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-num" id="totalEntries">0</div>
+        <div class="stat-label">總記錄數</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="totalWords">0</div>
+        <div class="stat-label">總字數</div>
+      </div>
+    </div>
+
+    <div class="section-title">心情分布</div>
+    <div class="mood-stats-card" id="moodStatsCard"></div>
+
+    <div class="section-title">今年記錄熱力</div>
+    <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div id="heatmapGrid" style="display:grid;grid-template-columns:repeat(26,1fr);gap:3px;"></div>
+    </div>
+
+    <div class="section-title">心情日記</div>
+    <div style="background:var(--white);border-radius:18px;padding:16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:16px;">
+      <div id="moodFilterRow" style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;"></div>
+      <div id="moodDiaryList"><div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">選擇一個心情來查看日記</div></div>
+    </div>
+  </div>
+
+  <!-- Page: Review -->
+  <div class="page" id="pageReview">
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="review-tab active" onclick="switchReview('week')" id="rtWeek">本週</button>
+      <button class="review-tab" onclick="switchReview('month')" id="rtMonth">本月</button>
+      <button class="review-tab" onclick="switchReview('year')" id="rtYear">本年</button>
+    </div>
+    <div id="reviewContent"></div>
+  </div>
+
+  <!-- Page: Search -->
+  <div class="page" id="pageSearch">
+    <div style="position:sticky;top:0;background:var(--bg);padding:16px 0 8px;z-index:10;">
+      <div style="background:var(--white);border-radius:16px;padding:4px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="搜尋日記內容…"
+          style="flex:1;border:none;outline:none;font-size:15px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:transparent;padding:12px 0;"
+          oninput="doSearch(this.value)">
+        <button onclick="document.getElementById('searchInput').value='';doSearch('');" style="border:none;background:none;color:var(--text-light);font-size:18px;cursor:pointer;padding:4px;">✕</button>
+      </div>
+    </div>
+    <div id="searchResults" style="margin-top:8px;">
+      <div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">輸入關鍵字搜尋你的日記</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Tarot Modal ── -->
+<div class="modal-overlay" id="tarotOverlay" onclick="closeTarotModal(event)">
+  <div class="year-picker-sheet" style="padding:16px 16px 34px;max-height:92vh;overflow-y:auto;background:transparent;box-shadow:none;">
+    <div class="picker-handle" style="background:rgba(255,255,255,0.45);"></div>
+    <div class="tarot-card-wrap" style="margin-bottom:0;">
+      <div class="tarot-header">
+        <div class="tarot-kicker">DAILY TAROT</div>
+        <div class="tarot-title">今日抽卡</div>
+        <div class="tarot-subtitle">先選今天的抽牌方式，再從攤開的牌裡憑直覺選一張。</div>
+      </div>
+      <div class="tarot-mode-grid" id="tarotModeGrid"></div>
+      <div class="tarot-spread-area" id="tarotDailySection"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Share Modal ── -->
+<div class="modal-overlay" id="shareOverlay" onclick="closeShare(event)">
+  <div class="year-picker-sheet" id="shareSheet" style="padding:20px 20px 40px;max-height:90vh;overflow-y:auto;">
+    <div class="picker-handle" id="shareHandle" style="cursor:grab;"></div>
+    <div class="picker-title">分享這篇日記</div>
+
+    <!-- 拍立得卡片預覽 -->
+    <div id="shareCard" style="background:#fff;border-radius:4px;padding:16px 16px 40px;margin:16px 0;box-shadow:0 4px 20px rgba(0,0,0,0.15);position:relative;">
+      <!-- 照片區：完整顯示不裁切 -->
+      <div id="shareCardImg" style="width:100%;border-radius:2px;margin-bottom:14px;overflow:hidden;display:none;background:#f5f5f5;text-align:center;">
+        <img id="shareCardImgEl" style="max-width:100%;height:auto;display:block;margin:0 auto;">
+      </div>
+      <!-- 文字區 -->
+      <div id="shareCardDate" style="font-size:10px;letter-spacing:0.12em;color:#aaa;margin-bottom:8px;font-family:sans-serif;"></div>
+      <div id="shareCardText" style="font-family:'Noto Serif TC',serif;font-size:13px;line-height:1.8;color:#2d2d2d;white-space:pre-wrap;word-break:break-all;margin-bottom:12px;"></div>
+      <!-- 底部：心情 + 浮水印 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div id="shareCardMood" style="font-size:22px;"></div>
+        <div style="font-size:9px;color:#ccc;letter-spacing:0.1em;">五年日記</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:8px;">
+      <button onclick="copyShareText()" style="flex:1;padding:13px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">複製文字</button>
+      <button onclick="downloadShareImage()" style="flex:1;padding:13px;background:var(--text-dark);color:white;border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">💾 儲存圖片</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Date Picker Modal ── -->
+<div class="modal-overlay" id="datePickerOverlay" onclick="closeDatePicker(event)">
+  <div class="year-picker-sheet">
+    <div class="picker-handle"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <button class="cal-nav-btn" onclick="changeDatePickerMonth(-1)">‹</button>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <button class="cal-nav-btn" onclick="changeDatePickerYear(-1)" style="font-size:11px;width:28px;height:28px;">«</button>
+        <div class="cal-month-title" style="font-size:15px;" id="dpMonthTitle"></div>
+        <button class="cal-nav-btn" onclick="changeDatePickerYear(1)" style="font-size:11px;width:28px;height:28px;">»</button>
+      </div>
+      <button class="cal-nav-btn" onclick="changeDatePickerMonth(1)">›</button>
+    </div>
+    <div class="calendar-grid" id="dpGrid"></div>
+    <button onclick="goToToday()" style="width:100%;margin-top:14px;padding:11px;background:var(--bg);color:var(--text-dark);border:none;border-radius:14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">回到今天</button>
+  </div>
+</div>
+
+<!-- ── 放大圖片 Modal ── -->
+<div id="zoomOverlay" onclick="closeZoom()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:500;align-items:center;justify-content:center;">
+  <img id="zoomImg" style="max-width:95vw;max-height:90vh;border-radius:8px;object-fit:contain;">
+  <div style="position:absolute;top:20px;right:20px;color:white;font-size:24px;cursor:pointer;opacity:0.7;">✕</div>
+</div>
+
+<!-- ── Year Picker Modal ── -->
+<div class="modal-overlay" id="yearPickerOverlay" onclick="closeYearPicker(event)">
+  <div class="year-picker-sheet">
+    <div class="picker-handle"></div>
+    <div class="picker-title">選擇年份</div>
+    <div class="year-grid" id="yearGrid"></div>
+  </div>
+</div>
+
+<!-- ── Bottom Nav ── -->
+<div class="bottom-nav">
+  <button class="nav-item active" id="navDiary" onclick="switchPage('diary')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+      <path d="M17.5 3.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 8.5-8.5z"/>
+    </svg>
+    日記
+  </button>
+  <button class="nav-item" id="navReview" onclick="switchPage('review')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <polyline points="14,2 14,8 20,8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+      <polyline points="10,9 9,9 8,9"/>
+    </svg>
+    回顧
+  </button>
+  <button class="nav-item" id="navCalendar" onclick="switchPage('calendar')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    日曆
+  </button>
+  <button class="nav-item" id="navSearch" onclick="switchPage('search')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="11" cy="11" r="8"/>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    搜尋
+  </button>
+  <button class="nav-item" id="navStats" onclick="switchPage('stats')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="18" y1="20" x2="18" y2="10"/>
+      <line x1="12" y1="20" x2="12" y2="4"/>
+      <line x1="6" y1="20" x2="6" y2="14"/>
+    </svg>
+    統計
+  </button>
+  <button class="nav-item" id="navSettings" onclick="switchPage('settings')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+    </svg>
+    設定
+  </button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Data ──
+const APP_VERSION = '9.4';
+document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
+let latestVersionCheckTimer = null;
+const MOODS = [
+  '😊','😄','🥰','😍','🤩','😎','😌','🥳',
+  '😐','🤔','😶','😴','🙃','😅','🤭','😬',
+  '😔','😢','😭','😞','😟','🥺','😣','😩',
+  '😤','😠','😡','🤬','😫','😖','🤯','😰',
+  '🥹','🥲','😂','🤣','😇','🫠','🥴','🫡'
+];
+const PROMPTS = [
+  // 感謝與美好
+  '今天讓你印象最深的一件事是什麼？',
+  '今天你感謝的三件小事',
+  '今天遇到了什麼讓你微笑的事？',
+  '今天有什麼讓你感到驕傲的事？',
+  '今天最享受的時刻是什麼？',
+  '今天有誰讓你感到溫暖？',
+  '今天什麼事讓你覺得值得？',
+  '今天最美的一個瞬間是什麼？',
+  '今天有什麼小確幸嗎？',
+  '今天有什麼事讓你忍不住想分享？',
+  '今天吃了什麼讓你印象深刻的東西？',
+  '今天有什麼事讓你覺得「還好有做」？',
+  '今天讓你覺得生活很美好的事是什麼？',
+  '今天有什麼事讓你覺得自己很幸運？',
+  '今天有什麼讓你忍不住大笑的事？',
+
+  // 心情與感受
+  '此刻你的心情是什麼顏色？',
+  '你現在最需要的是什麼？',
+  '此刻什麼事讓你感到平靜？',
+  '今天你感受最強烈的情緒是什麼？',
+  '此刻你心裡最重的事是什麼？',
+  '今天有什麼事讓你感到不安？',
+  '今天你最想逃避的事是什麼？',
+  '此刻你的心情用一首歌來形容是哪首？',
+  '今天你的情緒像什麼天氣？',
+  '今天有讓你感到疲憊的事嗎？',
+  '此刻你最想做的一件事是什麼？',
+  '今天你有沒有對自己好一點？',
+  '今天你最不想面對的事是什麼？',
+  '你今天感到孤單嗎？為什麼？',
+  '此刻你希望有人知道的事是什麼？',
+
+  // 成長與學習
+  '今天學到什麼新的東西了嗎？',
+  '如果今天重來一次，你會改變什麼？',
+  '今天的你，想對一年後的自己說什麼？',
+  '今天有什麼事讓你有所頓悟？',
+  '今天你做了一件平常不會做的事嗎？',
+  '今天有什麼失敗的經驗讓你學到東西？',
+  '今天你面對了什麼困難？',
+  '今天有什麼事讓你改變了原本的看法？',
+  '今天你最後悔的一件事是什麼？',
+  '今天你克服了什麼？',
+  '如果要給今天的自己打幾分，你打幾分？',
+  '今天你有沒有做一件讓自己進步的事？',
+  '你今天最勇敢的時刻是什麼？',
+  '今天有什麼事讓你意識到自己的侷限？',
+  '今天你學到什麼關於人的事？',
+
+  // 人際關係
+  '今天有誰讓你印象最深刻？',
+  '今天你對某人說了什麼讓你印象深刻的話？',
+  '今天有沒有想念某個人？',
+  '今天你有沒有讓某人感到被珍視？',
+  '今天有什麼關係讓你感到舒服？',
+  '今天有人讓你感到受傷嗎？',
+  '今天你有沒有主動聯繫某個久未聯絡的人？',
+  '今天有什麼事讓你更了解某個人？',
+  '此刻你最想見的人是誰？',
+  '今天有沒有一段對話讓你印象深刻？',
+  '今天誰的話讓你最有感觸？',
+  '今天你有沒有對某人感到愧疚？',
+  '今天有誰讓你感到被理解？',
+  '今天你對誰最感謝？',
+  '今天你有沒有讓某人失望？',
+
+  // 目標與夢想
+  '這個月你最想完成的一件事是什麼？',
+  '今天你距離你的目標近了還是遠了？',
+  '你現在最在乎的事是什麼？',
+  '如果明天是人生的最後一天，你會做什麼？',
+  '你最近一次勇敢追求夢想是什麼時候？',
+  '此刻你最大的心願是什麼？',
+  '你現在最想改變自己的一件事是什麼？',
+  '五年後的你，希望自己正在做什麼？',
+  '你最近有沒有在為什麼事努力？',
+  '今天有什麼事讓你更靠近你想成為的人？',
+  '你最近最執著的一件事是什麼？',
+  '如果不怕失敗，你最想嘗試什麼？',
+  '你現在最害怕放棄的東西是什麼？',
+  '今天你有沒有為未來做了一件小事？',
+  '什麼事情是你一直想做但還沒做的？',
+
+  // 身體與生活
+  '今天你的身體有什麼感受？',
+  '你今天睡得好嗎？',
+  '今天你有沒有好好吃飯？',
+  '今天有沒有讓你身體感到放鬆的時刻？',
+  '你最近的生活節奏讓你感覺如何？',
+  '今天你有沒有做一件照顧自己的事？',
+  '你今天的精神狀態如何？',
+  '今天你有沒有花時間在戶外？',
+  '今天有什麼讓你的身體感到疲勞？',
+  '你最近的睡眠品質如何？',
+  '今天你有沒有做讓自己開心的事？',
+  '你有多久沒有好好放鬆了？',
+  '今天你有沒有讓自己喘口氣？',
+  '你今天的狀態用一個詞來形容是什麼？',
+  '今天你有沒有好好欣賞周圍的環境？',
+
+  // 觀察與思考
+  '今天你注意到了什麼平常忽略的事？',
+  '今天你觀察到什麼有趣的事？',
+  '今天你有沒有思考過一個問題很久？',
+  '今天有什麼事讓你覺得世界很有趣？',
+  '今天你有沒有對某件事感到好奇？',
+  '今天有什麼讓你改變了對某件事的看法？',
+  '此刻你腦子裡轉得最多的念頭是什麼？',
+  '今天有什麼事讓你覺得不可思議？',
+  '今天你有沒有注意到一個小細節讓你感動？',
+  '今天你有沒有想清楚一件事？',
+  '此刻你最想知道答案的問題是什麼？',
+  '今天有沒有什麼事讓你覺得「原來如此」？',
+  '今天你觀察到什麼關於自己的事？',
+  '今天有什麼事讓你靜下來好好想？',
+  '此刻你腦海中浮現的第一個畫面是什麼？',
+
+  // 創意與想像
+  '如果今天是電影，你會給它取什麼片名？',
+  '今天你的心情像什麼動物？',
+  '如果今天的感受是一種顏色，是什麼？',
+  '今天的你用一個成語形容是什麼？',
+  '如果今天發生的事是一首詩的開頭，你會怎麼寫？',
+  '今天如果要畫一張圖，你會畫什麼？',
+  '你今天的心情像什麼食物？',
+  '如果今天是一首歌，曲風是什麼？',
+  '如果今天的心情是天氣，是什麼天氣？',
+  '今天你腦子裡有沒有一個奇怪的想法？',
+  '如果你今天是一個物品，你是什麼？',
+  '今天的你像什麼季節？',
+  '如果今天的感受可以是一種味道，是什麼？',
+  '你今天的心情像什麼地方？',
+  '如果今天是一本書的一章，這章叫什麼？',
+
+  // 過去與回憶
+  '今天有沒有什麼事讓你想起過去？',
+  '此刻你最懷念的一段時光是什麼？',
+  '今天有沒有什麼事讓你想起一個老朋友？',
+  '你最近有沒有夢到什麼讓你印象深刻的？',
+  '今天有什麼事讓你想起小時候？',
+  '你最近有沒有回想起一件很久沒想到的事？',
+  '你最近有沒有重新和某段記憶和解？',
+  '今天有沒有什麼感受跟某段往事很像？',
+  '你現在最希望能回到的一個時刻是什麼？',
+  '今天有沒有什麼事讓你覺得時間過得很快？',
+  '你最近一次深刻感受到「時間不等人」是什麼時候？',
+  '今天有沒有讓你後悔過去某個決定的事？',
+  '你有哪段回憶是越想越感謝的？',
+  '今天你有沒有對某件過去的事釋懷了一點？',
+  '你最近有沒有一個「那時候要是…就好了」的感嘆？',
+
+  // 當下與未來
+  '此刻你在哪裡？周圍有什麼？',
+  '今天你最清醒的一刻是什麼時候？',
+  '此刻你最想說出口卻沒說的話是什麼？',
+  '你今天有沒有活在當下的感覺？',
+  '今天有什麼事讓你感受到時間的重量？',
+  '此刻你覺得最重要的事是什麼？',
+  '你今天有沒有停下來好好看看周圍？',
+  '此刻你最想改變的一件事是什麼？',
+  '今天有什麼事讓你對未來更有信心？',
+  '此刻你最期待的一件事是什麼？',
+  '你今天有沒有做一件讓未來的自己感謝的事？',
+  '今天有什麼事讓你覺得「就是現在」？',
+  '你今天有沒有為某件事認真許願？',
+  '此刻你覺得最美好的事是什麼？',
+  '今天你有沒有好好感受自己活著的感覺？',
+
+  // 工作與成就
+  '今天工作或學習上最有成就感的事是什麼？',
+  '今天你做了什麼讓自己感到有意義的事？',
+  '今天你有沒有完成一件一直拖著的事？',
+  '今天你最有效率的時刻是什麼時候？',
+  '今天工作或生活上最大的挑戰是什麼？',
+  '今天你有沒有幫到別人？怎麼幫的？',
+  '今天你最專注的時刻是什麼？',
+  '今天有沒有什麼事讓你覺得自己很有用？',
+  '今天你完成了什麼？哪怕是很小的事',
+  '今天你有沒有做一件讓自己更好的決定？',
+  '你今天的付出有沒有得到應有的回報？',
+  '今天你有沒有嘗試一個新的方法做某件事？',
+  '今天你有什麼事做得比平常好？',
+  '今天你花最多時間的事是什麼？值得嗎？',
+  '今天你有沒有做到一件自己承諾過的事？',
+
+  // 自我認識
+  '你今天更了解自己的哪一面？',
+  '今天有什麼事讓你發現自己的一個習慣？',
+  '今天你有沒有違背自己的某個原則？',
+  '你今天是你想成為的那種人嗎？',
+  '今天你最真實的樣子出現在什麼時候？',
+  '今天你有沒有假裝自己沒事？',
+  '你今天有沒有做一件讓自己覺得「這才是我」的事？',
+  '今天你最不喜歡自己的哪一面出現了嗎？',
+  '你今天有沒有對自己誠實？',
+  '今天有什麼事讓你重新認識自己？',
+  '你今天的選擇反映了什麼樣的你？',
+  '今天你有沒有做一件跟「本來的你」不一樣的事？',
+  '你今天最像自己的時刻是什麼？',
+  '今天有沒有什麼事讓你看見自己的盲點？',
+  '今天你最想改掉的自己的一個習慣是什麼？',
+];
+
+const MONTHS_ZH = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+const DAYS_ZH = ['日','一','二','三','四','五','六'];
+const TAROT_MODES = [
+  { id: 'intent', label: '先想再抽', copy: '把今天最想釐清的一件事放在心裡，再翻開這張牌。' },
+  { id: 'direct', label: '直接抽', copy: '不用先設定問題，放鬆一點，直接選最吸引你的那張。' }
+];
+const TAROT_BACK_SYMBOLS = ['☾', '✦', '☉'];
+const TAROT_DECK = [
+  { id: 'fool', no: '00', name: '愚者', icon: '🌼', palette: ['#f7d7ab', '#cde9f7'], upright: '新的路徑剛打開，先走出去比先想太多更重要。', reversed: '腳步太快，還沒看清楚眼前真正要承擔的是什麼。' },
+  { id: 'magician', no: 'I', name: '魔術師', icon: '🪄', palette: ['#f6d0b9', '#d8f2df'], upright: '手邊的條件其實夠用，接下來是怎麼把它們排好。', reversed: '工具都在，但注意力還沒有真正集中起來。' },
+  { id: 'priestess', no: 'II', name: '女祭司', icon: '🌙', palette: ['#d7def7', '#f6efe0'], upright: '現在比較適合先觀察，不急著把答案說死。', reversed: '直覺有出來，但外界的聲音有點蓋過它。' },
+  { id: 'empress', no: 'III', name: '皇后', icon: '🍓', palette: ['#f7d0d8', '#d7eed9'], upright: '這張牌偏向照顧、滋養和讓事情慢慢長出來。', reversed: '投入很多，但節奏可能已經有點失衡。' },
+  { id: 'emperor', no: 'IV', name: '皇帝', icon: '👑', palette: ['#efd2ba', '#d9dff1'], upright: '今天更需要框架、界線和一點明確的主導。', reversed: '控制感抓得太緊，事情反而不容易前進。' },
+  { id: 'lovers', no: 'VI', name: '戀人', icon: '🩷', palette: ['#f6d7cf', '#f6e9b8'], upright: '重點不只是感情，而是你想選擇靠近什麼。', reversed: '表面上像在選擇，實際上還在猶豫裡停著。' },
+  { id: 'chariot', no: 'VII', name: '戰車', icon: '🛞', palette: ['#d3e3fb', '#f4dfb8'], upright: '方向已經出來了，今天更像是在把速度提起來。', reversed: '前進的力道有了，但方向還沒有完全對齊。' },
+  { id: 'strength', no: 'VIII', name: '力量', icon: '🦁', palette: ['#f6d1bc', '#f8e9c8'], upright: '硬碰硬不一定有用，穩住自己反而更重要。', reversed: '表面看起來撐得住，內在其實已經有點耗損。' },
+  { id: 'hermit', no: 'IX', name: '隱者', icon: '🏔️', palette: ['#dfdfdf', '#d8e7f5'], upright: '今天適合把注意力收回來，不需要同時回應太多人。', reversed: '你已經退得很後面了，再縮可能只會更模糊。' },
+  { id: 'wheel', no: 'X', name: '命運之輪', icon: '🎡', palette: ['#f4d7b5', '#d9e0f6'], upright: '局面正在轉動，順勢比硬扛更有效。', reversed: '變化已經開始了，只是你暫時還卡在舊節奏裡。' },
+  { id: 'justice', no: 'XI', name: '正義', icon: '⚖️', palette: ['#e7d7f7', '#f6ead8'], upright: '今天更適合把事情攤平來看，別只靠感覺判斷。', reversed: '標準有點搖晃，現在需要把界線重新畫清楚。' },
+  { id: 'hanged', no: 'XII', name: '吊人', icon: '🌿', palette: ['#d6e8f7', '#f7ebd8'], upright: '停一下不是浪費，反而是在換一個角度看。', reversed: '已經停得太久了，某件事需要重新動一下。' },
+  { id: 'death', no: 'XIII', name: '死神', icon: '🦋', palette: ['#e0d6d3', '#f6ddb8'], upright: '有些東西差不多該結束了，拖著只會更重。', reversed: '變化已經到了門口，但你還想再拖一下。' },
+  { id: 'temperance', no: 'XIV', name: '節制', icon: '🫖', palette: ['#d8efe7', '#f6e5c6'], upright: '今天的重點不是衝刺，而是把份量調回剛剛好。', reversed: '事情不是太多就是太少，平衡感有點跑掉了。' },
+  { id: 'devil', no: 'XV', name: '惡魔', icon: '🕯️', palette: ['#ccb7bf', '#f1d4b4'], upright: '某種慣性正在牽著你走，先看清楚比急著切斷有用。', reversed: '你已經感覺到不對勁了，現在差的是鬆手。' },
+  { id: 'tower', no: 'XVI', name: '高塔', icon: '⚡', palette: ['#d7d7f7', '#f3cfab'], upright: '原本的安排可能要被打亂，重點是保留能用的部分。', reversed: '震動沒有消失，只是還卡在即將發生的邊緣。' },
+  { id: 'star', no: 'XVII', name: '星星', icon: '⭐', palette: ['#d5e6fb', '#f5efd6'], upright: '這張牌偏輕，像是在提醒你把視線放遠一點。', reversed: '方向感沒有完全不見，只是暫時被雜訊蓋住了。' },
+  { id: 'moon', no: 'XVIII', name: '月亮', icon: '🌘', palette: ['#d8d1f2', '#f6dfc2'], upright: '今天不一定適合求快，很多東西還在半清楚的狀態。', reversed: '霧開始散了，但你可能還不太敢相信眼前的輪廓。' },
+  { id: 'sun', no: 'XIX', name: '太陽', icon: '🌞', palette: ['#f6d06f', '#d9eef8'], upright: '這張牌很亮，今天適合把事情攤開、做實、往前。', reversed: '亮面還在，但你的狀態暫時跟不上那個節奏。' },
+  { id: 'judgement', no: 'XX', name: '審判', icon: '📯', palette: ['#e2dcf8', '#f7e1c3'], upright: '有件事差不多要被重新看見，也該重新命名了。', reversed: '你已經知道某件事需要處理，只是還沒正面碰它。' },
+  { id: 'world', no: 'XXI', name: '世界', icon: '🌍', palette: ['#d5f0dd', '#f6e4bc'], upright: '事情有機會在今天收成一個完整的段落。', reversed: '整體只差最後一點收尾，別急著中途轉身。' }
+];
+
+TAROT_DECK.push({
+  id: 'hierophant',
+  no: 'V',
+  name: '教皇',
+  icon: '✠',
+  palette: ['#efe2c6', '#ddd8f4'],
+  upright: '適合回到已經被驗證的方法，照著規則走反而比較穩。',
+  reversed: '舊規則開始顯得卡手，別人的標準不一定還適合現在的你。'
+});
+
+const TAROT_MINOR_ARCANA_META = [
+  { suit: 'wands', suitLabel: '權杖', symbol: '✦', palette: ['#f6d0a7', '#f3e6c6'], base: '行動、熱度與推進感' },
+  { suit: 'cups', suitLabel: '聖杯', symbol: '☽', palette: ['#cfe2f7', '#e8effa'], base: '情緒、關係與感受流動' },
+  { suit: 'swords', suitLabel: '寶劍', symbol: '✧', palette: ['#d9dcef', '#eef1f7'], base: '思考、判斷與壓力拉扯' },
+  { suit: 'pentacles', suitLabel: '錢幣', symbol: '☉', palette: ['#d9ecd2', '#f3e5b8'], base: '現實、工作與穩定累積' }
+];
+
+const TAROT_MINOR_RANKS = [
+  { key: 'ace', no: 'A', zh: '一', upright: '新的起點正在形成，先從最小的那一步開始。', reversed: '起點已經出現，但還沒真正落地。' },
+  { key: 'two', no: '2', zh: '二', upright: '眼前需要在兩個方向之間做出平衡。', reversed: '表面維持平衡，實際上已經有些失衡。' },
+  { key: 'three', no: '3', zh: '三', upright: '事情開始彼此連接，進展也比前幾天明顯。', reversed: '合作感沒有真正接上，節奏容易散掉。' },
+  { key: 'four', no: '4', zh: '四', upright: '先穩住現況比硬推更重要。', reversed: '停得太久了，該重新讓事情動起來。' },
+  { key: 'five', no: '5', zh: '五', upright: '眼前帶著競爭或摩擦，會需要一點硬度。', reversed: '衝突沒有消失，只是暫時被壓著。' },
+  { key: 'six', no: '6', zh: '六', upright: '局勢開始順一些了，至少有一部分正在往前。', reversed: '想要往前，但整體推進感還不夠穩。' },
+  { key: 'seven', no: '7', zh: '七', upright: '需要守住自己的位置，不是每件事都要退讓。', reversed: '界線感有點鬆，容易被外界帶著走。' },
+  { key: 'eight', no: '8', zh: '八', upright: '節奏會加快，很多事會在短時間內集中出現。', reversed: '看似在動，其實還卡在某個關鍵點。' },
+  { key: 'nine', no: '9', zh: '九', upright: '已經撐到最後一段了，別太早鬆手。', reversed: '疲勞感很明顯，硬撐的成本正在變高。' },
+  { key: 'ten', no: '10', zh: '十', upright: '負擔到了上限，該開始分配或放下。', reversed: '壓力還在，但你已經不想再照原本方式背著它。' },
+  { key: 'page', no: 'P', zh: '侍者', upright: '今天適合用比較新的眼光看同一件事。', reversed: '訊號有些模糊，先別急著下定論。' },
+  { key: 'knight', no: 'N', zh: '騎士', upright: '行動會帶來答案，今天比較適合直接推進。', reversed: '衝得太快反而容易偏掉方向。' },
+  { key: 'queen', no: 'Q', zh: '皇后', upright: '保留自己的節奏，比迎合別人更重要。', reversed: '外表穩住了，內在其實有些消耗。' },
+  { key: 'king', no: 'K', zh: '國王', upright: '今天需要的是成熟的判斷，不是情緒性的反應。', reversed: '控制感太強時，反而會把事情弄僵。' }
+];
+
+function buildMinorArcanaDeck() {
+  const cards = [];
+  TAROT_MINOR_ARCANA_META.forEach(function(suitMeta) {
+    TAROT_MINOR_RANKS.forEach(function(rankMeta) {
+      cards.push({
+        id: `${suitMeta.suit}-${rankMeta.key}`,
+        no: `${rankMeta.no}${suitMeta.symbol}`,
+        name: `${suitMeta.suitLabel}${rankMeta.zh}`,
+        icon: suitMeta.symbol,
+        palette: suitMeta.palette,
+        upright: `${suitMeta.base}。${rankMeta.upright}`,
+        reversed: `${suitMeta.base}。${rankMeta.reversed}`
+      });
+    });
+  });
+  return cards;
+}
+
+TAROT_DECK.push(...buildMinorArcanaDeck());
+
+let currentDate = new Date();
+let calViewDate = new Date();
+let data = {};
+let activeTab = 'diary';
+let tarotState = null;
+
+function loadData() {
+  try {
+    var raw = JSON.parse(localStorage.getItem('5yr_diary') || '{}');
+    Object.keys(raw).forEach(function(k) {
+      if (raw[k].imgUrl && raw[k].imgUrl.startsWith('data:')) raw[k].imgUrl = '[local]';
+      raw[k].tarot = normalizeTarotValue(raw[k].tarot);
+      raw[k].updatedAt = normalizeUpdatedAtValue(raw[k].updatedAt);
+    });
+    data = raw;
+  } catch(e) { data = {}; }
+}
+function saveData() {
+  var toSave = {};
+  Object.keys(data).forEach(function(k) {
+    toSave[k] = { text: data[k].text, mood: data[k].mood, imgUrl: data[k].imgUrl || '', tarot: data[k].tarot || null, updatedAt: data[k].updatedAt || null };
+  });
+  localStorage.setItem('5yr_diary', JSON.stringify(toSave));
+}
+function getKey(year, month, day) {
+  return `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+function parseTarotTextValue(text) {
+  const raw = String(text || '').trim();
+  if (!raw) return null;
+  const parts = raw.split(/\nAI延伸解讀：/);
+  const head = parts[0].trim();
+  const aiText = (parts[1] || '').trim();
+  const match = head.match(/^(.+?)（(正位|逆位)）｜(.+)$/);
+  if (!match) return { textOverride: raw };
+  const [, cardName, orientation, baseMeaning] = match;
+  const card = TAROT_DECK.find(item => item.name === String(cardName).trim());
+  if (!card) return { textOverride: raw };
+  const reversed = orientation === '逆位';
+  const expectedMeaning = reversed ? card.reversed : card.upright;
+  if (String(expectedMeaning).trim() !== String(baseMeaning).trim()) return { textOverride: raw };
+  return { cardId: card.id, reversed, mode: '', date: '', aiText };
+}
+function normalizeTarotValue(tarot) {
+  if (!tarot) return null;
+  if (typeof tarot === 'string') return parseTarotTextValue(tarot);
+  if (tarot.textOverride) return parseTarotTextValue(tarot.textOverride);
+  return tarot.cardId ? tarot : null;
+}
+function normalizeUpdatedAtValue(value) {
+  if (!value) return null;
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  const str = String(value).trim();
+  if (!str) return null;
+  if (/^\d+$/.test(str)) return parseInt(str, 10);
+  let m = str.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})\s*(上午|下午)?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+  if (m) {
+    let hour = parseInt(m[5], 10);
+    const minute = parseInt(m[6], 10);
+    const second = parseInt(m[7] || '0', 10);
+    if (m[4] === '下午' && hour < 12) hour += 12;
+    if (m[4] === '上午' && hour === 12) hour = 0;
+    return new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10), hour, minute, second).getTime();
+  }
+  const parsed = Date.parse(str);
+  return Number.isNaN(parsed) ? null : parsed;
+}
+function getEntry(year, month, day) {
+  const entry = data[getKey(year, month, day)];
+  if (!entry) return { text: '', mood: null, imgUrl: '', tarot: null, updatedAt: null };
+  return { text: entry.text || '', mood: entry.mood || null, imgUrl: entry.imgUrl || '', tarot: normalizeTarotValue(entry.tarot), updatedAt: normalizeUpdatedAtValue(entry.updatedAt) };
+}
+
+// ── IndexedDB 圖片儲存 ──
+var imgDB = null;
+function openImgDB() {
+  return new Promise(function(resolve, reject) {
+    if (imgDB) { resolve(imgDB); return; }
+    var req = indexedDB.open('5yr_diary_imgs', 1);
+    req.onupgradeneeded = function(e) { e.target.result.createObjectStore('images', { keyPath: 'key' }); };
+    req.onsuccess = function(e) { imgDB = e.target.result; resolve(imgDB); };
+    req.onerror   = function() { reject(req.error); };
+  });
+}
+function saveImgToDB(key, dataUrl) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction('images', 'readwrite');
+      var req = tx.objectStore('images').put({ key: key, dataUrl: dataUrl });
+      req.onsuccess = function() { resolve(); };
+      req.onerror   = function() { reject(req.error); };
+    });
+  });
+}
+function getImgFromDB(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx  = db.transaction('images', 'readonly');
+      var req = tx.objectStore('images').get(key);
+      req.onsuccess = function() { resolve(req.result ? req.result.dataUrl : null); };
+      req.onerror   = function() { resolve(null); };
+    });
+  });
+}
+function deleteImgFromDB(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction('images', 'readwrite');
+      tx.objectStore('images').delete(key);
+      tx.oncomplete = resolve;
+      tx.onerror = resolve;
+    });
+  });
+}
+
+// ── Init ──
+// ── Settings ──
+function defaultYears() {
+  const cur = new Date().getFullYear();
+  return [cur-4, cur-3, cur-2, cur-1, cur];
+}
+function loadSettings() {
+  try {
+    const s = JSON.parse(localStorage.getItem('5yr_settings') || '{}');
+    return {
+      years: Array.isArray(s.years) && s.years.length >= 1 ? s.years : defaultYears(),
+      name: s.name || '五年日記',
+      geminiApiKey: s.geminiApiKey || ''
+    };
+  } catch { return { years: defaultYears(), name: '五年日記', geminiApiKey: '' }; }
+}
+function saveSettings(settings) {
+  localStorage.setItem('5yr_settings', JSON.stringify(settings));
+}
+
+let settings = loadSettings();
+let ACTIVE_YEARS = settings.years.slice().sort((a,b)=>a-b);
+
+loadData();
+// 套用儲存的日記名稱
+document.querySelector('.app-title').textContent = settings.name;
+document.title = settings.name;
+renderHeader();
+renderPrompt();
+renderEntries();
+renderCalendar();
+renderStats();
+refreshScriptVersionStatus();
+syncFromCloudSilently();
+checkForLatestVersion();
+if (latestVersionCheckTimer) clearInterval(latestVersionCheckTimer);
+latestVersionCheckTimer = setInterval(checkForLatestVersion, 60000);
+
+function renderHeader() {
+  const d = currentDate;
+  const dayStr = ['日','一','二','三','四','五','六'][d.getDay()];
+  document.getElementById('dateDisplay').textContent =
+    `${d.getFullYear()}年 ${d.getMonth()+1}月 ${d.getDate()}日（${dayStr}）`;
+
+  const today = new Date();
+  const isToday = d.toDateString() === today.toDateString();
+  document.getElementById('todayBadge').textContent = isToday ? '今天' : `${Math.round(Math.abs(d-today)/86400000)}天前`;
+
+  // Month strip
+  const strip = document.getElementById('monthStrip');
+  strip.innerHTML = '';
+  const curM = d.getMonth();
+  for (let m = 0; m < 12; m++) {
+    const chip = document.createElement('button');
+    chip.className = 'month-chip' + (m === curM ? ' active' : '');
+    chip.textContent = MONTHS_ZH[m];
+    chip.onclick = () => {
+      currentDate = new Date(d.getFullYear(), m, Math.min(d.getDate(), new Date(d.getFullYear(), m+1, 0).getDate()));
+      renderAll();
+    };
+    strip.appendChild(chip);
+  }
+  // Scroll active chip into view
+  setTimeout(() => {
+    const active = strip.querySelector('.active');
+    if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }, 50);
+}
+
+function renderPrompt() {
+  const d = currentDate;
+  const idx = (d.getMonth() * 30 + d.getDate()) % PROMPTS.length;
+  document.getElementById('promptText').textContent = PROMPTS[idx];
+}
+
+function renderEntries() {
+  const d = currentDate;
+  const list = document.getElementById('entriesList');
+  list.innerHTML = '';
+  const today = new Date();
+  const isViewingToday = d.toDateString() === today.toDateString();
+
+  ACTIVE_YEARS.forEach((yr, i) => {
+    const yClass = `y${(i % 5) + 1}`;
+    const entry = getEntry(yr, d.getMonth(), d.getDate());
+    const isFuture = yr > today.getFullYear() || (yr === today.getFullYear() && d > today);
+    const tarotDisplay = isViewingToday && yr === today.getFullYear() ? getTarotDisplayParts(entry.tarot) : null;
+
+    const card = document.createElement('div');
+    card.className = `entry-card ${yClass}`;
+    card.innerHTML = `
+      <div class="entry-gradient-bar"></div>
+      <div class="entry-inner">
+        <div class="entry-header">
+          <div class="entry-year-label">
+            <div class="year-dot">${yr}</div>
+            <span class="year-text">${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="save-btn" id="saveBtn${yr}" onclick="saveEntry(${yr}, ${d.getMonth()}, ${d.getDate()})">儲存</button>
+          </div>
+        </div>
+        <textarea
+          class="entry-textarea"
+          id="ta${yr}"
+          placeholder="${isFuture ? '還沒到這一天…' : `${yr}年的今天，我寫下…`}"
+          ${isFuture ? 'disabled' : ''}
+          maxlength="5000"
+          oninput="onTextInput(this, ${yr}, ${d.getMonth()}, ${d.getDate()})"
+        >${entry.text}</textarea>
+        ${tarotDisplay ? `
+          <div style="margin:12px 0 4px;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg, rgba(63, 34, 99, 0.08), rgba(239, 208, 139, 0.18));border:1px solid rgba(99, 77, 129, 0.12);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;">
+              <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);">TODAY'S TAROT</div>
+              ${tarotDisplay.tag ? `<div style="font-size:10px;color:#5c4a74;background:rgba(92,74,116,0.08);padding:4px 8px;border-radius:999px;">${tarotDisplay.tag}</div>` : ''}
+            </div>
+            <div style="font-size:15px;color:var(--text-dark);font-family:'Noto Serif TC',serif;margin-bottom:4px;">${tarotDisplay.title}</div>
+            <div style="font-size:12px;line-height:1.8;color:var(--text-dark);">${tarotDisplay.copy}</div>
+            ${tarotDisplay.aiCopy ? `
+              <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);margin:10px 0 6px;">AI EXTENDED READING</div>
+              <div style="font-size:12px;line-height:1.8;color:var(--text-dark);padding:10px 12px;border-radius:12px;background:rgba(255,250,241,0.95);border:1px solid rgba(209,185,142,0.28);">${tarotDisplay.aiCopy}</div>
+            ` : ''}
+          </div>
+        ` : ''}
+        <div class="entry-footer">
+          <div class="mood-row" id="moodRow${yr}"></div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span class="char-count" id="cc${yr}">${entry.text.length}字</span>
+            ${!isFuture ? `<button onclick="pasteToEntry('ta${yr}')" style="background:none;border:none;color:var(--text-light);font-size:12px;cursor:pointer;padding:2px 6px;border-radius:8px;">貼上</button>` : ''}
+            ${!isFuture && entry.text.trim() ? `<button id="shareBtn${yr}" onclick="shareEntry(${yr}, ${d.getMonth()}, ${d.getDate()})" style="background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;">↗ 分享</button>` : ''}
+          </div>
+        </div>
+        ${!isFuture ? `
+        <div id="imgArea${yr}" style="margin-top:10px;">
+          ${entry.imgUrl ? `
+            <div style="color:var(--text-light);font-size:12px;padding:4px 0;">圖片載入中…</div>
+          ` : `
+            <label style="display:flex;align-items:center;gap:6px;color:var(--text-light);font-size:12px;cursor:pointer;padding:4px 0;">
+              <input type="file" accept="image/*" style="display:none;" onchange="uploadImage(this, ${yr}, ${d.getMonth()}, ${d.getDate()})">
+              <span style="font-size:16px;">📷</span>
+              <span>新增照片</span>
+            </label>
+          `}
+        </div>
+        ` : ''}
+      </div>
+    `;
+    list.appendChild(card);
+
+    if (!isFuture) renderMoodRow(yr, d.getMonth(), d.getDate(), entry.mood);
+
+    // 自動展開高度
+    setTimeout(function() {
+      const ta = document.getElementById('ta' + yr);
+      if (ta) { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
+    }, 0);
+
+    // 非同步從 IndexedDB 載入圖片
+    if (!isFuture && entry.imgUrl) {
+      const _yr = yr, _mo = d.getMonth(), _dy = d.getDate();
+      const _k = getKey(_yr, _mo, _dy);
+      getImgFromDB(_k).then(function(dataUrl) {
+        const area = document.getElementById('imgArea' + _yr);
+        if (!area) return;
+        if (dataUrl) {
+          area.innerHTML = `
+            <div style="position:relative;background:#f0eeec;border-radius:12px;overflow:hidden;text-align:center;">
+              <img src="${dataUrl}" onclick="zoomImage('${dataUrl}')" style="max-width:100%;max-height:300px;width:auto;height:auto;display:block;margin:0 auto;cursor:zoom-in;border-radius:12px;">
+              <button onclick="removeImage(${_yr},${_mo},${_dy})" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.5);color:white;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;line-height:28px;text-align:center;">✕</button>
+            </div>`;
+        } else {
+          // IndexedDB 沒有，顯示上傳按鈕
+          area.innerHTML = `
+            <label style="display:flex;align-items:center;gap:6px;color:var(--text-light);font-size:12px;cursor:pointer;padding:4px 0;">
+              <input type="file" accept="image/*" style="display:none;" onchange="uploadImage(this,${_yr},${_mo},${_dy})">
+              <span style="font-size:16px;">📷</span><span>新增照片</span>
+            </label>`;
+        }
+      });
+    }
+
+  });
+
+  // 「X年前的今天」提醒
+  renderTarotLaunchArea();
+  renderYearsAgoToday(d);
+}
+
+function renderYearsAgoToday(d) {
+  // 移除舊的提醒
+  const old = document.getElementById('yearsAgoToday');
+  if (old) old.remove();
+
+  const today = new Date();
+  const isToday = d.toDateString() === today.toDateString();
+  if (!isToday) return;
+
+  const curYr = today.getFullYear();
+  const milestones = [1,2,3,4,5,6,7,8,9,10];
+  const found = [];
+
+  milestones.forEach(n => {
+    const yr = curYr - n;
+    if (ACTIVE_YEARS.includes(yr)) return; // 已在日記卡片裡顯示
+    const entry = getEntry(yr, d.getMonth(), d.getDate());
+    if (entry.text && entry.text.trim()) {
+      found.push({ yr, n, text: entry.text, mood: entry.mood });
+    }
+  });
+
+  if (found.length === 0) return;
+
+  const banner = document.createElement('div');
+  banner.id = 'yearsAgoToday';
+  banner.style.cssText = 'margin-bottom:16px;';
+
+  const label = document.createElement('div');
+  label.className = 'section-title';
+  label.textContent = '⏳ 記憶回放';
+  label.style.marginBottom = '10px';
+  banner.appendChild(label);
+
+  found.forEach(({ yr, n, text, mood }) => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:linear-gradient(135deg,#f8f0e8,#f0e8f8);border-radius:16px;padding:14px 16px;margin-bottom:10px;cursor:pointer;';
+    card.innerHTML = `
+      <div style="font-size:11px;color:#7a6a7a;letter-spacing:0.05em;margin-bottom:6px;">${n} 年前的今天 · ${yr}年 ${mood||''}</div>
+      <div style="font-family:'Noto Serif TC',serif;font-size:13px;color:#3a2a3a;line-height:1.7;">${text}</div>
+    `;
+    card.onclick = () => jumpToEntry(`${yr}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);
+    banner.appendChild(card);
+  });
+
+  const list = document.getElementById('entriesList');
+  list.parentNode.insertBefore(banner, list);
+}
+
+function renderMoodRow(yr, month, day, selectedMood) {
+  const row = document.getElementById(`moodRow${yr}`);
+  if (!row) return;
+  row.innerHTML = '';
+
+  // 顯示已選心情 + 展開按鈕
+  const preview = document.createElement('div');
+  preview.style.cssText = 'display:flex;align-items:center;gap:6px;flex:1;';
+
+  const selectedBtn = document.createElement('button');
+  selectedBtn.className = 'mood-btn' + (selectedMood ? ' selected' : '');
+  selectedBtn.textContent = selectedMood || '＋';
+  selectedBtn.title = '點擊選擇心情';
+  selectedBtn.style.fontSize = selectedMood ? '18px' : '14px';
+
+  const togglePanel = () => {
+    const existing = document.getElementById(`moodPanel${yr}`);
+    if (existing) { existing.remove(); return; }
+
+    const panel = document.createElement('div');
+    panel.id = `moodPanel${yr}`;
+    panel.className = 'mood-panel';
+
+    MOODS.forEach(mood => {
+      const btn = document.createElement('button');
+      btn.className = 'mood-option' + (mood === selectedMood ? ' selected' : '');
+      btn.textContent = mood;
+      btn.onclick = () => {
+        const entry = getEntry(yr, month, day);
+        const newMood = mood === entry.mood ? null : mood;
+        const k = getKey(yr, month, day);
+        data[k] = { text: entry.text, mood: newMood, imgUrl: entry.imgUrl || '', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
+        saveData();
+        panel.remove();
+        renderMoodRow(yr, month, day, newMood);
+        showToast('心情已記錄 ' + (newMood || ''));
+        const saveBtn = document.getElementById(`saveBtn${yr}`);
+        if (saveBtn) saveBtn.classList.add('visible');
+      };
+      panel.appendChild(btn);
+    });
+
+    // 插入在 entry-footer 之後
+    const footer = row.closest('.entry-footer');
+    if (footer) footer.insertAdjacentElement('afterend', panel);
+
+    // 點外面自動關閉
+    const outsideClick = (ev) => {
+      if (!panel.contains(ev.target) && ev.target !== selectedBtn) {
+        panel.remove();
+        document.removeEventListener('click', outsideClick, true);
+      }
+    };
+    setTimeout(() => document.addEventListener('click', outsideClick, true), 50);
+  };
+
+  selectedBtn.onclick = togglePanel;
+  preview.appendChild(selectedBtn);
+  if (selectedMood) {
+    const clearBtn = document.createElement('button');
+    clearBtn.style.cssText = 'border:none;background:none;color:var(--text-light);font-size:12px;cursor:pointer;padding:2px 6px;';
+    clearBtn.textContent = '✕';
+    clearBtn.onclick = () => {
+      const entry = getEntry(yr, month, day);
+      const k = getKey(yr, month, day);
+      data[k] = { text: entry.text, mood: null, imgUrl: entry.imgUrl || '', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
+      saveData();
+      renderMoodRow(yr, month, day, null);
+      const saveBtn = document.getElementById(`saveBtn${yr}`);
+      if (saveBtn) saveBtn.classList.add('visible');
+    };
+    preview.appendChild(clearBtn);
+  }
+  row.appendChild(preview);
+}
+
+
+
+
+const REVIEW_COPY = {
+  heavy: [
+    '過度運轉後的體力與意志正處於明顯的損耗狀態。',
+    '情緒反應在長期高壓下顯得遲鈍，起伏也變少了。',
+    '思維的運作速度明顯低於往常，很多事情都變慢了。',
+    '對周遭環境的感知能力，隨著體力透支一起下降。',
+    '僅存的專注力，多半只夠維持眼前最基本的處理。',
+    '這段時間的內容偏重，很多句子都停在疲倦附近。'
+  ],
+  steady: [
+    '生活節奏維持在穩定的慣性裡，幾乎沒有太多意外。',
+    '多數時間都在處理重複性很高的日常瑣事。',
+    '個人狀態在固定日程裡，呈現一種低起伏的平緩。',
+    '事務的進度依照原本邏輯，緩慢但確實地向前推移。',
+    '這段時間的記錄偏向日常，情緒沒有太大的擺動。',
+    '很多內容都落在熟悉的路徑上，節奏相對一致。'
+  ],
+  smooth: [
+    '執行力與判斷力在這段時間裡維持著不錯的協調。',
+    '各項事情的進度大致符合預期，推進感很明顯。',
+    '溝通過程相對流暢，很多訊息都能準確落地。',
+    '思維的連貫性帶動了行動效率，也留下了實際成果。',
+    '手邊的每一件事都進展得異常順遂。',
+    '這段時間的狀態偏亮，許多事情都有往前走的感覺。'
+  ],
+  tangled: [
+    '多重目標重疊在一起，讓優先順序變得不太清楚。',
+    '突發請求打斷了原本安排好的工作節奏。',
+    '破碎的資訊來源，讓決策過程變得反覆而困難。',
+    '計畫變動的頻率，已經超過原本節奏能承受的範圍。',
+    '個人預期與現實條件之間，出現了不小的落差。',
+    '這段時間的內容有點擠，很多事情同時卡在一起。'
+  ]
+};
+
+
+
+function getTodayTarotKey() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+}
+
+function ensureTarotState() {
+  try {
+    if (!tarotState || tarotState.date !== getTodayTarotKey()) {
+      tarotState = JSON.parse(localStorage.getItem('5yr_tarot_daily') || 'null');
+    }
+  } catch {
+    tarotState = null;
+  }
+  if (!tarotState || tarotState.date !== getTodayTarotKey()) {
+    tarotState = { date: getTodayTarotKey(), mode: '', spread: [], chosenIndex: null };
+  }
+}
+
+function saveTarotState() {
+  if (tarotState) localStorage.setItem('5yr_tarot_daily', JSON.stringify(tarotState));
+}
+
+function getTarotModeById(id) {
+  return TAROT_MODES.find(mode => mode.id === id) || TAROT_MODES[0];
+}
+
+function getTarotCardMeta(cardId) {
+  return TAROT_DECK.find(card => card.id === cardId);
+}
+
+function tarotToText(tarot) {
+  if (!tarot) return '';
+  if (tarot.textOverride) return tarot.textOverride;
+  if (!tarot.cardId) return '';
+  const card = getTarotCardMeta(tarot.cardId);
+  if (!card) return '';
+  const base = `${card.name}${tarot.reversed ? '（逆位）' : '（正位）'}｜${tarot.reversed ? card.reversed : card.upright}`;
+  return tarot.aiText ? `${base}\nAI延伸解讀：${tarot.aiText}` : base;
+}
+
+function getTarotDisplayParts(tarot) {
+  if (!tarot) return null;
+  if (tarot.textOverride) {
+    return {
+      title: '今日塔羅',
+      tag: '',
+      copy: tarot.textOverride
+    };
+  }
+  if (!tarot.cardId) return null;
+  const card = getTarotCardMeta(tarot.cardId);
+  if (!card) return null;
+  return {
+    title: card.name,
+    tag: tarot.reversed ? '逆位' : '正位',
+    copy: tarot.reversed ? card.reversed : card.upright,
+    aiCopy: tarot.aiText || ''
+  };
+}
+
+function getHourLabel(hourValue) {
+  if (hourValue === null || hourValue === undefined || hourValue === '') return '未記錄';
+  const hour = parseInt(hourValue, 10);
+  if (Number.isNaN(hour)) return '未記錄';
+  return `${String(hour).padStart(2, '0')}:00`;
+}
+
+function openTarotModal() {
+  ensureTarotState();
+  document.getElementById('tarotOverlay').classList.add('show');
+  renderTarotModes();
+  renderTarotSection();
+  refreshTodayTarotFromCloud();
+}
+
+function closeTarotModal(e) {
+  if (!e || e.target === document.getElementById('tarotOverlay')) {
+    document.getElementById('tarotOverlay').classList.remove('show');
+  }
+}
+
+function applyTarotToTodayEntry(item, modeId) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const day = now.getDate();
+  const key = getKey(year, month, day);
+  const existing = getEntry(year, month, day);
+  const tarot = {
+    cardId: item.cardId,
+    reversed: item.reversed,
+    mode: modeId,
+    date: getTodayTarotKey(),
+    aiText: ''
+  };
+  data[key] = { text: existing.text, mood: existing.mood, imgUrl: existing.imgUrl || '', tarot, updatedAt: existing.updatedAt || null };
+  saveData();
+  if (scriptUrl) {
+    callScript({
+      action: 'save',
+      key,
+      text: existing.text || '',
+      mood: existing.mood || '',
+      imgUrl: '',
+      tarotText: tarotToText(tarot)
+    }).catch(() => {});
+  }
+}
+
+function sampleTarotCards(count) {
+  const pool = TAROT_DECK.slice();
+  const picked = [];
+  while (picked.length < count && pool.length) {
+    const idx = Math.floor(Math.random() * pool.length);
+    const meta = pool.splice(idx, 1)[0];
+    picked.push({
+      cardId: meta.id,
+      reversed: Math.random() < 0.5,
+      backSymbol: TAROT_BACK_SYMBOLS[picked.length % TAROT_BACK_SYMBOLS.length]
+    });
+  }
+  return picked;
+}
+
+function resetTarotDraw() {
+  tarotState = { date: getTodayTarotKey(), mode: '', spread: [], chosenIndex: null };
+  saveTarotState();
+  renderTarotModes();
+  renderTarotSection();
+}
+
+function pickTarotCard(visualIndex) {
+  ensureTarotState();
+  if (!tarotState.spread.length || tarotState.chosenIndex !== null) return;
+
+  // Map visual position (0-77) to one of the 3 sampled cards
+  const spreadIndex = visualIndex % tarotState.spread.length;
+
+  // Scroll selected card into view
+  const scrollEl = document.getElementById('tarotSpreadScroll');
+  const slot = scrollEl && scrollEl.querySelector(`[data-visual="${visualIndex}"]`);
+  if (slot) slot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+  // Animate: lift selected, mute others, then flip
+  const slots = document.querySelectorAll('.tarot-card-slot');
+  slots.forEach(s => {
+    const vi = parseInt(s.getAttribute('data-visual'), 10);
+    if (vi === visualIndex) {
+      s.classList.add('selected');
+      s.style.pointerEvents = 'none';
+      setTimeout(() => s.classList.add('revealed'), 280);
+    } else {
+      s.classList.add('is-muted');
+    }
+  });
+
+  // Save data after flip animation completes
+  setTimeout(() => {
+    tarotState.chosenIndex = spreadIndex;
+    applyTarotToTodayEntry(tarotState.spread[spreadIndex], tarotState.mode);
+    saveTarotState();
+    renderTarotSection();
+    renderTarotLaunchArea();
+    renderEntries();
+    showToast('今日的牌已翻開');
+    generateTarotAiReading();
+  }, 1200);
+}
+
+function initTarotSpreadDrag(el) {
+  if (!el) return;
+  let isDown = false, startX, scrollLeft, dragged = false;
+  el.addEventListener('mousedown', e => {
+    isDown = true; dragged = false;
+    el.classList.add('drag-active');
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+  });
+  el.addEventListener('mouseleave', () => { isDown = false; el.classList.remove('drag-active'); });
+  el.addEventListener('mouseup', () => { isDown = false; el.classList.remove('drag-active'); });
+  el.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const walk = (e.pageX - el.offsetLeft - startX) * 1.5;
+    if (Math.abs(walk) > 5) dragged = true;
+    el.scrollLeft = scrollLeft - walk;
+  });
+  // Block click on drag
+  el.addEventListener('click', e => { if (dragged) e.stopPropagation(); }, true);
+}
+
+function copyTarotPrompt() {
+  ensureTarotState();
+  if (tarotState.chosenIndex === null) return;
+  const chosen = tarotState.spread[tarotState.chosenIndex];
+  const card = getTarotCardMeta(chosen.cardId);
+  const mode = getTarotModeById(tarotState.mode);
+  const text = [
+    '請幫我解讀這張塔羅牌。',
+    `抽牌方式：${mode.label}`,
+    '我的問題：',
+    '（把你的問題補在這裡）',
+    `抽到的牌：${card.name}${chosen.reversed ? '（逆位）' : '（正位）'}`,
+    `牌面短解讀：${chosen.reversed ? card.reversed : card.upright}`
+  ].join('\n');
+  navigator.clipboard.writeText(text)
+    .then(() => showToast('已複製提問素材'))
+    .catch(() => showToast('複製失敗'));
+}
+
+function renderTarotLaunchArea() {
+  const area = document.getElementById('tarotLaunchArea');
+  if (!area) return;
+  const today = new Date();
+  const isViewingToday = currentDate.toDateString() === today.toDateString();
+  const entry = getEntry(today.getFullYear(), today.getMonth(), today.getDate());
+  const tarotDisplay = getTarotDisplayParts(entry.tarot);
+  if (!isViewingToday) {
+    area.innerHTML = '';
+    return;
+  }
+  area.innerHTML = `
+    <div style="background:var(--white);border-radius:18px;padding:14px 16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:4px;">DAILY TAROT</div>
+          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">${tarotDisplay ? tarotDisplay.title : '今日塔羅'}</div>
+          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotDisplay ? `${tarotDisplay.tag ? tarotDisplay.tag + '｜' : ''}${tarotDisplay.aiCopy || tarotDisplay.copy}` : '今天還沒抽牌，每天只能抽一次。'}</div>
+        </div>
+        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotDisplay ? '查看牌意' : '開始抽牌'}</button>
+      </div>
+    </div>
+  `;
+}
+
+async function refreshTodayTarotFromCloud() {
+  if (!scriptUrl) return;
+  const today = new Date();
+  const key = getKey(today.getFullYear(), today.getMonth(), today.getDate());
+  try {
+    const json = await callScript({ action: 'loadAll' }, 15000);
+    if (!(json && json.ok && json.entries && json.entries[key])) return;
+    const cloudEntry = json.entries[key];
+    cloudEntry.tarot = normalizeTarotValue(cloudEntry.tarot);
+    cloudEntry.updatedAt = normalizeUpdatedAtValue(cloudEntry.updatedAt);
+    data[key] = Object.assign({}, data[key] || {}, cloudEntry);
+    saveData();
+    renderTarotLaunchArea();
+    renderTarotSection();
+    renderEntries();
+    const latestTarot = normalizeTarotValue((data[key] || {}).tarot);
+    if (latestTarot && latestTarot.cardId && !latestTarot.aiText) {
+      generateTarotAiReading();
+    }
+  } catch (e) {}
+}
+
+function renderTarotModes() {
+  ensureTarotState();
+  const grid = document.getElementById('tarotModeGrid');
+  if (!grid) return;
+  const today = new Date();
+  const locked = !!getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
+  if (locked) {
+    grid.innerHTML = `
+      <div style="padding:12px 14px;border-radius:16px;background:rgba(255,255,255,0.75);color:var(--text-mid);font-size:12px;line-height:1.7;">
+        今日塔羅已經抽過了。每天只會出現一張牌，現在可以查看結果，但不能重抽。
+      </div>
+    `;
+    return;
+  }
+  grid.innerHTML = TAROT_MODES.map(mode => `
+    <button class="tarot-mode-btn${tarotState.mode === mode.id ? ' active' : ''}" onclick="startTarotDraw('${mode.id}')">
+      <span class="tarot-mode-label">${mode.label}</span>
+      <span class="tarot-mode-copy">${mode.copy}</span>
+    </button>
+  `).join('');
+}
+
+function startTarotDraw(modeId) {
+  const today = new Date();
+  if (getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot) {
+    showToast('今日塔羅已抽過，每天只能抽一次。');
+    renderTarotModes();
+    renderTarotSection();
+    return;
+  }
+  tarotState = {
+    date: getTodayTarotKey(),
+    mode: modeId,
+    spread: sampleTarotCards(3),
+    chosenIndex: null
+  };
+  saveTarotState();
+  renderTarotModes();
+  renderTarotSection(true);
+}
+
+function renderTarotSection(animate) {
+  ensureTarotState();
+  const section = document.getElementById('tarotDailySection');
+  if (!section) return;
+  if (animate) {
+    section.classList.remove('animate-in');
+    void section.offsetWidth; // force reflow
+    section.classList.add('animate-in');
+  }
+  const today = new Date();
+  const savedTarot = getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
+  const savedCard = savedTarot && savedTarot.cardId ? getTarotCardMeta(savedTarot.cardId) : null;
+  const tarotDisplay = getTarotDisplayParts(savedTarot);
+  const savedMode = savedTarot && savedTarot.mode ? getTarotModeById(savedTarot.mode) : null;
+
+  if (savedTarot && (savedCard || tarotDisplay)) {
+    const tagParts = [];
+    if (savedTarot.cardId) tagParts.push(savedTarot.reversed ? '逆位' : '正位');
+    if (savedMode && savedTarot.mode) tagParts.push(savedMode.label);
+    const showAiPlaceholder = !!savedCard && !savedTarot.aiText;
+    section.innerHTML = `
+      <div class="tarot-spread-hint">今日塔羅已固定，明天才會出現新的牌。</div>
+      <div class="tarot-result">
+        <div class="tarot-result-head">
+          <div>
+            <div class="tarot-result-title">${savedCard ? savedCard.name : tarotDisplay.title}</div>
+            <div class="tarot-result-tag">${tagParts.join(' · ')}</div>
+          </div>
+        </div>
+        <div class="tarot-result-copy">
+          <div style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--text-dark);margin-bottom:6px;">${savedCard ? savedCard.name : tarotDisplay.title}</div>
+          ${savedCard ? `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin-bottom:10px;">${savedTarot.reversed ? 'REVERSED' : 'UPRIGHT'}</div>` : ''}
+          <div style="margin-bottom:${savedTarot.aiText ? '14px' : '0'};">${savedCard ? (savedTarot.reversed ? savedCard.reversed : savedCard.upright) : tarotDisplay.copy}</div>
+          ${savedTarot.aiText ? `
+            <div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin:0 0 8px;">AI EXTENDED READING</div>
+            <div style="padding:12px 14px;border-radius:14px;background:#fffaf1;border:1px solid rgba(209,185,142,0.35);font-size:13px;line-height:1.85;color:var(--text-dark);">${savedTarot.aiText}</div>
+          ` : showAiPlaceholder ? `
+            <div style="font-size:12px;color:var(--text-mid);line-height:1.8;">正在補上 AI 延伸解讀…</div>
+          ` : ''}
+        </div>
+        <div class="tarot-result-note">今日塔羅只能抽一次。如果想自己再追問，也可以把這張牌和你的問題一起拿去問 AI。</div>
+        <div class="tarot-result-actions"${savedCard ? '' : ' style="display:none;"'}>
+          <button class="tarot-action-btn primary" onclick="copyTarotPrompt(this)">複製提問素材</button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  if (!tarotState.mode || !tarotState.spread.length) {
+    // Placeholder: decorative row of 13 dim cards
+    const placeholderCards = Array(13).fill(0).map(() =>
+      `<div class="tarot-card-slot" style="pointer-events:none;opacity:0.35;">
+        <div class="tarot-card">
+          <div class="tarot-card-back"><div class="tarot-back-symbol">✦</div></div>
+        </div>
+      </div>`
+    ).join('');
+    section.innerHTML = `
+      <div class="tarot-spread" style="pointer-events:none;">${placeholderCards}</div>
+    `;
+    return;
+  }
+
+  const mode = getTarotModeById(tarotState.mode);
+  const spread = tarotState.spread;
+  const total = 78;
+  // Each of the 78 visual cards maps to one of the 3 sampled cards via index % spread.length
+  let cardsHtml = '';
+  for (let i = 0; i < total; i++) {
+    const item = spread[i % spread.length];
+    const meta = getTarotCardMeta(item.cardId);
+    cardsHtml += `
+      <div class="tarot-card-slot" data-visual="${i}" onclick="pickTarotCard(${i})">
+        <div class="tarot-card">
+          <div class="tarot-card-back"><div class="tarot-back-symbol">✦</div></div>
+          <div class="tarot-card-face${item.reversed ? ' is-reversed' : ''}" style="--tarot-a:${meta.palette[0]};--tarot-b:${meta.palette[1]};">
+            <div class="tarot-front-crest">${meta.no}</div>
+            <div class="tarot-front-art">
+              <div class="tarot-front-sun"></div>
+              <div class="tarot-front-moon"></div>
+              <div class="tarot-front-icon">${meta.icon}</div>
+            </div>
+            <div class="tarot-front-name">${meta.name}</div>
+            <div class="tarot-front-sub">${item.reversed ? 'REV' : 'UPR'}</div>
+          </div>
+        </div>
+      </div>`;
+  }
+  section.innerHTML = `
+    <div class="tarot-spread-hint">${mode.id === 'intent' ? '先放一個今天最想釐清的問題，再選一張。' : '不用先想問題，照直覺選一張就好。'}</div>
+    <div class="tarot-spread" id="tarotSpreadScroll">${cardsHtml}</div>
+  `;
+  initTarotSpreadDrag(document.getElementById('tarotSpreadScroll'));
+  // Scroll to middle on load
+  const scrollEl = document.getElementById('tarotSpreadScroll');
+  if (scrollEl) {
+    const mid = Math.floor(total / 2);
+    const cardW = 30; // approx visible width per card
+    scrollEl.scrollLeft = mid * cardW;
+  }
+}
+
+async function pasteToEntry(taId) {
+  const ta = document.getElementById(taId);
+  if (!ta) return;
+  try {
+    const text = await navigator.clipboard.readText();
+    const start = ta.selectionStart, end = ta.selectionEnd;
+    ta.value = ta.value.slice(0, start) + text + ta.value.slice(end);
+    ta.selectionStart = ta.selectionEnd = start + text.length;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    ta.focus();
+  } catch(e) {
+    showToast('請用長按選單貼上');
+  }
+}
+
+function onTextInput(ta, yr, month, day) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+  const len = ta.value.length;
+  document.getElementById(`cc${yr}`).textContent = `${len}字`;
+  const saveBtn = document.getElementById(`saveBtn${yr}`);
+  if (saveBtn) {
+    saveBtn.classList.toggle('visible', len > 0 || getEntry(yr, month, day).text !== ta.value);
+  }
+  let shareBtn = document.getElementById(`shareBtn${yr}`);
+  if (len > 0 && !shareBtn) {
+    const actionRow = ta.closest('.entry-inner')?.querySelector('.entry-footer div[style*="display:flex"]');
+    if (actionRow) {
+      shareBtn = document.createElement('button');
+      shareBtn.id = `shareBtn${yr}`;
+      shareBtn.textContent = '↗ 分享';
+      shareBtn.setAttribute('onclick', `shareEntry(${yr}, ${month}, ${day})`);
+      shareBtn.style.cssText = 'background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;';
+      actionRow.appendChild(shareBtn);
+    }
+  }
+  if (shareBtn) shareBtn.style.display = len > 0 ? '' : 'none';
+}
+
+function saveEntry(yr, month, day) {
+  const ta = document.getElementById(`ta${yr}`);
+  const entry = getEntry(yr, month, day);
+  // 同步到雲端（文字＋心情一起）
+  setEntry(yr, month, day, ta.value, entry.mood, undefined, entry.tarot);
+  const saveBtn = document.getElementById(`saveBtn${yr}`);
+  if (saveBtn) saveBtn.classList.remove('visible');
+  showToast('已儲存並同步 ✓');
+  if (activeTab === 'stats') renderStats();
+}
+
+function changeDay(delta) {
+  currentDate = new Date(currentDate.getTime() + delta * 86400000);
+  renderAll();
+}
+
+function renderAll() {
+  renderHeader();
+  renderPrompt();
+  renderEntries();
+  if (activeTab === 'calendar') renderCalendar();
+  if (activeTab === 'stats') renderStats();
+}
+
+function compareVersionStrings(a, b) {
+  const pa = String(a).split('.').map(n => parseInt(n, 10) || 0);
+  const pb = String(b).split('.').map(n => parseInt(n, 10) || 0);
+  const maxLen = Math.max(pa.length, pb.length);
+  for (let i = 0; i < maxLen; i++) {
+    const av = pa[i] || 0;
+    const bv = pb[i] || 0;
+    if (av > bv) return 1;
+    if (av < bv) return -1;
+  }
+  return 0;
+}
+
+function setUpdateBannerVisible(visible) {
+  const banner = document.getElementById('updateBanner');
+  if (!banner) return;
+  banner.classList.toggle('show', !!visible);
+}
+
+function getReviewMeta() {
+  const now = new Date();
+  let start, end, label, title, type, scopeKey;
+  if (currentReviewTab === 'week') {
+    const day = now.getDay();
+    const offset = day === 0 ? 6 : day - 1;
+    start = new Date(now);
+    start.setDate(now.getDate() - offset);
+    start.setHours(0, 0, 0, 0);
+    end = new Date(now);
+    label = '這週';
+    title = '本週回顧';
+    type = 'week';
+    const monday = new Date(start);
+    scopeKey = `${monday.getFullYear()}-W${String(monday.getMonth() + 1).padStart(2, '0')}${String(monday.getDate()).padStart(2, '0')}`;
+  } else if (currentReviewTab === 'month') {
+    start = new Date(now.getFullYear(), now.getMonth(), 1);
+    end = new Date(now);
+    label = '這個月';
+    title = `${now.getFullYear()}年${now.getMonth() + 1}月回顧`;
+    type = 'month';
+    scopeKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  } else {
+    start = new Date(now.getFullYear(), 0, 1);
+    end = new Date(now);
+    label = '今年';
+    title = `${now.getFullYear()}年度回顧`;
+    type = 'year';
+    scopeKey = `${now.getFullYear()}`;
+  }
+  return { now, start, end, label, title, type, scopeKey };
+}
+
+function collectReviewDiaryEntries(start, end) {
+  return Object.entries(data)
+    .filter(([k, v]) => {
+      if (!v.text || !v.text.trim()) return false;
+      const d = new Date(k);
+      return d >= start && d <= end;
+    })
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([k, v]) => `${k}：${v.text}`)
+    .join('\n');
+}
+
+function getAiReviewCacheKey(type, scopeKey) {
+  return `5yr_ai_review_${type}_${scopeKey}`;
+}
+
+function readAiReviewCache(type, scopeKey) {
+  try {
+    return localStorage.getItem(getAiReviewCacheKey(type, scopeKey)) || '';
+  } catch {
+    return '';
+  }
+}
+
+function writeAiReviewCache(type, scopeKey, content) {
+  try {
+    if (!content) {
+      localStorage.removeItem(getAiReviewCacheKey(type, scopeKey));
+    } else {
+      localStorage.setItem(getAiReviewCacheKey(type, scopeKey), content);
+    }
+  } catch {}
+}
+
+async function hydrateAiReviewCard() {
+  const block = document.getElementById('aiSummaryBlock');
+  const textEl = document.getElementById('aiSummaryText');
+  const hintEl = document.getElementById('aiSummaryHint');
+  const btn = document.getElementById('aiSummaryBtn');
+  const badgeEl = document.getElementById('aiSummaryBadge');
+  if (!block || !textEl || !hintEl || !btn) return;
+  textEl.style.display = 'none';
+  textEl.textContent = '';
+  hintEl.style.display = 'block';
+  hintEl.textContent = settings.geminiApiKey ? '尚未生成這段回顧。' : '先到設定頁貼上自己的 Gemini API 金鑰，就能生成 AI 回顧。';
+  btn.disabled = false;
+  btn.textContent = '生成 AI 回顧';
+  if (badgeEl) badgeEl.style.display = 'none';
+  const meta = getReviewMeta();
+  const cached = readAiReviewCache(meta.type, meta.scopeKey);
+  if (cached) {
+    textEl.textContent = cached;
+    textEl.style.display = 'block';
+    hintEl.style.display = 'none';
+    btn.textContent = '重新生成';
+    if (badgeEl) {
+      badgeEl.style.display = 'inline-flex';
+      badgeEl.textContent = '已儲存';
+    }
+  }
+  if (!settings.geminiApiKey) return;
+  if (!scriptUrl || lastScriptVersion < REQUIRED_SCRIPT_VERSION) return;
+  try {
+    const json = await callScript({ action: 'loadAiReview', type: meta.type, scopeKey: meta.scopeKey }, 10000);
+    if (json.ok && json.review && json.review.content) {
+      textEl.textContent = json.review.content;
+      textEl.style.display = 'block';
+      hintEl.style.display = 'none';
+      btn.textContent = '重新生成';
+      writeAiReviewCache(meta.type, meta.scopeKey, json.review.content);
+      if (badgeEl) {
+        badgeEl.style.display = 'inline-flex';
+        badgeEl.textContent = '已儲存';
+      }
+    }
+  } catch (e) {
+    hintEl.textContent = '目前讀不到雲端回顧，仍可直接重新生成。';
+  }
+}
+
+async function checkForLatestVersion() {
+  try {
+    const res = await fetch(`./index.html?_ts=${Date.now()}`, { cache: 'no-store' });
+    const html = await res.text();
+    const match = html.match(/const APP_VERSION = '([^']+)'/);
+    if (!match) return;
+    const remoteVersion = match[1];
+    setUpdateBannerVisible(compareVersionStrings(remoteVersion, APP_VERSION) > 0);
+  } catch (e) {
+    // Ignore version check failures; this is only a convenience hint.
+  }
+}
+
+async function generateTarotAiReading() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const day = now.getDate();
+  const entry = getEntry(year, month, day);
+  const tarot = normalizeTarotValue(entry.tarot);
+  if (!tarot || !tarot.cardId || tarot.aiText) return;
+  if (!settings.geminiApiKey) return;
+  const card = getTarotCardMeta(tarot.cardId);
+  if (!card) return;
+
+  const mode = getTarotModeById(tarot.mode);
+  const baseMeaning = tarot.reversed ? card.reversed : card.upright;
+
+  try {
+    const prompt = [
+      '請幫我寫一段塔羅延伸解讀。',
+      '用繁體中文，語氣自然，不要太玄，不要條列，不要反問句。',
+      '長度約 60 到 100 字。',
+      '抽牌方式：' + mode.label,
+      '牌名：' + card.name + '（' + (tarot.reversed ? '逆位' : '正位') + '）',
+      '基礎牌義：' + baseMeaning,
+      '請補充今天可以怎麼理解這張牌，但不要重複照抄牌義。'
+    ].join('\n');
+    const aiText = await callGeminiClient(prompt, 15000);
+    if (!aiText) return;
+
+    const updatedTarot = Object.assign({}, tarot, { aiText });
+    data[getKey(year, month, day)] = {
+      text: entry.text,
+      mood: entry.mood,
+      imgUrl: entry.imgUrl || '',
+      tarot: updatedTarot,
+      updatedAt: entry.updatedAt || null
+    };
+    saveData();
+    if (scriptUrl) {
+      callScript({
+        action: 'save',
+        key: getKey(year, month, day),
+        text: entry.text || '',
+        mood: entry.mood || '',
+        imgUrl: '',
+        tarotText: tarotToText(updatedTarot)
+      }).catch(() => {});
+    }
+    renderTarotSection();
+    renderTarotLaunchArea();
+    renderEntries();
+  } catch (e) {
+    // Keep the base tarot result even if AI generation fails.
+  }
+}
+
+function reloadLatestVersion() {
+  const url = new URL(window.location.href);
+  url.searchParams.set('_reload', Date.now().toString());
+  window.location.replace(url.toString());
+}
+
+// ── Calendar ──
+function renderCalendar() {
+  const d = calViewDate;
+  const yr = d.getFullYear();
+  const mo = d.getMonth();
+  document.getElementById('calMonthTitleText').textContent = `${yr}年 ${MONTHS_ZH[mo]}`;
+
+  const grid = document.getElementById('calendarGrid');
+  grid.innerHTML = '';
+
+  // Day headers
+  DAYS_ZH.forEach(dh => {
+    const el = document.createElement('div');
+    el.className = 'cal-header';
+    el.textContent = dh;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(yr, mo, 1).getDay();
+  const daysInMonth = new Date(yr, mo+1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d2 = 1; d2 <= daysInMonth; d2++) {
+    const el = document.createElement('div');
+    const isToday = yr === today.getFullYear() && mo === today.getMonth() && d2 === today.getDate();
+    const isSelected = yr === currentDate.getFullYear() && mo === currentDate.getMonth() && d2 === currentDate.getDate();
+
+    let hasEntry = false;
+    for (const y of ACTIVE_YEARS) {
+      const e = getEntry(y, mo, d2);
+      if (e.text && e.text.trim()) { hasEntry = true; break; }
+    }
+
+    el.className = 'cal-day' + (isToday ? ' today' : '') + (isSelected && !isToday ? ' selected' : '') + (hasEntry ? ' has-entry' : '');
+    el.textContent = d2;
+    const _yr = yr, _mo = mo, _d2 = d2;
+    el.onclick = () => {
+      // 更新選中狀態
+      document.querySelectorAll('#calendarGrid .cal-day').forEach(e => e.classList.remove('selected'));
+      if (!isToday) el.classList.add('selected');
+      // 顯示那天的日記預覽
+      showCalDayPreview(_yr, _mo, _d2);
+    };
+    grid.appendChild(el);
+  }
+
+
+  // 預設顯示今天或本月第一筆有記錄的日
+  const todayInView = yr === new Date().getFullYear() && mo === new Date().getMonth();
+  if (todayInView) {
+    showCalDayPreview(yr, mo, new Date().getDate());
+  } else {
+    document.getElementById('calEntryPreview').innerHTML =
+      '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px;">點選日期查看日記</div>';
+  }
+}
+
+function showCalDayPreview(yr, mo, day) {
+  const preview = document.getElementById('calEntryPreview');
+  const dateStr = yr + '年 ' + (mo+1) + '月 ' + day + '日';
+  const entries = [];
+  ACTIVE_YEARS.forEach(y => {
+    const e = getEntry(y, mo, day);
+    if (e.text && e.text.trim()) entries.push({ y, text: e.text, mood: e.mood });
+  });
+
+  if (entries.length === 0) {
+    preview.innerHTML = `
+      <div style="background:var(--white);border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+        <div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">${dateStr}</div>
+        <div style="text-align:center;color:var(--text-light);font-size:13px;padding:10px 0;">這天沒有日記</div>
+        <button onclick="jumpToEntry('${yr}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}')" 
+          style="width:100%;margin-top:12px;padding:10px;background:var(--bg);color:var(--text-dark);border:none;border-radius:12px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">
+          去這天寫日記
+        </button>
+      </div>`;
+    return;
+  }
+
+  preview.innerHTML = `
+    <div style="font-size:11px;color:var(--text-light);letter-spacing:0.05em;margin-bottom:10px;">${dateStr}</div>
+    ${entries.map(({ y, text, mood }) => `
+      <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;"
+        onclick="jumpToEntry('${y}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}')">
+        <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;">${y}年 ${mood||''}</div>
+        <div style="font-size:13px;color:var(--text-dark);line-height:1.6;font-family:'Noto Serif TC',serif;">${text}</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function changeCalMonth(delta) {
+  calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth() + delta, 1);
+  renderCalendar();
+}
+
+// ── 首頁日期選擇器 ──
+var dpViewDate = new Date();
+
+function openDatePicker() {
+  dpViewDate = new Date(currentDate);
+  renderDatePickerGrid();
+  document.getElementById('datePickerOverlay').classList.add('show');
+}
+
+function closeDatePicker(e) {
+  if (!e || e.target === document.getElementById('datePickerOverlay')) {
+    document.getElementById('datePickerOverlay').classList.remove('show');
+  }
+}
+
+function changeDatePickerMonth(delta) {
+  dpViewDate = new Date(dpViewDate.getFullYear(), dpViewDate.getMonth() + delta, 1);
+  renderDatePickerGrid();
+}
+
+function changeDatePickerYear(delta) {
+  dpViewDate = new Date(dpViewDate.getFullYear() + delta, dpViewDate.getMonth(), 1);
+  renderDatePickerGrid();
+}
+
+function renderDatePickerGrid() {
+  const yr = dpViewDate.getFullYear();
+  const mo = dpViewDate.getMonth();
+  document.getElementById('dpMonthTitle').textContent = yr + '年 ' + MONTHS_ZH[mo];
+
+  const grid = document.getElementById('dpGrid');
+  grid.innerHTML = '';
+
+  DAYS_ZH.forEach(dh => {
+    const el = document.createElement('div');
+    el.className = 'cal-header';
+    el.textContent = dh;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(yr, mo, 1).getDay();
+  const daysInMonth = new Date(yr, mo+1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    const isToday = yr === today.getFullYear() && mo === today.getMonth() && d === today.getDate();
+    const isSelected = yr === currentDate.getFullYear() && mo === currentDate.getMonth() && d === currentDate.getDate();
+    el.className = 'cal-day' + (isToday ? ' today' : '') + (isSelected && !isToday ? ' selected' : '');
+    el.textContent = d;
+    const _d = d;
+    el.onclick = () => {
+      currentDate = new Date(yr, mo, _d);
+      document.getElementById('datePickerOverlay').classList.remove('show');
+      renderAll();
+    };
+    grid.appendChild(el);
+  }
+}
+
+function goToToday() {
+  currentDate = new Date();
+  document.getElementById('datePickerOverlay').classList.remove('show');
+  renderAll();
+}
+
+function openYearPicker() {
+  const overlay = document.getElementById('yearPickerOverlay');
+  const grid = document.getElementById('yearGrid');
+  const curYr = calViewDate.getFullYear();
+  grid.innerHTML = '';
+  // Show years from 2000 to current year + 1
+  const endYr = new Date().getFullYear() + 1;
+  for (let y = 2000; y <= endYr; y++) {
+    const btn = document.createElement('button');
+    btn.className = 'year-btn' + (y === curYr ? ' active' : '');
+    btn.textContent = y;
+    btn.onclick = () => {
+      calViewDate = new Date(y, calViewDate.getMonth(), 1);
+      closeYearPicker();
+      renderCalendar();
+    };
+    grid.appendChild(btn);
+  }
+  overlay.classList.add('show');
+  // Scroll active year into view
+  setTimeout(() => {
+    const active = grid.querySelector('.active');
+    if (active) active.scrollIntoView({ block: 'center' });
+  }, 50);
+}
+
+function closeYearPicker(e) {
+  if (!e || e.target === document.getElementById('yearPickerOverlay')) {
+    document.getElementById('yearPickerOverlay').classList.remove('show');
+  }
+}
+
+// ── 搜尋 ──
+function doSearch(query) {
+  const results = document.getElementById('searchResults');
+  if (!results) return;
+  const q = query.trim();
+  if (!q) {
+    results.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">輸入關鍵字搜尋你的日記</div>';
+    return;
+  }
+  const hits = [];
+  Object.entries(data).forEach(([key, val]) => {
+    if (!val.text) return;
+    const idx = val.text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx === -1) return;
+    hits.push({ key, text: val.text, mood: val.mood, idx });
+  });
+  hits.sort((a,b) => b.key.localeCompare(a.key));
+  if (hits.length === 0) {
+    results.innerHTML = `<div style="text-align:center;color:var(--text-light);font-size:13px;padding:40px 0;">找不到「${q}」</div>`;
+    return;
+  }
+  results.innerHTML = hits.map(({ key, text, mood, idx }) => {
+    const parts = key.split('-');
+    const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
+    // 高亮關鍵字前後各30字
+    const start = Math.max(0, idx - 30);
+    const end = Math.min(text.length, idx + q.length + 30);
+    const snippet = (start > 0 ? '…' : '') +
+      text.slice(start, idx) +
+      `<mark style="background:#fde8a0;border-radius:3px;padding:0 2px;">${text.slice(idx, idx + q.length)}</mark>` +
+      text.slice(idx + q.length, end) +
+      (end < text.length ? '…' : '');
+    return `<div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04);cursor:pointer;" onclick="jumpToEntry('${key}')">
+      <div style="font-size:11px;color:var(--text-light);margin-bottom:6px;display:flex;gap:6px;align-items:center;">
+        <span>${dateStr}</span><span>${mood||''}</span>
+      </div>
+      <div style="font-size:13px;color:var(--text-dark);line-height:1.7;font-family:'Noto Serif TC',serif;">${snippet}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── 主題 ──
+var THEMES = [
+  { id: '', label: '暖米', bg: '#f7f5f2', dot: 'linear-gradient(135deg,#fde8c8,#f8bcd0)' },
+  { id: 'ocean', label: '海洋', bg: '#f0f4f8', dot: 'linear-gradient(135deg,#c8e0f8,#a8c8f0)' },
+  { id: 'forest', label: '森林', bg: '#f0f5f0', dot: 'linear-gradient(135deg,#c8f0d8,#a8e0c0)' },
+  { id: 'lavender', label: '薰衣草', bg: '#f4f0f8', dot: 'linear-gradient(135deg,#e0c8f8,#c8a8f0)' },
+  { id: 'dark', label: '深夜', bg: '#1a1a1a', dot: 'linear-gradient(135deg,#3a3030,#302838)' },
+];
+
+function applyTheme(id) {
+  document.body.className = id ? 'theme-' + id : '';
+  localStorage.setItem('5yr_theme', id);
+  renderThemeGrid();
+}
+
+function renderThemeGrid() {
+  const grid = document.getElementById('themeGrid');
+  if (!grid) return;
+  const current = localStorage.getItem('5yr_theme') || '';
+  grid.innerHTML = THEMES.map(t => `
+    <div onclick="applyTheme('${t.id}')" style="cursor:pointer;text-align:center;">
+      <div style="width:100%;aspect-ratio:1;border-radius:50%;background:${t.dot};margin:0 auto 6px;border:3px solid ${t.id===current?'var(--text-dark)':'transparent'};box-sizing:border-box;transition:border 0.2s;"></div>
+      <div style="font-size:10px;color:var(--text-mid);letter-spacing:0.03em;">${t.label}</div>
+    </div>
+  `).join('');
+}
+
+// 載入時套用儲存的主題
+(function() {
+  const saved = localStorage.getItem('5yr_theme') || '';
+  document.body.className = saved ? 'theme-' + saved : '';
+})();
+
+// ── 回顧 ──
+var currentReviewTab = 'week';
+
+function switchReview(tab) {
+  currentReviewTab = tab;
+  ['Week','Month','Year'].forEach(t => {
+    const btn = document.getElementById('rt' + t);
+    if (btn) btn.className = 'review-tab' + (t.toLowerCase() === tab ? ' active' : '');
+  });
+  renderReview();
+}
+
+function renderReview() {
+  const content = document.getElementById('reviewContent');
+  if (!content) return;
+
+  const meta = getReviewMeta();
+  const now = meta.now;
+  let entries = [];
+  const title = meta.title;
+  const start = meta.start;
+  const end = meta.end;
+
+  Object.entries(data).forEach(function([key, val]) {
+    if (!val.text || !val.text.trim()) return;
+    const parts = key.split('-');
+    const date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    if (date >= start && date <= end) {
+      entries.push({ key, text: val.text, mood: val.mood, date, updatedAt: val.updatedAt || null });
+    }
+  });
+
+  entries.sort((a, b) => b.date - a.date);
+
+  const moodMap = {};
+  const weekdayMap = {};
+  const hourMap = {};
+
+  entries.forEach(function(entry) {
+    if (entry.mood) moodMap[entry.mood] = (moodMap[entry.mood] || 0) + 1;
+    const weekday = entry.date.getDay();
+    weekdayMap[weekday] = (weekdayMap[weekday] || 0) + 1;
+    const ts = normalizeUpdatedAtValue(entry.updatedAt);
+    if (ts) {
+      const hour = new Date(ts).getHours();
+      hourMap[hour] = (hourMap[hour] || 0) + 1;
+    }
+  });
+
+  const topMood = Object.entries(moodMap).sort((a, b) => b[1] - a[1])[0];
+  const topWeekday = Object.entries(weekdayMap).sort((a, b) => b[1] - a[1])[0];
+  const topHour = Object.entries(hourMap).sort((a, b) => b[1] - a[1])[0];
+  const totalWords = entries.reduce((sum, entry) => sum + entry.text.trim().length, 0);
+  const avgWords = entries.length ? Math.round(totalWords / entries.length) : 0;
+  const showEntries = currentReviewTab === 'year' ? entries : entries.slice(0, 30);
+  const weekdayLabels = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+  const topWeekdayLabel = topWeekday ? weekdayLabels[parseInt(topWeekday[0], 10)] || '—' : '—';
+  const topHourLabel = topHour ? getHourLabel(topHour[0]) : '—';
+
+  function formatDateKey(key) {
+    const parts = key.split('-');
+    const date = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    return `${parts[0]}年${parseInt(parts[1], 10)}月${parseInt(parts[2], 10)}日（${weekdayLabels[date.getDay()]}）`;
+  }
+
+  let html = `<div class="review-summary">
+    <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:#3a2a2a;margin-bottom:14px;">${title}</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:14px;">
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${entries.length}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">篇日記</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${totalWords}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">總字數</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:26px;">${topMood ? topMood[0] : '—'}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常心情</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:22px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topWeekdayLabel}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常在這天寫</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:22px;font-weight:300;color:#3a2a2a;font-family:'Noto Serif TC',serif;">${topHourLabel}</div>
+        <div style="font-size:10px;color:rgba(58,42,42,0.5);letter-spacing:0.05em;margin-top:2px;">最常在這時寫</div>
+      </div>
+    </div>
+    ${entries.length ? `<div style="margin-top:14px;font-size:12px;color:rgba(58,42,42,0.6);line-height:1.9;">平均每篇約 ${avgWords} 字。</div>` : ''}
+  </div>`;
+
+  if (entries.length === 0) {
+    html += '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:30px 0;">這段時間還沒有可回顧的日記。</div>';
+  } else {
+    html += `<div id="aiSummaryBlock" style="background:var(--white);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;">
+        <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;">AI 回顧</div>
+        <div id="aiSummaryBadge" style="display:none;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;background:#f7f5f2;color:var(--text-mid);font-size:10px;letter-spacing:0.06em;">已儲存</div>
+      </div>
+      <div id="aiSummaryHint" style="display:none;font-size:12px;color:var(--text-mid);line-height:1.8;margin-bottom:12px;"></div>
+      <div id="aiSummaryText" style="font-family:'Noto Serif TC',serif;font-size:13px;color:var(--text-dark);line-height:1.9;margin-bottom:12px;display:none;white-space:pre-wrap;"></div>
+      <button id="aiSummaryBtn" onclick="generateAiSummary()" style="width:100%;padding:11px;background:linear-gradient(135deg,var(--theme-a),var(--theme-b));color:var(--text-dark);border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;letter-spacing:0.05em;">生成 AI 回顧</button>
+    </div>`;
+    html += `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin:12px 0 10px;">最近記錄 ${entries.length} 篇${currentReviewTab !== 'year' && entries.length > 30 ? '，僅顯示 30 篇' : ''}</div>`;
+    html += showEntries.map(function(entry) {
+      return `<div class="review-entry-card" onclick="jumpToEntry('${entry.key}')">
+        <div class="review-entry-date"><span>${formatDateKey(entry.key)}</span><span>${entry.mood || ''}</span></div>
+        <div class="review-entry-text">${entry.text}</div>
+      </div>`;
+    }).join('');
+  }
+
+  content.innerHTML = html;
+  hydrateAiReviewCard();
+}
+
+var shareData = {};
+
+function shareEntry(yr, month, day) {
+  const entry = getEntry(yr, month, day);
+  if (!entry.text || !entry.text.trim()) { showToast('這天還沒有日記'); return; }
+  const dateStr = yr + '年 ' + (month+1) + '月 ' + day + '日';
+  shareData = { yr, month, day, text: entry.text, mood: entry.mood, dateStr, imgDataUrl: null };
+
+  document.getElementById('shareCardDate').textContent = dateStr;
+  document.getElementById('shareCardText').textContent = entry.text;
+  document.getElementById('shareCardMood').textContent = entry.mood || '';
+
+  // 嘗試從 IndexedDB 載入圖片
+  const imgArea = document.getElementById('shareCardImg');
+  const imgEl   = document.getElementById('shareCardImgEl');
+  imgArea.style.display = 'none';
+
+  if (entry.imgUrl) {
+    const k = getKey(yr, month, day);
+    getImgFromDB(k).then(function(dataUrl) {
+      if (dataUrl) {
+        imgEl.src = dataUrl;
+        imgArea.style.display = 'block';
+        shareData.imgDataUrl = dataUrl;
+      }
+    });
+  }
+
+  document.getElementById('shareOverlay').classList.add('show');
+}
+
+function closeShare(e) {
+  if (!e || e.target === document.getElementById('shareOverlay')) {
+    document.getElementById('shareOverlay').classList.remove('show');
+  }
+}
+
+// 往下滑關閉分享視窗
+(function() {
+  var startY = 0, sheet;
+  document.addEventListener('touchstart', function(e) {
+    if (!document.getElementById('shareOverlay').classList.contains('show')) return;
+    sheet = document.getElementById('shareSheet');
+    // 只有在頂部才觸發下滑關閉
+    if (sheet.scrollTop > 0) return;
+    startY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    if (!document.getElementById('shareOverlay').classList.contains('show')) return;
+    if (!sheet) return;
+    if (sheet.scrollTop > 0) return;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (dy > 80) {
+      document.getElementById('shareOverlay').classList.remove('show');
+    }
+    startY = 0;
+  }, { passive: true });
+})();
+
+// 往下滑關閉分享視窗
+(function() {
+  var sheet, startY, isDragging = false;
+  function initShareSwipe() {
+    sheet = document.getElementById('shareSheet');
+    if (!sheet) return;
+    var handle = document.getElementById('shareHandle');
+    if (!handle) return;
+
+    handle.addEventListener('touchstart', function(e) {
+      startY = e.touches[0].clientY;
+      isDragging = true;
+      sheet.style.transition = 'none';
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      var dy = e.touches[0].clientY - startY;
+      if (dy > 0) sheet.style.transform = 'translateY(' + dy + 'px)';
+    }, { passive: true });
+
+    document.addEventListener('touchend', function(e) {
+      if (!isDragging) return;
+      isDragging = false;
+      var dy = e.changedTouches[0].clientY - startY;
+      sheet.style.transition = '';
+      sheet.style.transform = '';
+      if (dy > 80) {
+        document.getElementById('shareOverlay').classList.remove('show');
+      }
+    });
+  }
+  // 等 DOM 載入完
+  document.addEventListener('DOMContentLoaded', initShareSwipe);
+  setTimeout(initShareSwipe, 500);
+})();
+
+function copyShareText() {
+  const text = shareData.dateStr + '\n\n' + shareData.text + '\n\n' + (shareData.mood||'') + '\n— 五年日記';
+  navigator.clipboard.writeText(text).then(() => showToast('已複製 ✓')).catch(() => showToast('複製失敗'));
+}
+
+function downloadShareImage() {
+  const cardW = 320;
+  const hasImg = !!shareData.imgDataUrl;
+
+  // 預估文字行數
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCtx.font = '14px serif';
+  const textLines = [];
+  shareData.text.split('\n').forEach(function(para) {
+    var line = '';
+    for (var i = 0; i < para.length; i++) {
+      var test = line + para[i];
+      if (tempCtx.measureText(test).width > cardW - 64 && line) {
+        textLines.push(line); line = para[i];
+      } else { line = test; }
+    }
+    textLines.push(line || '');
+  });
+
+  const textH   = textLines.length * 24 + 20;
+
+  // 如果有圖片，需要先載入才能知道高度
+  if (hasImg && shareData.imgDataUrl) {
+    const preloadImg = new Image();
+    preloadImg.onload = function() {
+      const iW = 288; // cardW - 32
+      const iH = Math.round(preloadImg.naturalHeight * iW / preloadImg.naturalWidth);
+      const cardH = 24 + iH + 16 + 28 + textH + 50;
+      renderCanvas(cardH, preloadImg, iW, iH);
+    };
+    preloadImg.src = shareData.imgDataUrl;
+  } else {
+    const cardH = 24 + 28 + textH + 50;
+    renderCanvas(cardH, null, 0, 0);
+  }
+
+  function renderCanvas(cardH, imgEl, iW, iH) {
+    const scale = 3;
+    const canvas = document.createElement('canvas');
+    canvas.width  = cardW * scale;
+    canvas.height = cardH * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, cardW, cardH);
+
+    var curY = 20;
+
+    if (imgEl) {
+      ctx.drawImage(imgEl, 16, curY, iW, iH);
+      curY += iH + 16;
+    }
+
+    // 日期
+    ctx.fillStyle = '#aaaaaa';
+    ctx.font = '10px sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText(shareData.dateStr, 16, curY + 12);
+    curY += 28;
+
+    // 正文
+    ctx.fillStyle = '#2d2d2d';
+    ctx.font = '14px serif';
+    ctx.letterSpacing = '0px';
+    textLines.forEach(function(l) {
+      ctx.fillText(l, 16, curY);
+      curY += 24;
+    });
+    curY += 10;
+
+    // 心情 + 浮水印
+    if (shareData.mood) {
+      ctx.font = '22px sans-serif';
+      ctx.fillText(shareData.mood, 16, curY + 18);
+    }
+    ctx.fillStyle = '#cccccc';
+    ctx.font = '9px sans-serif';
+    ctx.letterSpacing = '1px';
+    ctx.fillText('五年日記', cardW - 60, curY + 18);
+
+    const a = document.createElement('a');
+    a.download = '五年日記_' + shareData.dateStr + '.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+    showToast('拍立得已儲存 ✓');
+  }
+}
+
+// ── 圖片上傳 ──
+function uploadImage(input, yr, month, day) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 20 * 1024 * 1024) { showToast('圖片太大，請選擇 20MB 以下'); return; }
+
+  const imgArea = document.getElementById('imgArea' + yr);
+  if (imgArea) imgArea.innerHTML = '<div style="color:var(--text-light);font-size:12px;padding:8px 0;">處理中…⏳</div>';
+
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const img = new Image();
+    img.onload = function() {
+      // 保持原始比例縮放，最長邊不超過 1200px
+      const canvas = document.createElement('canvas');
+      const maxSize = 1200;
+      var w = img.width, h = img.height;
+      if (w > maxSize || h > maxSize) {
+        if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
+        else       { w = Math.round(w * maxSize / h); h = maxSize; }
+      }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      const k = getKey(yr, month, day);
+
+      saveImgToDB(k, dataUrl).then(function() {
+        const entry = getEntry(yr, month, day);
+        data[k] = { text: entry.text, mood: entry.mood, imgUrl: '[local]', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
+        saveData();
+        renderEntries();
+        showToast('照片已新增 ✓');
+      }).catch(function(err) {
+        if (imgArea) imgArea.innerHTML = '<div style="color:#d06060;font-size:12px;padding:8px 0;">儲存失敗，請重試</div>';
+        showToast('儲存失敗');
+      });
+
+      // 靜默備份到 Drive
+      if (scriptUrl) {
+        const base64 = dataUrl.split(',')[1];
+        const params = new URLSearchParams({ action: 'uploadImage', fileName: 'diary_' + yr + '_' + (month+1) + '_' + day + '.jpg', mimeType: 'image/jpeg' });
+        fetch(scriptUrl + '?' + params.toString(), { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'imageData=' + encodeURIComponent(base64) }).catch(function(){});
+      }
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── 放大圖片 ──
+function zoomImage(dataUrl) {
+  document.getElementById('zoomImg').src = dataUrl;
+  document.getElementById('zoomOverlay').style.display = 'flex';
+}
+function closeZoom() {
+  document.getElementById('zoomOverlay').style.display = 'none';
+}
+
+function removeImage(yr, month, day) {
+  if (!confirm('確定要刪除這張照片嗎？')) return;
+  const k = getKey(yr, month, day);
+  const entry = getEntry(yr, month, day);
+  data[k] = { text: entry.text, mood: entry.mood, imgUrl: '', tarot: entry.tarot || null, updatedAt: entry.updatedAt || null };
+  saveData();
+  deleteImgFromDB(k).catch(function(){});
+  if (scriptUrl) {
+    callScript({ action: 'save', key: k, text: entry.text || '', mood: entry.mood || '', imgUrl: '', tarotText: tarotToText(entry.tarot) }).catch(function(){});
+  }
+  renderEntries();
+  showToast('照片已刪除');
+}
+
+var currentMoodFilter = null;
+
+function filterMoodDiary(mood) {
+  currentMoodFilter = mood;
+  document.querySelectorAll('.mood-filter-btn').forEach(btn => {
+    btn.classList.toggle('active', mood !== null && btn.dataset.mood === mood);
+  });
+  const list = document.getElementById('moodDiaryList');
+  if (!list) return;
+
+  if (!mood) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">選擇一個心情來查看日記</div>';
+    return;
+  }
+
+  list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">載入中…</div>';
+
+  const doRender = () => renderMoodList(mood, list);
+
+  if (scriptUrl) {
+    callScript({ action: 'loadAll' }, 10000)
+      .then(json => {
+        if (json.ok && json.entries) {
+          Object.keys(json.entries).forEach(function(key) {
+            json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+            json.entries[key].updatedAt = normalizeUpdatedAtValue(json.entries[key].updatedAt);
+          });
+          Object.assign(data, json.entries);
+          saveData();
+        }
+        doRender();
+      })
+      .catch(doRender);
+  } else {
+    doRender();
+  }
+}
+
+function renderMoodList(mood, list) {
+  const results = [];
+  Object.entries(data).forEach(([key, val]) => {
+    if (!val.text || !val.text.trim()) return;
+    if (mood && val.mood !== mood) return;
+    results.push({ key, text: val.text, mood: val.mood });
+  });
+  results.sort((a, b) => b.key.localeCompare(a.key));
+  if (results.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:20px 0;">沒有符合的日記</div>';
+    return;
+  }
+  list.innerHTML = results.map(({ key, text, mood: m }) => {
+    const parts = key.split('-');
+    const dateStr = parts[0] + '年 ' + parseInt(parts[1]) + '月 ' + parseInt(parts[2]) + '日';
+    return `<div class="mood-diary-item" onclick="jumpToEntry('${key}')" style="cursor:pointer;">
+      <div class="mood-diary-date"><span>${dateStr}</span><span>${m||''}</span></div>
+      <div class="mood-diary-text">${text}</div>
+    </div>`;
+  }).join('');
+}
+
+function jumpToEntry(key) {
+  const parts = key.split('-');
+  currentDate = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+  switchPage('diary');
+  renderAll();
+}
+
+// ── Stats ──
+function renderStats() {
+  let total = 0, words = 0;
+  const moodCount = {};
+
+  Object.entries(data).forEach(([k, v]) => {
+    if (v.text && v.text.trim()) {
+      total++;
+      words += v.text.trim().length;
+    }
+    if (v.mood) {
+      moodCount[v.mood] = (moodCount[v.mood] || 0) + 1;
+    }
+  });
+
+  document.getElementById('totalEntries').textContent = total;
+  document.getElementById('totalWords').textContent = words > 999 ? (words/1000).toFixed(1)+'k' : words;
+
+  // Mood stats — 只顯示有用過的
+  const usedMoods = Object.entries(moodCount).filter(([m, c]) => c > 0).sort((a,b) => b[1]-a[1]);
+  const maxM = Math.max(...usedMoods.map(([,c])=>c), 1);
+  const moodCard = document.getElementById('moodStatsCard');
+  if (usedMoods.length === 0) {
+    moodCard.innerHTML = '<div style="text-align:center;color:var(--text-light);font-size:13px;padding:16px 0;">還沒有心情記錄</div>';
+  } else {
+    moodCard.innerHTML = usedMoods.map(([m, c]) => `
+      <div class="mood-bar-row">
+        <div class="mood-bar-label">${m}</div>
+        <div class="mood-bar-track">
+          <div class="mood-bar-fill" style="width:${(c/maxM*100).toFixed(0)}%"></div>
+        </div>
+        <div class="mood-bar-count">${c}</div>
+      </div>
+    `).join('');
+  }
+
+  // 心情篩選按鈕 — 只顯示用過的
+  const filterRow = document.getElementById('moodFilterRow');
+  if (filterRow) {
+    filterRow.innerHTML = '';
+    if (usedMoods.length === 0) {
+      filterRow.innerHTML = '<div style="color:var(--text-light);font-size:12px;">還沒有心情記錄</div>';
+    } else {
+      usedMoods.forEach(([m]) => {
+        const btn = document.createElement('button');
+        btn.className = 'mood-filter-btn' + (currentMoodFilter === m ? ' active' : '');
+        btn.dataset.mood = m;
+        btn.textContent = m;
+        btn.onclick = () => filterMoodDiary(currentMoodFilter === m ? null : m);
+        filterRow.appendChild(btn);
+      });
+    }
+  }
+
+  // Heatmap (this year, 52 weeks)
+  const hg = document.getElementById('heatmapGrid');
+  hg.innerHTML = '';
+  const now = new Date();
+  const yr = now.getFullYear();
+  for (let week = 0; week < 26; week++) {
+    for (let dow = 0; dow < 7; dow++) {
+      const d2 = new Date(yr, 0, 1 + week*7 + dow);
+      if (d2 > now) {
+        const el = document.createElement('div');
+        el.style.cssText = 'aspect-ratio:1;border-radius:2px;background:#f0eeec;';
+        hg.appendChild(el);
+        continue;
+      }
+      let hasEntry = false;
+      for (const y of ACTIVE_YEARS) {
+        const k = getKey(y, d2.getMonth(), d2.getDate());
+        if (data[k] && data[k].text && data[k].text.trim()) { hasEntry = true; break; }
+      }
+      const el = document.createElement('div');
+      el.style.cssText = `aspect-ratio:1;border-radius:2px;background:${hasEntry ? 'linear-gradient(135deg,#fde8c8,#f8bcd0)' : '#f0eeec'};`;
+      hg.appendChild(el);
+    }
+  }
+
+  // 心情日記清單
+  filterMoodDiary(currentMoodFilter);
+}
+
+// Helper for day of year
+Date.prototype.getDayOfYear = function() {
+  const start = new Date(this.getFullYear(), 0, 0);
+  const diff = this - start + ((start.getTimezoneOffset() - this.getTimezoneOffset()) * 60 * 1000);
+  return Math.floor(diff / 86400000);
+};
+
+// ── Page switching ──
+function switchPage(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+  if (tab === 'diary') {
+    document.getElementById('pageDiary').classList.add('active');
+    document.getElementById('navDiary').classList.add('active');
+    document.getElementById('mainHeader').style.display = '';
+    document.querySelector('.main').style.paddingTop = '';
+    refreshScriptVersionStatus();
+  } else if (tab === 'calendar') {
+    document.getElementById('pageCalendar').classList.add('active');
+    document.getElementById('navCalendar').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    calViewDate = new Date(currentDate);
+    renderCalendar();
+    document.querySelector('.main').style.paddingTop = '24px';
+  } else if (tab === 'stats') {
+    document.getElementById('pageStats').classList.add('active');
+    document.getElementById('navStats').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    renderStats();
+    document.querySelector('.main').style.paddingTop = '24px';
+  } else if (tab === 'review') {
+    document.getElementById('pageReview').classList.add('active');
+    document.getElementById('navReview').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    document.querySelector('.main').style.paddingTop = '24px';
+    renderReview();
+  } else if (tab === 'search') {
+    document.getElementById('pageSearch').classList.add('active');
+    document.getElementById('navSearch').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    document.querySelector('.main').style.paddingTop = '16px';
+    setTimeout(() => document.getElementById('searchInput')?.focus(), 100);
+  } else if (tab === 'settings') {
+    document.getElementById('pageSettings').classList.add('active');
+    document.getElementById('navSettings').classList.add('active');
+    document.getElementById('mainHeader').style.display = 'none';
+    document.querySelector('.main').style.paddingTop = '24px';
+    renderSettingsPage();
+    refreshScriptVersionStatus(true);
+  }
+}
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Auto-save on blur
+document.addEventListener('blur', e => {
+  if (e.target.classList.contains('entry-textarea')) {
+    const d = currentDate;
+    const yr = parseInt(e.target.id.replace('ta',''));
+    if (!isNaN(yr)) {
+      const entry = getEntry(yr, d.getMonth(), d.getDate());
+      if (e.target.value !== entry.text) {
+        // 失焦只存本地，不推雲端
+        const k = getKey(yr, d.getMonth(), d.getDate());
+        data[k] = { text: e.target.value, mood: entry.mood };
+        saveData();
+      }
+    }
+  }
+}, true);
+// ── 設定說明展開/收合 ──
+// ── AI 總結生成（Gemini） ──
+async function generateAiSummary() {
+  const btn = document.getElementById('aiSummaryBtn');
+  const textEl = document.getElementById('aiSummaryText');
+  const hintEl = document.getElementById('aiSummaryHint');
+  if (!settings.geminiApiKey) {
+    if (hintEl) {
+      hintEl.style.display = 'block';
+      hintEl.textContent = '先到設定頁貼上自己的 Gemini API 金鑰，就能使用 AI 回顧。';
+    }
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = '生成中…';
+  textEl.style.display = 'none';
+  if (hintEl) hintEl.style.display = 'none';
+
+  const meta = getReviewMeta();
+
+  try {
+    const diaryEntries = collectReviewDiaryEntries(meta.start, meta.end);
+    if (!diaryEntries.trim()) {
+      throw new Error('這段時間還沒有可回顧的日記');
+    }
+    const prompt = '以下是使用者' + meta.label + '的日記記錄：\n\n' + diaryEntries + '\n\n請用溫暖、親切的語氣幫使用者寫一段' + meta.label + '的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。';
+    const content = await callGeminiClient(prompt, 20000);
+    textEl.textContent = content;
+    textEl.style.display = 'block';
+    btn.textContent = '重新生成';
+    writeAiReviewCache(meta.type, meta.scopeKey, content);
+    const badgeEl = document.getElementById('aiSummaryBadge');
+    if (badgeEl) {
+      badgeEl.style.display = 'inline-flex';
+      badgeEl.textContent = '剛生成';
+    }
+    if (scriptUrl && lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
+      callScript({
+        action: 'saveAiReview',
+        type: meta.type,
+        scopeKey: meta.scopeKey,
+        title: meta.title,
+        content
+      }, 15000).catch(() => {});
+    }
+  } catch(e) {
+    alert('AI 錯誤：' + (e && e.message ? e.message : '請稍後再試'));
+    btn.textContent = '✨ 生成 AI 總結';
+  }
+  btn.disabled = false;
+}
+
+function toggleGuide() {
+  const body  = document.getElementById('guideBody');
+  const arrow = document.getElementById('guideArrow');
+  const open  = body.style.display === 'none';
+  body.style.display  = open ? 'block' : 'none';
+  arrow.textContent   = open ? '▴' : '▾';
+}
+
+async function callGeminiClient(prompt, timeoutMs = 20000) {
+  const apiKey = String(settings.geminiApiKey || '').trim();
+  if (!apiKey) throw new Error('尚未設定 Gemini API 金鑰');
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+      signal: controller.signal
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || json.error) throw new Error((json.error && json.error.message) || `Gemini 請求失敗：${res.status}`);
+    const text = String((((json.candidates || [])[0] || {}).content || {}).parts?.[0]?.text || '').trim();
+    if (!text) throw new Error('Gemini 沒有回傳內容');
+    return text;
+  } catch (e) {
+    if (e.name === 'AbortError') throw new Error('Gemini 請求逾時，請稍後再試');
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+const GS_CODE = `// 五年日記 × Google Sheets + Drive 同步腳本 v18
+// 部署：擴充功能→Apps Script→貼上→部署→網路應用程式→任何人可存取
+const SHEET_NAME = '日記資料';
+const AI_REVIEW_SHEET_NAME = 'AI回顧';
+const FOLDER_NAME = '五年日記圖片';
+function doGet(e) {
+  try {
+    const action=e.parameter.action||'ping',cb=e.parameter.callback;
+    let r;
+    if(action==='ping') r={ok:true,message:'五年日記腳本運作正常 v18',scriptVersion:18};
+    else if(action==='save') r=saveEntry(e.parameter);
+    else if(action==='loadAll') r=loadAll();
+    else if(action==='loadAiReview') r=loadAiReview(e.parameter);
+    else if(action==='saveAiReview') r=saveAiReview(e.parameter);
+    else if(action==='generateAiReview') r=generateAiReview(e.parameter);
+    else if(action==='generateTarotReading') r=generateTarotReading(e.parameter);
+    else if(action==='deleteEntry') r=deleteEntry(e.parameter);
+    else if(action==='renameSheet') r=renameSpreadsheet(e.parameter);
+    else if(action==='uploadImage') r={ok:false,error:'圖片請用POST'};
+    else r={ok:false,error:'未知指令'};
+    const j=JSON.stringify(r);
+    if(cb) return ContentService.createTextOutput(cb+'('+j+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return ContentService.createTextOutput(j).setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    const cb=e&&e.parameter&&e.parameter.callback||null;
+    const o=JSON.stringify({ok:false,error:err.message});
+    if(cb) return ContentService.createTextOutput(cb+'('+o+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+    return ContentService.createTextOutput(o).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+function doPost(e) {
+  try {
+    if(e.parameter&&e.parameter.action==='uploadImage') return uploadImage(e);
+    return doGet({parameter:JSON.parse(e.postData.contents)});
+  } catch(err) {
+    return ContentService.createTextOutput(JSON.stringify({ok:false,error:err.message})).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+function uploadImage(e) {
+  try {
+    const base64=e.parameter.imageData,mimeType=e.parameter.mimeType||'image/jpeg',fileName=e.parameter.fileName||('diary_'+Date.now()+'.jpg'),cb=e.parameter.callback;
+    if(!base64) return respond({ok:false,error:'缺少圖片'},cb);
+    const folder=getImageFolder();
+    const bytes=Utilities.base64Decode(base64);
+    const blob=Utilities.newBlob(bytes,mimeType,fileName);
+    const file=folder.createFile(blob);
+    file.setSharing(DriveApp.Access.ANYONE_WITH_LINK,DriveApp.Permission.VIEW);
+    const imgUrl='https://drive.google.com/thumbnail?authuser=0&sz=w1200&id='+file.getId();
+    return respond({ok:true,url:imgUrl,fileId:file.getId()},cb);
+  } catch(err) { return respond({ok:false,error:err.message},e.parameter&&e.parameter.callback); }
+}
+function getImageFolder() {
+  const f=DriveApp.getFoldersByName(FOLDER_NAME);
+  return f.hasNext()?f.next():DriveApp.createFolder(FOLDER_NAME);
+}
+function normalizeKey(raw) {
+  if(!raw)return'';const s=String(raw).trim();
+  if(/^\\d{4}-\\d{2}-\\d{2}$/.test(s))return s;
+  const d=new Date(s);if(!isNaN(d.getTime())){
+    return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  }return s;
+}
+function saveEntry(p) {
+  const sheet=getSheet(),key=normalizeKey(p.key),text=p.text||'',mood=p.mood||'',tarotText=p.tarotText||'',now=new Date().toLocaleString('zh-TW');
+  if(!key)return{ok:false,error:'缺少key'};
+  const pts=key.split('-'),display=pts[0]+'年 '+pts[1]+'/'+pts[2];
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){
+    if(normalizeKey(rows[i][0])===key){
+      sheet.getRange(i+1,1,1,6).setValues([[key,display,text,mood,now,tarotText]]);
+      return{ok:true,action:'updated',key};
+    }
+  }
+  sheet.appendRow([key,display,text,mood,now,tarotText]);
+  sortSheet(sheet);sheet.getRange(sheet.getLastRow(),3).setWrap(true);
+  return{ok:true,action:'created',key};
+}
+function loadAll() {
+  const sheet=getSheet(),rows=sheet.getDataRange().getValues(),entries={};
+  for(let i=1;i<rows.length;i++){
+    const key=normalizeKey(rows[i][0]);
+    if(key){
+      if(String(rows[i][0]).trim()!==key){const pts=key.split('-');sheet.getRange(i+1,1,1,2).setValues([[key,pts[0]+'年 '+pts[1]+'/'+pts[2]]]);}
+      entries[key]={text:rows[i][2]||'',mood:rows[i][3]||null,imgUrl:'',tarot:rows[i][5]||rows[i][6]||null,updatedAt:rows[i][4]||''};
+    }
+  }
+  sortSheet(sheet);
+  const diaryName=SpreadsheetApp.getActiveSpreadsheet().getName();
+  return{ok:true,entries,diaryName};
+}
+function deleteEntry(p) {
+  const sheet=getSheet(),key=normalizeKey(p.key);if(!key)return{ok:false,error:'缺少key'};
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){if(normalizeKey(rows[i][0])===key){sheet.deleteRow(i+1);return{ok:true,action:'deleted',key};}}
+  return{ok:false,error:'找不到'};
+}
+function renameSpreadsheet(p){SpreadsheetApp.getActiveSpreadsheet().rename(p.name||'五年日記');return{ok:true};}
+function initDriveAuth(){const f=getImageFolder();Logger.log('Drive授權成功！'+f.getName());return'授權完成';}
+function initAiAuth(){return callGemini('Reply with exactly OK');}
+function sortSheet(s){const lr=s.getLastRow();if(lr<=2)return;s.getRange(2,1,lr-1,6).sort({column:1,ascending:true});}
+function loadAiReview(p){
+  const sheet=getAiReviewSheet(),type=String(p.type||'').trim(),scopeKey=String(p.scopeKey||'').trim();
+  if(!type||!scopeKey)return{ok:false,error:'缺少範圍'};
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){
+    if(String(rows[i][0]).trim()===type&&String(rows[i][1]).trim()===scopeKey){
+      return{ok:true,review:{type:rows[i][0],scopeKey:rows[i][1],title:rows[i][2]||'',content:rows[i][3]||'',generatedAt:rows[i][4]||''}};
+    }
+  }
+  return{ok:true,review:null};
+}
+function saveAiReview(p){
+  const sheet=getAiReviewSheet(),type=String(p.type||'').trim(),scopeKey=String(p.scopeKey||'').trim(),title=String(p.title||'').trim(),content=String(p.content||'').trim(),now=new Date().toLocaleString('zh-TW');
+  if(!type||!scopeKey||!content)return{ok:false,error:'缺少回顧資料'};
+  const rows=sheet.getDataRange().getValues();
+  for(let i=1;i<rows.length;i++){
+    if(String(rows[i][0]).trim()===type&&String(rows[i][1]).trim()===scopeKey){
+      sheet.getRange(i+1,1,1,5).setValues([[type,scopeKey,title,content,now]]);
+      sheet.getRange(i+1,4).setWrap(true);
+      return{ok:true,action:'updated',type,scopeKey};
+    }
+  }
+  sheet.appendRow([type,scopeKey,title,content,now]);
+  sheet.getRange(sheet.getLastRow(),4).setWrap(true);
+  return{ok:true,action:'created',type,scopeKey};
+}
+function generateAiReview(p){
+  const type=String(p.type||'').trim(),scopeKey=String(p.scopeKey||'').trim(),title=String(p.title||'').trim(),label=String(p.label||'').trim();
+  const startDate=new Date(String(p.startDate||'')),endDate=new Date(String(p.endDate||''));
+  if(!type||!scopeKey||!label||isNaN(startDate.getTime())||isNaN(endDate.getTime()))return{ok:false,error:'缺少回顧範圍'};
+  const rows=getSheet().getDataRange().getValues();
+  const diaryEntries=[];
+  for(let i=1;i<rows.length;i++){
+    const key=normalizeKey(rows[i][0]),text=String(rows[i][2]||'').trim();
+    if(!key||!text)continue;
+    const d=new Date(key);
+    if(d>=startDate&&d<=endDate) diaryEntries.push(key+'：'+text);
+  }
+  if(!diaryEntries.length)return{ok:false,error:'這段時間還沒有可回顧的日記'};
+  const prompt='以下是使用者'+label+'的日記記錄：\\n\\n'+diaryEntries.join('\\n')+'\\n\\n請用溫暖、親切的語氣幫使用者寫一段'+label+'的日記總結，約100至150字。用繁體中文，像朋友一樣說話，提到情緒變化、常出現的主題或有印象的事，不要條列，用自然的段落文字。';
+  const content=callGemini(prompt);
+  saveAiReview({type:type,scopeKey:scopeKey,title:title,content:content});
+  return{ok:true,content:content};
+}
+function generateTarotReading(p){
+  const modeLabel=String(p.modeLabel||'').trim(),cardName=String(p.cardName||'').trim(),orientation=String(p.orientation||'').trim(),baseMeaning=String(p.baseMeaning||'').trim();
+  if(!cardName||!baseMeaning)return{ok:false,error:'缺少塔羅資料'};
+  const prompt=[
+    '請幫我寫一段塔羅延伸解讀。',
+    '用繁體中文，語氣自然，不要太玄，不要條列，不要反問句。',
+    '長度約 60 到 100 字。',
+    '抽牌方式：'+modeLabel,
+    '牌名：'+cardName+'（'+orientation+'）',
+    '基礎牌義：'+baseMeaning,
+    '請補充今天可以怎麼理解這張牌，但不要重複照抄牌義。'
+  ].join('\\n');
+  const content=callGemini(prompt);
+  return{ok:true,content:content};
+}
+function getGeminiApiKey(){
+  return PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY')||'';
+}
+function callGemini(prompt){
+  const GEMINI_API_KEY=getGeminiApiKey();
+  if(!GEMINI_API_KEY) throw new Error('尚未設定 GEMINI_API_KEY。請到 Apps Script 的「專案設定」→「指令碼屬性」新增。');
+  const payload={contents:[{parts:[{text:prompt}]}]};
+  const resp=UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(GEMINI_API_KEY),{
+    method:'post',
+    contentType:'application/json',
+    payload:JSON.stringify(payload),
+    muteHttpExceptions:true
+  });
+  const code=resp.getResponseCode();
+  const text=resp.getContentText();
+  const json=JSON.parse(text||'{}');
+  if(code>=400||json.error) throw new Error((json.error&&json.error.message)||('Gemini 請求失敗：'+code));
+  return String((((json.candidates||[])[0]||{}).content||{}).parts&&json.candidates[0].content.parts[0]&&json.candidates[0].content.parts[0].text||'').trim();
+}
+function getSheet(){
+  const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(SHEET_NAME);
+  if(!s){s=ss.insertSheet(SHEET_NAME);setupSheet(s);return s;}
+  const fc=String(s.getRange(1,1).getValue()).trim();
+  if(fc!=='索引鍵'&&fc!=='日期'){s.insertRowBefore(1);setupHeader(s);}
+  if(s.getMaxColumns()<6)s.insertColumnsAfter(s.getMaxColumns(),6-s.getMaxColumns());
+  migrateSheetColumns(s);
+  applyFormat(s);return s;
+}
+function getAiReviewSheet(){
+  const ss=SpreadsheetApp.getActiveSpreadsheet();let s=ss.getSheetByName(AI_REVIEW_SHEET_NAME);
+  if(!s){
+    s=ss.insertSheet(AI_REVIEW_SHEET_NAME);
+    s.getRange(1,1,1,5).setValues([['類型','範圍鍵','標題','內容','最後更新']]);
+    s.setFrozenRows(1);
+    s.getRange(1,1,1,5).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+  }
+  if(s.getMaxColumns()<5)s.insertColumnsAfter(s.getMaxColumns(),5-s.getMaxColumns());
+  s.setColumnWidth(1,80);s.setColumnWidth(2,110);s.setColumnWidth(3,150);s.setColumnWidth(4,520);s.setColumnWidth(5,160);
+  s.getRange('A:E').setVerticalAlignment('middle');
+  s.getRange('D2:D1000').setWrap(true);
+  return s;
+}
+function setupSheet(s){setupHeader(s);applyFormat(s);}
+function setupHeader(s){
+  if(s.getMaxColumns()<6)s.insertColumnsAfter(s.getMaxColumns(),6-s.getMaxColumns());
+  s.getRange(1,1,1,6).setValues([['索引鍵','日期','日記內容','心情','最後更新','今日抽到的塔羅-牌意']]);
+  s.setFrozenRows(1);s.getRange(1,1,1,6).setBackground('#f8d0c8').setFontWeight('bold').setHorizontalAlignment('center').setFontSize(11);
+}
+function migrateSheetColumns(s){
+  const fHeader=String(s.getRange(1,6).getValue()).trim();
+  const gHeader=s.getMaxColumns()>=7?String(s.getRange(1,7).getValue()).trim():'';
+  if(fHeader==='圖片' || !fHeader)s.getRange(1,6).setValue('今日抽到的塔羅-牌意');
+  const lr=s.getLastRow();
+  if(lr>1 && s.getMaxColumns()>=7){
+    const fVals=s.getRange(2,6,lr-1,1).getValues();
+    const gVals=s.getRange(2,7,lr-1,1).getValues();
+    let changed=false;
+    for(let i=0;i<fVals.length;i++){
+      const cur=String(fVals[i][0]||'').trim();
+      const alt=String(gVals[i][0]||'').trim();
+      if((!cur || cur==='[local]') && alt){fVals[i][0]=alt;changed=true;}
+      if(cur==='[local]'){fVals[i][0]='';changed=true;}
+    }
+    if(changed)s.getRange(2,6,lr-1,1).setValues(fVals);
+  }
+}
+function applyFormat(s){
+  s.setColumnWidth(6,280);
+  s.getRange('F2:F1000').setWrap(true);
+  s.getRange('B2:F1000').setVerticalAlignment('middle');
+  s.hideColumns(1);s.setColumnWidth(2,120);s.setColumnWidth(3,420);s.setColumnWidth(4,60);s.setColumnWidth(5,160);
+  s.getRange('C2:C1000').setWrap(true);s.getRange('B2:F1000').setVerticalAlignment('middle');
+}
+function respond(obj,cb){
+  const j=JSON.stringify(obj);
+  if(cb) return ContentService.createTextOutput(cb+'('+j+')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+  return ContentService.createTextOutput(j).setMimeType(ContentService.MimeType.JSON);
+}`;
+const GS_CODE_DISPLAY = GS_CODE;
+
+function copyGsCode() {
+  const box = document.getElementById('gsCodeBox');
+  box.select();
+  try {
+    navigator.clipboard.writeText(box.value).then(() => showToast('程式碼已複製 ✓')).catch(() => {
+      document.execCommand('copy');
+      showToast('程式碼已複製 ✓');
+    });
+  } catch {
+    document.execCommand('copy');
+    showToast('程式碼已複製 ✓');
+  }
+}
+
+
+
+
+var tempYears = [];
+
+function renderSettingsPage() {
+  tempYears = ACTIVE_YEARS.slice();
+  document.getElementById('diaryNameInput').value = settings.name;
+  const geminiInput = document.getElementById('geminiApiKeyInput');
+  if (geminiInput) geminiInput.value = settings.geminiApiKey || '';
+  renderGeminiKeyStatus();
+  renderSyncStatus();
+  renderThemeGrid();
+  // 填入 GS 程式碼（兩個文字框都填）
+  const box = document.getElementById('gsCodeBox');
+  if (box) box.value = GS_CODE_DISPLAY;
+  const box2 = document.getElementById('gsCodeBox2');
+  if (box2) box2.value = GS_CODE_DISPLAY;
+
+  const container = document.getElementById('yearSlotList');
+  container.innerHTML = '';
+
+  const curYr = new Date().getFullYear();
+  const allYears = [];
+  for (let y = 2000; y <= curYr + 10; y++) allYears.push(y);
+
+  tempYears.forEach((yr, idx) => {
+    const slot = document.createElement('div');
+    slot.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:14px;min-width:0;';
+
+    const label = document.createElement('div');
+    label.style.cssText = `width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;flex-shrink:0;`;
+    // Use gradient matching the y-class colors
+    const gradients = [
+      'linear-gradient(135deg,#fde8c8,#f8bcd0)',
+      'linear-gradient(135deg,#d0e8fb,#b8cef8)',
+      'linear-gradient(135deg,#d8f8e0,#b8e8d0)',
+      'linear-gradient(135deg,#f0d8f8,#d8b8f0)',
+      'linear-gradient(135deg,#f8f0d0,#f0d8a8)',
+    ];
+    label.style.background = gradients[idx % 5];
+    label.textContent = idx + 1;
+
+    const select = document.createElement('select');
+    select.style.cssText = 'width:100%;padding:10px 30px 10px 14px;border:1.5px solid #e8e6e3;border-radius:12px;font-size:14px;font-family:"Noto Sans TC",sans-serif;color:var(--text-dark);background:var(--white);outline:none;appearance:none;-webkit-appearance:none;box-sizing:border-box;';
+    select.innerHTML = allYears.map(y =>
+      `<option value="${y}" ${y === yr ? 'selected' : ''}>${y} 年</option>`
+    ).join('');
+    select.onchange = () => {
+      tempYears[idx] = parseInt(select.value);
+    };
+
+    const icon = document.createElement('div');
+    icon.textContent = '▾';
+    icon.style.cssText = 'font-size:12px;color:var(--text-light);pointer-events:none;margin-left:-30px;';
+
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'flex:1;min-width:0;display:flex;align-items:center;position:relative;';
+    wrapper.appendChild(select);
+    wrapper.appendChild(icon);
+
+    slot.appendChild(label);
+    slot.appendChild(wrapper);
+    container.appendChild(slot);
+  });
+}
+
+function saveYearSettings() {
+  // Check no duplicates
+  const unique = new Set(tempYears);
+  if (unique.size < tempYears.length) {
+    showToast('年份不能重複！'); return;
+  }
+  ACTIVE_YEARS = tempYears.slice().sort((a,b) => a-b);
+  settings.years = ACTIVE_YEARS;
+  saveSettings(settings);
+  renderEntries();
+  showToast('年份已更新 ✓');
+}
+
+function saveDiaryName() {
+  const name = document.getElementById('diaryNameInput').value.trim();
+  if (!name) { showToast('名稱不能為空'); return; }
+  settings.name = name;
+  saveSettings(settings);
+  document.querySelector('.app-title').textContent = name;
+  document.title = name;
+  // 同步更新 Google Sheet 標題
+  if (scriptUrl) {
+    callScript({ action: 'renameSheet', name }).catch(() => {});
+  }
+  showToast('名稱已更新 ✓');
+}
+
+function exportData() {
+  let txt = `${settings.name}\n匯出時間：${new Date().toLocaleString('zh-TW')}\n`;
+  txt += '═'.repeat(30) + '\n\n';
+
+  // Collect all entries, group by date
+  const allKeys = new Set();
+  Object.keys(data).forEach(k => {
+    if (data[k].text && data[k].text.trim()) allKeys.add(k.slice(5)); // MM-DD
+  });
+
+  // Sort by month-day
+  const sorted = [...allKeys].sort();
+
+  sorted.forEach(mmdd => {
+    let hasContent = false;
+    let block = '';
+    ACTIVE_YEARS.forEach(yr => {
+      const k = `${yr}-${mmdd}`;
+      const e = data[k];
+      if (e && e.text && e.text.trim()) {
+        if (!hasContent) {
+          block += `📅 ${mmdd.replace('-','月')}日\n`;
+          hasContent = true;
+        }
+        block += `【${yr}年】${e.mood || ''}\n`;
+        block += e.text.trim() + '\n\n';
+      }
+    });
+    if (hasContent) {
+      txt += block + '─'.repeat(20) + '\n\n';
+    }
+  });
+
+  if (allKeys.size === 0) {
+    txt += '（尚無任何日記記錄）\n';
+  }
+
+  const encoded = encodeURIComponent(txt);
+  const a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,' + encoded;
+  a.download = `五年日記_${new Date().toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showToast('已匯出 .txt ✓');
+}
+
+function confirmClear() {
+  if (confirm('確定要清除所有日記資料嗎？此動作無法復原。')) {
+    localStorage.removeItem('5yr_diary');
+    data = {};
+    showToast('資料已清除');
+    renderEntries();
+  }
+}
+
+function renderGeminiKeyStatus() {
+  const bar = document.getElementById('geminiKeyStatus');
+  if (!bar) return;
+  if (settings.geminiApiKey) {
+    bar.style.display = 'block';
+    bar.style.cssText = 'display:block;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
+    bar.textContent = '此裝置已設定 Gemini API 金鑰';
+  } else {
+    bar.style.display = 'block';
+    bar.style.cssText = 'display:block;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f7f5f2;border:1.5px solid #e8e6e3;color:#6b6b6b;';
+    bar.textContent = '此裝置尚未設定 Gemini API 金鑰';
+  }
+}
+
+function saveGeminiApiKey() {
+  const input = document.getElementById('geminiApiKeyInput');
+  if (!input) return;
+  settings.geminiApiKey = input.value.trim();
+  saveSettings(settings);
+  renderGeminiKeyStatus();
+  showToast(settings.geminiApiKey ? 'AI 金鑰已儲存 ✓' : 'AI 金鑰已清除');
+}
+
+// ── Google Sheets 雲端同步（使用 GET 避免 CORS）──
+var scriptUrl = localStorage.getItem('5yr_script_url') || '';
+let lastScriptVersion = null;
+
+function setScriptVersionBars(version) {
+  const settingsBar = document.getElementById('scriptVersionBar');
+  const homeBar = document.getElementById('homeScriptVersionBar');
+  const bars = [settingsBar, homeBar].filter(Boolean);
+  if (!bars.length) return;
+  if (!scriptUrl) {
+    bars.forEach(bar => {
+      bar.style.display = 'none';
+      bar.innerHTML = '';
+    });
+    return;
+  }
+  if (!version || version < REQUIRED_SCRIPT_VERSION) {
+    [settingsBar, homeBar].filter(Boolean).forEach(bar => {
+      bar.style.display = 'block';
+      bar.style.cssText = 'display:block;padding:12px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.8;background:#fff3e0;border:1.5px solid #f0c080;color:#8a5a00;';
+      bar.innerHTML = `⚠️ <b>腳本需要更新</b>（目前 v${version || 0}，需要 v${REQUIRED_SCRIPT_VERSION}）<br>請到設定頁重新貼上最新 Apps Script 程式碼並重新部署。`;
+    });
+    return;
+  }
+  if (settingsBar) {
+    settingsBar.style.display = 'block';
+    settingsBar.style.cssText = 'display:block;padding:10px 14px;border-radius:12px;margin-bottom:12px;font-size:12px;line-height:1.6;background:#f0fff4;border:1.5px solid #a0d8b0;color:#2a6a3a;';
+    settingsBar.innerHTML = `✅ 腳本已更新到最新版（v${version}）`;
+  }
+  if (homeBar) {
+    homeBar.style.display = 'none';
+    homeBar.innerHTML = '';
+  }
+}
+
+async function refreshScriptVersionStatus(showSuccessState = false) {
+  if (!scriptUrl) {
+    lastScriptVersion = null;
+    setScriptVersionBars(null);
+    return null;
+  }
+  try {
+    const json = await callScript({ action: 'ping' }, 10000);
+    if (!json || !json.ok) throw new Error('bad ping');
+    lastScriptVersion = json.scriptVersion || 0;
+    setScriptVersionBars(lastScriptVersion);
+    renderSyncStatus();
+    return json;
+  } catch {
+    lastScriptVersion = null;
+    setScriptVersionBars(null);
+    renderSyncStatus();
+    return null;
+  }
+}
+
+function renderSyncStatus() {
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncStatusText');
+  const pullBtn = document.getElementById('syncPullBtn');
+  const input = document.getElementById('scriptUrlInput');
+  if (!dot) return;
+  if (scriptUrl) {
+    dot.style.background = '#4caf82';
+    if (lastScriptVersion === null) {
+      txt.textContent = '已連線 · 檢查腳本版本中…';
+    } else if (lastScriptVersion >= REQUIRED_SCRIPT_VERSION) {
+      txt.textContent = `已連線 · 腳本 v${lastScriptVersion}（最新版）`;
+    } else {
+      txt.textContent = `已連線 · 腳本 v${lastScriptVersion}（需更新）`;
+    }
+    if (pullBtn) pullBtn.disabled = false;
+    if (input) input.value = scriptUrl;
+  } else {
+    dot.style.background = '#ccc';
+    txt.textContent = '尚未連線';
+    if (pullBtn) pullBtn.disabled = true;
+  }
+  if (lastScriptVersion !== null) setScriptVersionBars(lastScriptVersion);
+}
+
+// ── 呼叫 Apps Script（fetch + JSONP 雙保險）──
+let _jsonpCounter = 0;
+
+function callScript(params, timeoutMs = 10000) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'gsCallback' + (++_jsonpCounter);
+    let done = false;
+
+    const timer = setTimeout(() => {
+      if (!done) {
+        done = true;
+        window[cbName] = null;
+        reject(new Error('timeout'));
+      }
+    }, timeoutMs);
+
+    window[cbName] = function(result) {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      window[cbName] = null;
+      resolve(result);
+    };
+
+    const qs = Object.entries({ ...params, callback: cbName, _ts: Date.now() + '_' + Math.random().toString(36).slice(2) })
+      .map(([k, v]) => encodeURIComponent(k) + '=' + encodeURIComponent(String(v)))
+      .join('&');
+
+    const fullUrl = scriptUrl + '?' + qs;
+
+    // 方法一：fetch（GitHub Pages HTTPS 環境有效）
+    fetch(fullUrl, { redirect: 'follow' })
+      .then(r => r.text())
+      .then(text => {
+        console.log('fetch 回傳:', text.slice(0, 100));
+        if (!done) {
+          try { eval(text); } catch(e) { console.log('eval 錯誤:', e); }
+        }
+      })
+      .catch(err => {
+        console.log('fetch 失敗:', err);
+        // 方法二：fallback 用 script tag
+        if (!done) {
+          const script = document.createElement('script');
+          script.src = fullUrl;
+          document.head.appendChild(script);
+        }
+      });
+  });
+}
+
+const REQUIRED_SCRIPT_VERSION = 18;
+
+async function testAndSaveScriptUrl() {
+  const url = document.getElementById('scriptUrlInput').value.trim();
+  if (!url) { showToast('請先貼上網址'); return; }
+  if (!url.startsWith('https://script.google.com')) {
+    showToast('網址格式不對，請確認是 Google Apps Script 網址'); return;
+  }
+
+  const dot = document.getElementById('syncDot');
+  const txt = document.getElementById('syncStatusText');
+  if (dot) dot.style.background = '#f0c040';
+  if (txt) txt.textContent = '測試連線中…';
+  scriptUrl = url;
+
+  try {
+    const json = await callScript({ action: 'ping' }, 10000);
+    if (!json || !json.ok) throw new Error('回傳格式錯誤');
+    lastScriptVersion = json.scriptVersion || 0;
+
+    localStorage.setItem('5yr_script_url', url);
+    renderSyncStatus();
+    setScriptVersionBars(lastScriptVersion);
+
+    const allJson = await callScript({ action: 'loadAll' }, 15000);
+    if (allJson.ok) {
+      // 套用雲端日記名稱
+      if (allJson.diaryName && allJson.diaryName !== '五年日記') {
+        settings.name = allJson.diaryName;
+        saveSettings(settings);
+        document.querySelector('.app-title').textContent = allJson.diaryName;
+        document.title = allJson.diaryName;
+      }
+      // 載入日記資料
+      if (allJson.entries && Object.keys(allJson.entries).length > 0) {
+        Object.assign(data, allJson.entries);
+        saveData();
+        renderEntries();
+        showToast(`連線成功，已載入 ${Object.keys(allJson.entries).length} 筆 ✓`);
+      } else {
+        await syncToCloud();
+        showToast('連線成功 ✓');
+      }
+    }
+  } catch (err) {
+    scriptUrl = localStorage.getItem('5yr_script_url') || '';
+    lastScriptVersion = null;
+    setScriptVersionBars(null);
+    if (dot) dot.style.background = '#e06060';
+    if (txt) txt.textContent = '無法連線';
+    if (err.message === 'timeout') {
+      showToast('連線逾時，請確認已「重新部署為新版本」');
+    } else {
+      showToast('連線失敗：' + err.message);
+    }
+  }
+}
+
+async function syncToCloud() {
+  if (!scriptUrl) return;
+  let count = 0;
+  for (const [key, val] of Object.entries(data)) {
+    if (!val.text && !val.mood && !tarotToText(val.tarot)) continue;
+    try {
+      await callScript({ action: 'save', key, text: val.text || '', mood: val.mood || '', imgUrl: '', tarotText: tarotToText(val.tarot) });
+      count++;
+    } catch {}
+  }
+  if (count > 0) showToast(`已同步 ${count} 筆到雲端 ✓`);
+}
+
+async function syncFromCloud() {
+  if (!scriptUrl) { showToast('尚未連線'); return; }
+  const txt = document.getElementById('syncStatusText');
+  if (txt) txt.textContent = '載入中…';
+  try {
+    const json = await callScript({ action: 'loadAll' }, 15000);
+    if (json.ok && json.entries) {
+      Object.keys(json.entries).forEach(function(key) {
+        json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+        json.entries[key].updatedAt = normalizeUpdatedAtValue(json.entries[key].updatedAt);
+      });
+      Object.assign(data, json.entries);
+      saveData();
+      renderEntries();
+      renderSyncStatus();
+      showToast(`載入完成，共 ${Object.keys(json.entries).length} 筆 ✓`);
+    } else {
+      showToast('載入失敗，請重試');
+    }
+  } catch {
+    showToast('載入逾時，請重試');
+    renderSyncStatus();
+  }
+}
+
+async function syncFromCloudSilently() {
+  if (!scriptUrl) return;
+  try {
+    const json = await callScript({ action: 'loadAll' }, 15000);
+    if (json && json.ok && json.entries) {
+      Object.keys(json.entries).forEach(function(key) {
+        json.entries[key].tarot = normalizeTarotValue(json.entries[key].tarot);
+        json.entries[key].updatedAt = normalizeUpdatedAtValue(json.entries[key].updatedAt);
+      });
+      Object.assign(data, json.entries);
+      saveData();
+      renderAll();
+      renderSyncStatus();
+    }
+  } catch {}
+}
+
+// setEntry：儲存本地 + 背景靜默同步到雲端
+function setEntry(year, month, day, text, mood, imgUrl, tarot) {
+  const k = getKey(year, month, day);
+  const existing = data[k] || {};
+  const newImgUrl = imgUrl !== undefined ? imgUrl : (existing.imgUrl || '');
+  const newTarot = tarot !== undefined ? normalizeTarotValue(tarot) : normalizeTarotValue(existing.tarot);
+  data[k] = { text, mood, imgUrl: newImgUrl, tarot: newTarot, updatedAt: Date.now() };
+  saveData();
+  if (scriptUrl) {
+    callScript({ action: 'save', key: k, text: text || '', mood: mood || '', imgUrl: '', tarotText: tarotToText(newTarot) }).catch(() => {});
+  }
+}
+
+copyTarotPrompt = function(btn) {
+  ensureTarotState();
+  let sourceTarot = null;
+  let modeId = '';
+  if (tarotState && tarotState.chosenIndex !== null && tarotState.spread && tarotState.spread[tarotState.chosenIndex]) {
+    sourceTarot = tarotState.spread[tarotState.chosenIndex];
+    modeId = tarotState.mode;
+  } else {
+    const today = new Date();
+    sourceTarot = getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
+    modeId = sourceTarot && sourceTarot.mode ? sourceTarot.mode : '';
+  }
+  if (!sourceTarot || !sourceTarot.cardId) return;
+  const card = getTarotCardMeta(sourceTarot.cardId);
+  const mode = getTarotModeById(modeId);
+  if (!card) return;
+  const text = [
+    '請根據下面這張塔羅牌做更詳細的解讀。',
+    `抽牌方式：${mode.label}`,
+    '我的問題：',
+    '（把你的問題補在這裡）',
+    `抽到的牌：${card.name}${sourceTarot.reversed ? '（逆位）' : '（正位）'}`,
+    `牌意：${sourceTarot.reversed ? card.reversed : card.upright}`
+  ].join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) {
+      const original = btn.dataset.originalLabel || btn.textContent;
+      btn.dataset.originalLabel = original;
+      btn.textContent = '已複製';
+      btn.style.transform = 'scale(0.98)';
+      btn.style.opacity = '0.82';
+      btn.style.filter = 'brightness(0.98)';
+      setTimeout(() => {
+        btn.textContent = btn.dataset.originalLabel;
+        btn.style.transform = '';
+        btn.style.opacity = '';
+        btn.style.filter = '';
+      }, 1200);
+    }
+    showToast('已複製提問素材');
+  }).catch(() => showToast('複製失敗'));
+};
+
+shareEntry = function(yr, month, day) {
+  const ta = document.getElementById(`ta${yr}`);
+  const liveText = ta ? ta.value.trim() : '';
+  const entry = getEntry(yr, month, day);
+  const text = liveText || entry.text || '';
+  if (!text.trim()) { showToast('這篇還沒有內容可以分享'); return; }
+  const dateStr = `${yr}年${month + 1}月${day}日`;
+  shareData = { yr, month, day, text, mood: entry.mood, dateStr, imgDataUrl: null };
+  document.getElementById('shareCardDate').textContent = dateStr;
+  document.getElementById('shareCardText').textContent = text;
+  document.getElementById('shareCardMood').textContent = entry.mood || '';
+  const imgArea = document.getElementById('shareCardImg');
+  const imgEl = document.getElementById('shareCardImgEl');
+  imgArea.style.display = 'none';
+  if (entry.imgUrl) {
+    const k = getKey(yr, month, day);
+    getImgFromDB(k).then(function(dataUrl) {
+      if (dataUrl) {
+        imgEl.src = dataUrl;
+        imgArea.style.display = 'block';
+        shareData.imgDataUrl = dataUrl;
+      }
+    });
+  }
+  document.getElementById('shareOverlay').classList.add('show');
+};
+
+onTextInput = function(ta, yr, month, day) {
+  ta.style.height = 'auto';
+  ta.style.height = ta.scrollHeight + 'px';
+  const len = ta.value.length;
+  document.getElementById(`cc${yr}`).textContent = `${len}字`;
+  const saveBtn = document.getElementById(`saveBtn${yr}`);
+  if (saveBtn) {
+    saveBtn.classList.toggle('visible', len > 0 || getEntry(yr, month, day).text !== ta.value);
+  }
+  let shareBtn = document.getElementById(`shareBtn${yr}`);
+  if (len > 0 && !shareBtn) {
+    const actionRow = ta.closest('.entry-inner')?.querySelector('.entry-footer div[style*="display:flex"]');
+    if (actionRow) {
+      shareBtn = document.createElement('button');
+      shareBtn.id = `shareBtn${yr}`;
+      shareBtn.textContent = '↗ 分享';
+      shareBtn.setAttribute('onclick', `shareEntry(${yr}, ${month}, ${day})`);
+      shareBtn.style.cssText = 'background:none;border:none;color:var(--text-light);font-size:13px;cursor:pointer;padding:2px 6px;border-radius:8px;letter-spacing:0.03em;';
+      actionRow.appendChild(shareBtn);
+    }
+  }
+  if (shareBtn) shareBtn.style.display = len > 0 ? '' : 'none';
+};
+
+downloadShareImage = async function() {
+  const cardW = 320;
+  const hasImg = !!shareData.imgDataUrl;
+  const tempCanvas = document.createElement('canvas');
+  const tempCtx = tempCanvas.getContext('2d');
+  tempCtx.font = '14px serif';
+  const textLines = [];
+  shareData.text.split('\n').forEach(function(para) {
+    var line = '';
+    for (var i = 0; i < para.length; i++) {
+      var test = line + para[i];
+      if (tempCtx.measureText(test).width > cardW - 64 && line) {
+        textLines.push(line); line = para[i];
+      } else { line = test; }
+    }
+    textLines.push(line || '');
+  });
+  const textH = textLines.length * 24 + 20;
+  const renderCanvas = (imgEl, iW, iH) => {
+    const cardH = (imgEl ? 24 + iH + 16 : 24) + 28 + textH + 50;
+    const scale = 3;
+    const canvas = document.createElement('canvas');
+    canvas.width = cardW * scale;
+    canvas.height = cardH * scale;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(scale, scale);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, cardW, cardH);
+    let curY = 20;
+    if (imgEl) {
+      ctx.drawImage(imgEl, 16, curY, iW, iH);
+      curY += iH + 16;
+    }
+    ctx.fillStyle = '#aaaaaa';
+    ctx.font = '10px sans-serif';
+    ctx.fillText(shareData.dateStr, 16, curY + 12);
+    curY += 28;
+    ctx.fillStyle = '#2d2d2d';
+    ctx.font = '14px serif';
+    textLines.forEach(function(l) {
+      ctx.fillText(l, 16, curY);
+      curY += 24;
+    });
+    curY += 10;
+    if (shareData.mood) {
+      ctx.font = '22px sans-serif';
+      ctx.fillText(shareData.mood, 16, curY + 18);
+    }
+    ctx.fillStyle = '#cccccc';
+    ctx.font = '9px sans-serif';
+    ctx.fillText('五年日記', cardW - 60, curY + 18);
+    return canvas;
+  };
+  const canvas = await new Promise(function(resolve) {
+    if (!hasImg || !shareData.imgDataUrl) {
+      resolve(renderCanvas(null, 0, 0));
+      return;
+    }
+    const preloadImg = new Image();
+    preloadImg.onload = function() {
+      const iW = 288;
+      const iH = Math.round(preloadImg.naturalHeight * iW / preloadImg.naturalWidth);
+      resolve(renderCanvas(preloadImg, iW, iH));
+    };
+    preloadImg.src = shareData.imgDataUrl;
+  });
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+  if (!blob) { showToast('產生圖片失敗'); return; }
+  const fileName = `五年日記_${shareData.dateStr}.png`;
+  const file = new File([blob], fileName, { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: fileName });
+      showToast('已開啟分享選單');
+      return;
+    } catch (err) {}
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  showToast('已開始下載圖片');
+};
+
+</script>
+</body>
+</html>
