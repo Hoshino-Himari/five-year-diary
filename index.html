@@ -2584,40 +2584,33 @@ function renderTarotSection(animate) {
   ensureTarotState();
   const section = document.getElementById('tarotDailySection');
   if (!section) return;
-  if (animate) {
-    section.classList.remove('animate-in');
-    void section.offsetWidth; // force reflow
-    section.classList.add('animate-in');
-  }
+
   const today = new Date();
   const savedTarot = getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
   const savedCard = savedTarot && savedTarot.cardId ? getTarotCardMeta(savedTarot.cardId) : null;
   const tarotDisplay = getTarotDisplayParts(savedTarot);
   const savedMode = savedTarot && savedTarot.mode ? getTarotModeById(savedTarot.mode) : null;
 
+  // State 1: card already picked today — show result
   if (savedTarot && (savedCard || tarotDisplay)) {
     const tagParts = [];
     if (savedTarot.cardId) tagParts.push(savedTarot.reversed ? '逆位' : '正位');
     if (savedMode && savedTarot.mode) tagParts.push(savedMode.label);
     const showAiPlaceholder = !!savedCard && !savedTarot.aiText;
     section.innerHTML = `
-      <div class="tarot-spread-hint">今日塔羅已固定，明天才會出現新的牌。</div>
       <div class="tarot-result">
         <div class="tarot-result-head">
-          <div>
-            <div class="tarot-result-title">${savedCard ? savedCard.name : tarotDisplay.title}</div>
-            <div class="tarot-result-tag">${tagParts.join(' · ')}</div>
-          </div>
+          <div class="tarot-result-title">${savedCard ? savedCard.name : tarotDisplay.title}</div>
+          <div class="tarot-result-tag">${tagParts.join(' · ')}</div>
         </div>
         <div class="tarot-result-copy">
-          <div style="font-family:'Noto Serif TC',serif;font-size:18px;color:var(--text-dark);margin-bottom:6px;">${savedCard ? savedCard.name : tarotDisplay.title}</div>
-          ${savedCard ? `<div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin-bottom:10px;">${savedTarot.reversed ? 'REVERSED' : 'UPRIGHT'}</div>` : ''}
+          ${savedCard ? `<div style="font-size:11px;letter-spacing:0.12em;margin-bottom:8px;opacity:0.7;">${savedTarot.reversed ? 'REVERSED' : 'UPRIGHT'}</div>` : ''}
           <div style="margin-bottom:${savedTarot.aiText ? '14px' : '0'};">${savedCard ? (savedTarot.reversed ? savedCard.reversed : savedCard.upright) : tarotDisplay.copy}</div>
           ${savedTarot.aiText ? `
-            <div style="font-size:11px;color:var(--text-light);letter-spacing:0.12em;margin:0 0 8px;">AI EXTENDED READING</div>
-            <div style="padding:12px 14px;border-radius:14px;background:#fffaf1;border:1px solid rgba(209,185,142,0.35);font-size:13px;line-height:1.85;color:var(--text-dark);">${savedTarot.aiText}</div>
+            <div style="font-size:10px;letter-spacing:0.12em;margin:0 0 6px;opacity:0.6;">AI EXTENDED READING</div>
+            <div style="padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.25);font-size:12px;line-height:1.8;">${savedTarot.aiText}</div>
           ` : showAiPlaceholder ? `
-            <div style="font-size:12px;color:var(--text-mid);line-height:1.8;">正在補上 AI 延伸解讀…</div>
+            <div style="font-size:12px;opacity:0.7;line-height:1.8;">正在補上 AI 延伸解讀…</div>
           ` : ''}
         </div>
         <div class="tarot-result-note">今日塔羅只能抽一次。如果想自己再追問，也可以把這張牌和你的問題一起拿去問 AI。</div>
@@ -2629,47 +2622,61 @@ function renderTarotSection(animate) {
     return;
   }
 
+  // State 2: no mode selected — show placeholder card backs
   if (!tarotState.mode || !tarotState.spread.length) {
     section.innerHTML = `
-      <div class="tarot-spread-hint">先選一種方式，再從今天的三張牌裡抽出一張。</div>
-      <div class="tarot-spread" style="display:flex;align-items:flex-end;justify-content:center;gap:10px;height:170px;">
-        ${TAROT_BACK_SYMBOLS.map((symbol, index) => `
-          <div style="width:82px;aspect-ratio:0.62;border-radius:16px;background:linear-gradient(135deg,#36115c,#23103e);border:2px solid #d6b26e;display:flex;align-items:center;justify-content:center;color:#efcf8b;font-size:30px;transform:rotate(${index===0?-8:index===1?0:8}deg) translateY(${index===1?0:10}px);box-shadow:0 10px 22px rgba(0,0,0,0.16);">${symbol}</div>
+      <div class="tarot-placeholder-spread">
+        ${TAROT_BACK_SYMBOLS.map((symbol, i) => `
+          <div class="tarot-placeholder-card" style="transform:rotate(${i===0?-8:i===1?0:8}deg) translateY(${i===1?0:10}px);">${symbol}</div>
         `).join('')}
       </div>
     `;
     return;
   }
 
+  // State 3: mode selected, show horizontal scroll deck
   const mode = getTarotModeById(tarotState.mode);
+  const spreadLen = tarotState.spread.length;
+  const CARD_COUNT = 22;
+  const hintText = mode.id === 'intent' ? '把問題放在心裡，憑直覺選一張。' : '不用先想問題，照直覺選一張就好。';
   section.innerHTML = `
-    <div class="tarot-spread-hint">${mode.id === 'intent' ? '先放一個今天最想釐清的問題，再選一張。' : '不用先想問題，照直覺選一張就好。'}</div>
-    <div class="tarot-spread">
-      ${tarotState.spread.map((item, index) => {
-        const meta = getTarotCardMeta(item.cardId);
-        return `
-          <div class="tarot-card-slot ready" data-index="${index}" onclick="pickTarotCard(${index})">
-            <div class="tarot-card">
-              <div class="tarot-card-back">
-                <div class="tarot-back-lines"></div>
-                <div class="tarot-back-symbol">${item.backSymbol}</div>
-              </div>
-              <div class="tarot-card-face${item.reversed ? ' is-reversed' : ''}" style="--tarot-a:${meta.palette[0]};--tarot-b:${meta.palette[1]};">
-                <div class="tarot-front-crest">${meta.no}</div>
-                <div class="tarot-front-art">
-                  <div class="tarot-front-sun"></div>
-                  <div class="tarot-front-moon"></div>
-                  <div class="tarot-front-icon">${meta.icon}</div>
-                </div>
-                <div class="tarot-front-name">${meta.name}</div>
-                <div class="tarot-front-sub">${item.reversed ? 'REVERSED' : 'UPRIGHT'}</div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('')}
+    <div class="tarot-divider-text">${hintText}</div>
+    <div class="tarot-scroll-wrapper">
+      <div class="tarot-h-scroll" id="tarotHScroll">
+        ${Array.from({length: CARD_COUNT}, (_, i) => `
+          <div class="tarot-h-card" data-pick="${i % spreadLen}">✦</div>
+        `).join('')}
+      </div>
     </div>
   `;
+
+  // Set up drag scroll
+  const sc = document.getElementById('tarotHScroll');
+  if (!sc) return;
+  let isDown = false, startX, scrollLeft, dragged = false;
+  sc.addEventListener('mousedown', e => {
+    isDown = true; dragged = false; sc.classList.add('dragging');
+    startX = e.pageX - sc.offsetLeft; scrollLeft = sc.scrollLeft;
+  });
+  sc.addEventListener('mouseleave', () => { isDown = false; sc.classList.remove('dragging'); });
+  sc.addEventListener('mouseup', () => { isDown = false; sc.classList.remove('dragging'); });
+  sc.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const walk = (e.pageX - sc.offsetLeft - startX) * 1.5;
+    if (Math.abs(walk) > 5) dragged = true;
+    sc.scrollLeft = scrollLeft - walk;
+  });
+  sc.querySelectorAll('.tarot-h-card').forEach(card => {
+    card.addEventListener('click', function() {
+      if (dragged) return;
+      if (tarotState.chosenIndex !== null) return;
+      const pickIndex = parseInt(this.getAttribute('data-pick'), 10);
+      this.classList.add('picked');
+      this.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      setTimeout(() => pickTarotCard(pickIndex), 300);
+    });
+  });
 }
 
 async function pasteToEntry(taId) {
