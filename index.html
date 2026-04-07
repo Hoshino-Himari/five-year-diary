@@ -903,35 +903,51 @@
   }
   .tarot-mode-btn {
     border: 1px solid rgba(245, 220, 182, 0.28);
-    border-radius: 18px;
-    background: rgba(255,255,255,0.08);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
     color: #fff7ef;
-    padding: 14px;
+    padding: 14px 16px;
     text-align: left;
     cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    transition: transform 0.2s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .tarot-mode-btn:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
   }
   .tarot-mode-btn:active { transform: scale(0.98); }
   .tarot-mode-btn.active {
-    background: rgba(255,255,255,0.14);
-    border-color: rgba(247, 211, 161, 0.56);
+    background: rgba(252, 208, 123, 0.12);
+    border-color: #FCD07B;
+    box-shadow: 0 0 18px rgba(252, 208, 123, 0.2), inset 0 0 12px rgba(252, 208, 123, 0.06);
+  }
+  .tarot-mode-btn.active .tarot-mode-label {
+    color: #FCD07B;
   }
   .tarot-mode-label {
     display: block;
     font-family: 'Noto Serif TC', serif;
     font-size: 16px;
     margin-bottom: 6px;
+    transition: color 0.25s ease;
   }
   .tarot-mode-copy {
     display: block;
     font-size: 12px;
     line-height: 1.7;
-    color: rgba(255,245,235,0.78);
+    color: rgba(255,245,235,0.72);
   }
   .tarot-spread-area {
     position: relative;
     z-index: 1;
     min-height: 252px;
+  }
+  @keyframes tarotFadeIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .tarot-spread-area.animate-in {
+    animation: tarotFadeIn 0.5s ease forwards;
   }
   .tarot-spread-hint {
     text-align: center;
@@ -939,6 +955,7 @@
     color: rgba(255,245,235,0.76);
     line-height: 1.8;
     margin-bottom: 12px;
+    letter-spacing: 0.03em;
   }
   .tarot-spread {
     position: relative;
@@ -1099,12 +1116,17 @@
     color: #8d7779;
     letter-spacing: 0.08em;
   }
+  @keyframes tarotResultSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   .tarot-result {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(244, 221, 189, 0.28);
-    border-radius: 18px;
-    padding: 14px;
-    backdrop-filter: blur(8px);
+    background: linear-gradient(145deg, rgba(252,227,138,0.14) 0%, rgba(243,129,129,0.1) 100%);
+    border: 1px solid rgba(252, 208, 123, 0.35);
+    border-radius: 20px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    animation: tarotResultSlideUp 0.45s ease forwards;
   }
   .tarot-result-head {
     display: flex;
@@ -1124,9 +1146,11 @@
     gap: 6px;
     padding: 4px 10px;
     border-radius: 999px;
-    background: rgba(255,255,255,0.12);
+    background: rgba(252, 208, 123, 0.18);
+    border: 1px solid rgba(252, 208, 123, 0.3);
     font-size: 11px;
-    color: rgba(255,247,240,0.86);
+    color: #FCD07B;
+    letter-spacing: 0.05em;
   }
   .tarot-result-copy {
     font-size: 12px;
@@ -1154,13 +1178,15 @@
     cursor: pointer;
   }
   .tarot-action-btn.primary {
-    background: #fff4df;
-    color: #4f3840;
+    background: linear-gradient(135deg, #FCE38A, #F0C060);
+    color: #3a2a18;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(252,200,80,0.3);
   }
   .tarot-action-btn.secondary {
-    background: rgba(255,255,255,0.12);
-    color: #fff7ef;
-    border: 1px solid rgba(244, 221, 189, 0.28);
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,247,240,0.9);
+    border: 1px solid rgba(252, 208, 123, 0.3);
   }
   @media (max-width: 390px) {
     .tarot-spread { max-width: 290px; }
@@ -1618,7 +1644,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '9.2';
+const APP_VERSION = '9.3';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2635,13 +2661,18 @@ function startTarotDraw(modeId) {
   };
   saveTarotState();
   renderTarotModes();
-  renderTarotSection();
+  renderTarotSection(true);
 }
 
-function renderTarotSection() {
+function renderTarotSection(animate) {
   ensureTarotState();
   const section = document.getElementById('tarotDailySection');
   if (!section) return;
+  if (animate) {
+    section.classList.remove('animate-in');
+    void section.offsetWidth; // force reflow
+    section.classList.add('animate-in');
+  }
   const today = new Date();
   const savedTarot = getEntry(today.getFullYear(), today.getMonth(), today.getDate()).tarot;
   const savedCard = savedTarot && savedTarot.cardId ? getTarotCardMeta(savedTarot.cardId) : null;
