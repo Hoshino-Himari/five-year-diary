@@ -854,24 +854,16 @@
   }
 
   .tarot-card-wrap {
-    background: linear-gradient(135deg, #1d1432 0%, #301049 48%, #4b205d 100%);
+    background: linear-gradient(180deg, #16161e 0%, #1d1d2a 100%);
     border-radius: 24px;
     padding: 18px 16px;
     margin-bottom: 18px;
-    box-shadow: 0 12px 30px rgba(36, 20, 52, 0.22);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
     position: relative;
     overflow: hidden;
     color: #fff8f0;
   }
-  .tarot-card-wrap::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at top right, rgba(255,255,255,0.16), transparent 30%),
-      radial-gradient(circle at bottom left, rgba(246, 210, 153, 0.14), transparent 34%);
-    pointer-events: none;
-  }
+  .tarot-card-wrap::before { display: none; }
   .tarot-header {
     position: relative;
     z-index: 1;
@@ -880,19 +872,20 @@
   .tarot-kicker {
     font-size: 10px;
     letter-spacing: 0.18em;
-    color: rgba(255,245,235,0.65);
+    color: rgba(255,255,255,0.45);
     margin-bottom: 8px;
   }
   .tarot-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 1.4;
     margin-bottom: 6px;
+    color: #ffffff;
   }
   .tarot-subtitle {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.8;
-    color: rgba(255,245,235,0.8);
+    color: rgba(255,255,255,0.6);
   }
   .tarot-mode-grid {
     position: relative;
@@ -902,45 +895,45 @@
     margin-bottom: 14px;
   }
   .tarot-mode-btn {
-    border: 1px solid rgba(245, 220, 182, 0.28);
-    border-radius: 16px;
-    background: rgba(255,255,255,0.06);
-    color: #fff7ef;
-    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    color: #ffffff;
+    padding: 16px 16px;
     text-align: left;
     cursor: pointer;
-    transition: transform 0.2s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
   }
   .tarot-mode-btn:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateY(-2px);
+    background: rgba(255,255,255,0.07);
   }
   .tarot-mode-btn:active { transform: scale(0.98); }
   .tarot-mode-btn.active {
-    background: rgba(252, 208, 123, 0.12);
+    background: rgba(252, 208, 123, 0.08);
     border-color: #FCD07B;
-    box-shadow: 0 0 18px rgba(252, 208, 123, 0.2), inset 0 0 12px rgba(252, 208, 123, 0.06);
+    box-shadow: 0 0 20px rgba(252, 208, 123, 0.12);
   }
   .tarot-mode-btn.active .tarot-mode-label {
     color: #FCD07B;
   }
   .tarot-mode-label {
     display: block;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
+    font-size: 17px;
+    font-weight: 600;
     margin-bottom: 6px;
     transition: color 0.25s ease;
+    color: #ffffff;
   }
   .tarot-mode-copy {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.7;
-    color: rgba(255,245,235,0.72);
+    color: rgba(255,255,255,0.5);
   }
   .tarot-spread-area {
     position: relative;
     z-index: 1;
-    min-height: 180px;
+    min-height: 140px;
   }
   @keyframes tarotFadeIn {
     from { opacity: 0; transform: translateY(-12px); }
@@ -951,17 +944,18 @@
   }
   .tarot-spread-hint {
     text-align: center;
-    font-size: 12px;
-    color: rgba(255,245,235,0.76);
+    font-size: 13px;
+    font-weight: 600;
+    color: #FCD07B;
     line-height: 1.8;
-    margin-bottom: 12px;
-    letter-spacing: 0.03em;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
   }
-  /* ── Horizontal scroll spread ── */
+  /* ── Horizontal scroll spread (78 cards) ── */
   .tarot-spread {
     display: flex;
     overflow-x: auto;
-    padding: 20px calc(50% - 44px) 28px;
+    padding: 16px calc(50% - 31px) 22px;
     scrollbar-width: none;
     -ms-overflow-style: none;
     cursor: grab;
@@ -972,32 +966,32 @@
   .tarot-spread::-webkit-scrollbar { display: none; }
   .tarot-spread.drag-active { cursor: grabbing; scroll-snap-type: none; }
   .tarot-card-slot {
-    flex: 0 0 82px;
-    height: 128px;
+    flex: 0 0 62px;
+    height: 98px;
     transform-style: preserve-3d;
-    transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, filter 0.3s ease, box-shadow 0.32s ease;
+    transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease, filter 0.3s ease;
     cursor: pointer;
     scroll-snap-align: center;
     position: relative;
-    margin-left: -36px;
+    margin-left: -32px;
     z-index: 1;
   }
   .tarot-card-slot:first-child { margin-left: 0; }
   .tarot-card-slot:hover:not(.is-muted):not(.revealed):not(.selected) {
-    transform: scale(1.13) translateY(-10px);
+    transform: scale(1.15) translateY(-8px);
     z-index: 10;
   }
   .tarot-card-slot.selected {
-    transform: scale(1.13) translateY(-10px);
+    transform: scale(1.15) translateY(-8px);
     z-index: 10;
   }
   .tarot-card-slot.is-muted {
     opacity: 0.28;
-    filter: blur(1.5px);
+    filter: blur(1px);
     pointer-events: none;
   }
   .tarot-card-slot.revealed {
-    transform: scale(1.13) translateY(-10px);
+    transform: scale(1.15) translateY(-8px);
     z-index: 10;
   }
   .tarot-card {
@@ -1014,51 +1008,38 @@
   .tarot-card-face, .tarot-card-back {
     position: absolute;
     inset: 0;
-    border-radius: 14px;
+    border-radius: 10px;
     backface-visibility: hidden;
     overflow: hidden;
-    box-shadow: 0 10px 22px rgba(0,0,0,0.22);
   }
   .tarot-card-back {
-    background: linear-gradient(135deg, #1c1c2e 0%, #2a1840 100%);
-    border: 1.5px solid rgba(252, 208, 123, 0.38);
-    box-shadow: -8px 0 18px rgba(0,0,0,0.55);
+    background: #1e1e28;
+    border: 1.5px solid rgba(252, 208, 123, 0.25);
+    box-shadow: -6px 0 14px rgba(0,0,0,0.6);
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
+  .tarot-card-slot:hover:not(.is-muted):not(.revealed) .tarot-card-back,
   .tarot-card-slot.selected .tarot-card-back,
-  .tarot-card-slot:hover:not(.is-muted) .tarot-card-back {
+  .tarot-card-slot.revealed .tarot-card-back {
     border-color: #FCD07B;
-    box-shadow: 0 0 18px rgba(252, 208, 123, 0.35), -4px 0 14px rgba(0,0,0,0.5);
+    box-shadow: 0 0 16px rgba(252, 208, 123, 0.3), -4px 0 12px rgba(0,0,0,0.5);
   }
   .tarot-card-back::before,
-  .tarot-card-back::after {
-    content: '';
-    position: absolute;
-    inset: 8px;
-    border: 1px solid rgba(252, 208, 123, 0.3);
-    border-radius: 12px;
-  }
-  .tarot-card-back::after {
-    inset: 16px;
-    border-style: dashed;
-    opacity: 0.4;
-  }
-  .tarot-back-lines {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(transparent 49%, rgba(252,208,123,0.12) 50%, transparent 51%),
-      linear-gradient(90deg, transparent 49%, rgba(252,208,123,0.12) 50%, transparent 51%);
-    opacity: 0.5;
-    transform: rotate(20deg) scale(1.45);
-  }
+  .tarot-card-back::after { display: none; }
+  .tarot-back-lines { display: none; }
   .tarot-back-symbol {
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(252, 208, 123, 0.7);
-    font-size: 38px;
+    color: rgba(252, 208, 123, 0.55);
+    font-size: 22px;
+    transition: color 0.25s ease;
+  }
+  .tarot-card-slot:hover:not(.is-muted):not(.revealed) .tarot-back-symbol,
+  .tarot-card-slot.selected .tarot-back-symbol {
+    color: #FCD07B;
   }
   .tarot-card-face {
     transform: rotateY(180deg);
@@ -1203,8 +1184,8 @@
     border: 1px solid rgba(252, 208, 123, 0.3);
   }
   @media (max-width: 390px) {
-    .tarot-card-slot { flex: 0 0 74px; height: 116px; margin-left: -30px; }
-    .tarot-spread { padding: 18px calc(50% - 40px) 24px; }
+    .tarot-card-slot { flex: 0 0 56px; height: 90px; margin-left: -28px; }
+    .tarot-spread { padding: 14px calc(50% - 28px) 20px; }
   }
   @media (max-width: 430px) {
     .bottom-nav {
@@ -2554,33 +2535,42 @@ function resetTarotDraw() {
   renderTarotSection();
 }
 
-function pickTarotCard(index) {
+function pickTarotCard(visualIndex) {
   ensureTarotState();
   if (!tarotState.spread.length || tarotState.chosenIndex !== null) return;
 
+  // Map visual position (0-77) to one of the 3 sampled cards
+  const spreadIndex = visualIndex % tarotState.spread.length;
+
+  // Scroll selected card into view
+  const scrollEl = document.getElementById('tarotSpreadScroll');
+  const slot = scrollEl && scrollEl.querySelector(`[data-visual="${visualIndex}"]`);
+  if (slot) slot.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
   // Animate: lift selected, mute others, then flip
   const slots = document.querySelectorAll('.tarot-card-slot');
-  slots.forEach((slot, i) => {
-    if (i === index) {
-      slot.classList.add('selected');
-      slot.style.pointerEvents = 'none';
-      setTimeout(() => slot.classList.add('revealed'), 260);
+  slots.forEach(s => {
+    const vi = parseInt(s.getAttribute('data-visual'), 10);
+    if (vi === visualIndex) {
+      s.classList.add('selected');
+      s.style.pointerEvents = 'none';
+      setTimeout(() => s.classList.add('revealed'), 280);
     } else {
-      slot.classList.add('is-muted');
+      s.classList.add('is-muted');
     }
   });
 
-  // Save data after flip animation completes (~1.1 s total)
+  // Save data after flip animation completes
   setTimeout(() => {
-    tarotState.chosenIndex = index;
-    applyTarotToTodayEntry(tarotState.spread[index], tarotState.mode);
+    tarotState.chosenIndex = spreadIndex;
+    applyTarotToTodayEntry(tarotState.spread[spreadIndex], tarotState.mode);
     saveTarotState();
     renderTarotSection();
     renderTarotLaunchArea();
     renderEntries();
     showToast('今日的牌已翻開');
     generateTarotAiReading();
-  }, 1150);
+  }, 1200);
 }
 
 function initTarotSpreadDrag(el) {
@@ -2762,47 +2752,57 @@ function renderTarotSection(animate) {
   }
 
   if (!tarotState.mode || !tarotState.spread.length) {
+    // Placeholder: decorative row of 13 dim cards
+    const placeholderCards = Array(13).fill(0).map(() =>
+      `<div class="tarot-card-slot" style="pointer-events:none;opacity:0.35;">
+        <div class="tarot-card">
+          <div class="tarot-card-back"><div class="tarot-back-symbol">✦</div></div>
+        </div>
+      </div>`
+    ).join('');
     section.innerHTML = `
-      <div class="tarot-spread-hint">先選一種方式，再從今天的三張牌裡抽出一張。</div>
-      <div class="tarot-spread" style="justify-content:center;align-items:flex-end;padding:18px 30px 22px;gap:8px;">
-        ${TAROT_BACK_SYMBOLS.map((symbol, index) => `
-          <div style="flex:0 0 74px;height:116px;border-radius:13px;background:linear-gradient(135deg,#1c1c2e,#2a1840);border:1.5px solid rgba(252,208,123,0.3);display:flex;align-items:center;justify-content:center;color:rgba(252,208,123,0.55);font-size:28px;transform:rotate(${index===0?-8:index===1?0:8}deg) translateY(${index===1?0:10}px);box-shadow:-6px 0 16px rgba(0,0,0,0.5);">${symbol}</div>
-        `).join('')}
-      </div>
+      <div class="tarot-spread" style="pointer-events:none;">${placeholderCards}</div>
     `;
     return;
   }
 
   const mode = getTarotModeById(tarotState.mode);
+  const spread = tarotState.spread;
+  const total = 78;
+  // Each of the 78 visual cards maps to one of the 3 sampled cards via index % spread.length
+  let cardsHtml = '';
+  for (let i = 0; i < total; i++) {
+    const item = spread[i % spread.length];
+    const meta = getTarotCardMeta(item.cardId);
+    cardsHtml += `
+      <div class="tarot-card-slot" data-visual="${i}" onclick="pickTarotCard(${i})">
+        <div class="tarot-card">
+          <div class="tarot-card-back"><div class="tarot-back-symbol">✦</div></div>
+          <div class="tarot-card-face${item.reversed ? ' is-reversed' : ''}" style="--tarot-a:${meta.palette[0]};--tarot-b:${meta.palette[1]};">
+            <div class="tarot-front-crest">${meta.no}</div>
+            <div class="tarot-front-art">
+              <div class="tarot-front-sun"></div>
+              <div class="tarot-front-moon"></div>
+              <div class="tarot-front-icon">${meta.icon}</div>
+            </div>
+            <div class="tarot-front-name">${meta.name}</div>
+            <div class="tarot-front-sub">${item.reversed ? 'REV' : 'UPR'}</div>
+          </div>
+        </div>
+      </div>`;
+  }
   section.innerHTML = `
     <div class="tarot-spread-hint">${mode.id === 'intent' ? '先放一個今天最想釐清的問題，再選一張。' : '不用先想問題，照直覺選一張就好。'}</div>
-    <div class="tarot-spread" id="tarotSpreadScroll">
-      ${tarotState.spread.map((item, index) => {
-        const meta = getTarotCardMeta(item.cardId);
-        return `
-          <div class="tarot-card-slot" data-index="${index}" onclick="pickTarotCard(${index})">
-            <div class="tarot-card">
-              <div class="tarot-card-back">
-                <div class="tarot-back-lines"></div>
-                <div class="tarot-back-symbol">${item.backSymbol}</div>
-              </div>
-              <div class="tarot-card-face${item.reversed ? ' is-reversed' : ''}" style="--tarot-a:${meta.palette[0]};--tarot-b:${meta.palette[1]};">
-                <div class="tarot-front-crest">${meta.no}</div>
-                <div class="tarot-front-art">
-                  <div class="tarot-front-sun"></div>
-                  <div class="tarot-front-moon"></div>
-                  <div class="tarot-front-icon">${meta.icon}</div>
-                </div>
-                <div class="tarot-front-name">${meta.name}</div>
-                <div class="tarot-front-sub">${item.reversed ? 'REV' : 'UPR'}</div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('')}
-    </div>
+    <div class="tarot-spread" id="tarotSpreadScroll">${cardsHtml}</div>
   `;
   initTarotSpreadDrag(document.getElementById('tarotSpreadScroll'));
+  // Scroll to middle on load
+  const scrollEl = document.getElementById('tarotSpreadScroll');
+  if (scrollEl) {
+    const mid = Math.floor(total / 2);
+    const cardW = 30; // approx visible width per card
+    scrollEl.scrollLeft = mid * cardW;
+  }
 }
 
 async function pasteToEntry(taId) {
