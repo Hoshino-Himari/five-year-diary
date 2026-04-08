@@ -1275,7 +1275,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v4.7</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v9.5</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1298,7 +1298,6 @@
       <div class="prompt-text" id="promptText"></div>
     </div>
     <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
-    <div id="tarotLaunchArea"></div>
 
     <div class="section-title">五年的今天</div>
     <div class="entries-list" id="entriesList"></div>
@@ -1331,7 +1330,7 @@
         連結後資料會同步到你的 Google 試算表，<br>換手機換電腦都不怕。
       </div>
       <div style="background:#fff8f0;border:1px solid #f0e0c8;border-radius:12px;padding:10px 12px;font-size:12px;color:#8a5a00;line-height:1.7;margin-bottom:16px;">
-        未連接 Google Sheet 時，資料只會保存在目前裝置。<br>AI 回顧與 AI 塔羅解讀可用設定頁裡自己的 Gemini 金鑰直接使用。
+        未連接 Google Sheet 時，資料只會保存在目前裝置。<br>AI 回顧可用設定頁裡自己的 Gemini 金鑰直接使用。
       </div>
 
       <!-- 連線狀態 -->
@@ -1412,7 +1411,7 @@
         style="width:100%;box-sizing:border-box;border:1.5px solid #e8e6e3;border-radius:12px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--bg);margin-bottom:10px;outline:none;">
       <button onclick="saveGeminiApiKey()" style="width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:12px;font-size:13px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">儲存 AI 金鑰</button>
       <div style="font-size:11px;color:var(--text-light);line-height:1.7;margin-top:10px;">
-        教學：到 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Google AI Studio API Keys</a> 建立 API key，回來貼在這裡即可。<br>之後 AI 回顧和 AI 塔羅會直接使用這把金鑰。
+        教學：到 <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">Google AI Studio API Keys</a> 建立 API key，回來貼在這裡即可。<br>之後 AI 回顧會直接使用這把金鑰。
       </div>
     </div>
 
@@ -1480,6 +1479,9 @@
       <button class="review-tab active" onclick="switchReview('week')" id="rtWeek">本週</button>
       <button class="review-tab" onclick="switchReview('month')" id="rtMonth">本月</button>
       <button class="review-tab" onclick="switchReview('year')" id="rtYear">本年</button>
+    </div>
+    <div id="reviewMonthPickerWrap" style="display:none;margin:-4px 0 16px;">
+      <select id="reviewMonthPicker" onchange="changeReviewMonth(this.value)" style="width:100%;border:1.5px solid #e8e6e3;border-radius:14px;padding:12px 14px;font-size:13px;font-family:'Noto Sans TC',sans-serif;color:var(--text-dark);background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,0.04);outline:none;"></select>
     </div>
     <div id="reviewContent"></div>
   </div>
@@ -1635,7 +1637,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '9.4';
+const APP_VERSION = '9.5';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2131,13 +2133,11 @@ function renderEntries() {
   const list = document.getElementById('entriesList');
   list.innerHTML = '';
   const today = new Date();
-  const isViewingToday = d.toDateString() === today.toDateString();
 
   ACTIVE_YEARS.forEach((yr, i) => {
     const yClass = `y${(i % 5) + 1}`;
     const entry = getEntry(yr, d.getMonth(), d.getDate());
     const isFuture = yr > today.getFullYear() || (yr === today.getFullYear() && d > today);
-    const tarotDisplay = isViewingToday && yr === today.getFullYear() ? getTarotDisplayParts(entry.tarot) : null;
 
     const card = document.createElement('div');
     card.className = `entry-card ${yClass}`;
@@ -2161,20 +2161,6 @@ function renderEntries() {
           maxlength="5000"
           oninput="onTextInput(this, ${yr}, ${d.getMonth()}, ${d.getDate()})"
         >${entry.text}</textarea>
-        ${tarotDisplay ? `
-          <div style="margin:12px 0 4px;padding:12px 14px;border-radius:16px;background:linear-gradient(135deg, rgba(63, 34, 99, 0.08), rgba(239, 208, 139, 0.18));border:1px solid rgba(99, 77, 129, 0.12);">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;">
-              <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);">TODAY'S TAROT</div>
-              ${tarotDisplay.tag ? `<div style="font-size:10px;color:#5c4a74;background:rgba(92,74,116,0.08);padding:4px 8px;border-radius:999px;">${tarotDisplay.tag}</div>` : ''}
-            </div>
-            <div style="font-size:15px;color:var(--text-dark);font-family:'Noto Serif TC',serif;margin-bottom:4px;">${tarotDisplay.title}</div>
-            <div style="font-size:12px;line-height:1.8;color:var(--text-dark);">${tarotDisplay.copy}</div>
-            ${tarotDisplay.aiCopy ? `
-              <div style="font-size:10px;letter-spacing:0.12em;color:var(--text-light);margin:10px 0 6px;">AI EXTENDED READING</div>
-              <div style="font-size:12px;line-height:1.8;color:var(--text-dark);padding:10px 12px;border-radius:12px;background:rgba(255,250,241,0.95);border:1px solid rgba(209,185,142,0.28);">${tarotDisplay.aiCopy}</div>
-            ` : ''}
-          </div>
-        ` : ''}
         <div class="entry-footer">
           <div class="mood-row" id="moodRow${yr}"></div>
           <div style="display:flex;align-items:center;gap:8px;">
@@ -2617,26 +2603,7 @@ function copyTarotPrompt() {
 function renderTarotLaunchArea() {
   const area = document.getElementById('tarotLaunchArea');
   if (!area) return;
-  const today = new Date();
-  const isViewingToday = currentDate.toDateString() === today.toDateString();
-  const entry = getEntry(today.getFullYear(), today.getMonth(), today.getDate());
-  const tarotDisplay = getTarotDisplayParts(entry.tarot);
-  if (!isViewingToday) {
-    area.innerHTML = '';
-    return;
-  }
-  area.innerHTML = `
-    <div style="background:var(--white);border-radius:18px;padding:14px 16px;box-shadow:0 0 0 1px rgba(140,110,80,0.1),0 2px 12px rgba(100,70,40,0.07);margin-bottom:18px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <div>
-          <div style="font-size:11px;color:var(--text-light);letter-spacing:0.1em;margin-bottom:4px;">DAILY TAROT</div>
-          <div style="font-family:'Noto Serif TC',serif;font-size:16px;color:var(--text-dark);margin-bottom:4px;">${tarotDisplay ? tarotDisplay.title : '今日塔羅'}</div>
-          <div style="font-size:12px;color:var(--text-mid);line-height:1.7;">${tarotDisplay ? `${tarotDisplay.tag ? tarotDisplay.tag + '｜' : ''}${tarotDisplay.aiCopy || tarotDisplay.copy}` : '今天還沒抽牌，每天只能抽一次。'}</div>
-        </div>
-        <button onclick="openTarotModal()" style="flex-shrink:0;border:none;background:var(--text-dark);color:white;padding:11px 14px;border-radius:14px;font-size:12px;font-family:'Noto Sans TC',sans-serif;cursor:pointer;">${tarotDisplay ? '查看牌意' : '開始抽牌'}</button>
-      </div>
-    </div>
-  `;
+  area.innerHTML = '';
 }
 
 async function refreshTodayTarotFromCloud() {
@@ -2903,12 +2870,17 @@ function getReviewMeta() {
     const monday = new Date(start);
     scopeKey = `${monday.getFullYear()}-W${String(monday.getMonth() + 1).padStart(2, '0')}${String(monday.getDate()).padStart(2, '0')}`;
   } else if (currentReviewTab === 'month') {
-    start = new Date(now.getFullYear(), now.getMonth(), 1);
-    end = new Date(now);
-    label = '這個月';
-    title = `${now.getFullYear()}年${now.getMonth() + 1}月回顧`;
+    const targetMonthKey = currentReviewMonthKey || `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const parts = targetMonthKey.split('-');
+    const year = parseInt(parts[0], 10);
+    const monthIndex = parseInt(parts[1], 10) - 1;
+    const isCurrentMonth = year === now.getFullYear() && monthIndex === now.getMonth();
+    start = new Date(year, monthIndex, 1);
+    end = isCurrentMonth ? new Date(now) : new Date(year, monthIndex + 1, 0, 23, 59, 59, 999);
+    label = `${year}年${monthIndex + 1}月`;
+    title = `${year}年${monthIndex + 1}月回顧`;
     type = 'month';
-    scopeKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    scopeKey = `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
   } else {
     start = new Date(now.getFullYear(), 0, 1);
     end = new Date(now);
@@ -3356,6 +3328,52 @@ function renderThemeGrid() {
 
 // ── 回顧 ──
 var currentReviewTab = 'week';
+var currentReviewMonthKey = '';
+
+function getAvailableReviewMonths() {
+  const monthMap = {};
+  Object.entries(data).forEach(function([key, val]) {
+    if (!val.text || !val.text.trim()) return;
+    const parts = key.split('-');
+    if (parts.length < 2) return;
+    monthMap[`${parts[0]}-${parts[1]}`] = true;
+  });
+  const monthKeys = Object.keys(monthMap).sort().reverse();
+  const now = new Date();
+  const currentMonthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  if (!monthKeys.length || !monthMap[currentMonthKey]) monthKeys.unshift(currentMonthKey);
+  return Array.from(new Set(monthKeys));
+}
+
+function formatReviewMonthLabel(monthKey) {
+  const parts = String(monthKey || '').split('-');
+  if (parts.length !== 2) return '選擇月份';
+  return `${parts[0]} 年 ${parseInt(parts[1], 10)} 月`;
+}
+
+function updateReviewMonthControls() {
+  const wrap = document.getElementById('reviewMonthPickerWrap');
+  const select = document.getElementById('reviewMonthPicker');
+  if (!wrap || !select) return;
+  if (currentReviewTab !== 'month') {
+    wrap.style.display = 'none';
+    return;
+  }
+  const monthKeys = getAvailableReviewMonths();
+  if (!currentReviewMonthKey || !monthKeys.includes(currentReviewMonthKey)) {
+    currentReviewMonthKey = monthKeys[0] || `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}`;
+  }
+  select.innerHTML = monthKeys.map(function(monthKey) {
+    return `<option value="${monthKey}">${formatReviewMonthLabel(monthKey)}</option>`;
+  }).join('');
+  select.value = currentReviewMonthKey;
+  wrap.style.display = 'block';
+}
+
+function changeReviewMonth(monthKey) {
+  currentReviewMonthKey = monthKey;
+  renderReview();
+}
 
 function switchReview(tab) {
   currentReviewTab = tab;
@@ -3363,12 +3381,14 @@ function switchReview(tab) {
     const btn = document.getElementById('rt' + t);
     if (btn) btn.className = 'review-tab' + (t.toLowerCase() === tab ? ' active' : '');
   });
+  updateReviewMonthControls();
   renderReview();
 }
 
 function renderReview() {
   const content = document.getElementById('reviewContent');
   if (!content) return;
+  updateReviewMonthControls();
 
   const meta = getReviewMeta();
   const now = meta.now;
