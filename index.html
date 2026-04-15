@@ -5101,7 +5101,7 @@ async function renderOnThisDay(month, day) {
   card.style.display = '';
   card.innerHTML = `
     <div class="onthisday-card">
-      <div class="onthisday-label">📖 歷史上的今天</div>
+      <div class="onthisday-label">📋 歷史上的今天：</div>
       <div class="onthisday-text" style="color:var(--text-light);">載入中…</div>
     </div>`;
 
@@ -5124,15 +5124,27 @@ async function renderOnThisDay(month, day) {
     _onThisDayCache[cacheKey] = json;
     _renderOnThisDayContent(card, month, day, json);
   } catch {
-    card.style.display = 'none';
+    // API 失敗時顯示備用文字
+    card.innerHTML = `
+      <div class="onthisday-card">
+        <div class="onthisday-label">📋 歷史上的今天：</div>
+        <div class="onthisday-text" style="color:var(--text-mid);">今天似乎是平靜的一天，沒有重大的歷史記載。</div>
+      </div>`;
   }
 }
 
 function _renderOnThisDayContent(card, month, day, json) {
-  if (!json || !json.text) { card.style.display = 'none'; return; }
+  if (!json || !json.text) {
+    card.innerHTML = `
+      <div class="onthisday-card">
+        <div class="onthisday-label">📋 歷史上的今天：</div>
+        <div class="onthisday-text" style="color:var(--text-mid);">今天似乎是平靜的一天，沒有重大的歷史記載。</div>
+      </div>`;
+    return;
+  }
   card.innerHTML = `
     <div class="onthisday-card">
-      <div class="onthisday-label">📖 歷史上的今天 · ${month + 1}月${day}日</div>
+      <div class="onthisday-label">📋 歷史上的今天：</div>
       <div class="onthisday-text">${json.text}</div>
     </div>`;
 }
