@@ -5097,7 +5097,6 @@ async function renderOnThisDay(month, day) {
   if (activeTab !== 'diary') { card.style.display = 'none'; return; }
 
   const cacheKey = `${month}-${day}`;
-  // Show loading skeleton immediately
   card.style.display = '';
   card.innerHTML = `
     <div class="onthisday-card">
@@ -5106,46 +5105,41 @@ async function renderOnThisDay(month, day) {
     </div>`;
 
   if (_onThisDayCache[cacheKey]) {
-    _renderOnThisDayContent(card, month, day, _onThisDayCache[cacheKey]);
+    _renderOnThisDayContent(card, _onThisDayCache[cacheKey]);
     return;
   }
 
   try {
-    // Numbers API: month is 1-based in the URL
+    // Wikipedia 中文 On This Day API (public-apis › Open Data)
+    // CORS enabled, free, no auth required
     const controller = new AbortController();
     const tid = setTimeout(() => controller.abort(), 6000);
     const res = await fetch(
-      `https://numbersapi.com/${month + 1}/${day}/date?json`,
+      `https://zh.wikipedia.org/api/rest_v1/feed/onthisday/events/${month + 1}/${day}`,
       { signal: controller.signal }
     );
     clearTimeout(tid);
     if (!res.ok) throw new Error('bad response');
     const json = await res.json();
-    _onThisDayCache[cacheKey] = json;
-    _renderOnThisDayContent(card, month, day, json);
+    const events = json.events || [];
+    if (!events.length) throw new Error('no events');
+    // 隨機挑一條，優先選有年份的
+    const picked = events[Math.floor(Math.random() * Math.min(events.length, 10))];
+    const text = picked.year ? `${picked.year}年：${picked.text}` : picked.text;
+    _onThisDayCache[cacheKey] = text;
+    _renderOnThisDayContent(card, text);
   } catch {
-    // API 失敗時顯示備用文字
-    card.innerHTML = `
-      <div class="onthisday-card">
-        <div class="onthisday-label">📋 歷史上的今天：</div>
-        <div class="onthisday-text" style="color:var(--text-mid);">今天似乎是平靜的一天，沒有重大的歷史記載。</div>
-      </div>`;
+    const fallback = '今天似乎是平靜的一天，沒有重大的歷史記載。';
+    _onThisDayCache[cacheKey] = fallback;
+    _renderOnThisDayContent(card, fallback);
   }
 }
 
-function _renderOnThisDayContent(card, month, day, json) {
-  if (!json || !json.text) {
-    card.innerHTML = `
-      <div class="onthisday-card">
-        <div class="onthisday-label">📋 歷史上的今天：</div>
-        <div class="onthisday-text" style="color:var(--text-mid);">今天似乎是平靜的一天，沒有重大的歷史記載。</div>
-      </div>`;
-    return;
-  }
+function _renderOnThisDayContent(card, text) {
   card.innerHTML = `
     <div class="onthisday-card">
       <div class="onthisday-label">📋 歷史上的今天：</div>
-      <div class="onthisday-text">${json.text}</div>
+      <div class="onthisday-text">${text || '今天似乎是平靜的一天，沒有重大的歷史記載。'}</div>
     </div>`;
 }
 
