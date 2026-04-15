@@ -1265,6 +1265,57 @@
     letter-spacing: 0.05em;
     margin-top: 2px;
   }
+
+  /* ── Moon Phase Bar ── */
+  .moon-phase-bar {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-light);
+    padding: 2px 0 6px;
+    letter-spacing: 0.06em;
+    min-height: 22px;
+    line-height: 1.5;
+  }
+
+  /* ── Sentiment Badge (情緒天氣) ── */
+  .sentiment-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    letter-spacing: 0.04em;
+    transition: opacity 0.3s;
+  }
+  .sentiment-badge.positive { background: rgba(100,180,100,0.18); color: #3a7a3a; }
+  .sentiment-badge.negative { background: rgba(100,120,200,0.18); color: #3a4a8a; }
+  .sentiment-badge.neutral  { background: rgba(150,150,150,0.15); color: var(--text-mid); }
+
+  /* ── On This Day Card ── */
+  .onthisday-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 12px rgba(100,70,40,0.07);
+  }
+  .onthisday-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-light);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .onthisday-text {
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.7;
+    font-family: 'Noto Serif TC', serif;
+  }
 </style>
 </head>
 <body>
@@ -1282,6 +1333,7 @@
     <button class="date-nav-btn" onclick="changeDay(1)">›</button>
   </div>
   <div class="month-strip" id="monthStrip"></div>
+  <div class="moon-phase-bar" id="moonPhaseEl"></div>
 </div>
 <div class="update-banner" id="updateBanner">
   <div class="update-banner-copy">有新版本可用，重新整理後就會更新到最新版。</div>
@@ -1299,6 +1351,7 @@
     </div>
     <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
 
+    <div id="onThisDayCard" style="display:none;"></div>
     <div class="section-title">五年的今天</div>
     <div class="entries-list" id="entriesList"></div>
   </div>
@@ -2101,6 +2154,13 @@ function renderHeader() {
   const isToday = d.toDateString() === today.toDateString();
   document.getElementById('todayBadge').textContent = isToday ? '今天' : `${Math.round(Math.abs(d-today)/86400000)}天前`;
 
+  // Moon phase (月相)
+  const moonEl = document.getElementById('moonPhaseEl');
+  if (moonEl) {
+    const moon = getMoonPhaseInfo(d);
+    moonEl.textContent = `${moon.emoji} ${moon.name}`;
+  }
+
   // Month strip
   const strip = document.getElementById('monthStrip');
   strip.innerHTML = '';
@@ -2181,12 +2241,19 @@ function renderEntries() {
             </label>
           `}
         </div>
+        <div id="sentimentRow${yr}" style="padding:6px 0 2px;"></div>
         ` : ''}
       </div>
     `;
     list.appendChild(card);
 
     if (!isFuture) renderMoodRow(yr, d.getMonth(), d.getDate(), entry.mood);
+
+    // Sentiment badge for entries with existing text
+    if (!isFuture && entry.text.trim()) {
+      const sentEl = document.getElementById(`sentimentRow${yr}`);
+      if (sentEl) sentEl.innerHTML = getSentimentBadgeHTML(entry.text);
+    }
 
     // 自動展開高度
     setTimeout(function() {
@@ -2223,6 +2290,9 @@ function renderEntries() {
   // 「X年前的今天」提醒
   renderTarotLaunchArea();
   renderYearsAgoToday(d);
+
+  // 歷史上的今天 (Numbers API)
+  renderOnThisDay(d.getMonth(), d.getDate());
 }
 
 function renderYearsAgoToday(d) {
@@ -2820,6 +2890,9 @@ function saveEntry(yr, month, day) {
   if (saveBtn) saveBtn.classList.remove('visible');
   showToast('已儲存並同步 ✓');
   if (activeTab === 'stats') renderStats();
+  // Update sentiment badge
+  const sentEl = document.getElementById(`sentimentRow${yr}`);
+  if (sentEl) sentEl.innerHTML = getSentimentBadgeHTML(ta.value);
 }
 
 function changeDay(delta) {
@@ -4933,6 +5006,136 @@ downloadShareImage = async function() {
   setTimeout(() => URL.revokeObjectURL(url), 2000);
   showToast('已開始下載圖片');
 };
+
+// ══════════════════════════════════════════════════════════
+// 🌙 月相 Moon Phase  (algorithmic — no API key needed)
+// Source: Jean Meeus "Astronomical Algorithms"
+// Listed in public-apis as Science & Math / Astronomy category
+// ══════════════════════════════════════════════════════════
+function getMoonPhaseInfo(date) {
+  // Known new moon: 6 Jan 2000 18:14 UTC
+  const knownNewMoon = new Date('2000-01-06T18:14:00Z');
+  const lunarPeriod = 29.53059; // synodic month in days
+  const daysSince = (date - knownNewMoon) / 86400000;
+  const phase = ((daysSince % lunarPeriod) + lunarPeriod) % lunarPeriod;
+
+  const phases = [
+    { max:  1.85, emoji: '🌑', name: '新月' },
+    { max:  5.54, emoji: '🌒', name: '眉月' },
+    { max:  9.22, emoji: '🌓', name: '上弦月' },
+    { max: 12.91, emoji: '🌔', name: '盈凸月' },
+    { max: 16.61, emoji: '🌕', name: '滿月' },
+    { max: 20.30, emoji: '🌖', name: '虧凸月' },
+    { max: 23.99, emoji: '🌗', name: '下弦月' },
+    { max: 27.68, emoji: '🌘', name: '殘月' },
+    { max: 29.53, emoji: '🌑', name: '新月' }
+  ];
+  return phases.find(p => phase < p.max) || phases[phases.length - 1];
+}
+
+// ══════════════════════════════════════════════════════════
+// ☀️ 情緒天氣 Sentiment Analysis
+// Client-side keyword engine optimised for Traditional Chinese
+// (Inspired by VADER; no external API call needed for privacy)
+// ══════════════════════════════════════════════════════════
+const SENTIMENT_POSITIVE = [
+  // 中文
+  '快樂','開心','高興','美好','棒','讚','感謝','幸福','喜歡','愛','笑','驚喜',
+  '期待','溫暖','舒服','輕鬆','成功','進步','滿足','愉快','興奮','喜悅',
+  '幸運','精彩','完美','順利','舒暢','放鬆','踏實','感動','可愛','好玩',
+  '有趣','開朗','活力','充實','安心','希望','美麗','甜蜜','療癒','珍惜',
+  '享受','歡笑','勇敢','堅強','努力','加油','值得','棒極了','太好了',
+  // English
+  'happy','good','great','wonderful','love','joy','excited','thankful',
+  'blessed','peaceful','relaxed','amazing','fantastic','excellent','perfect',
+  'proud','beautiful','delightful','grateful','cheerful','fun','lucky'
+];
+const SENTIMENT_NEGATIVE = [
+  // 中文
+  '難過','傷心','哭','痛苦','失望','累','疲憊','壓力','焦慮','擔心',
+  '害怕','孤單','寂寞','無聊','煩','討厭','煩惱','糟糕','崩潰','沮喪',
+  '絕望','後悔','遺憾','生氣','憤怒','委屈','抱怨','痛','煎熬','掙扎',
+  '迷茫','困惑','不安','恐懼','悲傷','哀愁','低落','消沉','無力','恨',
+  '崩潰','心碎','淚','眼淚','鬱悶','煎熬','掙扎','放棄','不想','好難',
+  // English
+  'sad','bad','terrible','awful','angry','worried','anxious','stressed',
+  'lonely','depressed','upset','frustrated','disappointed','exhausted','tired',
+  'hate','fear','pain','cry','hopeless','regret','nervous'
+];
+
+function analyzeSentiment(text) {
+  if (!text || text.trim().length < 5) return null;
+  let pos = 0, neg = 0;
+  const t = text.toLowerCase();
+  SENTIMENT_POSITIVE.forEach(w => { const m = t.match(new RegExp(w, 'g')); if (m) pos += m.length; });
+  SENTIMENT_NEGATIVE.forEach(w => { const m = t.match(new RegExp(w, 'g')); if (m) neg += m.length; });
+  const total = pos + neg;
+  if (total === 0) return { type: 'neutral', emoji: '⛅', label: '平靜' };
+  const ratio = pos / total;
+  if (ratio >= 0.6) return { type: 'positive', emoji: '☀️', label: '積極' };
+  if (ratio <= 0.4) return { type: 'negative', emoji: '🌧', label: '憂鬱' };
+  return { type: 'neutral', emoji: '⛅', label: '平靜' };
+}
+
+function getSentimentBadgeHTML(text) {
+  const s = analyzeSentiment(text);
+  if (!s) return '';
+  return `<span class="sentiment-badge ${s.type}">${s.emoji} 情緒天氣：${s.label}</span>`;
+}
+
+// ══════════════════════════════════════════════════════════
+// 📖 歷史上的今天  Numbers API  (public-apis › Science & Math)
+// https://numbersapi.com  — free, no auth, CORS enabled
+// ══════════════════════════════════════════════════════════
+const _onThisDayCache = {};
+
+async function renderOnThisDay(month, day) {
+  const card = document.getElementById('onThisDayCard');
+  if (!card) return;
+
+  // Only show on the diary tab
+  if (activeTab !== 'diary') { card.style.display = 'none'; return; }
+
+  const cacheKey = `${month}-${day}`;
+  // Show loading skeleton immediately
+  card.style.display = '';
+  card.innerHTML = `
+    <div class="onthisday-card">
+      <div class="onthisday-label">📖 歷史上的今天</div>
+      <div class="onthisday-text" style="color:var(--text-light);">載入中…</div>
+    </div>`;
+
+  if (_onThisDayCache[cacheKey]) {
+    _renderOnThisDayContent(card, month, day, _onThisDayCache[cacheKey]);
+    return;
+  }
+
+  try {
+    // Numbers API: month is 1-based in the URL
+    const controller = new AbortController();
+    const tid = setTimeout(() => controller.abort(), 6000);
+    const res = await fetch(
+      `https://numbersapi.com/${month + 1}/${day}/date?json`,
+      { signal: controller.signal }
+    );
+    clearTimeout(tid);
+    if (!res.ok) throw new Error('bad response');
+    const json = await res.json();
+    _onThisDayCache[cacheKey] = json;
+    _renderOnThisDayContent(card, month, day, json);
+  } catch {
+    card.style.display = 'none';
+  }
+}
+
+function _renderOnThisDayContent(card, month, day, json) {
+  if (!json || !json.text) { card.style.display = 'none'; return; }
+  card.innerHTML = `
+    <div class="onthisday-card">
+      <div class="onthisday-label">📖 歷史上的今天 · ${month + 1}月${day}日</div>
+      <div class="onthisday-text">${json.text}</div>
+    </div>`;
+}
 
 </script>
 </body>
