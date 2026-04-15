@@ -1329,7 +1329,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v9.8</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v9.9</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1693,7 +1693,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '9.8';
+const APP_VERSION = '9.9';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -5065,16 +5065,22 @@ function _moonSVG(phase, size = 26) {
   const absTx = Math.max(Math.abs(termScale) * r, 0.5);
   const isWaxing = norm < 0.5;
 
-  // Waxing  (0→0.5): right half is always lit; terminator determines crescent vs gibbous
-  //   termScale ≥ 0 → crescent  (terminator sweeps same side as outer arc → thin sliver)
-  //   termScale < 0 → gibbous   (terminator sweeps opposite side → fat disc)
-  // Waning  (0.5→1): left half is always lit; logic mirrors waxing
+  // Key: SVG arc from BOTTOM→TOP has sweep=0 going RIGHT, sweep=1 going LEFT.
+  //   (Opposite of top→bottom, because the direction reverses.)
+  //
+  // Waxing (right outer arc, sweep=1 top→bottom):
+  //   crescent (termScale ≥ 0): terminator stays on RIGHT → sweep=0
+  //   gibbous  (termScale < 0): terminator crosses to LEFT  → sweep=1
+  //
+  // Waning (left outer arc, sweep=0 top→bottom):
+  //   gibbous  (termScale < 0): terminator crosses to RIGHT → sweep=0
+  //   crescent (termScale ≥ 0): terminator stays on LEFT   → sweep=1
   let path;
   if (isWaxing) {
-    const ts = termScale >= 0 ? 1 : 0;
+    const ts = termScale >= 0 ? 0 : 1;
     path = `M ${cx},${cy - r} A ${r},${r} 0 0,1 ${cx},${cy + r} A ${absTx},${r} 0 0,${ts} ${cx},${cy - r} Z`;
   } else {
-    const ts = termScale < 0 ? 1 : 0;
+    const ts = termScale >= 0 ? 1 : 0;
     path = `M ${cx},${cy - r} A ${r},${r} 0 0,0 ${cx},${cy + r} A ${absTx},${r} 0 0,${ts} ${cx},${cy - r} Z`;
   }
 
