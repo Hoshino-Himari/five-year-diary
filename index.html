@@ -1271,10 +1271,13 @@
     text-align: center;
     font-size: 12px;
     color: var(--text-light);
-    padding: 2px 0 6px;
+    padding: 2px 0 7px;
     letter-spacing: 0.06em;
-    min-height: 22px;
-    line-height: 1.5;
+    min-height: 28px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* ── Sentiment Badge (情緒天氣) ── */
@@ -1326,7 +1329,7 @@
     <span class="app-title">五年日記</span>
     <span class="today-badge" id="todayBadge">今天</span>
   </div>
-  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v9.7</div>
+  <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v9.8</div>
   <div class="date-nav">
     <button class="date-nav-btn" onclick="changeDay(-1)">‹</button>
     <div class="date-display" id="dateDisplay" onclick="openDatePicker()" style="cursor:pointer;" title="點擊選擇日期"></div>
@@ -1690,7 +1693,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '9.7';
+const APP_VERSION = '9.8';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2154,11 +2157,11 @@ function renderHeader() {
   const isToday = d.toDateString() === today.toDateString();
   document.getElementById('todayBadge').textContent = isToday ? '今天' : `${Math.round(Math.abs(d-today)/86400000)}天前`;
 
-  // Moon phase (月相)
+  // Moon phase (月相) — SVG rendering
   const moonEl = document.getElementById('moonPhaseEl');
   if (moonEl) {
     const moon = getMoonPhaseInfo(d);
-    moonEl.textContent = `${moon.emoji} ${moon.name}`;
+    moonEl.innerHTML = `<span style="display:inline-flex;align-items:center;gap:5px;">${moon.svg}<span>${moon.name}</span></span>`;
   }
 
   // Month strip
@@ -5020,17 +5023,66 @@ function getMoonPhaseInfo(date) {
   const phase = ((daysSince % lunarPeriod) + lunarPeriod) % lunarPeriod;
 
   const phases = [
-    { max:  1.85, emoji: '🌑', name: '新月' },
-    { max:  5.54, emoji: '🌒', name: '眉月' },
-    { max:  9.22, emoji: '🌓', name: '上弦月' },
-    { max: 12.91, emoji: '🌔', name: '盈凸月' },
-    { max: 16.61, emoji: '🌕', name: '滿月' },
-    { max: 20.30, emoji: '🌖', name: '虧凸月' },
-    { max: 23.99, emoji: '🌗', name: '下弦月' },
-    { max: 27.68, emoji: '🌘', name: '殘月' },
-    { max: 29.53, emoji: '🌑', name: '新月' }
+    { max:  1.85, name: '新月' },
+    { max:  5.54, name: '眉月' },
+    { max:  9.22, name: '上弦月' },
+    { max: 12.91, name: '盈凸月' },
+    { max: 16.61, name: '滿月' },
+    { max: 20.30, name: '虧凸月' },
+    { max: 23.99, name: '下弦月' },
+    { max: 27.68, name: '殘月' },
+    { max: 29.53, name: '新月' }
   ];
-  return phases.find(p => phase < p.max) || phases[phases.length - 1];
+  const info = phases.find(p => phase < p.max) || phases[phases.length - 1];
+  return { name: info.name, svg: _moonSVG(phase), phase };
+}
+
+// SVG moon renderer — draws the true illuminated crescent/gibbous shape.
+// Algorithm: split the disc into a semicircle (the always-lit half) +
+// an elliptical terminator arc whose x-radius varies with lunar phase.
+function _moonSVG(phase, size = 26) {
+  const norm  = ((phase / 29.53) % 1 + 1) % 1; // 0–1
+  const angle = norm * 2 * Math.PI;
+  const termScale = Math.cos(angle); // 1=new, −1=full, 1=new
+  const r  = size / 2 - 1.5;
+  const cx = size / 2;
+  const cy = size / 2;
+
+  const darkFill = 'rgba(34,32,52,0.75)';
+  const litFill  = '#f5e6a8';
+  const rim      = 'rgba(160,140,80,0.3)';
+
+  // New moon
+  if (norm < 0.025 || norm > 0.975) {
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="vertical-align:middle;flex-shrink:0;"><circle cx="${cx}" cy="${cy}" r="${r}" fill="${darkFill}" stroke="${rim}" stroke-width="0.8"/></svg>`;
+  }
+  // Full moon
+  if (norm > 0.475 && norm < 0.525) {
+    return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="vertical-align:middle;flex-shrink:0;"><circle cx="${cx}" cy="${cy}" r="${r}" fill="${litFill}" stroke="rgba(210,180,70,0.4)" stroke-width="0.8"/></svg>`;
+  }
+
+  // absTx = x-radius of the terminator ellipse; min 0.5 to avoid SVG degenerate arcs
+  const absTx = Math.max(Math.abs(termScale) * r, 0.5);
+  const isWaxing = norm < 0.5;
+
+  // Waxing  (0→0.5): right half is always lit; terminator determines crescent vs gibbous
+  //   termScale ≥ 0 → crescent  (terminator sweeps same side as outer arc → thin sliver)
+  //   termScale < 0 → gibbous   (terminator sweeps opposite side → fat disc)
+  // Waning  (0.5→1): left half is always lit; logic mirrors waxing
+  let path;
+  if (isWaxing) {
+    const ts = termScale >= 0 ? 1 : 0;
+    path = `M ${cx},${cy - r} A ${r},${r} 0 0,1 ${cx},${cy + r} A ${absTx},${r} 0 0,${ts} ${cx},${cy - r} Z`;
+  } else {
+    const ts = termScale < 0 ? 1 : 0;
+    path = `M ${cx},${cy - r} A ${r},${r} 0 0,0 ${cx},${cy + r} A ${absTx},${r} 0 0,${ts} ${cx},${cy - r} Z`;
+  }
+
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="vertical-align:middle;flex-shrink:0;">
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="${darkFill}" stroke="${rim}" stroke-width="0.8"/>
+    <path d="${path}" fill="${litFill}"/>
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${rim}" stroke-width="0.8"/>
+  </svg>`;
 }
 
 // ══════════════════════════════════════════════════════════
