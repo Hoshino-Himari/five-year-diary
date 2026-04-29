@@ -188,10 +188,180 @@
 
   /* ── Main Content ── */
   .main {
-    width: min(100%, 760px);
+    width: min(100%, 1180px);
     margin: 0 auto;
     padding: 14px 14px 104px;
   }
+
+  #pageDiary.active {
+    display: grid;
+    grid-template-columns: minmax(250px, 0.42fr) minmax(0, 0.88fr);
+    gap: 26px;
+    align-items: start;
+  }
+
+  .specimen-cover {
+    min-height: 580px;
+    border-radius: 8px 4px 4px 8px;
+    padding: 78px 44px 44px;
+    position: sticky;
+    top: 162px;
+    overflow: hidden;
+    color: #ead9aa;
+    background:
+      radial-gradient(circle at 28% 18%, rgba(255,255,255,0.12), transparent 22%),
+      linear-gradient(90deg, rgba(0,0,0,0.2), transparent 9%, transparent 92%, rgba(0,0,0,0.18)),
+      linear-gradient(135deg, #69705c, #485142);
+    box-shadow: 0 24px 42px rgba(42,34,22,0.22), inset 9px 0 16px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  .specimen-cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.28;
+    background-image:
+      linear-gradient(45deg, rgba(255,255,255,0.12) 1px, transparent 1px),
+      linear-gradient(-45deg, rgba(0,0,0,0.12) 1px, transparent 1px);
+    background-size: 5px 5px;
+    pointer-events: none;
+  }
+  .specimen-cover::after {
+    content: 'ARCHIVE\A 20 MAY 2025\A No. 000517';
+    white-space: pre;
+    position: absolute;
+    right: 28px;
+    bottom: 44px;
+    transform: rotate(-5deg);
+    border: 1px solid rgba(24,32,27,0.42);
+    border-radius: 4px;
+    padding: 10px 15px;
+    color: rgba(28,34,29,0.54);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0.08em;
+  }
+  .specimen-frame {
+    width: 124px;
+    height: 154px;
+    margin: 0 auto 52px;
+    border: 5px solid #b89552;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    background:
+      linear-gradient(rgba(255,253,247,0.86), rgba(239,232,210,0.86)),
+      linear-gradient(90deg, rgba(96,78,50,0.1) 1px, transparent 1px) 0 0 / 16px 16px;
+    box-shadow: inset 0 0 0 2px rgba(82,57,22,0.25), 0 5px 14px rgba(0,0,0,0.22);
+  }
+  .specimen-botanical {
+    width: 56px;
+    height: 90px;
+    border-left: 2px solid rgba(82,91,58,0.75);
+    position: relative;
+    transform: rotate(-6deg);
+  }
+  .specimen-botanical::before,
+  .specimen-botanical::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(82,91,58,0.72);
+    border-left: 0;
+    border-bottom: 0;
+    border-radius: 50%;
+  }
+  .specimen-botanical::before {
+    width: 28px;
+    height: 42px;
+    left: 7px;
+    top: 13px;
+    transform: rotate(31deg);
+  }
+  .specimen-botanical::after {
+    width: 22px;
+    height: 34px;
+    left: -22px;
+    top: 34px;
+    transform: rotate(-138deg);
+  }
+  .specimen-tape {
+    position: absolute;
+    width: 56px;
+    height: 14px;
+    left: 22px;
+    top: 96px;
+    transform: rotate(-3deg);
+    background: rgba(191,157,95,0.42);
+  }
+  .specimen-no {
+    position: absolute;
+    right: 13px;
+    bottom: 12px;
+    color: rgba(42,34,22,0.7);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .cover-title {
+    position: relative;
+    text-align: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 30px;
+    letter-spacing: 0.2em;
+    font-weight: 400;
+    margin-bottom: 18px;
+  }
+  .cover-subtitle {
+    position: relative;
+    text-align: center;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    letter-spacing: 0.22em;
+  }
+  .cover-rule {
+    width: 74px;
+    height: 1px;
+    margin: 24px auto 0;
+    background: rgba(234,217,170,0.65);
+    position: relative;
+  }
+  .cover-rule::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 1px solid rgba(234,217,170,0.72);
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #56604e;
+  }
+  .diary-workspace {
+    background:
+      linear-gradient(90deg, transparent calc(50% - 1px), rgba(120,98,67,0.16) 50%, transparent calc(50% + 1px)),
+      linear-gradient(90deg, rgba(96,78,50,0.06) 1px, transparent 1px) 0 0 / 28px 28px,
+      #fffdf5;
+    border-radius: 20px 6px 6px 20px;
+    padding: 28px 30px 34px;
+    box-shadow: 0 24px 44px rgba(42,34,22,0.16), inset 0 0 0 1px rgba(120,98,67,0.12);
+    min-height: 580px;
+    position: relative;
+  }
+  .diary-workspace::before,
+  .diary-workspace::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    width: 16px;
+    background: repeating-linear-gradient(180deg, rgba(92,81,62,0.18) 0 1px, transparent 1px 6px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .diary-workspace::before { left: 8px; }
+  .diary-workspace::after { right: 8px; }
 
   /* ── Today's Prompt ── */
   .prompt-card {
@@ -204,7 +374,7 @@
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(111,139,113,0.18);
-    box-shadow: 0 8px 24px rgba(69,57,36,0.07);
+    box-shadow: none;
   }
   .prompt-card::before {
     content: '今日標本';
@@ -273,15 +443,16 @@
   .entries-list {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 0;
   }
 
   .entry-card {
-    background: var(--white);
-    border-radius: 12px;
+    background: transparent;
+    border-radius: 0;
     overflow: visible;
-    border: 1px solid rgba(111,139,113,0.16);
-    box-shadow: 0 10px 24px rgba(69,57,36,0.06);
+    border: none;
+    border-top: 1px solid rgba(96,78,50,0.22);
+    box-shadow: none;
     transition: transform 0.15s, box-shadow 0.15s;
     position: relative;
   }
@@ -291,17 +462,12 @@
   .entry-gradient-bar { display: none; }
 
   .entry-card {
-    background-color: var(--white);
-    background-image:
-      linear-gradient(90deg, var(--entry-a, var(--bg)), var(--entry-b, var(--bg))),
-      linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,253,247,0));
-    background-size: 100% 6px, 100% 100%;
-    background-position: top, center;
-    background-repeat: no-repeat;
+    background-color: transparent;
+    background-image: none;
   }
   .entry-card.current-year {
-    border-color: rgba(111,139,113,0.34);
-    box-shadow: 0 12px 30px rgba(69,57,36,0.1);
+    border-color: rgba(96,78,50,0.26);
+    box-shadow: none;
   }
   .entry-card.current-year::before {
     content: 'NOW';
@@ -323,16 +489,16 @@
   .y5 { --entry-a: var(--y5-a); --entry-b: var(--y5-b); }
 
   .entry-inner {
-    padding: 16px;
+    padding: 14px 0 13px;
   }
 
   .entry-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 14px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed rgba(111,139,113,0.18);
+    margin-bottom: 8px;
+    padding-bottom: 0;
+    border-bottom: none;
   }
 
   .entry-year-label {
@@ -342,18 +508,19 @@
   }
 
   .year-dot {
-    min-width: 54px; height: 30px;
-    padding: 0 10px;
-    border-radius: 999px;
+    min-width: 52px; height: 28px;
+    padding: 0;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.02em;
-    color: #435247;
+    color: #344746;
     flex-shrink: 0;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: none;
+    background: transparent !important;
   }
 
   .year-text {
@@ -1233,6 +1400,9 @@
     .tarot-spread { padding: 14px calc(50% - 28px) 20px; }
   }
   @media (max-width: 430px) {
+    #pageDiary.active {
+      display: block;
+    }
     .app-header {
       padding: 14px 14px 0;
     }
@@ -1255,6 +1425,65 @@
     .main {
       padding: 12px 12px 98px;
     }
+    .specimen-cover {
+      position: relative;
+      top: auto;
+      min-height: 190px;
+      margin-bottom: 14px;
+      padding: 26px 22px 22px;
+      border-radius: 8px;
+    }
+    .specimen-cover::after {
+      right: 18px;
+      bottom: 18px;
+      font-size: 9px;
+      padding: 7px 10px;
+    }
+    .specimen-frame {
+      width: 72px;
+      height: 88px;
+      border-width: 3px;
+      margin: 0 0 0 auto;
+      position: absolute;
+      right: 22px;
+      top: 24px;
+    }
+    .specimen-botanical {
+      width: 34px;
+      height: 50px;
+    }
+    .specimen-tape {
+      width: 34px;
+      height: 9px;
+      left: 13px;
+      top: 53px;
+    }
+    .specimen-no {
+      display: none;
+    }
+    .cover-title {
+      text-align: left;
+      font-size: 24px;
+      letter-spacing: 0.12em;
+      margin: 50px 96px 10px 0;
+    }
+    .cover-subtitle {
+      text-align: left;
+      font-size: 13px;
+      letter-spacing: 0.16em;
+    }
+    .cover-rule {
+      margin: 16px auto 0 0;
+    }
+    .diary-workspace {
+      min-height: auto;
+      padding: 18px 15px 20px;
+      border-radius: 14px;
+    }
+    .diary-workspace::before,
+    .diary-workspace::after {
+      display: none;
+    }
     .prompt-card {
       padding: 16px 15px 15px;
       margin-bottom: 16px;
@@ -1270,6 +1499,13 @@
     }
     .entry-inner {
       padding: 15px 14px;
+    }
+    .entry-card {
+      background: rgba(255,253,247,0.82);
+      border: 1px solid rgba(111,139,113,0.14);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 20px rgba(69,57,36,0.06);
     }
     .entry-card.current-year {
       margin-bottom: 2px;
@@ -1474,15 +1710,27 @@
 
   <!-- Page: Diary -->
   <div class="page active" id="pageDiary">
-    <div class="prompt-card" id="promptCard">
-      <div class="prompt-label">今日提示</div>
-      <div class="prompt-text" id="promptText"></div>
+    <div class="specimen-cover" aria-hidden="true">
+      <div class="specimen-frame">
+        <div class="specimen-botanical"></div>
+        <div class="specimen-tape"></div>
+        <div class="specimen-no">05-17</div>
+      </div>
+      <div class="cover-title">時間標本館</div>
+      <div class="cover-subtitle">五年日記</div>
+      <div class="cover-rule"></div>
     </div>
-    <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
+    <div class="diary-workspace">
+      <div class="prompt-card" id="promptCard">
+        <div class="prompt-label">今日提示</div>
+        <div class="prompt-text" id="promptText"></div>
+      </div>
+      <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
 
-    <div id="onThisDayCard" style="display:none;"></div>
-    <div class="section-title">五年的今日標本</div>
-    <div class="entries-list" id="entriesList"></div>
+      <div id="onThisDayCard" style="display:none;"></div>
+      <div class="section-title">五年的今日標本</div>
+      <div class="entries-list" id="entriesList"></div>
+    </div>
   </div>
 
   <!-- Page: Calendar -->
@@ -1819,7 +2067,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '10.0';
+const APP_VERSION = '10.1';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
