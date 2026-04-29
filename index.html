@@ -3,33 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>五年日記</title>
-<meta name="theme-color" content="#f7f5f2">
+<title>時間標本館</title>
+<meta name="theme-color" content="#fffdf7">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="五年日記">
+<meta name="apple-mobile-web-app-title" content="時間標本館">
 <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="./assets/icons/apple-touch-icon.png">
 <link rel="manifest" href="./manifest.webmanifest">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f5f4ed;
-    --white: #fefcf8;
+    --bg: #f2efe6;
+    --white: #fffdf7;
     --text-dark: #1c1917;
-    --text-mid: #78716c;
-    --text-light: #a8a29e;
-    --accent: #c96442;
-    --accent2: #d97757;
-    --accent3: #e8c9b0;
-    --theme-a: #f5e6d3; --theme-b: #ecd4be; /* prompt gradient */
+    --text-mid: #6f6a60;
+    --text-light: #a49c8c;
+    --accent: #6f8b71;
+    --accent2: #b48a4d;
+    --accent3: #d9c8a4;
+    --paper-line: rgba(96, 78, 50, 0.08);
+    --specimen-ink: #3f5f5a;
+    --theme-a: #edf0df; --theme-b: #e3d7bd; /* prompt gradient */
 
     /* Year color themes */
-    --y1-a: #f5e0c8; --y1-b: #edcbad;
-    --y2-a: #c8dff0; --y2-b: #a8c4e0;
-    --y3-a: #cce8d8; --y3-b: #a8d8bc;
-    --y4-a: #e8d4f0; --y4-b: #d4b8e4;
-    --y5-a: #f0e4c0; --y5-b: #e4cc94;
+    --y1-a: #dce7d8; --y1-b: #b8ccb5;
+    --y2-a: #d9e2e4; --y2-b: #b3c5c9;
+    --y3-a: #eee1c7; --y3-b: #d6bd8c;
+    --y4-a: #eadbd4; --y4-b: #d5b8aa;
+    --y5-a: #e7e1cf; --y5-b: #cfc2a1;
   }
 
   /* ── Theme: Ocean ── */
@@ -78,7 +80,10 @@
 
   body {
     font-family: 'Noto Sans TC', sans-serif;
-    background: var(--bg);
+    background:
+      linear-gradient(90deg, var(--paper-line) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(180deg, rgba(255,255,255,0.38), rgba(236,229,211,0.32)),
+      var(--bg);
     min-height: 100vh;
     color: var(--text-dark);
     overflow-x: hidden;
@@ -86,12 +91,13 @@
 
   /* ── Header ── */
   .app-header {
-    background: var(--white);
-    padding: 18px 20px 0;
+    background: rgba(255,253,247,0.94);
+    padding: 16px 18px 0;
     position: sticky;
     top: 0;
     z-index: 100;
-    border-bottom: 1px solid rgba(140,110,80,0.1);
+    border-bottom: 1px solid rgba(111,139,113,0.16);
+    backdrop-filter: blur(18px);
   }
 
   .header-top {
@@ -103,18 +109,18 @@
 
   .app-title {
     font-family: 'Noto Serif TC', serif;
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 500;
     color: var(--text-dark);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
   }
 
   .today-badge {
     font-size: 11px;
     color: var(--accent);
-    background: rgba(201,100,66,0.1);
+    background: rgba(111,139,113,0.12);
     padding: 5px 13px;
-    border-radius: 20px;
+    border-radius: 999px;
     letter-spacing: 0.05em;
     font-weight: 500;
   }
@@ -182,48 +188,60 @@
 
   /* ── Main Content ── */
   .main {
-    padding: 16px 16px 100px;
+    width: min(100%, 760px);
+    margin: 0 auto;
+    padding: 14px 14px 104px;
   }
 
   /* ── Today's Prompt ── */
   .prompt-card {
-    background: linear-gradient(135deg, #f5e6d3 0%, #ecd4be 55%, #e4c8aa 100%);
-    border-radius: 22px;
-    padding: 22px 20px 20px;
-    margin-bottom: 20px;
+    background:
+      linear-gradient(135deg, rgba(255,253,247,0.92), rgba(239,232,210,0.86)),
+      linear-gradient(90deg, rgba(111,139,113,0.13) 1px, transparent 1px) 0 0 / 18px 18px;
+    border-radius: 12px;
+    padding: 18px 18px 16px;
+    margin-bottom: 18px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 0 0 1px rgba(180,140,100,0.18), 0 4px 16px rgba(140,90,50,0.1);
+    border: 1px solid rgba(111,139,113,0.18);
+    box-shadow: 0 8px 24px rgba(69,57,36,0.07);
   }
   .prompt-card::before {
-    content: '';
+    content: '今日標本';
     position: absolute;
-    top: -28px; left: -28px;
-    width: 100px; height: 100px;
-    border-radius: 50%;
-    background: rgba(180,120,60,0.12);
+    top: 14px; right: 14px;
+    width: auto; height: auto;
+    border-radius: 999px;
+    border: 1px solid rgba(180,138,77,0.32);
+    padding: 4px 9px;
+    background: rgba(255,253,247,0.56);
+    color: rgba(90,75,48,0.55);
+    font-size: 10px;
+    letter-spacing: 0.12em;
     pointer-events: none;
   }
   .prompt-card::after {
     content: '';
     position: absolute;
-    bottom: -30px; right: -30px;
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.18);
+    bottom: 12px; right: 18px;
+    width: 54px; height: 54px;
+    border: 1px solid rgba(111,139,113,0.24);
+    border-radius: 50% 0 50% 0;
+    transform: rotate(-18deg);
+    opacity: 0.28;
   }
   .prompt-label {
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: rgba(100,70,50,0.5);
+    letter-spacing: 0.18em;
+    color: rgba(63,95,90,0.58);
     margin-bottom: 8px;
     position: relative;
   }
   .prompt-text {
     font-family: 'Noto Serif TC', serif;
     font-size: 16px;
-    color: #5c3d2e;
+    color: #334b45;
     line-height: 1.65;
     font-weight: 400;
     position: relative;
@@ -233,7 +251,7 @@
   .section-title {
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.16em;
     color: var(--text-light);
     margin: 14px 0 14px;
     display: flex;
@@ -243,9 +261,9 @@
   .section-title::before {
     content: '';
     display: block;
-    width: 18px;
-    height: 2px;
-    background: var(--accent);
+    width: 22px;
+    height: 1px;
+    background: var(--accent2);
     border-radius: 1px;
     flex-shrink: 0;
     opacity: 0.7;
@@ -255,14 +273,15 @@
   .entries-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .entry-card {
     background: var(--white);
-    border-radius: 18px;
+    border-radius: 12px;
     overflow: visible;
-    box-shadow: 0 0 0 1px rgba(140,110,80,0.1), 0 2px 12px rgba(100,70,40,0.07);
+    border: 1px solid rgba(111,139,113,0.16);
+    box-shadow: 0 10px 24px rgba(69,57,36,0.06);
     transition: transform 0.15s, box-shadow 0.15s;
     position: relative;
   }
@@ -273,10 +292,29 @@
 
   .entry-card {
     background-color: var(--white);
-    background-image: linear-gradient(90deg, var(--entry-a, var(--bg)), var(--entry-b, var(--bg)));
-    background-size: 100% 5px;
-    background-position: top;
+    background-image:
+      linear-gradient(90deg, var(--entry-a, var(--bg)), var(--entry-b, var(--bg))),
+      linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,253,247,0));
+    background-size: 100% 6px, 100% 100%;
+    background-position: top, center;
     background-repeat: no-repeat;
+  }
+  .entry-card.current-year {
+    border-color: rgba(111,139,113,0.34);
+    box-shadow: 0 12px 30px rgba(69,57,36,0.1);
+  }
+  .entry-card.current-year::before {
+    content: 'NOW';
+    position: absolute;
+    top: 13px;
+    right: 14px;
+    color: rgba(111,139,113,0.5);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+  .entry-card.archive-year {
+    opacity: 0.98;
   }
   .y1 { --entry-a: var(--y1-a); --entry-b: var(--y1-b); }
   .y2 { --entry-a: var(--y2-a); --entry-b: var(--y2-b); }
@@ -285,14 +323,16 @@
   .y5 { --entry-a: var(--y5-a); --entry-b: var(--y5-b); }
 
   .entry-inner {
-    padding: 14px 16px 16px;
+    padding: 16px;
   }
 
   .entry-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed rgba(111,139,113,0.18);
   }
 
   .entry-year-label {
@@ -302,22 +342,23 @@
   }
 
   .year-dot {
-    width: 32px; height: 32px;
-    border-radius: 50%;
+    min-width: 54px; height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.02em;
-    color: #5a4a4a;
+    color: #435247;
     flex-shrink: 0;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   }
 
   .year-text {
     font-family: 'Noto Serif TC', serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-dark);
     letter-spacing: 0.04em;
@@ -339,15 +380,19 @@
     outline: none;
     resize: none;
     font-family: 'Noto Serif TC', serif;
-    font-size: 15px;
-    line-height: 1.85;
+    font-size: 16px;
+    line-height: 1.8;
     color: var(--text-dark);
     background: transparent;
-    min-height: 80px;
+    min-height: 112px;
     height: auto;
     overflow: hidden;
     padding: 0;
     caret-color: var(--accent);
+  }
+  .archive-year .entry-textarea {
+    min-height: 76px;
+    font-size: 15px;
   }
   .entry-textarea::placeholder {
     color: var(--text-light);
@@ -361,7 +406,7 @@
     justify-content: space-between;
     margin-top: 10px;
     padding-top: 10px;
-    border-top: 1px solid rgba(140,110,80,0.1);
+    border-top: 1px solid rgba(111,139,113,0.12);
   }
 
   .mood-row {
@@ -372,8 +417,8 @@
   }
 
   .mood-btn {
-    width: 30px; height: 30px;
-    border-radius: 50%;
+    width: 34px; height: 34px;
+    border-radius: 999px;
     border: none;
     background: var(--bg);
     font-size: 16px;
@@ -384,9 +429,9 @@
     justify-content: center;
   }
   .mood-btn.selected {
-    background: #f0e4d0;
+    background: #edf0df;
     transform: scale(1.15);
-    box-shadow: 0 0 0 2px rgba(201,100,66,0.3);
+    box-shadow: 0 0 0 2px rgba(111,139,113,0.28);
   }
   .mood-btn:active { transform: scale(0.9); }
 
@@ -430,10 +475,10 @@
 
   /* ── Write new entry fab-like ── */
   .save-btn {
-    background: linear-gradient(135deg, #d97757, #c96442);
+    background: linear-gradient(135deg, #7f987c, #5f7c65);
     color: white;
     border: none;
-    border-radius: 14px;
+    border-radius: 999px;
     padding: 9px 20px;
     font-size: 12px;
     letter-spacing: 0.08em;
@@ -442,7 +487,7 @@
     opacity: 0;
     transition: opacity 0.2s, transform 0.15s;
     pointer-events: none;
-    box-shadow: 0 2px 8px rgba(201,100,66,0.35);
+    box-shadow: 0 4px 12px rgba(95,124,101,0.24);
   }
   .save-btn.visible:active { transform: scale(0.96); }
   .save-btn.visible {
@@ -1188,6 +1233,87 @@
     .tarot-spread { padding: 14px calc(50% - 28px) 20px; }
   }
   @media (max-width: 430px) {
+    .app-header {
+      padding: 14px 14px 0;
+    }
+    .header-top {
+      margin-bottom: 10px;
+    }
+    .app-title {
+      font-size: 18px;
+    }
+    .date-display {
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    .month-strip {
+      padding: 8px 0 11px;
+    }
+    .month-chip {
+      padding: 6px 12px;
+    }
+    .main {
+      padding: 12px 12px 98px;
+    }
+    .prompt-card {
+      padding: 16px 15px 15px;
+      margin-bottom: 16px;
+    }
+    .prompt-card::before {
+      display: none;
+    }
+    .prompt-text {
+      font-size: 15px;
+    }
+    .section-title {
+      margin: 12px 0 12px;
+    }
+    .entry-inner {
+      padding: 15px 14px;
+    }
+    .entry-card.current-year {
+      margin-bottom: 2px;
+    }
+    .entry-card.current-year::before {
+      top: 15px;
+      right: 14px;
+    }
+    .entry-header {
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .entry-year-label {
+      gap: 8px;
+      min-width: 0;
+    }
+    .year-dot {
+      min-width: 50px;
+      height: 28px;
+      font-size: 10px;
+    }
+    .year-text {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .entry-textarea {
+      min-height: 124px;
+      font-size: 16px;
+    }
+    .archive-year .entry-textarea {
+      min-height: 72px;
+      font-size: 15px;
+    }
+    .entry-footer {
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .mood-row {
+      flex: 0 0 auto;
+    }
+    .entry-footer > div:last-child {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
     .bottom-nav {
       padding: 6px 0 calc(12px + env(safe-area-inset-bottom));
     }
@@ -1326,8 +1452,8 @@
 <!-- ── Header ── -->
 <div class="app-header" id="mainHeader">
   <div class="header-top">
-    <span class="app-title">五年日記</span>
-    <span class="today-badge" id="todayBadge">今天</span>
+    <span class="app-title">時間標本館</span>
+    <span class="today-badge" id="todayBadge">今日標本</span>
   </div>
   <div id="appVersionLabel" style="font-size:9px;color:var(--text-light);text-align:right;padding:0 4px 6px;letter-spacing:0.05em;">v9.9</div>
   <div class="date-nav">
@@ -1355,7 +1481,7 @@
     <div id="homeScriptVersionBar" style="display:none;padding:12px 14px;border-radius:16px;margin:0 0 14px;font-size:12px;line-height:1.7;"></div>
 
     <div id="onThisDayCard" style="display:none;"></div>
-    <div class="section-title">五年的今天</div>
+    <div class="section-title">五年的今日標本</div>
     <div class="entries-list" id="entriesList"></div>
   </div>
 
@@ -1693,7 +1819,7 @@
 
 <script>
 // ── Data ──
-const APP_VERSION = '9.9';
+const APP_VERSION = '10.0';
 document.getElementById('appVersionLabel').textContent = `v${APP_VERSION}`;
 let latestVersionCheckTimer = null;
 const MOODS = [
@@ -2120,10 +2246,10 @@ function loadSettings() {
     const s = JSON.parse(localStorage.getItem('5yr_settings') || '{}');
     return {
       years: Array.isArray(s.years) && s.years.length >= 1 ? s.years : defaultYears(),
-      name: s.name || '五年日記',
+      name: s.name && s.name !== '五年日記' ? s.name : '時間標本館',
       geminiApiKey: s.geminiApiKey || ''
     };
-  } catch { return { years: defaultYears(), name: '五年日記', geminiApiKey: '' }; }
+  } catch { return { years: defaultYears(), name: '時間標本館', geminiApiKey: '' }; }
 }
 function saveSettings(settings) {
   localStorage.setItem('5yr_settings', JSON.stringify(settings));
@@ -2155,7 +2281,7 @@ function renderHeader() {
 
   const today = new Date();
   const isToday = d.toDateString() === today.toDateString();
-  document.getElementById('todayBadge').textContent = isToday ? '今天' : `${Math.round(Math.abs(d-today)/86400000)}天前`;
+  document.getElementById('todayBadge').textContent = isToday ? '今日標本' : `${Math.round(Math.abs(d-today)/86400000)}天前`;
 
   // Moon phase (月相) — SVG rendering
   const moonEl = document.getElementById('moonPhaseEl');
@@ -2196,21 +2322,30 @@ function renderEntries() {
   const list = document.getElementById('entriesList');
   list.innerHTML = '';
   const today = new Date();
+  const todayYear = today.getFullYear();
+  const displayYears = ACTIVE_YEARS.slice().sort((a, b) => {
+    if (a === todayYear) return -1;
+    if (b === todayYear) return 1;
+    return b - a;
+  });
 
-  ACTIVE_YEARS.forEach((yr, i) => {
-    const yClass = `y${(i % 5) + 1}`;
+  displayYears.forEach((yr, i) => {
+    const originalIndex = ACTIVE_YEARS.indexOf(yr);
+    const yClass = `y${((originalIndex >= 0 ? originalIndex : i) % 5) + 1}`;
     const entry = getEntry(yr, d.getMonth(), d.getDate());
     const isFuture = yr > today.getFullYear() || (yr === today.getFullYear() && d > today);
+    const isCurrentYear = yr === todayYear;
+    const cardStateClass = isCurrentYear ? 'current-year' : 'archive-year';
 
     const card = document.createElement('div');
-    card.className = `entry-card ${yClass}`;
+    card.className = `entry-card ${yClass} ${cardStateClass}`;
     card.innerHTML = `
       <div class="entry-gradient-bar"></div>
       <div class="entry-inner">
         <div class="entry-header">
           <div class="entry-year-label">
             <div class="year-dot">${yr}</div>
-            <span class="year-text">${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}</span>
+            <span class="year-text">${isCurrentYear ? '今天要收藏的標本' : '已封存的同一天'} · ${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}</span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <button class="save-btn" id="saveBtn${yr}" onclick="saveEntry(${yr}, ${d.getMonth()}, ${d.getDate()})">儲存</button>
@@ -2219,7 +2354,7 @@ function renderEntries() {
         <textarea
           class="entry-textarea"
           id="ta${yr}"
-          placeholder="${isFuture ? '還沒到這一天…' : `${yr}年的今天，我寫下…`}"
+          placeholder="${isFuture ? '還沒到這一天…' : isCurrentYear ? '把今天的氣味、天氣、心情或一句話收進標本館…' : `${yr}年的今天，我寫下…`}"
           ${isFuture ? 'disabled' : ''}
           maxlength="5000"
           oninput="onTextInput(this, ${yr}, ${d.getMonth()}, ${d.getDate()})"

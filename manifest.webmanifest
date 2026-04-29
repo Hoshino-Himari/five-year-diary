@@ -1,10 +1,10 @@
 {
-  "name": "\u4e94\u5e74\u65e5\u8a18",
-  "short_name": "\u4e94\u5e74\u65e5\u8a18",
+  "name": "\u6642\u9593\u6a19\u672c\u9928",
+  "short_name": "\u6a19\u672c\u9928",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#f7f5f2",
-  "theme_color": "#f7f5f2",
+  "background_color": "#f2efe6",
+  "theme_color": "#fffdf7",
   "icons": [
     {
       "src": "./assets/icons/apple-touch-icon.png",
